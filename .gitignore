@@ -1,6 +1,4 @@
-# =========================
 # Laravel
-# =========================
 /vendor
 /node_modules
 /public/storage
@@ -10,23 +8,17 @@
 /storage/framework/sessions/*
 /storage/framework/views/*
 
-# =========================
 # Environment
-# =========================
 .env
 .env.*
 !.env.example
 
-# =========================
 # Build / Vite
-# =========================
 /public/build
 /public/hot
 /dist
 
-# =========================
 # Cache / Logs
-# =========================
 *.log
 npm-debug.log*
 yarn-error.log*
@@ -34,38 +26,21 @@ pnpm-debug.log*
 .phpunit.result.cache
 .phpunit.cache
 
-# =========================
-# Composer
-# =========================
-/composer.lock
-
-# =========================
-# NPM
-# =========================
-/package-lock.json
-
-# =========================
 # IDEs
-# =========================
 .vscode/
 .idea/
 .fleet/
 .zed/
 .nova/
 
-# =========================
 # OS
-# =========================
 .DS_Store
 Thumbs.db
 
-# =========================
 # Laravel Specific
-# =========================
 /bootstrap/cache/*.php
 /auth.json
 
-# =========================
 # Testing
-# =========================
 /phpunit.xml
+!/phpunit.xml.example
