@@ -1,0 +1,108 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Usuario;
+use App\Services\Auth\RecuperacionService;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use App\Services\ActividadService;
+
+class RecuperacionController extends Controller
+{
+    protected $service;
+
+    public function __construct(RecuperacionService $service)
+    {
+        $this->service = $service;
+    }
+
+    /**
+     *  Enviar correo
+     */
+    public function solicitarRecuperacion(Request $request)
+    {
+        try {
+            Log::info(" Inicio recuperación", ['email' => $request->email]);
+
+            $usuario = Usuario::where('email', $request->email)->first();
+
+            if (!$usuario) {
+
+                Log::warning(" Usuario no encontrado", ['email' => $request->email]);
+
+                ActividadService::log(null, 'RECUPERACION_EMAIL_NO_EXISTE', [
+                    'email' => $request->email
+                ]);
+
+                return response()->json([
+                    'mensaje' => 'Correo no encontrado en el sistema'
+                ], 404);
+            }
+
+            Log::info(" Usuario encontrado", ['id' => $usuario->id]);
+
+            $token = $this->service->generarToken($usuario);
+
+            Log::info(" Token generado", ['token' => $token]);
+
+            $enlace = url('/recuperar-password?token=' . $token);
+
+            Log::info(" Enlace generado", ['enlace' => $enlace]);
+
+            Mail::send('emails.recuperar', [
+                'usuario' => $usuario,
+                'enlace' => $enlace
+            ], function ($message) use ($usuario) {
+                $message->to($usuario->email)
+                        ->subject('Recuperar contraseña');
+            });
+
+            Log::info(" Mail::send ejecutado");
+            
+            ActividadService::log($usuario->id, 'SOLICITAR_RECUPERACION', [
+                'email' => $usuario->email
+            ]);
+
+            return response()->json([
+                'mensaje' => 'Correo enviado correctamente'
+            ]);
+
+        } catch (\Exception $e) {
+
+            Log::error(" Error enviando correo", [
+                'mensaje' => $e->getMessage(),
+                'linea' => $e->getLine(),
+                'archivo' => $e->getFile()
+            ]);
+
+            return response()->json([
+                'mensaje' => 'Error al enviar correo',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     *  Cambiar contraseña
+     */
+    public function cambiarContrasena(Request $request)
+    {
+        $ok = $this->service->actualizarContrasena(
+            $request->token,
+            $request->contrasena
+        );
+
+        if (!$ok) {
+            return response()->json([
+                'mensaje' => 'Token inválido o expirado'
+            ], 400);
+        }
+
+        return response()->json([
+            'mensaje' => 'Contraseña actualizada correctamente'
+        ]);
+    }
+}
