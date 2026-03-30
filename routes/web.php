@@ -28,3 +28,19 @@ Route::post('/recuperar', [RecuperacionController::class, 'solicitarRecuperacion
  * Cambiar contraseña mediante token
  */
 Route::post('/reset-password', [RecuperacionController::class, 'cambiarContrasena']);
+
+Route::get('/', function () {
+    return view('auth.login');
+});
+
+Route::get('/login', function () {
+    return view('auth.login');
+});
+
+Route::get('/recuperar', function () {
+    return view('auth.recuperar');
+});
+
+Route::get('/registro', function () {
+    return view('auth.registro');
+});
