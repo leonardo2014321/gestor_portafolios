@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RecuperacionController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\LoginController;
 
 /**
  * Ruta principal del sistema
@@ -28,3 +29,7 @@ Route::post('/recuperar', [RecuperacionController::class, 'solicitarRecuperacion
  * Cambiar contraseña mediante token
  */
 Route::post('/reset-password', [RecuperacionController::class, 'cambiarContrasena']);
+
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
