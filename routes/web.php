@@ -9,9 +9,9 @@ use App\Http\Controllers\Auth\LoginController;
  * Ruta principal del sistema
  * Muestra la página de inicio
  */
-Route::get('/', function () {
+Route::get('/home', function () {
     return view('home');
-});
+})->name('home');
 
 /**
  * Mostrar vista de recuperación de contraseña
