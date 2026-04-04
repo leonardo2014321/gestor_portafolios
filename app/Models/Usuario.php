@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Modelo que representa a los usuarios del sistema.
  * Gestiona la información de acceso y autenticación.
  */
-class Usuario extends Model
+class Usuario extends Authenticatable
 {
+    use Notifiable;
+    
     protected $table = 'usuarios';
 
     protected $primaryKey = 'id';

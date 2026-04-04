@@ -10,6 +10,8 @@ use App\Models\TokenRecuperacion;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Cache;
 use App\Services\ActividadService;
+use App\Http\Controllers\Auth\GoogleController;
+
 
 /**
  * Ruta principal del sistema
@@ -39,6 +41,7 @@ Route::post('/reset-password', [RecuperacionController::class, 'cambiarContrasen
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
 Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+
 
 /**
  * Mostrar formulario
@@ -83,3 +86,7 @@ Route::get('/verificar-email', function (Request $request) {
 });
 
 Route::get('/verificar-email', [RegistroController::class, 'verificarEmail']);
+
+Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.redirect');
+Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
+
