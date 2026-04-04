@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 class LoginController extends Controller
 {
     public function index()
@@ -14,6 +15,7 @@ class LoginController extends Controller
     }
 
     public function store(Request $request)
+
 {
     $request->validate([
         'email'    => ['required', 'email'],
