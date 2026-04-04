@@ -2,44 +2,14 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SansiFolios</title>
-    @vite('resources/css/app.css')
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-[#f5f5f5]">
 
-<!-- ================= HEADER ================= -->
-<header class="bg-[#050b36] h-20 flex items-center justify-between px-10">
-
-    <!-- LOGO + TEXTO -->
-    <div class="flex items-center gap-3">
-        
-        <!-- Imagen del logo -->
-        <img src="{{ asset('images/logo.png') }}" 
-             class="w-20 h-10 object-contain">
-
-        <!-- Texto -->
-        <h1 class="text-2xl font-bold text-white">
-            Sansi<span class="text-red-500">Folios</span>
-        </h1>
-    </div>
-
-    <!-- Menú de navegación -->
-    <nav class="flex gap-8 text-white">
-        <a href="#" class="text-cyan-300 font-semibold">Inicio</a>
-        <a href="#">Características</a>
-        <a href="#">Portafolios</a>
-    </nav>
-
-    <!-- Botones -->
-    <div class="flex gap-4">
-        <button class="text-white">Iniciar Sesión</button>
-        <button class="bg-blue-600 px-4 py-2 rounded-lg text-white">
-            Registrarse
-        </button>
-    </div>
-
-</header>
+<x-layout.navbar />
 
 <!-- ================= HERO ================= -->
 <section class="py-20">
@@ -103,52 +73,39 @@
         <!-- ===== TARJETA PORTAFOLIO (GRANDE) ===== -->
         <div class="col-span-2 bg-pink-100 p-8 rounded-3xl">
 
-            <!-- ICONO -->
-            <img src="{{ asset('images/folder.png') }}"
-                 class="w-8 mb-4">
+            <img src="{{ asset('images/folder.png') }}" class="w-8 mb-4">
 
-            <h4 class="text-xl font-bold mb-2">
-                Creación de Portafolio
-            </h4>
+            <h4 class="text-xl font-bold mb-2">Creación de Portafolio</h4>
 
             <p class="text-gray-600 mb-6">
                 Construye tu portafolio profesional de forma sencilla y organiza tu información en un solo lugar.
             </p>
 
-            <!-- SUB OPCIONES -->
             <div class="grid grid-cols-2 gap-4">
-
                 <div class="bg-white p-4 rounded-xl border text-sm">
                     <b>Comparte tu portafolio</b><br>
                     <span class="text-gray-400 text-xs">COMPARTE TU PERFIL</span>
                 </div>
-
                 <div class="bg-white p-4 rounded-xl border text-sm text-pink-600">
                     <b>Exportación PDF</b><br>
                     <span class="text-gray-400 text-xs">COMPARTE TU PORTAFOLIO</span>
                 </div>
-
             </div>
         </div>
 
         <!-- ===== TARJETA PROYECTOS ===== -->
         <div class="bg-teal-200 p-8 rounded-3xl">
 
-            <img src="{{ asset('images/icono-medalla.png') }}"
-                 class="w-12 mb-4">
+            <img src="{{ asset('images/icono-medalla.png') }}" class="w-12 mb-4">
 
-            <h4 class="text-xl font-bold mb-2">
-                Gestión de Proyectos
-            </h4>
+            <h4 class="text-xl font-bold mb-2">Gestión de Proyectos</h4>
 
             <p class="text-sm">
                 Agrega y administra tus proyectos con descripciones,
                 tecnologías y evidencias.
             </p>
 
-            <p class="mt-6 text-xs font-bold">
-                ACCEDER A TU CUENTA →
-            </p>
+            <p class="mt-6 text-xs font-bold">ACCEDER A TU CUENTA →</p>
         </div>
 
         <!-- ===== TARJETA PERFIL ===== -->
@@ -166,7 +123,6 @@
         <!-- ===== TARJETA SEGURIDAD ===== -->
         <div class="col-span-2 bg-sky-100 p-6 rounded-3xl flex justify-between items-center">
 
-            <!-- TEXTO -->
             <div>
                 <img src="{{ asset('images/icono-seguro.png') }}" class="w-12 mb-2">
 
@@ -177,31 +133,13 @@
                 </p>
             </div>
 
-            <!-- IMAGEN -->
-            <img src="{{ asset('images/icono-seguridad.jpeg') }}"
-                 class="w-40 rounded-xl">
+            <img src="{{ asset('images/icono-seguridad.jpeg') }}" class="w-40 rounded-xl">
         </div>
 
     </div>
 </section>
 
-<!-- ================= FOOTER ================= -->
-<footer class="bg-[#050b36] py-6">
-
-    <div class="max-w-7xl mx-auto flex items-center justify-end gap-6 px-10">
-
-        <!-- Imagen (logo pequeño) -->
-        <img src="{{ asset('images/InfinityCode.jpeg') }}"
-             class="w-28 object-contain">
-
-        <!-- Texto -->
-        <p class="text-white text-sm">
-            © 2026 Infinity Code. Todos los derechos reservados.
-        </p>
-
-    </div>
-
-</footer>
+<x-layout.footer />
 
 </body>
 </html>
