@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 class LoginController extends Controller
 {
     public function index()
@@ -17,7 +18,7 @@ class LoginController extends Controller
     {
         $credentials = $request->validate([
             'email'    => ['required', 'email'],
-            'password' => ['required'],
+            'contrasena' => ['required'],
         ]);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
