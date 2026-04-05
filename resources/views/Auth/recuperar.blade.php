@@ -5,30 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar contraseña</title>
     @vite('resources/css/app.css')
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center font-[Poppins]">
+<body class="bg-gray-100 flex flex-col min-h-screen font-[Poppins]">
 
-<div class="w-full max-w-lg px-4 sm:px-6">
+<x-layout.navbar /> 
+<main class="flex-grow flex items-start justify-center px-4 py-6 overflow-y-auto">
+<div class="w-full max-w-xl px-4 sm:px-6">
 
-    <!-- 🔹 LOGO -->
-    <div class="flex items-center gap-2 mb-4 sm:mb-6">
-        <img src="{{ asset('logo.png') }}" class="w-8 h-8">
-        <span class="font-semibold text-gray-700 text-lg">SansiFolios</span>
-    </div>
+  
 
     <!-- 🔹 TITULO -->
-    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-6 sm:mb-8">
+    <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 leading-tight mb-4">
         Recuperar acceso <br> a tu cuenta
     </h1>
 
     <!-- 🔹 TARJETA -->
-    <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-md w-full">
+    <div class="bg-white p-6 rounded-3xl shadow-md w-full">
 
         <!-- 🔹 MENSAJE DINÁMICO -->
-        <p id="mensajePrincipal" class="text-gray-600 mb-6 text-sm sm:text-base">
+        <p id="mensajePrincipal" class="text-black-600 mb-6 text-sm sm:text-base">
             Ingresa tu correo electrónico registrado y te enviaremos un enlace para restablecer tu acceso al sistema.
         </p>
 
@@ -37,7 +36,7 @@
         <!-- ========================= -->
         <form id="formRecuperar">
 
-            <label class="text-xs font-semibold text-gray-500">
+            <label class="text-xs font-semibold text--500">
                 CORREO ELECTRÓNICO
             </label>
 
@@ -45,7 +44,7 @@
                 type="email" 
                 id="email"
                 placeholder="ejemplo@correo.com"
-                class="w-full mt-2 p-3 rounded-xl bg-gray-100 focus:ring-2 focus:ring-blue-400 outline-none text-sm sm:text-base"
+                class="w-full mt-2 p-3 rounded-xl bg-black-100 focus:ring-2 focus:ring-blue-400 outline-none text-sm sm:text-base"
             >
 
             <p id="errorEmail" class="text-red-500 text-sm mt-2 hidden"></p>
@@ -74,88 +73,78 @@
         <!-- ========================= -->
         <form id="formReset" class="hidden mt-6">
 
-            <h2 class="text-lg sm:text-xl font-bold mb-4">
-                Establecer nueva contraseña
+          <h2 class="text-lg sm:text-xl font-bold mb-2">
+            Establecer nueva contraseña
             </h2>
 
-            <!-- PASSWORD -->
-            <label class="text-xs font-semibold text-gray-500">
-                NUEVA CONTRASEÑA
-            </label>
+           <!-- PASSWORD -->
+           <label class="text-xs font-semibold text-gray-500 mt-4 block">
+            NUEVA CONTRASEÑA
+             </label>
 
             <div class="relative mt-2">
+            <input 
+            type="password" 
+            id="password"
+            class="w-full p-3 pr-12 rounded-xl bg-gray-100 border-2 border-transparent focus:border-gray-900 focus:bg-white outline-none transition-all"
+               >
+             <button 
+    type="button"
+    onclick="togglePassword('password')"
+    class="absolute right-3 top-3 text-gray-500 hover:text-gray-700">
+    <span id="eye-icon-password" class="material-icons">visibility</span>
+</button>
+               </div>
 
-                <input 
-                    type="password" 
-                    id="password"
-                    class="w-full p-3 pr-12 rounded-xl bg-gray-100 focus:ring-2 focus:ring-blue-400 outline-none"
-                >
+                  <p id="errorPassword" class="text-red-500 text-sm mt-2 hidden"></p>
 
-                <button 
-                    type="button"
-                    onclick="togglePassword('password', this)"
-                    class="absolute right-3 top-3 text-gray-500 hover:text-gray-700">
+                 <!-- CONFIRMAR -->
+                 <label class="text-xs font-semibold text-gray-500 mt-4 block">
+                   CONFIRMAR CONTRASEÑA
+                  </label>
 
-                    👁
+                  <div class="relative mt-2">
+                  <input 
+                  type="password" 
+                  id="confirmPassword"
+                  class="w-full p-3 pr-12 rounded-xl bg-gray-100 border-2 border-transparent focus:border-gray-900 focus:bg-white outline-none transition-all"
+                  >
+                 <button 
+    type="button"
+    onclick="togglePassword('confirmPassword')"
+    class="absolute right-3 top-3 text-gray-500 hover:text-gray-700">
+    <span id="eye-icon-confirm-password" class="material-icons">visibility</span>
+</button>
+    </div>
 
-                </button>
+    <p id="errorConfirm" class="text-red-500 text-sm mt-2 hidden"></p>
 
-            </div>
+    <!-- REGLAS -->
+    <div class="mt-4 sm:mt-5 space-y-2">
 
-            <p id="errorPassword" class="text-red-500 text-sm mt-2 hidden"></p>
+        <div id="ruleLength" class="flex items-center gap-3 p-3 rounded-xl bg-gray-100 border-2 border-transparent transition-all">
+            <div class="icon w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-white text-sm font-bold">✕</div>
+            <span class="text-gray-600 text-sm sm:text-base">Mínimo 8 caracteres</span>
+        </div>
 
-            <!-- CONFIRMAR -->
-            <label class="text-xs font-semibold text-gray-500 mt-4 block">
-                CONFIRMAR CONTRASEÑA
-            </label>
+        <div id="ruleNumber" class="flex items-center gap-3 p-3 rounded-xl bg-gray-100 border-2 border-transparent transition-all">
+            <div class="icon w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-white text-sm font-bold">✕</div>
+            <span class="text-gray-600 text-sm sm:text-base">Número o símbolo</span>
+        </div>
 
-            <div class="relative mt-2">
+    </div>
 
-                <input 
-                    type="password" 
-                    id="confirmPassword"
-                    class="w-full p-3 pr-12 rounded-xl bg-gray-100 focus:ring-2 focus:ring-blue-400 outline-none"
-                >
+    <button 
+        type="submit"
+        class="w-full mt-6 py-3 sm:py-3.5 rounded-xl text-white font-semibold 
+            bg-gradient-to-r from-blue-500 to-blue-700 
+            hover:from-blue-600 hover:to-blue-800 shadow-md">
+        Actualizar contraseña →
+    </button>
 
-                <button 
-                    type="button"
-                    onclick="togglePassword('confirmPassword', this)"
-                    class="absolute right-3 top-3 text-gray-500 hover:text-gray-700">
+    <div id="mensajeReset" class="mt-5"></div>
 
-                    👁
-
-                </button>
-
-            </div>
-
-            <p id="errorConfirm" class="text-red-500 text-sm mt-2 hidden"></p>
-
-            <!-- REGLAS -->
-            <div class="mt-4 sm:mt-5 space-y-3">
-
-                <div id="ruleLength" class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border">
-                    <div class="icon w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-white text-sm">✕</div>
-                    <span class="text-gray-600 text-sm sm:text-base">Mínimo 8 caracteres</span>
-                </div>
-
-                <div id="ruleNumber" class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border">
-                    <div class="icon w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-white text-sm">✕</div>
-                    <span class="text-gray-600 text-sm sm:text-base">Número o símbolo</span>
-                </div>
-
-            </div>
-
-            <button 
-                type="submit"
-                class="w-full mt-6 py-3 sm:py-3.5 rounded-xl text-white font-semibold 
-                    bg-gradient-to-r from-blue-500 to-blue-700 
-                    hover:from-blue-600 hover:to-blue-800 shadow-md">
-                Actualizar contraseña →
-            </button>
-
-            <div id="mensajeReset" class="mt-5"></div>
-
-        </form>
+</form>
 
     </div>
 </div>
@@ -182,16 +171,18 @@ if (token) {
 /**
  * Mostrar u ocultar contraseña
  */
-function togglePassword(id, btn) {
-
+function togglePassword(id) {
     const input = document.getElementById(id);
+    const eyeIcon = id === 'password' 
+        ? document.getElementById('eye-icon-password') 
+        : document.getElementById('eye-icon-confirm-password');
 
-    if (input.type === "password") {
-        input.type = "text";
-        btn.innerText = "🙈";
+    if (input.type === 'password') {
+        input.type = 'text';
+        eyeIcon.textContent = 'visibility_off';
     } else {
-        input.type = "password";
-        btn.innerText = "👁";
+        input.type = 'password';
+        eyeIcon.textContent = 'visibility';
     }
 }
 
@@ -240,21 +231,24 @@ function validarPassword(pass) {
  * Reglas visuales
  */
 function setRule(id, ok) {
-
     const el = document.getElementById(id);
     const icon = el.querySelector('.icon');
     const text = el.querySelector('span');
 
     if (ok) {
-        el.classList.add('bg-green-50', 'border-green-200');
-        icon.className = "icon w-6 h-6 flex items-center justify-center rounded-full bg-green-500 text-white text-sm";
+        el.classList.add('bg-green-50', 'border-green-400');
+        el.classList.remove('bg-gray-100', 'border-transparent');
+        icon.className = "icon w-6 h-6 flex items-center justify-center rounded-full bg-green-500 text-white text-sm font-bold";
         icon.innerText = "✓";
         text.classList.add('text-green-600');
+        text.classList.remove('text-gray-600');
     } else {
-        el.classList.remove('bg-green-50', 'border-green-200');
-        icon.className = "icon w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-white text-sm";
+        el.classList.remove('bg-green-50', 'border-green-400');
+        el.classList.add('bg-gray-100', 'border-transparent');
+        icon.className = "icon w-6 h-6 flex items-center justify-center rounded-full bg-gray-300 text-white text-sm font-bold";
         icon.innerText = "✕";
         text.classList.remove('text-green-600');
+        text.classList.add('text-gray-600');
     }
 }
 
@@ -262,11 +256,73 @@ function setRule(id, ok) {
  * Validación en tiempo real
  */
 document.getElementById('password')?.addEventListener('input', () => {
-
     const value = document.getElementById('password').value;
+    const valido = value.length >= 8 && /[0-9!@#$%^&*]/.test(value);
+    const input = document.getElementById('password');
+    const error = document.getElementById('errorPassword');
 
     setRule('ruleLength', value.length >= 8);
     setRule('ruleNumber', /[0-9!@#$%^&*]/.test(value));
+
+    if (valido) {
+        input.classList.add('border-green-500');
+        input.classList.remove('border-red-500');
+        error.textContent = "Contraseña válida";
+        error.className = "text-xs mt-1 text-green-500";
+        error.classList.remove('hidden');
+    } else {
+        input.classList.add('border-red-500');
+        input.classList.remove('border-green-500');
+        error.textContent = "Mínimo 8 caracteres y un número o símbolo";
+        error.className = "text-xs mt-1 text-red-500";
+        error.classList.remove('hidden');
+    }
+
+    // validar confirmación en tiempo real
+    const confirm = document.getElementById('confirmPassword');
+    const errorConfirm = document.getElementById('errorConfirm');
+
+    if (confirm.value) {
+        if (confirm.value === value) {
+            confirm.classList.add('border-green-500');
+            confirm.classList.remove('border-red-500');
+            errorConfirm.textContent = "Coinciden";
+            errorConfirm.className = "text-xs mt-1 text-green-500";
+            errorConfirm.classList.remove('hidden');
+        } else {
+            confirm.classList.add('border-red-500');
+            confirm.classList.remove('border-green-500');
+            errorConfirm.textContent = "No coinciden";
+            errorConfirm.className = "text-xs mt-1 text-red-500";
+            errorConfirm.classList.remove('hidden');
+        }
+    }
+});
+
+document.getElementById('confirmPassword')?.addEventListener('input', () => {
+    const password = document.getElementById('password').value;
+    const confirm = document.getElementById('confirmPassword');
+    const errorConfirm = document.getElementById('errorConfirm');
+
+    if (!confirm.value) {
+        errorConfirm.textContent = "";
+        confirm.classList.remove('border-red-500', 'border-green-500');
+        return;
+    }
+
+    if (confirm.value === password) {
+        confirm.classList.add('border-green-500');
+        confirm.classList.remove('border-red-500');
+        errorConfirm.textContent = "Coinciden";
+        errorConfirm.className = "text-xs mt-1 text-green-500";
+        errorConfirm.classList.remove('hidden');
+    } else {
+        confirm.classList.add('border-red-500');
+        confirm.classList.remove('border-green-500');
+        errorConfirm.textContent = "No coinciden";
+        errorConfirm.className = "text-xs mt-1 text-red-500";
+        errorConfirm.classList.remove('hidden');
+    }
 });
 
 /**
@@ -394,6 +450,7 @@ document.getElementById('formReset')?.addEventListener('submit', async (e) => {
 });
 
 </script>
-
+</main>
+<x-layout.footer />
 </body>
 </html>

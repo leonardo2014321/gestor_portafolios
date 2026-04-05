@@ -28,6 +28,10 @@ Route::get('/recuperar-password', function () {
     return view('Auth.recuperar');
 });
 
+Route::get('/recuperar', function () {
+    return view('Auth.recuperar');
+});
+
 /**
  * Solicitar recuperación de contraseña
  */

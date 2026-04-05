@@ -299,7 +299,7 @@
                 {{-- Registro --}}
                 <p class="text-center small text-muted mb-0">
                     ¿No tienes cuenta?
-                    <a href="#" class="link-azul fw-semibold">Regístrate</a>
+                    <a href="{{ route('registro') }}" class="link-azul fw-semibold">Regístrate</a>
                 </p>
 
             </form>
