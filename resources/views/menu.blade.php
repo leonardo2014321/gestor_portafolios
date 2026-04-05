@@ -11,7 +11,7 @@
         /* Reset */
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-        /* Variables */
+        /* Variables por designar*/ 
         :root{
           --navy:#1a2340;
           --navy2:#1e2d50;

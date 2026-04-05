@@ -2,148 +2,91 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RecuperacionController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegistroController;
+use Illuminate\Http\Request;
+use App\Models\TokenRecuperacion;
+use App\Models\Usuario;
+use Illuminate\Support\Facades\Cache;
+use App\Services\ActividadService;
+use App\Http\Controllers\Auth\GoogleController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-| Aquí se registran todas las rutas web del sistema.
-| Estas rutas responden a solicitudes del navegador y cargan vistas
-| o ejecutan métodos de controladores.
-|--------------------------------------------------------------------------
-*/
 
-/*
-|--------------------------------------------------------------------------
-| Ruta de inicio del sistema
-|--------------------------------------------------------------------------
-| Muestra la vista principal "home.blade.php"
-|--------------------------------------------------------------------------
-*/
+/**
+ * Ruta principal del sistema
+ * Muestra la página de inicio
+ */
 Route::get('/home', function () {
     return view('home');
 })->name('home');
 
-
-/*
-|--------------------------------------------------------------------------
-| Ruta para mostrar la vista de recuperación de contraseña
-|--------------------------------------------------------------------------
-| Carga el formulario donde el usuario solicita recuperar su cuenta
-|--------------------------------------------------------------------------
-*/
+/**
+ * Mostrar vista de recuperación de contraseña
+ */
 Route::get('/recuperar-password', function () {
     return view('Auth.recuperar');
-})->name('password.request');
+});
 
+/**
+ * Solicitar recuperación de contraseña
+ */
+Route::post('/recuperar', [RecuperacionController::class, 'solicitarRecuperacion']);
 
-/*
-|--------------------------------------------------------------------------
-| Ruta para solicitar recuperación de contraseña
-|--------------------------------------------------------------------------
-| Envía los datos del formulario al controlador encargado de generar
-| y procesar la solicitud de recuperación
-|--------------------------------------------------------------------------
-*/
-Route::post('/recuperar', [RecuperacionController::class, 'solicitarRecuperacion'])
-    ->name('password.email');
+/**
+ * Cambiar contraseña mediante token
+ */
+Route::post('/reset-password', [RecuperacionController::class, 'cambiarContrasena']);
 
-
-/*
-|--------------------------------------------------------------------------
-| Ruta para cambiar la contraseña con token
-|--------------------------------------------------------------------------
-| Procesa el cambio de contraseña una vez que el usuario recibió
-| el token o enlace de recuperación
-|--------------------------------------------------------------------------
-*/
-Route::post('/reset-password', [RecuperacionController::class, 'cambiarContrasena'])
-    ->name('password.update');
-
-
-/*
-|--------------------------------------------------------------------------
-| Rutas de autenticación
-|--------------------------------------------------------------------------
-| LoginController maneja el inicio y cierre de sesión
-|--------------------------------------------------------------------------
-*/
-
-/*
-| Mostrar formulario de login
-*/
 Route::get('/login', [LoginController::class, 'index'])->name('login');
-
-/*
-| Procesar credenciales del login
-*/
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
-
-/*
-| Cerrar sesión del usuario autenticado
-*/
 Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 
 
-/*
-|--------------------------------------------------------------------------
-| Rutas del menú principal del sistema
-|--------------------------------------------------------------------------
-| Estas rutas cargan las vistas del panel principal y se usarán
-| para la interfaz tipo dashboard de SansiFolios
-|--------------------------------------------------------------------------
-*/
+/**
+ * Mostrar formulario
+ */
+Route::get('/registro', [RegistroController::class, 'show'])->name('registro');
 
-/*
-| Menú principal del sistema
-| Muestra la vista menu.blade.php
-*/
-Route::get('/menu', function () {
-    return view('menu');
-})->name('menu');
+/**
+ * Procesar registro
+ */
+Route::post('/registro', [RegistroController::class, 'register'])->name('registro.post');
 
-/*
-| Sección inicio del dashboard
-| Puede apuntar a la misma vista mientras estructuras el sistema
-*/
-Route::get('/inicio', function () {
-    return view('menu');
-})->name('inicio');
+/**
+ * Verificación de correo electrónico
+ */
+Route::get('/verificar-email', function (Request $request) {
 
-/*
-| Sección características
-| Por ahora carga la misma vista base del menú
-*/
-Route::get('/caracteristicas', function () {
-    return view('menu');
-})->name('caracteristicas');
+    $token = $request->token;
 
-/*
-| Sección portafolios
-| Desde aquí puedes luego conectar un controlador real
-*/
-Route::get('/portafolios', function () {
-    return view('menu');
-})->name('portafolios.index');
+    // Obtener datos temporales
+    $datos = Cache::get('registro_temp_'.$token);
 
-/*
-| Sección académica
-*/
-Route::get('/academico', function () {
-    return view('menu');
-})->name('academico');
+    if (!$datos) {
+        return redirect('/registro')->withErrors('Token inválido o expirado.');
+    }
 
-/*
-| Sección reportes
-*/
-Route::get('/reportes', function () {
-    return view('menu');
-})->name('reportes');
+    // Crear usuario definitivo
+    $usuario = Usuario::create([
+        'nombre' => $datos['nombre'],
+        'apellido' => $datos['apellido'] ?? null,
+        'email' => $datos['email'],
+        'contrasena' => $datos['password'],
+        'email_verificado' => true,
+    ]);
 
-/*
-| Sección perfil del usuario
-*/
-Route::get('/perfil', function () {
-    return view('menu');
-})->name('perfil');
+    // Registrar actividad
+    ActividadService::log($usuario->id, 'registro_usuario', ['email' => $usuario->email]);
+
+    // Borrar datos temporales
+    Cache::forget('registro_temp_'.$token);
+
+    return redirect('/login')->with('success', 'Correo verificado correctamente, ya puedes iniciar sesión.');
+});
+
+Route::get('/verificar-email', [RegistroController::class, 'verificarEmail']);
+
+Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.redirect');
+Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
+
