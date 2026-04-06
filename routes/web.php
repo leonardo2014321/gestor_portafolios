@@ -24,6 +24,13 @@ Route::get('/home', function () {
 })->name('home');
 
 /**
+ * Mostrar menú principal
+ */
+Route::get('/menu', function () {
+    return view('menu');
+})->name('menu');
+
+/**
  * Mostrar vista de recuperación de contraseña
  */
 Route::get('/recuperar-password', function () {

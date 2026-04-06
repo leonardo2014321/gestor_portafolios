@@ -18,7 +18,7 @@ class GoogleController extends Controller
     {
         $googleUser = Socialite::driver('google')->user();
 
-        $user = User::updateOrCreate(
+        $user = Usuario::updateOrCreate(
             ['email' => $googleUser->getEmail()],
             [
                 'name'     => $googleUser->getName(),
@@ -28,6 +28,6 @@ class GoogleController extends Controller
 
         Auth::login($user);
 
-        return redirect('/dashboard');
+        return redirect('/menu');
     }
 }
