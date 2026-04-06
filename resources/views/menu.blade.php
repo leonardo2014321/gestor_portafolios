@@ -426,7 +426,6 @@
             <a href="{{ route('inicio') }}" class="tb-link">Inicio</a>
             <a href="{{ route('caracteristicas') }}" class="tb-link">Características</a>
             <a href="{{ route('portafolios.index') }}" class="tb-link">Portafolios</a>
-            <a href="{{ route('login') }}" class="btn-session">Iniciar Sesión</a>
         </nav>
     </div>
 
