@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Cache;
 use App\Services\ActividadService;
 use App\Http\Controllers\Auth\GoogleController;
 
-
+Route::get('/', function () {
+    return view('home');
+});
 /**
  * Ruta principal del sistema
  * Muestra la página de inicio

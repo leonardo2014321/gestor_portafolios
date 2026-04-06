@@ -25,7 +25,7 @@
         <div class="hidden sm:flex space-x-6 items-center text-sm sm:text-base">
             <a href="#" class="text-[#35FFE6] hover:underline">Inicio</a>
             <a href="#" class="hover:underline">Portafolios</a>
-            <a href="{{ route('login') }}" class="hover:underline">Iniciar Sesión</a>
+            <button id="openLoginModal" class="hover:underline">Iniciar Sesión</button>
             {{-- Botón registrarse --}}
             <a href="{{ route('registro') }}" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500">Registrarse</a>
         </div>
@@ -49,7 +49,7 @@
     >
         <a href="#" class="block hover:underline">Inicio</a>
         <a href="#" class="block hover:underline">Portafolios</a>
-        <a href="{{ route('login') }}" class="block hover:underline">Iniciar Sesión</a>
+        <button id="openLoginModalMobile" class="block hover:underline">Iniciar Sesión</button>
         <a href="{{ route('registro') }}" class="block py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-500">Registrarse</a>
     </div>
 

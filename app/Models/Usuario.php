@@ -28,4 +28,9 @@ class Usuario extends Authenticatable
     ];
 
     public $timestamps = true;
+
+    public function getRememberTokenName()
+    {
+        return null;
+    }
 }
