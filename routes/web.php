@@ -31,6 +31,48 @@ Route::get('/menu', function () {
 })->name('menu');
 
 /**
+ * Ruta de inicio
+ */
+Route::get('/inicio', function () {
+    return redirect('/home');
+})->name('inicio');
+
+/**
+ * Características
+ */
+Route::get('/caracteristicas', function () {
+    return redirect('/home');
+})->name('caracteristicas');
+
+/**
+ * Portafolios (placeholder)
+ */
+Route::get('/portafolios', function () {
+    return redirect('/home');
+})->name('portafolios.index');
+
+/**
+ * Académico (placeholder)
+ */
+Route::get('/academico', function () {
+    return redirect('/home');
+})->name('academico');
+
+/**
+ * Reportes (placeholder)
+ */
+Route::get('/reportes', function () {
+    return redirect('/home');
+})->name('reportes');
+
+/**
+ * Perfil (placeholder)
+ */
+Route::get('/perfil', function () {
+    return redirect('/home');
+})->name('perfil');
+
+/**
  * Mostrar vista de recuperación de contraseña
  */
 Route::get('/recuperar-password', function () {
