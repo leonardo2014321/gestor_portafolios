@@ -11,7 +11,11 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view('auth.login');
+    return response()->view('auth.login')->withHeaders([
+        'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+        'Pragma' => 'no-cache',
+        'Expires' => '0',
+    ]);
     }
 
     public function store(Request $request)

@@ -141,5 +141,37 @@
 
 <x-layout.footer />
 
+@include('Auth.login')
+
+<script>
+    const modal = document.getElementById('loginModal');
+    const openButtons = [document.getElementById('openLoginModal'), document.getElementById('openLoginModalMobile')];
+    const closeButton = document.getElementById('closeModal');
+
+    const toggleModal = () => {
+        if (!modal) return;
+        modal.classList.toggle('hidden');
+        document.body.classList.toggle('overflow-hidden');
+    };
+
+    openButtons.forEach(btn => {
+        if (btn) btn.addEventListener('click', toggleModal);
+    });
+
+    if (closeButton) closeButton.addEventListener('click', toggleModal);
+
+    if (modal) {
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) toggleModal();
+        });
+    }
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+            toggleModal();
+        }
+    });
+</script>
+
 </body>
 </html>
