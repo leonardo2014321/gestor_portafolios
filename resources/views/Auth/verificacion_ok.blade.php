@@ -32,7 +32,7 @@ localStorage.setItem('email_verificado', 'true');
 
 // ⏳ Espera y redirige
 setTimeout(() => {
-    window.location.href = "/login";
+    window.location.href = "/home";
 }, 1500);
 
 // 🔒 Intentar cerrar (solo si el navegador lo permite)

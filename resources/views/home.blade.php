@@ -173,5 +173,17 @@
     });
 </script>
 
+@if ($errors->any())
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            }
+        });
+    </script>
+@endif
+
 </body>
 </html>
