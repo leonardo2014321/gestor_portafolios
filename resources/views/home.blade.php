@@ -142,7 +142,7 @@
 <x-layout.footer />
 
 @include('Auth.login')
-
+@include('Auth.registro')
 <script>
     const modal = document.getElementById('loginModal');
     const openButtons = [document.getElementById('openLoginModal'), document.getElementById('openLoginModalMobile')];
@@ -171,7 +171,45 @@
             toggleModal();
         }
     });
-</script>
 
+    // ====== MODAL DE REGISTRO ======
+    const registerModal = document.getElementById('registerModal');
+    const registerButtons = [
+        document.getElementById('openRegisterModal'),
+        document.getElementById('openRegisterModalMobile')
+    ];
+
+    const toggleRegister = () => {
+        if (!registerModal) return;
+        registerModal.classList.toggle('hidden');
+        document.body.classList.toggle('overflow-hidden');
+    };
+
+    registerButtons.forEach(btn => {
+        if (btn) btn.addEventListener('click', toggleRegister);
+    });
+
+    // cerrar si clickea fuera del modal
+    if (registerModal) {
+        registerModal.addEventListener('click', (event) => {
+            if (event.target === registerModal) toggleRegister();
+        });
+    }
+
+    // cerrar con ESC
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && registerModal && !registerModal.classList.contains('hidden')) {
+            toggleRegister();
+        }
+    });
+
+
+
+</script>
+@if(session('email_verificado') === true)
+    <script>
+        localStorage.setItem('email_verificado', 'true');
+    </script>
+@endif
 </body>
 </html>
