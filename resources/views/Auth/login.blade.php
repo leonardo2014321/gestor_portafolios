@@ -9,12 +9,26 @@
             <p class="mt-3 text-sm text-slate-500">Inicia sesión para gestionar tu portafolio profesional digital.</p>
         </div>
 
+        @php
+            $emailInputClasses = 'rounded-[28px] border-2 border-slate-200 bg-white px-4 py-3 focus-within:border-sky-500';
+            if ($errors->has('email')) {
+                $emailInputClasses = 'rounded-[28px] border-2 border-rose-500 bg-rose-50 px-4 py-3 focus-within:border-rose-500';
+            } elseif (old('email')) {
+                $emailInputClasses = 'rounded-[28px] border-2 border-emerald-400 bg-emerald-50 px-4 py-3 focus-within:border-emerald-500';
+            }
+
+            $passwordInputClasses = 'rounded-[28px] border-2 border-slate-200 bg-white px-4 py-3 focus-within:border-sky-500';
+            if ($errors->has('password')) {
+                $passwordInputClasses = 'rounded-[28px] border-2 border-rose-500 bg-rose-50 px-4 py-3 focus-within:border-rose-500';
+            }
+        @endphp
+
         <form method="POST" action="{{ route('login.store') }}" class="mt-8 space-y-5">
             @csrf
 
             <div>
                 <label class="mb-3 block text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">Correo electrónico</label>
-                <div class="rounded-[28px] border-2 border-emerald-400/70 bg-emerald-50 px-4 py-3 focus-within:border-emerald-500">
+                <div class="{{ $emailInputClasses }}">
                     <input
                         type="email"
                         name="email"
@@ -31,7 +45,7 @@
 
             <div>
                 <label class="mb-3 block text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">Contraseña</label>
-                <div class="rounded-[28px] border-2 border-emerald-400/70 bg-emerald-50 px-4 py-3 focus-within:border-emerald-500">
+                <div class="{{ $passwordInputClasses }}">
                     <input
                         type="password"
                         name="password"

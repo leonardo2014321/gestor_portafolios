@@ -28,15 +28,21 @@ class LoginController extends Controller
 
     $usuario = \App\Models\Usuario::where('email', $request->email)->first();
 
-    if ($usuario && password_verify($request->password, $usuario->contrasena)) {
-        Auth::login($usuario, $request->boolean('remember'));
-        $request->session()->regenerate();
-        return redirect()->intended('/menu');
+    if (! $usuario) {
+        return back()->withErrors([
+            'email' => 'Correo incorrecto.',
+        ])->onlyInput('email');
     }
 
-    return back()->withErrors([
-        'email' => 'Las credenciales no son correctas.',
-    ])->onlyInput('email');
+    if (! password_verify($request->password, $usuario->contrasena)) {
+        return back()->withErrors([
+            'password' => 'Contraseña incorrecta.',
+        ])->onlyInput('email');
+    }
+
+    Auth::login($usuario, $request->boolean('remember'));
+    $request->session()->regenerate();
+    return redirect()->intended('/menu');
 }
 
     public function destroy(Request $request)
