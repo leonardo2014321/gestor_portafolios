@@ -71,7 +71,11 @@
                 Continuar con Google
             </a>
 
-            <p class="text-center text-sm text-slate-500">¿No tienes cuenta? <a href="/registro" class="font-semibold text-slate-900 hover:text-sky-600">Regístrate</a></p>
+            <p class="text-center text-sm text-slate-500">¿No tienes cuenta? 
+                <button type="button" onclick="toggleModal(); toggleRegister();" class="font-semibold text-slate-900 hover:text-sky-600 cursor-pointer">
+                    Regístrate
+                </button>
+            </p>
         </form>
     </div>
 </div>

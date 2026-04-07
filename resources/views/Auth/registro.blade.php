@@ -99,7 +99,9 @@
 
         <p class="text-center mt-6 text-sm text-slate-600">
             ¿Ya tienes cuenta?
-            <a href="/login" class="font-semibold text-slate-900 hover:text-sky-600">Inicia sesión</a>
+            <button type="button" onclick="toggleRegister(); toggleModal();" class="font-semibold text-slate-900 hover:text-sky-600 cursor-pointer">
+                Inicia sesión
+            </button>
         </p>
 
     </div>
