@@ -96,13 +96,11 @@ class RegistroController extends Controller
                 return view('auth.verificacion_error');
             }
 
-            // 🔒 evitar duplicados
             if (Usuario::where('email', $data['email'])->exists()) {
                 Cache::forget('registro_temp_'.$token);
-                return view('auth.verificacion_ok');
+                return view('auth.verificacion_exitosa');
             }
 
-            // ✅ Crear usuario
             Usuario::create([
                 'nombre' => $data['nombre'],
                 'apellido' => $data['apellido'],
@@ -115,6 +113,5 @@ class RegistroController extends Controller
 
             return view('auth.verificacion_ok');
         }
-
 
 }

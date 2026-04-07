@@ -27,7 +27,7 @@
             <a href="#" class="hover:underline">Portafolios</a>
             <button id="openLoginModal" class="hover:underline">Iniciar Sesión</button>
             {{-- Botón registrarse --}}
-            <a href="{{ route('registro') }}" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500">Registrarse</a>
+            <button id="openRegisterModal" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500">Registrarse</button>
         </div>
 
         {{-- Botón menú móvil --}}
@@ -50,7 +50,7 @@
         <a href="#" class="block hover:underline">Inicio</a>
         <a href="#" class="block hover:underline">Portafolios</a>
         <button id="openLoginModalMobile" class="block hover:underline">Iniciar Sesión</button>
-        <a href="{{ route('registro') }}" class="block py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-500">Registrarse</a>
+        <button id="openRegisterModalMobile" class="block py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-500">Registrarse</button>
     </div>
 
 </nav>

@@ -27,17 +27,12 @@
 </div>
 
 <script>
-// 🔥 Avisar a la otra pestaña (registro)
+// avisar a la otra pestaña
 localStorage.setItem('email_verificado', 'true');
 
-// ⏳ Espera y redirige
-setTimeout(() => {
-    window.location.href = "/home";
-}, 1500);
-
-// 🔒 Intentar cerrar (solo si el navegador lo permite)
+// cerrar la pestaña automáticamente
 setTimeout(() => {
     window.close();
-}, 2000);
+}, 1000);
 </script>
 
