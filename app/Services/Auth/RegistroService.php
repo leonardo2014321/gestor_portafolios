@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Mail\VerificarEmailMail;
 
 class RegistroService
 {
@@ -28,10 +29,7 @@ class RegistroService
         // 3. Enviar correo de verificación
         $link = url("/verificar-email?token=$token");
 
-    Mail::send('emails.verificar', ['link' => $link], function($message) use ($data) {
-        $message->to($data['email'])->subject('Verifica tu cuenta');
-    });
-
+        Mail::to($data['email'])->send(new VerificarEmailMail($link));
 
         return true;
     }

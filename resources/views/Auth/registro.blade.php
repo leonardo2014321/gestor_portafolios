@@ -1,150 +1,111 @@
-
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 🔥 AQUÍ -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 flex flex-col min-h-screen">
 
-<x-layout.navbar />
-
-<main class="flex-grow flex items-center justify-center px-4">
-
-    <div class="grid grid-cols-1 md:grid-cols-2 bg-white rounded-xl shadow-lg overflow-hidden w-full max-w-5xl min-h-[500px]">
+<body class="bg-gray-100 min-h-screen">
 
 
+<!-- MODAL EMERGENTE  -->
+<div id="registerModal" class="fixed inset-0 z-50 hidden bg-slate-900/20 backdrop-blur-sm flex items-center justify-center px-4 py-8">
+    <div class="w-full max-w-[440px] rounded-[40px] bg-white p-8 shadow-[0_30px_80px_rgba(15,23,42,0.14)] ring-1 ring-slate-200/70 sm:p-10 font-[Poppins]">
 
+        <div class="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-[28px] bg-slate-100 shadow-sm">
+            <img src="/images/registrar.png" alt="Logo" class="h-12 w-12 object-contain" />
+        </div>
 
-        {{-- IZQUIERDA --}}
-        <div style="background: linear-gradient(to bottom, #D9EBFF 42%, #195FF8);" class="text-white p-6 md:p-10 flex flex-col justify-center">
+        <h2 class="text-3xl font-bold text-center text-slate-900">Crear cuenta</h2>
+        <p class="mt-2 text-center text-sm text-slate-500">Regístrate para comenzar a construir tu portafolio.</p>
 
+        <!-- FORMULARIO ORIGINAL  -->
+        <form id="formRegistro" method="POST" action="/registro" class="mt-8 space-y-5">
+            @csrf
 
-            <!-- IMAGEN -->
-            <img src="/images/registrar.png" 
-                class="w-32 mb-6 self-start" 
-                alt="Registro">
-
-            <h2 class="text-3xl md:text-4xl font-extrabold mb-4 leading-tight text-black font-[Poppins]">
-                Crea tu portafolio personal y <br>
-                <span class="text-[#2F6BFF] font-semibold">
-                    muestra tus proyectos al mundo
-                </span>
-            </h2>
-
-            <p class="mt-10 text-2xl font-[Poppins] text-black">¿Listo para el siguiente nivel?</p>
-
-
-            <div class="mt-6 space-y-3">
-                <div class="bg-white text-gray-800 p-3 rounded-lg">
-                    <b>Muestra tus habilidades</b><br>
-                    <span class="text-sm">Convierte tus habilidades en oportunidades</span>
+            <!-- Nombre y Apellido -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-sm">Nombre</label>
+                    <input type="text" name="nombre" id="nombre"
+                        class="w-full border rounded-lg px-3 py-2 mt-1">
                 </div>
 
-                <div class="bg-white text-gray-800 p-3 rounded-lg">
-                    <b>Conecta tus redes</b><br>
-                    <span class="text-sm">Integra tus plataformas y amplía tu alcance</span>
+                <div>
+                    <label class="text-sm">Apellidos</label>
+                    <input type="text" name="apellido" id="apellido"
+                        class="w-full border rounded-lg px-3 py-2 mt-1">
                 </div>
             </div>
-        </div>
 
-        {{-- DERECHA --}}
-<div class="p-8 font-[Poppins] text-gray-800 space-y-6 flex flex-col justify-center h-full">
-
-
-
-
-    <h2 class="text-xl font-semibold">Formulario de Registro</h2>
-    <p class="text-sm text-gray-600 mb-6">Crea tu cuenta para comenzar.</p>
-
-    <form id="formRegistro" method="POST" action="/registro">
-        @csrf
-
-        {{-- Nombre + Apellido --}}
-        <div class="grid grid-cols-2 gap-3 mb-4">
+            <!-- Email -->
             <div>
-                <label class="text-sm">Nombre</label>
-                <input type="text" name="nombre" id="nombre"
+                <label class="text-sm">Correo electrónico</label>
+                <input type="email" name="email" id="email"
                     class="w-full border rounded-lg px-3 py-2 mt-1">
+                <p id="errorEmail" class="text-xs mt-1 hidden"></p>
             </div>
 
-            <div>
-                <label class="text-sm">Apellidos</label>
-                <input type="text" name="apellido" id="apellido"
-                    class="w-full border rounded-lg px-3 py-2 mt-1">
-            </div>
-        </div>
+            <!-- Contraseña -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 
-        {{-- EMAIL --}}
-        <div class="mb-4">
-            <label class="text-sm">Correo electrónico</label>
+                <div class="relative">
+                    <label class="text-sm">Contraseña</label>
+                    <input type="password" name="password" id="password"
+                        class="w-full border rounded-lg px-3 py-2 mt-1 pr-10">
 
-            <input type="email" name="email" id="email"
-                class="w-full border rounded-lg px-3 py-2 mt-1">
+                    <button type="button" onclick="togglePassword('password')" class="absolute right-2 top-9">
+                        <span id="eye-icon" class="material-icons">visibility_off</span>
+                    </button>
 
-            <p id="errorEmail" class="text-xs mt-1 hidden"></p>
-        </div>
+                    <p id="errorPassword" class="text-xs mt-1"></p>
+                </div>
 
-        {{-- PASSWORD --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                <div class="relative">
+                    <label class="text-sm">Confirmar Contraseña</label>
+                    <input type="password" name="password_confirmation" id="password_confirmation"
+                        class="w-full border rounded-lg px-3 py-2 mt-1 pr-10">
 
-            <div class="relative">
-                <label class="text-sm">Contraseña</label>
+                    <button type="button" onclick="togglePassword('password_confirmation')" class="absolute right-2 top-9">
+                        <span id="eye-icon-confirm" class="material-icons">visibility_off</span>
+                    </button>
 
-                <input type="password" name="password" id="password"
-                    class="w-full border rounded-lg px-3 py-2 mt-1 pr-10">
+                    <p id="errorConfirm" class="text-xs mt-1"></p>
+                </div>
 
-                <button type="button" onclick="togglePassword('password')" class="absolute right-2 top-9">
-                    <span id="eye-icon" class="material-icons">visibility</span>
-                </button>
-
-
-                <p id="errorPassword" class="text-xs mt-1"></p>
             </div>
 
-            <div class="relative">
-                <label class="text-sm">Confirmar Contraseña</label>
-
-                <input type="password" name="password_confirmation" id="password_confirmation"
-                    class="w-full border rounded-lg px-3 py-2 mt-1 pr-10">
-
-                <button type="button" onclick="togglePassword('password_confirmation')" class="absolute right-2 top-9">
-                    <span id="eye-icon-confirm" class="material-icons">visibility</span>
-                </button>
-
-
-                <p id="errorConfirm" class="text-xs mt-1"></p>
+            <!-- Términos -->
+            <div class="text-sm">
+               <input type="checkbox" id="terminos"> Acepto los 
+               <a href="#" id="abrirTerminos" class="text-blue-600 hover:underline">términos de servicio</a>
             </div>
 
-        </div>
+            <!-- Botón -->
+            <button id="btnSubmit"
+                class="w-full bg-blue-600 text-white py-3 rounded-[28px] hover:bg-blue-700 transition">
+                Registrarse →
+            </button>
 
-        {{-- CHECK --}}
-        <div class="mb-4 text-sm">
-            <input type="checkbox"> Acepto los <span class="text-blue-600">términos de servicio</span>
-        </div>
+            <!-- Mensaje general -->
+            <div id="mensajeGeneral" class="hidden mt-2 text-sm text-red-500"></div>
 
-        {{-- BOTÓN --}}
-        <button id="btnSubmit"
-            class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
-            Registrarse →
-        </button>
+        </form>
 
-        {{-- MENSAJE GENERAL --}}
-        <div id="mensajeGeneral" class="hidden mt-3 text-sm text-red-500"></div>
+        <p class="text-center mt-6 text-sm text-slate-600">
+            ¿Ya tienes cuenta?
+            <a href="/login" class="font-semibold text-slate-900 hover:text-sky-600">Inicia sesión</a>
+        </p>
 
-    </form>
-
+    </div>
 </div>
 
-{{-- LOADING OVERLAY --}}
+<!-- OVERLAY ORIGINAL -->
 <div id="overlay" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
     <div class="bg-white p-6 rounded-lg flex items-center gap-3">
         <div class="w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
@@ -152,7 +113,9 @@
     </div>
 </div>
 
+<!-- TODO TU SCRIPT  -->
 <script>
+
 const password = document.getElementById('password');
 const confirm = document.getElementById('password_confirmation');
 const email = document.getElementById('email');
@@ -162,10 +125,10 @@ const errorConfirm = document.getElementById('errorConfirm');
 const errorEmail = document.getElementById('errorEmail');
 const mensajeGeneral = document.getElementById('mensajeGeneral');
 const overlay = document.getElementById('overlay');
+const terminos = document.getElementById('terminos');
 
-/**
- * PASSWORD
- */
+
+/* ---------------- PASSWORD VALIDATION ---------------- */
 password.addEventListener('input', () => {
     const valido = password.value.length >= 8 && /\d/.test(password.value);
 
@@ -182,11 +145,8 @@ password.addEventListener('input', () => {
     }
 });
 
-/**
- * VALIDAR CONFIRMACIÓN EN TIEMPO REAL
- */
+/* ---------------- CONFIRMACIÓN ---------------- */
 function validarConfirmacion() {
-
     if (!confirm.value) {
         errorConfirm.textContent = "";
         confirm.classList.remove('border-red-500', 'border-green-500');
@@ -196,66 +156,109 @@ function validarConfirmacion() {
     if (confirm.value === password.value) {
         confirm.classList.add('border-green-500');
         confirm.classList.remove('border-red-500');
-
         errorConfirm.textContent = "Coinciden";
         errorConfirm.className = "text-xs mt-1 text-green-500";
     } else {
         confirm.classList.add('border-red-500');
         confirm.classList.remove('border-green-500');
-
         errorConfirm.textContent = "No coinciden";
         errorConfirm.className = "text-xs mt-1 text-red-500";
     }
 }
 
-/**
- * EVENTOS (🔥 AQUÍ VA LO QUE PREGUNTAS)
- */
 confirm.addEventListener('input', validarConfirmacion);
 password.addEventListener('input', validarConfirmacion);
 
-/**
- * OJITO
- */
+
+/* ---------------- VALIDACIÓN DE EMAIL EN VIVO ---------------- */
+email.addEventListener("input", () => {
+    const value = email.value.trim();
+    const formatoValido = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[A-Za-z]{2,})+$/.test(value);
+
+    if (value === "") {
+        errorEmail.textContent = "";
+        errorEmail.classList.add("hidden");
+        email.classList.remove("border-red-500", "border-green-500");
+        return;
+    }
+
+    if (!formatoValido) {
+        email.classList.add("border-red-500");
+        email.classList.remove("border-green-500");
+        errorEmail.textContent = "El correo no es válido";
+        errorEmail.className = "text-xs mt-1 text-red-500";
+        errorEmail.classList.remove("hidden");
+    } else {
+        email.classList.add("border-green-500");
+        email.classList.remove("border-red-500");
+        errorEmail.textContent = "Correo válido";
+        errorEmail.className = "text-xs mt-1 text-green-500";
+        errorEmail.classList.remove("hidden");
+    }
+});
+
+
+/* ---------------- OJITO ---------------- */
 function togglePassword(id) {
     const input = document.getElementById(id);
-    const eyeIcon = id === 'password' ? document.getElementById('eye-icon') : document.getElementById('eye-icon-confirm');
-    
-    if (input.type === 'password') {
-        input.type = 'text';
-        eyeIcon.textContent = 'visibility_off';  // Cambiar al icono de ojo cerrado
-    } else {
-        input.type = 'password';
-        eyeIcon.textContent = 'visibility';  // Cambiar al icono de ojo abierto
-    }
+    const eyeIcon = id === 'password'
+        ? document.getElementById('eye-icon')
+        : document.getElementById('eye-icon-confirm');
+
+    input.type = input.type === 'password' ? 'text' : 'password';
+    eyeIcon.textContent = input.type === 'password' ? 'visibility' : 'visibility_off';
 }
 
 
-/**
- * SUBMIT CON VALIDACIÓN + LOADING
- */
+/* ---------------- SUBMIT + VALIDACIONES ---------------- */
 document.getElementById('formRegistro').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     mensajeGeneral.classList.add('hidden');
+    mensajeGeneral.innerHTML = "";
+
     errorEmail.classList.add('hidden');
+    errorPassword.classList.add('hidden');
+    errorConfirm.classList.add('hidden');
+
+    terminos.classList.remove("ring-2", "ring-red-500");
 
     let errores = [];
 
     const nombre = document.getElementById('nombre').value.trim();
+    const apellido = document.getElementById('apellido').value.trim();
     const correo = email.value.trim();
 
+    /* -------- EMAIL FORMATO -------- */
+    const formatoEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[A-Za-z]{2,})+$/;
+
+    if (!formatoEmail.test(correo)) {
+        errores.push("El correo no tiene un formato válido");
+        email.classList.add("border-red-500");
+    }
+
+    /* -------- CAMPOS VACÍOS -------- */
     if (!nombre) errores.push("El nombre es obligatorio");
+    if (!apellido) errores.push("El apellido es obligatorio");
     if (!correo) errores.push("El correo es obligatorio");
 
+    /* -------- CONTRASEÑA -------- */
     if (password.value.length < 8 || !/\d/.test(password.value)) {
         errores.push("La contraseña no cumple los requisitos");
     }
 
+    /* -------- CONFIRMACIÓN -------- */
     if (password.value !== confirm.value) {
         errores.push("Las contraseñas no coinciden");
     }
 
+    /* -------- TÉRMINOS -------- */
+    if (!terminos.checked) {
+        errores.push("Debe aceptar los términos de servicio");
+        terminos.classList.add("ring-2", "ring-red-500");
+    }
+
+    /* -------- MOSTRAR ERRORES -------- */
     if (errores.length > 0) {
         mensajeGeneral.innerHTML = errores.join("<br>");
         mensajeGeneral.classList.remove('hidden');
@@ -270,61 +273,40 @@ document.getElementById('formRegistro').addEventListener('submit', async (e) => 
         const res = await fetch('/registro', {
             method: 'POST',
             body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest' // 👈 IMPORTANTE
-            }
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
         });
 
-        // 👇 SI HAY ERROR 422 (VALIDACIÓN LARAVEL)
         if (res.status === 422) {
             const data = await res.json();
-
             overlay.classList.add('hidden');
 
             let erroresBackend = [];
 
             if (data.errors) {
+                if (data.errors.email) {
+                    email.classList.add('border-red-500');
+                    errorEmail.textContent = data.errors.email[0];
+                    errorEmail.className = "text-xs mt-1 text-red-500";
+                    errorEmail.classList.remove('hidden');
+                }
 
-                // ERROR EMAIL
-            if (data.errors.email) {
-                email.classList.add('border-red-500');
-                email.classList.remove('border-green-500');
-
-                errorEmail.textContent = data.errors.email[0];
-                errorEmail.className = "text-xs mt-1 text-red-500"; // 🔥 fuerza rojo
-                errorEmail.classList.remove('hidden');
-            }
-
-
-                // OTROS ERRORES
-                Object.values(data.errors).forEach(arr => {
-                    erroresBackend.push(arr[0]);
-                });
+                Object.values(data.errors).forEach(arr => erroresBackend.push(arr[0]));
             }
 
             mensajeGeneral.innerHTML = erroresBackend.join("<br>");
             mensajeGeneral.classList.remove('hidden');
-
             return;
         }
 
-        // 👇 SI TODO OK (ENVÍO DE CORREO)
         if (res.ok) {
-
             overlay.classList.add('hidden');
-
-            mensajeGeneral.innerHTML = "Te enviamos un correo de verificación Revisa tu bandeja.";
+            mensajeGeneral.innerHTML = "Te enviamos un correo de verificación ✔";
             mensajeGeneral.className = "mt-3 text-sm text-green-600";
             mensajeGeneral.classList.remove('hidden');
-
-            // 🔒 opcional: desactivar botón
             document.getElementById('btnSubmit').disabled = true;
-
             return;
         }
 
-        
-        // 👇 SI TODO OK (REDIRECT NORMAL)
         if (res.redirected) {
             window.location.href = res.url;
             return;
@@ -334,36 +316,38 @@ document.getElementById('formRegistro').addEventListener('submit', async (e) => 
 
     } catch (error) {
         overlay.classList.add('hidden');
-        mensajeGeneral.innerHTML = "Error en el servidor";
+        mensajeGeneral.textContent = "Error en el servidor";
         mensajeGeneral.classList.remove('hidden');
     }
 });
 
-// 👀 Detectar si ya verificó el correo (🔥 AQUÍ VA)
-setInterval(() => {
 
-    if (localStorage.getItem('email_verificado') === 'true') {
+/* -------- DETECCIÓN DE VERIFICACIÓN DE CORREO -------- */
+window.addEventListener("storage", function(event) {
 
-        // limpiar flag
-        localStorage.removeItem('email_verificado');
+    if (event.key === "email_verificado") {
 
-        // mensaje
-        mensajeGeneral.innerHTML = "Correo verificado ✔ Redirigiendo...";
+        mensajeGeneral.innerHTML = "✔ Cuenta verificada correctamente";
         mensajeGeneral.className = "mt-3 text-sm text-green-600";
         mensajeGeneral.classList.remove('hidden');
 
-        // redirigir
-        setTimeout(() => {
-            window.location.href = "/login";
-        }, 1500);
+        // cerrar modal registro
+        document.getElementById("registerModal").classList.add("hidden");
+
+        // abrir modal login
+        document.getElementById("loginModal").classList.remove("hidden");
+
+        localStorage.removeItem('email_verificado');
     }
 
-}, 1000);
-
-
-
+});
 </script>
-</main>
-<x-layout.footer />
+
+
+
 </body>
 </html>
+
+
+
+
