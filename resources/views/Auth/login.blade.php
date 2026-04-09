@@ -64,7 +64,7 @@
                     <input type="checkbox" name="remember" class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500" />
                     Recordar sesión
                 </label>
-                <a href="/recuperar-password" class="font-semibold text-slate-700 hover:text-sky-600">¿Olvidaste tu contraseña?</a>
+                <a href="javascript:void(0)" onclick="abrirModalRecuperar()">¿Olvidaste tu contraseña?</a>
             </div>
 
             <button type="submit" class="w-full rounded-[28px] bg-gradient-to-r from-sky-600 to-blue-500 px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 transition hover:opacity-95">Entrar al sistema</button>

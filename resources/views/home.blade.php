@@ -143,6 +143,8 @@
 
 @include('Auth.login')
 @include('Auth.registro')
+@include('Auth.recuperar')
+
 <script>
     const modal = document.getElementById('loginModal');
     const openButtons = [document.getElementById('openLoginModal'), document.getElementById('openLoginModalMobile')];
@@ -202,7 +204,47 @@
             toggleRegister();
         }
     });
+    // ====== MODAL DE RECUPERAR CONTRASEÑA ======
+const modalRecuperar = document.getElementById('modalRecuperar');
+// Si tienes botones específicos fuera del login para abrirlo, agrégalos aquí
+const recuperarButtons = [
+    document.getElementById('openRecuperarModal'), // Por si acaso tienes uno en el footer o navbar
+];
 
+const toggleRecuperar = () => {
+    if (!modalRecuperar) return;
+    modalRecuperar.classList.toggle('hidden');
+    
+    // Manejo del scroll del cuerpo
+    if (!modalRecuperar.classList.contains('hidden')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = 'auto';
+    }
+};
+
+// Listeners para botones externos (si existen)
+recuperarButtons.forEach(btn => {
+    if (btn) btn.addEventListener('click', toggleRecuperar);
+});
+
+// Cerrar si clickea fuera del contenido del modal (en el fondo oscuro)
+if (modalRecuperar) {
+    modalRecuperar.addEventListener('click', (event) => {
+        // Importante: En la estructura que te pasé, el fondo oscuro 
+        // suele ser el primer hijo o el contenedor con ID modalRecuperar
+        if (event.target === modalRecuperar) {
+            cerrarModalRecuperar(); // Usamos la función que ya definimos antes
+        }
+    });
+}
+
+// Cerrar con tecla ESC
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && modalRecuperar && !modalRecuperar.classList.contains('hidden')) {
+        cerrarModalRecuperar();
+    }
+});
 </script>
 
 @if ($errors->any())
