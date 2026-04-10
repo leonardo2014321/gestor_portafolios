@@ -48,7 +48,7 @@ class RecuperacionController extends Controller
 
             Log::info(" Token generado", ['token' => $token]);
 
-            $enlace = url('/recuperar-password?token=' . $token);
+            $enlace = url('/?token=' . $token);
 
             Log::info(" Enlace generado", ['enlace' => $enlace]);
 

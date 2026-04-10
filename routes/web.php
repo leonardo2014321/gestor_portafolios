@@ -75,14 +75,9 @@ Route::get('/perfil', function () {
 /**
  * Mostrar vista de recuperación de contraseña
  */
-Route::get('/recuperar-password', function () {
-    return view('Auth.recuperar');
+Route::get('/', function () {
+    return view('home'); // o como se llame tu vista principal
 });
-
-Route::get('/recuperar', function () {
-    return view('Auth.recuperar');
-});
-
 /**
  * Solicitar recuperación de contraseña
  */
