@@ -29,8 +29,11 @@ class RegistroService
         // 3. Enviar correo de verificación
         $link = url("/verificar-email?token=$token");
 
-        Mail::to($data['email'])->send(new VerificarEmailMail($link));
-
-        return true;
+        try {
+            Mail::to($data['email'])->send(new VerificarEmailMail($link));
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

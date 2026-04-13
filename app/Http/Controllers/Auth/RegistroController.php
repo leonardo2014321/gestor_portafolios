@@ -60,9 +60,17 @@ class RegistroController extends Controller
             }
 
             // ✅ Registrar
-            $this->service->registrar(
+            $enviado = $this->service->registrar(
                 $request->only('nombre', 'apellido', 'email', 'password')
             );
+
+            if (!$enviado) {
+                return response()->json([
+                    'errors' => [
+                        'email' => ['No se pudo enviar el correo de verificación']
+                    ]
+                ], 422);
+            }
 
             // 👇 RESPUESTA PARA FETCH
             if ($request->expectsJson()) {

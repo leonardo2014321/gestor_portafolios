@@ -128,6 +128,14 @@ const errorEmail = document.getElementById('errorEmail');
 const mensajeGeneral = document.getElementById('mensajeGeneral');
 const overlay = document.getElementById('overlay');
 const terminos = document.getElementById('terminos');
+const inputNombre = document.getElementById('nombre');
+const inputApellido = document.getElementById('apellido');
+
+[inputNombre, inputApellido].forEach(input => {
+    input.addEventListener('input', () => {
+        input.value = input.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
+    });
+});
 
 
 /* ---------------- PASSWORD VALIDATION ---------------- */
@@ -238,10 +246,49 @@ document.getElementById('formRegistro').addEventListener('submit', async (e) => 
         errores.push("El correo no tiene un formato válido");
         email.classList.add("border-red-500");
     }
+    /* -------- VALIDACIÓN DE DOMINIO -------- */
+    const dominiosValidos = [
+        "gmail.com",
+        "hotmail.com",
+        "outlook.com",
+        "yahoo.com",
+        "est.umss.edu.bo" 
+    ];
+
+    const dominio = correo.split("@")[1];
+
+    if (dominio && !dominiosValidos.includes(dominio)) {
+        errores.push("Dominio de correo inválido o mal escrito");
+        email.classList.add("border-red-500");
+    }
+
+    /* -------- VALIDACIÓN EMAIL -------- */
+    const usuario = correo.split("@")[0];
+
+    if (usuario.startsWith(".") || usuario.endsWith(".")) {
+        errores.push("El correo no puede empezar o terminar con punto");
+    }
+
+    if (usuario.includes("..")) {
+        errores.push("El correo no puede tener puntos consecutivos");
+    }
+
+    if (usuario.length > 64) {
+        errores.push("El nombre del correo es demasiado largo");
+    }
+
+    if (correo.length > 100) {
+        errores.push("El correo es demasiado largo");
+    }
 
     /* -------- CAMPOS VACÍOS -------- */
+    const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+
     if (!nombre) errores.push("El nombre es obligatorio");
+    else if (!soloLetras.test(nombre)) errores.push("El nombre solo puede contener letras");
+
     if (!apellido) errores.push("El apellido es obligatorio");
+    else if (!soloLetras.test(apellido)) errores.push("El apellido solo puede contener letras");
     if (!correo) errores.push("El correo es obligatorio");
 
     /* -------- CONTRASEÑA -------- */
@@ -302,10 +349,10 @@ document.getElementById('formRegistro').addEventListener('submit', async (e) => 
 
         if (res.ok) {
             overlay.classList.add('hidden');
-            mensajeGeneral.innerHTML = "Te enviamos un correo de verificación ✔";
+            mensajeGeneral.innerHTML = "Si el correo es válido, recibirás un enlace de verificación.<br>Revisa también tu bandeja de spam.";
             mensajeGeneral.className = "mt-3 text-sm text-green-600";
             mensajeGeneral.classList.remove('hidden');
-            document.getElementById('btnSubmit').disabled = true;
+          //  document.getElementById('btnSubmit').disabled = true;
             return;
         }
 
@@ -318,7 +365,7 @@ document.getElementById('formRegistro').addEventListener('submit', async (e) => 
 
     } catch (error) {
         overlay.classList.add('hidden');
-        mensajeGeneral.textContent = "Error en el servidor";
+        mensajeGeneral.textContent = "No se pudo enviar el correo. Intenta más tarde.";
         mensajeGeneral.classList.remove('hidden');
     }
 });
