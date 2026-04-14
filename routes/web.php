@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Services\ActividadService;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Perfil\RedPerfilController;
+use App\Http\Controllers\Perfil\PerfilController;
 
 Route::get('/', function () {
     return view('home');
@@ -66,12 +67,10 @@ Route::get('/reportes', function () {
     return redirect('/home');
 })->name('reportes');
 
-/**
- * Perfil (placeholder)
- */
-Route::get('/perfil', function () {
-    return redirect('/home');
-})->name('perfil');
+Route::middleware('auth')->group(function () {
+    Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
+    Route::post('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
+});
 
 /**
  * Mostrar vista de recuperación de contraseña

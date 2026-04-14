@@ -464,11 +464,16 @@
 
             <div class="sb-user">
                 <div class="sb-av">
-                    {{ strtoupper(substr(auth()->user()->name ?? 'AL', 0, 2)) }}
+                    @if(auth()->user()->foto_perfil)
+                        <img src="{{ asset('storage/' . auth()->user()->foto_perfil) }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%"
+                             onerror="this.parentElement.textContent='{{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}'">
+                    @else
+                        {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}
+                    @endif
                 </div>
                 <div>
-                    <div class="sb-uname">{{ auth()->user()->codigo ?? auth()->user()->name ?? '20191012' }}</div>
-                    <div class="sb-uid">Conectado</div>
+                    <div class="sb-uname">{{ auth()->user()->nombre }} {{ auth()->user()->apellido }}</div>
+                    <div class="sb-uid">#{{ auth()->user()->id }}</div>
                 </div>
             </div>
 
@@ -514,7 +519,7 @@
                             <svg viewBox="0 0 24 24" stroke="#fff"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
                         </div>
                         <div>
-                            <div class="stat-num">{{ $totalPortafolios ?? 12 }}</div>
+                            <div class="stat-num">{{ $totalPortafolios ?? 0 }}</div>
                             <div class="stat-lbl">Portafolios</div>
                         </div>
                     </div>
@@ -524,7 +529,7 @@
                             <svg viewBox="0 0 24 24" stroke="#2563eb"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                         </div>
                         <div>
-                            <div class="stat-num">{{ $totalDocumentos ?? 156 }}</div>
+                            <div class="stat-num">{{ $totalDocumentos ?? 0 }}</div>
                             <div class="stat-lbl">Documentos</div>
                         </div>
                     </div>
@@ -534,7 +539,7 @@
                             <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
                         </div>
                         <div>
-                            <div class="stat-num">{{ $totalAprobados ?? 28 }}</div>
+                            <div class="stat-num">{{ $totalAprobados ?? 0 }}</div>
                             <div class="stat-lbl">Aprobados</div>
                         </div>
                     </div>
@@ -545,98 +550,37 @@
                     Documentos recientes
                 </div>
 
+                @if(isset($portafolios) && $portafolios->count() > 0)
                 <div class="pgrid">
+                    @foreach($portafolios as $portafolio)
                     <div class="pcard cn">
                         <div class="pcard-top">
                             <div class="pcard-ico">
                                 <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                             </div>
                             <div>
-                                <div class="pcard-name">Proyecto TechWave</div>
-                                <div class="pcard-sub">Facultad de Ciencia y Tecnología</div>
+                                <div class="pcard-name">{{ $portafolio->nombre }}</div>
+                                <div class="pcard-sub">{{ $portafolio->descripcion ?? '' }}</div>
                             </div>
                         </div>
-
                         <div class="pcard-bot">
                             <div>
-                                <div class="pcard-num">24 <small>ITEMS</small></div>
-                                <div class="pcard-st"><span class="dot dg"></span> Actualizado hoy</div>
+                                <div class="pcard-num">0 <small>ITEMS</small></div>
+                                <div class="pcard-st"><span class="dot dg"></span> Activo</div>
                             </div>
                             <a href="#" class="btn-ver">Ver Panel</a>
                         </div>
                     </div>
-
-                    <div class="pcard ct">
-                        <div class="pcard-top">
-                            <div class="pcard-ico">
-                                <svg viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
-                            </div>
-                            <div>
-                                <div class="pcard-name">Marketing Digital</div>
-                                <div class="pcard-sub">Ciencias Económicas y Sociales</div>
-                            </div>
-                        </div>
-
-                        <div class="pcard-bot">
-                            <div>
-                                <div class="pcard-num">32 <small>ITEMS</small></div>
-                                <div class="pcard-st"><span class="dot db"></span> Sincronizado</div>
-                            </div>
-                            <a href="#" class="btn-ver">Ver Panel</a>
-                        </div>
-                    </div>
-
-                    <div class="pcard cg">
-                        <div class="pcard-top">
-                            <div class="pcard-ico">
-                                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                            </div>
-                            <div>
-                                <div class="pcard-name">Plan Financiero 2024</div>
-                                <div class="pcard-sub">Auditoría Corporativa</div>
-                            </div>
-                        </div>
-
-                        <div class="pcard-bot">
-                            <div>
-                                <div class="pcard-num">45 <small>ITEMS</small></div>
-                                <div class="pcard-st"><span class="dot dy"></span> Hace 2 días</div>
-                            </div>
-                            <a href="#" class="btn-ver dk">Ver Panel</a>
-                        </div>
-                    </div>
-
-                    <div class="pcard cs">
-                        <div class="pcard-top">
-                            <div class="pcard-ico">
-                                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                            </div>
-                            <div>
-                                <div class="pcard-name">Creative Portfolio</div>
-                                <div class="pcard-sub">Artes y Humanidades</div>
-                            </div>
-                        </div>
-
-                        <div class="pcard-bot">
-                            <div>
-                                <div class="pcard-num">18 <small>ITEMS</small></div>
-                                <div class="pcard-st"><span class="dot dr"></span> Hace 1 semana</div>
-                            </div>
-                            <a href="#" class="btn-ver dk">Ver Panel</a>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
-
-                <div class="pcard-full">
-                    <div class="fi">
-                        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    </div>
-                    <div style="flex:1">
-                        <div class="pcard-name">Plan Financiero 2024</div>
-                        <div class="pcard-sub">Auditoría Corporativa</div>
-                    </div>
-                    <div class="pcard-st"><span class="dot dy"></span> En revisión</div>
+                @else
+                <div style="text-align:center;padding:3rem 1rem;color:var(--muted)">
+                    <svg viewBox="0 0 24 24" style="width:48px;height:48px;fill:none;stroke:var(--gray3);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin:0 auto 1rem;display:block"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
+                    <p style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px">Sin portafolios aún</p>
+                    <p style="font-size:13px">Crea tu primer portafolio para comenzar.</p>
+                    <a href="{{ route('portafolios.index') }}" style="display:inline-block;margin-top:1rem;padding:9px 22px;background:var(--blue);color:#fff;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none">Crear portafolio</a>
                 </div>
+                @endif
             </div>
         </main>
 
