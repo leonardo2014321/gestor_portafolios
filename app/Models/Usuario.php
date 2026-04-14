@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Modelo que representa a los usuarios del sistema.
@@ -13,7 +14,8 @@ use Illuminate\Database\Eloquent\Model;
 class Usuario extends Authenticatable
 {
     use Notifiable;
-    
+    use HasFactory;
+
     protected $table = 'usuarios';
 
     protected $primaryKey = 'id';
@@ -32,5 +34,10 @@ class Usuario extends Authenticatable
     public function getRememberTokenName()
     {
         return null;
+    }
+
+    public function redes()
+    {
+        return $this->hasMany(\App\Models\RedPerfil::class, 'usuario_id');
     }
 }

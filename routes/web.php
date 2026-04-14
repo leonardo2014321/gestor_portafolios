@@ -11,6 +11,7 @@ use App\Models\Usuario;
 use Illuminate\Support\Facades\Cache;
 use App\Services\ActividadService;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Perfil\RedPerfilController;
 
 Route::get('/', function () {
     return view('home');
@@ -139,4 +140,13 @@ Route::get('/verificar-email', [RegistroController::class, 'verificarEmail']);
 
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.redirect');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
+
+
+
+Route::middleware('auth')->group(function () {
+
+    Route::post('/perfil/redes', [RedPerfilController::class, 'guardarRedes']);
+    Route::get('/perfil/redes', [RedPerfilController::class, 'obtenerRedes']);
+
+});
 
