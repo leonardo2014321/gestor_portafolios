@@ -26,7 +26,10 @@ class Usuario extends Authenticatable
         'email',
         'contrasena',
         'email_verificado',
-        'google_id'
+        'google_id',
+        'profesion',
+        'biografia',
+        'foto_perfil',
     ];
 
     public $timestamps = true;
