@@ -416,18 +416,33 @@
 <div class="app">
 
     <!-- Barra superior -->
-    <div class="topbar">
-        <div class="tb-left">
-            <img class="logo-img" src="{{ asset('images/logo.png') }}" alt="UMSS">
-            <div class="sysname">Sansi<span>Folios</span></div>
+   <div class="topbar">
+    <div class="tb-left">
+        <img class="logo-img" src="{{ asset('images/logo.png') }}" alt="UMSS">
+        <div class="sysname">Sansi<span>Folios</span></div>
+    </div>
+
+    <div class="bar-right" style="display: flex; align-items: center; gap: 15px; color: white;">
+        
+        <div class="icon-bell" style="background: transparent; border: none;">
+            <svg viewBox="0 0 24 24" style="stroke: #fff;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
         </div>
 
-        <nav class="tb-nav">
-            <a href="{{ route('inicio') }}" class="tb-link">Inicio</a>
-            <a href="{{ route('caracteristicas') }}" class="tb-link">Características</a>
-            <a href="{{ route('portafolios.index') }}" class="tb-link">Portafolios</a>
-        </nav>
+        <div class="sb-user" style="border: none; padding: 0;">
+            <div class="sb-av">
+                @if(auth()->user()->foto_perfil)
+                    <img src="{{ asset('storage/' . auth()->user()->foto_perfil) }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+                @else
+                    {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}
+                @endif
+            </div>
+            <div style="text-align: right;">
+                <div class="sb-uname" style="font-size: 14px;">{{ auth()->user()->nombre }}</div>
+                <div class="sb-uid" style="font-size: 11px; color: #8ba5c8;">Conectado</div>
+            </div>
+        </div>
     </div>
+</div>
 
     <div class="body-row">
 
@@ -439,6 +454,8 @@
                     <span>Menú principal</span>
                 </a>
 
+
+                
                 <div class="sb-div"></div>
 
                 <a href="{{ route('portafolios.index') }}" class="sb-item {{ request()->routeIs('portafolios.*') ? 'active' : '' }}">
@@ -462,20 +479,7 @@
                 </a>
             </div>
 
-            <div class="sb-user">
-                <div class="sb-av">
-                    @if(auth()->user()->foto_perfil)
-                        <img src="{{ asset('storage/' . auth()->user()->foto_perfil) }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%"
-                             onerror="this.parentElement.textContent='{{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}'">
-                    @else
-                        {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}
-                    @endif
-                </div>
-                <div>
-                    <div class="sb-uname">{{ auth()->user()->nombre }} {{ auth()->user()->apellido }}</div>
-                    <div class="sb-uid">#{{ auth()->user()->id }}</div>
-                </div>
-            </div>
+        
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
@@ -496,19 +500,7 @@
                     </div>
 
                     <div class="bar-right">
-                        <div class="search-box">
-                            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                            <input type="text" placeholder="Search">
-                        </div>
-
-                        <div class="icon-bell">
-                            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                        </div>
-
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="btn-cerrar">Cerrar Sesión</button>
-                        </form>
+                        
                     </div>
                 </div>
 
