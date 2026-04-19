@@ -54,8 +54,8 @@ Route::middleware('auth')->group(function () {
     })->name('explorador');
 
     Route::get('/portafolios', function () {
-         return view('portafolios');
-    })->name('portafolios.index');
+     return view('portafolios');
+})->name('portafolios.index');
 
     Route::get('/academico', function () {
         return view('academico');
