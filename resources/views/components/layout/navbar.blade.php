@@ -1,6 +1,5 @@
 {{-- 
     🧩 COMPONENTE: NAVBAR PRO
-
     Características:
     - Responsive con menú móvil desplegable
     - Alpine interno para toggle del menú
@@ -23,11 +22,15 @@
 
         {{-- Menú de escritorio --}}
         <div class="hidden sm:flex space-x-6 items-center text-sm sm:text-base">
-            <a href="#" class="text-[#35FFE6] hover:underline">Inicio</a>
-            <a href="#" class="hover:underline">Portafolios</a>
+            <a href="{{ route('inicio') }}" class="text-[#35FFE6] hover:underline">Inicio</a>
+            <a href="{{ route('caracteristicas') }}" class="hover:underline">Caracteristicas</a>
+            <a href="{{ route('portafolios.index') }}" class="hover:underline">Portafolios</a>
+            
+            {{-- Acciones (Modales) --}}
             <button id="openLoginModal" class="hover:underline">Iniciar Sesión</button>
-            {{-- Botón registrarse --}}
-            <button id="openRegisterModal" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500">Registrarse</button>
+            <button id="openRegisterModal" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500 transition-colors">
+                Registrarse
+            </button>
         </div>
 
         {{-- Botón menú móvil --}}
@@ -47,10 +50,14 @@
         x-transition
         class="sm:hidden mt-4 space-y-3 text-center"
     >
-        <a href="#" class="block hover:underline">Inicio</a>
-        <a href="#" class="block hover:underline">Portafolios</a>
-        <button id="openLoginModalMobile" class="block hover:underline">Iniciar Sesión</button>
-        <button id="openRegisterModalMobile" class="block py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-500">Registrarse</button>
+        <a href="{{ route('inicio') }}" class="block hover:underline">Inicio</a>
+        <a href="{{ route('portafolios.index') }}" class="block hover:underline">Portafolios</a>
+        <a href="{{ route('caracteristicas') }}" class="block hover:underline">Caracteristicas</a>
+        <hr class="border-gray-700 mx-4">
+        <button id="openLoginModalMobile" class="block w-full hover:underline">Iniciar Sesión</button>
+        <button id="openRegisterModalMobile" class="block w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-500">
+            Registrarse
+        </button>
     </div>
 
 </nav>
