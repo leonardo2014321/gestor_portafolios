@@ -118,6 +118,99 @@
         .btn-cancel{background:#fff;color:var(--text);border:1.5px solid var(--gray2);border-radius:9px;padding:10px 22px;font-size:13.5px;font-weight:500;cursor:pointer;font-family:"DM Sans",sans-serif;transition:background .2s}
         .btn-cancel:hover{background:var(--gray)}
 
+        /* Modal overlay */
+        .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.5);z-index:100;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .2s}
+        .modal-overlay.show{opacity:1;pointer-events:all}
+        .modal{background:#fff;border-radius:20px;padding:2rem;width:100%;max-width:420px;box-shadow:0 24px 60px rgba(0,0,0,0.2);transform:translateY(12px);transition:transform .2s}
+        .modal-overlay.show .modal{transform:translateY(0)}
+        .modal-ico{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+        .modal-ico.blue{background:#dbeafe}
+        .modal-ico.red{background:#fee2e2}
+        .modal-ico svg{width:24px;height:24px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+        .modal-ico.blue svg{stroke:#2563eb}
+        .modal-ico.red svg{stroke:#dc2626}
+        .modal h3{font-family:"Plus Jakarta Sans",sans-serif;font-size:17px;font-weight:800;color:var(--text);text-align:center;margin-bottom:6px}
+        .modal p{font-size:13px;color:var(--muted);text-align:center;line-height:1.6}
+        .modal-actions{display:flex;gap:10px;margin-top:1.4rem}
+        .modal-actions .btn-save{flex:1;justify-content:center}
+        .modal-actions .btn-cancel{flex:1;text-align:center}
+        .btn-danger{background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;border:none;border-radius:9px;padding:10px 22px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;flex:1;transition:opacity .2s}
+        .btn-danger:hover{opacity:.88}
+
+        /* Modal Trayectoria */
+        .tray-modal{background:#fff;border-radius:20px;width:100%;max-width:680px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,0.25);transform:translateY(16px);transition:transform .25s}
+        .modal-overlay.show .tray-modal{transform:translateY(0)}
+        .tray-modal-head{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.6rem 0}
+        .tray-modal-head h2{font-family:"Plus Jakarta Sans",sans-serif;font-size:18px;font-weight:800;color:var(--text)}
+        .tray-close{background:none;border:none;cursor:pointer;color:var(--muted);padding:4px;border-radius:6px;transition:background .15s;display:flex}
+        .tray-close:hover{background:var(--gray)}
+        .tray-close svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+        /* Tabs */
+        .tray-tabs{display:flex;gap:0;border-bottom:2px solid var(--gray2);padding:0 1.6rem;margin-top:1rem}
+        .tray-tab{background:none;border:none;padding:10px 18px;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer;font-family:"DM Sans",sans-serif;border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s}
+        .tray-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+        /* Tab content */
+        .tray-body{flex:1;overflow-y:auto;padding:1.2rem 1.6rem}
+        .tray-pane{display:none}
+        .tray-pane.active{display:block}
+        /* Formulario de entrada */
+        .tray-form{background:var(--gray);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem}
+        .tray-form-title{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem}
+        .tray-fg{display:flex;flex-direction:column;gap:4px;margin-bottom:.75rem}
+        .tray-fg label{font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--muted)}
+        .tray-fg input,.tray-fg textarea,.tray-fg select{border-radius:8px;border:1.5px solid var(--gray2);padding:9px 12px;font-size:13px;color:var(--text);font-family:"DM Sans",sans-serif;outline:none;width:100%;background:#fff;transition:border .2s}
+        .tray-fg input:focus,.tray-fg textarea:focus,.tray-fg select:focus{border-color:var(--blue2)}
+        .tray-fg textarea{resize:vertical;min-height:72px;line-height:1.5}
+        .tray-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+        .tray-err{font-size:11px;color:var(--red);margin-top:2px;display:none}
+        .tray-err.show{display:block}
+        /* Stars rating */
+        .stars{display:flex;gap:4px;cursor:pointer}
+        .star{font-size:22px;color:var(--gray3);transition:color .1s;line-height:1;user-select:none}
+        .star.on{color:#f59e0b}
+        /* Autocomplete dropdown */
+        .ac-wrap{position:relative}
+        .ac-drop{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid var(--blue2);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.1);z-index:200;max-height:180px;overflow-y:auto;display:none}
+        .ac-item{padding:9px 12px;font-size:13px;cursor:pointer;color:var(--text)}
+        .ac-item:hover{background:var(--gray)}
+        /* Item list */
+        .item-list{display:flex;flex-direction:column;gap:.6rem}
+        .item-card{background:#fff;border:1.5px solid var(--gray2);border-radius:10px;padding:.9rem 1rem;display:flex;align-items:flex-start;gap:.8rem}
+        .item-card-body{flex:1;min-width:0}
+        .item-card-body strong{font-size:13.5px;font-weight:600;color:var(--text);display:block}
+        .item-card-body span{font-size:12px;color:var(--muted);display:block;margin-top:2px}
+        .item-card-body p{font-size:12px;color:var(--text);margin-top:5px;white-space:pre-wrap;line-height:1.5}
+        .item-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;margin-top:4px}
+        .badge-p{background:#dbeafe;color:#1d4ed8}
+        .badge-i{background:#fef3c7;color:#92400e}
+        .badge-a{background:#dcfce7;color:#15803d}
+        .btn-del-item{background:none;border:none;cursor:pointer;color:var(--gray3);padding:4px;transition:color .15s;flex-shrink:0;display:flex}
+        .btn-del-item:hover{color:var(--red)}
+        .btn-del-item svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+        .empty-state{text-align:center;padding:2rem;color:var(--muted);font-size:13px}
+        .btn-add-tray{background:none;border:1.5px dashed var(--gray3);border-radius:9px;padding:9px;width:100%;color:var(--muted);font-size:13px;font-family:"DM Sans",sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:.75rem;transition:all .2s}
+        .btn-add-tray:hover{border-color:var(--blue2);color:var(--blue)}
+        .btn-add-tray svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+        /* Checkbox */
+        .tray-check{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text)}
+        .tray-check input{width:15px;height:15px;accent-color:var(--blue);cursor:pointer}
+        /* Alerta error trayectoria */
+        .tray-alert{display:none;background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:9px 12px;font-size:12.5px;color:#92400e;margin-bottom:.75rem;align-items:center;gap:8px}
+        .tray-alert.show{display:flex}
+        .tray-alert button{margin-left:auto;background:none;border:none;font-weight:700;color:#92400e;cursor:pointer;font-family:inherit;font-size:12.5px}
+        /* Modal confirmación borrar */
+        .del-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.5);z-index:300;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .2s}
+        .del-overlay.show{opacity:1;pointer-events:all}
+
+        /* Botones extra */
+        .extra-actions{display:flex;gap:10px;margin-top:1rem}
+        .btn-tray{background:#fff;color:var(--navy);border:1.5px solid var(--gray2);border-radius:9px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;display:inline-flex;align-items:center;gap:7px;transition:all .2s}
+        .btn-tray:hover{border-color:var(--blue2);color:var(--blue)}
+        .btn-tray svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+        .btn-deactivate{background:#fff;color:var(--red);border:1.5px solid #fecaca;border-radius:9px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;display:inline-flex;align-items:center;gap:7px;transition:all .2s}
+        .btn-deactivate:hover{background:#fee2e2}
+        .btn-deactivate svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
         /* Preview card */
         .preview-card{background:linear-gradient(140deg,#1e2d50,#1a2340);border-radius:14px;padding:1.4rem;color:#fff;display:none}
         .preview-card.show{display:block}
@@ -336,18 +429,224 @@
                                 </div>
 
                                 <div class="form-actions">
-                                    <button type="button" class="btn-save" id="btnSave" onclick="submitPerfil()">
+                                    <button type="button" class="btn-save" id="btnSave" onclick="abrirModalGuardar()">
                                         <div class="spinner"></div>
                                         <span class="btn-label">Guardar</span>
                                     </button>
                                     <button type="button" class="btn-cancel" onclick="cancelarEdicion()">Cancelar</button>
                                 </div>
                             </div>
+
+                            {{-- Botones extra --}}
+                            <div class="extra-actions">
+                                <button type="button" class="btn-tray" onclick="abrirTrayectoria()">
+                                    <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                    Mi Trayectoria
+                                </button>
+                                <button type="button" class="btn-deactivate" onclick="abrirModalDesactivar()">
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                                    Desactivar cuenta
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </form>
             </div>
         </main>
+
+        {{-- Modal: Confirmar guardar --}}
+        <div class="modal-overlay" id="modalGuardar">
+            <div class="modal">
+                <div class="modal-ico blue">
+                    <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                </div>
+                <h3>¿Guardar cambios?</h3>
+                <p>Se actualizará tu información personal, profesión y biografía en el sistema.</p>
+                <div class="modal-actions">
+                    <button class="btn-cancel" onclick="cerrarModal('modalGuardar')">Cancelar</button>
+                    <button class="btn-save" onclick="cerrarModal('modalGuardar');submitPerfil()">
+                        <div class="spinner"></div>
+                        <span class="btn-label">Sí, guardar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        {{-- Modal: Confirmar desactivar cuenta --}}
+        <div class="modal-overlay" id="modalDesactivar">
+            <div class="modal">
+                <div class="modal-ico red">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                </div>
+                <h3>¿Desactivar tu cuenta?</h3>
+                <p>Tu cuenta quedará inactiva. No podrás iniciar sesión hasta que un administrador la reactive. Esta acción no elimina tus datos.</p>
+                <div class="modal-actions">
+                    <button class="btn-cancel" onclick="cerrarModal('modalDesactivar')">Cancelar</button>
+                    <button class="btn-danger" onclick="desactivarCuenta()">Sí, desactivar</button>
+                </div>
+            </div>
+        </div>
+
+        {{-- Modal: Mi Trayectoria --}}
+        <div class="modal-overlay" id="modalTrayectoria" style="align-items:flex-start;padding:3vh 1rem">
+            <div class="tray-modal">
+                <div class="tray-modal-head">
+                    <h2>Mi Trayectoria</h2>
+                    <button class="tray-close" onclick="cerrarModal('modalTrayectoria')">
+                        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+
+                <div class="tray-tabs">
+                    <button class="tray-tab active" onclick="switchTab('habilidades')">Habilidades</button>
+                    <button class="tray-tab" onclick="switchTab('experiencia')">Experiencia</button>
+                    <button class="tray-tab" onclick="switchTab('formacion')">Formación</button>
+                </div>
+
+                <div class="tray-body">
+
+                    {{-- Alerta de error de red --}}
+                    <div class="tray-alert" id="trayAlert">
+                        <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;flex-shrink:0"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                        Tuvimos un fallo momentáneo, vuelve a presionar.
+                        <button onclick="retryTray()">Reintentar</button>
+                    </div>
+
+                    {{-- Tab: Habilidades --}}
+                    <div class="tray-pane active" id="pane-habilidades">
+                        <div class="tray-form">
+                            <div class="tray-form-title">Agregar habilidad</div>
+                            <div class="tray-fg ac-wrap">
+                                <label>Nombre <span class="req">*</span></label>
+                                <input type="text" id="habNombre" placeholder="Ej: JavaScript, Python, Diseño UX..." autocomplete="off"
+                                       oninput="acFilter(this.value)" onblur="setTimeout(()=>closeAc(),200)">
+                                <div class="ac-drop" id="acDrop"></div>
+                                <span class="tray-err" id="errHabNombre">El nombre es obligatorio.</span>
+                                <span class="tray-err" id="errHabDup">Ya tienes registrada esta habilidad.</span>
+                            </div>
+                            <div class="tray-fg">
+                                <label>Nivel de dominio <span class="req">*</span></label>
+                                <div class="stars" id="starsWrap">
+                                    <span class="star" data-v="1" onclick="setStar(1)">★</span>
+                                    <span class="star" data-v="2" onclick="setStar(2)">★</span>
+                                    <span class="star" data-v="3" onclick="setStar(3)">★</span>
+                                    <span class="star" data-v="4" onclick="setStar(4)">★</span>
+                                    <span class="star" data-v="5" onclick="setStar(5)">★</span>
+                                </div>
+                                <span style="font-size:11px;color:var(--muted);margin-top:3px" id="nivelLabel">1-2 ★ Principiante · 3 ★ Intermedio · 4-5 ★ Avanzado</span>
+                                <span class="tray-err" id="errHabNivel">Selecciona un nivel.</span>
+                            </div>
+                            <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addHabilidad()">
+                                <div class="spinner"></div>
+                                <span class="btn-label">Agregar</span>
+                            </button>
+                        </div>
+                        <div class="item-list" id="listHabilidades">
+                            <div class="empty-state">Cargando...</div>
+                        </div>
+                    </div>
+
+                    {{-- Tab: Experiencia --}}
+                    <div class="tray-pane" id="pane-experiencia">
+                        <div class="tray-form">
+                            <div class="tray-form-title">Agregar experiencia laboral</div>
+                            <div class="tray-row">
+                                <div class="tray-fg">
+                                    <label>Empresa <span class="req">*</span></label>
+                                    <input type="text" id="expEmpresa" placeholder="Nombre de la empresa" maxlength="150">
+                                    <span class="tray-err" id="errExpEmpresa">La empresa es obligatoria.</span>
+                                </div>
+                                <div class="tray-fg">
+                                    <label>Cargo <span class="req">*</span></label>
+                                    <input type="text" id="expCargo" placeholder="Tu cargo o rol" maxlength="150">
+                                    <span class="tray-err" id="errExpCargo">El cargo es obligatorio.</span>
+                                </div>
+                            </div>
+                            <div class="tray-row">
+                                <div class="tray-fg">
+                                    <label>Fecha inicio <span class="req">*</span></label>
+                                    <input type="date" id="expInicio" onchange="checkFechaCoherencia()">
+                                    <span class="tray-err" id="errExpInicio">La fecha de inicio es obligatoria.</span>
+                                </div>
+                                <div class="tray-fg" id="fgExpFin">
+                                    <label>Fecha fin</label>
+                                    <input type="date" id="expFin" onchange="checkFechaCoherencia()">
+                                    <span class="tray-err" id="errExpFin">La fecha fin no puede ser anterior al inicio.</span>
+                                </div>
+                            </div>
+                            <div class="tray-fg">
+                                <label class="tray-check">
+                                    <input type="checkbox" id="expActual" onchange="toggleActual()">
+                                    Actualmente trabajo aquí
+                                </label>
+                            </div>
+                            <div class="tray-fg">
+                                <label>Descripción</label>
+                                <textarea id="expDesc" placeholder="Describe tus actividades y logros..." maxlength="2000"></textarea>
+                            </div>
+                            <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addExperiencia()">
+                                <div class="spinner"></div>
+                                <span class="btn-label">Agregar</span>
+                            </button>
+                        </div>
+                        <div class="item-list" id="listExperiencias">
+                            <div class="empty-state">Cargando...</div>
+                        </div>
+                    </div>
+
+                    {{-- Tab: Formación --}}
+                    <div class="tray-pane" id="pane-formacion">
+                        <div class="tray-form">
+                            <div class="tray-form-title">Agregar formación académica</div>
+                            <div class="tray-fg">
+                                <label>Institución <span class="req">*</span></label>
+                                <input type="text" id="forInstitucion" placeholder="Universidad / Instituto / Colegio..." maxlength="200">
+                                <span class="tray-err" id="errForInstitucion">La institución es obligatoria.</span>
+                            </div>
+                            <div class="tray-fg">
+                                <label>Título / Grado</label>
+                                <input type="text" id="forTitulo" placeholder="Ej: Ingeniería en Sistemas..." maxlength="200">
+                            </div>
+                            <div class="tray-row">
+                                <div class="tray-fg">
+                                    <label>Fecha inicio <span class="req">*</span></label>
+                                    <input type="date" id="forInicio" onchange="checkFormFecha()">
+                                    <span class="tray-err" id="errForInicio">La fecha de inicio es obligatoria.</span>
+                                </div>
+                                <div class="tray-fg">
+                                    <label>Fecha fin</label>
+                                    <input type="date" id="forFin" onchange="checkFormFecha()">
+                                    <span class="tray-err" id="errForFin">La fecha fin no puede ser anterior al inicio.</span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addFormacion()">
+                                <div class="spinner"></div>
+                                <span class="btn-label">Agregar</span>
+                            </button>
+                        </div>
+                        <div class="item-list" id="listFormaciones">
+                            <div class="empty-state">Cargando...</div>
+                        </div>
+                    </div>
+
+                </div>{{-- end tray-body --}}
+            </div>
+        </div>
+
+        {{-- Mini-modal confirmación borrar --}}
+        <div class="del-overlay" id="delOverlay">
+            <div class="modal" style="max-width:360px">
+                <div class="modal-ico red">
+                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                </div>
+                <h3>¿Eliminar este registro?</h3>
+                <p>Esta acción no se puede deshacer.</p>
+                <div class="modal-actions">
+                    <button class="btn-cancel" onclick="cerrarDelOverlay()">Cancelar</button>
+                    <button class="btn-danger" id="btnConfirmDel" onclick="confirmarDel()">Sí, eliminar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer>
@@ -592,6 +891,398 @@
 
     // Inicializar contador
     updateCounter();
+
+    // --- Modales ---
+    function abrirModalGuardar() {
+        if (!validateForm()) return;
+        document.getElementById('modalGuardar').classList.add('show');
+    }
+
+    function abrirModalDesactivar() {
+        document.getElementById('modalDesactivar').classList.add('show');
+    }
+
+    function cerrarModal(id) {
+        document.getElementById(id).classList.remove('show');
+    }
+
+    // Cerrar modal al click fuera
+    document.querySelectorAll('.modal-overlay').forEach(el => {
+        el.addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('show');
+        });
+    });
+
+    // --- Desactivar cuenta ---
+    function desactivarCuenta() {
+        cerrarModal('modalDesactivar');
+        fetch('{{ route("logout") }}', {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
+        }).then(() => window.location.href = '/login');
+    }
+
+    // ===================== TRAYECTORIA =====================
+
+    const CSRF = () => document.querySelector('meta[name="csrf-token"]').content;
+    let starValue = 0;
+    let trayData  = { habilidades: [], experiencias: [], formaciones: [] };
+    let pendingDel = null; // { type, id }
+    let lastTrayAction = null; // para reintento
+
+    // Sugerencias de habilidades
+    const SUGERENCIAS = [
+        'JavaScript','TypeScript','Python','Java','C#','C++','PHP','Go','Rust','Swift',
+        'Kotlin','Ruby','Scala','R','MATLAB','Dart','Flutter','React','Vue','Angular',
+        'Node.js','Laravel','Django','Spring Boot','ASP.NET','MySQL','PostgreSQL','MongoDB',
+        'Redis','Docker','Kubernetes','AWS','Azure','GCP','Git','Linux','Figma',
+        'Adobe XD','Photoshop','Illustrator','SQL','HTML','CSS','Tailwind CSS','Bootstrap',
+        'GraphQL','REST APIs','Machine Learning','Deep Learning','Data Science','Excel','Power BI'
+    ];
+
+    function abrirTrayectoria() {
+        document.getElementById('modalTrayectoria').classList.add('show');
+        cargarTrayectoria();
+    }
+
+    function cargarTrayectoria() {
+        fetch('/trayectoria', { headers: { 'X-CSRF-TOKEN': CSRF(), 'Accept': 'application/json' } })
+            .then(r => r.json())
+            .then(data => {
+                trayData = data;
+                renderHabilidades();
+                renderExperiencias();
+                renderFormaciones();
+            })
+            .catch(() => mostrarAlertaTray());
+    }
+
+    // --- TABS ---
+    function switchTab(tab) {
+        document.querySelectorAll('.tray-tab').forEach((t, i) => {
+            const names = ['habilidades','experiencia','formacion'];
+            t.classList.toggle('active', names[i] === tab);
+        });
+        document.querySelectorAll('.tray-pane').forEach(p => p.classList.remove('active'));
+        document.getElementById('pane-' + tab).classList.add('active');
+        ocultarAlertaTray();
+    }
+
+    // --- ALERTAS ---
+    function mostrarAlertaTray() {
+        document.getElementById('trayAlert').classList.add('show');
+    }
+    function ocultarAlertaTray() {
+        document.getElementById('trayAlert').classList.remove('show');
+    }
+    function retryTray() {
+        ocultarAlertaTray();
+        if (lastTrayAction) lastTrayAction();
+    }
+
+    // --- AUTOCOMPLETE ---
+    function acFilter(val) {
+        const drop = document.getElementById('acDrop');
+        if (!val.trim()) { drop.style.display = 'none'; return; }
+        const matches = SUGERENCIAS.filter(s => s.toLowerCase().startsWith(val.toLowerCase()) && s.toLowerCase() !== val.toLowerCase());
+        if (!matches.length) { drop.style.display = 'none'; return; }
+        drop.innerHTML = matches.slice(0, 8).map(m =>
+            `<div class="ac-item" onmousedown="selectAc('${m}')">${m}</div>`
+        ).join('');
+        drop.style.display = 'block';
+    }
+    function selectAc(val) {
+        document.getElementById('habNombre').value = val;
+        document.getElementById('acDrop').style.display = 'none';
+    }
+    function closeAc() {
+        document.getElementById('acDrop').style.display = 'none';
+    }
+
+    // --- STARS ---
+    function setStar(n) {
+        starValue = n;
+        document.querySelectorAll('.star').forEach(s => {
+            s.classList.toggle('on', parseInt(s.dataset.v) <= n);
+        });
+        const labels = {1:'Principiante',2:'Principiante',3:'Intermedio',4:'Avanzado',5:'Avanzado'};
+        document.getElementById('nivelLabel').textContent = n + ' ★ — ' + labels[n];
+        document.getElementById('errHabNivel').classList.remove('show');
+    }
+
+    function nivelFromStars(n) {
+        if (n <= 2) return 'principiante';
+        if (n === 3) return 'intermedio';
+        return 'avanzado';
+    }
+
+    // --- HABILIDADES ---
+    function addHabilidad() {
+        const nombre = document.getElementById('habNombre').value.trim();
+        let valid = true;
+
+        document.getElementById('errHabNombre').classList.remove('show');
+        document.getElementById('errHabDup').classList.remove('show');
+        document.getElementById('errHabNivel').classList.remove('show');
+
+        if (!nombre) { document.getElementById('errHabNombre').classList.add('show'); valid = false; }
+        if (!starValue) { document.getElementById('errHabNivel').classList.add('show'); valid = false; }
+        if (!valid) return;
+
+        const nivel = nivelFromStars(starValue);
+        const btn = document.querySelector('#pane-habilidades .btn-save');
+        btn.classList.add('loading'); btn.disabled = true;
+        ocultarAlertaTray();
+
+        const action = () => fetch('/trayectoria/habilidades', {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': CSRF(), 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ nombre, nivel }),
+        })
+        .then(r => r.json().then(j => ({ status: r.status, body: j })))
+        .then(({ status, body }) => {
+            btn.classList.remove('loading'); btn.disabled = false;
+            if (status === 422 && body.error) {
+                document.getElementById('errHabDup').textContent = body.error;
+                document.getElementById('errHabDup').classList.add('show');
+                return;
+            }
+            if (status !== 201) throw new Error();
+            trayData.habilidades.push(body);
+            trayData.habilidades.sort((a,b) => a.nombre.localeCompare(b.nombre));
+            renderHabilidades();
+            document.getElementById('habNombre').value = '';
+            starValue = 0;
+            document.querySelectorAll('.star').forEach(s => s.classList.remove('on'));
+            document.getElementById('nivelLabel').textContent = '1-2 ★ Principiante · 3 ★ Intermedio · 4-5 ★ Avanzado';
+        })
+        .catch(() => { btn.classList.remove('loading'); btn.disabled = false; lastTrayAction = action; mostrarAlertaTray(); });
+
+        lastTrayAction = action;
+        action();
+    }
+
+    function renderHabilidades() {
+        const list = document.getElementById('listHabilidades');
+        if (!trayData.habilidades.length) {
+            list.innerHTML = '<div class="empty-state">Aún no tienes habilidades registradas.</div>';
+            return;
+        }
+        const badge = { principiante: 'badge-p', intermedio: 'badge-i', avanzado: 'badge-a' };
+        const label = { principiante: 'Principiante', intermedio: 'Intermedio', avanzado: 'Avanzado' };
+        list.innerHTML = trayData.habilidades.map(h => `
+            <div class="item-card">
+                <div class="item-card-body">
+                    <strong>${escH(h.nombre)}</strong>
+                    <span class="item-badge ${badge[h.nivel] || 'badge-p'}">${label[h.nivel] || h.nivel}</span>
+                </div>
+                <button class="btn-del-item" onclick="pedirDel('habilidades',${h.id})">
+                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                </button>
+            </div>`).join('');
+    }
+
+    // --- EXPERIENCIA ---
+    function toggleActual() {
+        const chk = document.getElementById('expActual');
+        const fg  = document.getElementById('fgExpFin');
+        if (chk.checked) {
+            fg.innerHTML = `<label>Fecha fin</label><input type="text" value="Presente" disabled style="background:#f0f2f8;color:var(--muted)">`;
+        } else {
+            fg.innerHTML = `<label>Fecha fin</label><input type="date" id="expFin" onchange="checkFechaCoherencia()"><span class="tray-err" id="errExpFin">La fecha fin no puede ser anterior al inicio.</span>`;
+        }
+    }
+
+    function checkFechaCoherencia() {
+        const ini = document.getElementById('expInicio')?.value;
+        const fin = document.getElementById('expFin')?.value;
+        const err = document.getElementById('errExpFin');
+        if (ini && fin && fin < ini) {
+            err?.classList.add('show');
+        } else {
+            err?.classList.remove('show');
+        }
+    }
+
+    function checkFormFecha() {
+        const ini = document.getElementById('forInicio')?.value;
+        const fin = document.getElementById('forFin')?.value;
+        const err = document.getElementById('errForFin');
+        if (ini && fin && fin < ini) {
+            err?.classList.add('show');
+        } else {
+            err?.classList.remove('show');
+        }
+    }
+
+    function addExperiencia() {
+        const empresa  = document.getElementById('expEmpresa').value.trim();
+        const cargo    = document.getElementById('expCargo').value.trim();
+        const inicio   = document.getElementById('expInicio').value;
+        const actual   = document.getElementById('expActual').checked;
+        const fin      = actual ? null : document.getElementById('expFin')?.value || null;
+        const desc     = document.getElementById('expDesc').value.trim();
+
+        let valid = true;
+        ['errExpEmpresa','errExpCargo','errExpInicio','errExpFin'].forEach(id => {
+            document.getElementById(id)?.classList.remove('show');
+        });
+        if (!empresa) { document.getElementById('errExpEmpresa').classList.add('show'); valid = false; }
+        if (!cargo)   { document.getElementById('errExpCargo').classList.add('show');   valid = false; }
+        if (!inicio)  { document.getElementById('errExpInicio').classList.add('show');  valid = false; }
+        if (fin && inicio && fin < inicio) { document.getElementById('errExpFin')?.classList.add('show'); valid = false; }
+        if (!valid) return;
+
+        const btn = document.querySelector('#pane-experiencia .btn-save');
+        btn.classList.add('loading'); btn.disabled = true;
+        ocultarAlertaTray();
+
+        const action = () => fetch('/trayectoria/experiencias', {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': CSRF(), 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ empresa, cargo, fecha_inicio: inicio, fecha_fin: fin, actual, descripcion: desc }),
+        })
+        .then(r => r.json().then(j => ({ status: r.status, body: j })))
+        .then(({ status, body }) => {
+            btn.classList.remove('loading'); btn.disabled = false;
+            if (status !== 201) throw new Error(JSON.stringify(body));
+            trayData.experiencias.unshift(body);
+            renderExperiencias();
+            ['expEmpresa','expCargo','expInicio','expDesc'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('expActual').checked = false;
+            toggleActual();
+        })
+        .catch(() => { btn.classList.remove('loading'); btn.disabled = false; lastTrayAction = action; mostrarAlertaTray(); });
+
+        lastTrayAction = action;
+        action();
+    }
+
+    function renderExperiencias() {
+        const list = document.getElementById('listExperiencias');
+        if (!trayData.experiencias.length) {
+            list.innerHTML = '<div class="empty-state">Aún no tienes experiencias registradas.</div>';
+            return;
+        }
+        list.innerHTML = trayData.experiencias.map(e => {
+            const finLabel = e.actual ? 'Presente' : (e.fecha_fin ? e.fecha_fin.substring(0,7) : '');
+            const periodo  = e.fecha_inicio ? e.fecha_inicio.substring(0,7) + (finLabel ? ' — ' + finLabel : '') : '';
+            return `
+            <div class="item-card">
+                <div class="item-card-body">
+                    <strong>${escH(e.cargo)} · ${escH(e.empresa)}</strong>
+                    <span>${escH(periodo)}</span>
+                    ${e.descripcion ? `<p>${escH(e.descripcion)}</p>` : ''}
+                </div>
+                <button class="btn-del-item" onclick="pedirDel('experiencias',${e.id})">
+                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                </button>
+            </div>`;
+        }).join('');
+    }
+
+    // --- FORMACIÓN ---
+    function addFormacion() {
+        const inst   = document.getElementById('forInstitucion').value.trim();
+        const titulo = document.getElementById('forTitulo').value.trim();
+        const inicio = document.getElementById('forInicio').value;
+        const fin    = document.getElementById('forFin').value || null;
+
+        let valid = true;
+        ['errForInstitucion','errForInicio','errForFin'].forEach(id => document.getElementById(id)?.classList.remove('show'));
+        if (!inst)  { document.getElementById('errForInstitucion').classList.add('show'); valid = false; }
+        if (!inicio){ document.getElementById('errForInicio').classList.add('show');      valid = false; }
+        if (fin && inicio && fin < inicio) { document.getElementById('errForFin').classList.add('show'); valid = false; }
+        if (!valid) return;
+
+        const btn = document.querySelector('#pane-formacion .btn-save');
+        btn.classList.add('loading'); btn.disabled = true;
+        ocultarAlertaTray();
+
+        const action = () => fetch('/trayectoria/formaciones', {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': CSRF(), 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ institucion: inst, titulo: titulo || null, fecha_inicio: inicio, fecha_fin: fin }),
+        })
+        .then(r => r.json().then(j => ({ status: r.status, body: j })))
+        .then(({ status, body }) => {
+            btn.classList.remove('loading'); btn.disabled = false;
+            if (status !== 201) throw new Error();
+            trayData.formaciones.unshift(body);
+            renderFormaciones();
+            ['forInstitucion','forTitulo','forInicio','forFin'].forEach(id => document.getElementById(id).value = '');
+        })
+        .catch(() => { btn.classList.remove('loading'); btn.disabled = false; lastTrayAction = action; mostrarAlertaTray(); });
+
+        lastTrayAction = action;
+        action();
+    }
+
+    function renderFormaciones() {
+        const list = document.getElementById('listFormaciones');
+        if (!trayData.formaciones.length) {
+            list.innerHTML = '<div class="empty-state">Aún no tienes formaciones registradas.</div>';
+            return;
+        }
+        list.innerHTML = trayData.formaciones.map(f => {
+            const finLabel = f.fecha_fin ? f.fecha_fin.substring(0,7) : 'En curso';
+            const periodo  = f.fecha_inicio ? f.fecha_inicio.substring(0,7) + ' — ' + finLabel : '';
+            return `
+            <div class="item-card">
+                <div class="item-card-body">
+                    <strong>${escH(f.institucion)}</strong>
+                    ${f.titulo ? `<span>${escH(f.titulo)}</span>` : ''}
+                    <span style="margin-top:2px">${escH(periodo)}</span>
+                </div>
+                <button class="btn-del-item" onclick="pedirDel('formaciones',${f.id})">
+                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                </button>
+            </div>`;
+        }).join('');
+    }
+
+    // --- ELIMINAR ---
+    function pedirDel(type, id) {
+        pendingDel = { type, id };
+        document.getElementById('delOverlay').classList.add('show');
+    }
+    function cerrarDelOverlay() {
+        pendingDel = null;
+        document.getElementById('delOverlay').classList.remove('show');
+    }
+    function confirmarDel() {
+        if (!pendingDel) return;
+        const { type, id } = pendingDel;
+        cerrarDelOverlay();
+        ocultarAlertaTray();
+
+        const action = () => fetch('/trayectoria/' + type + '/' + id, {
+            method: 'DELETE',
+            headers: { 'X-CSRF-TOKEN': CSRF(), 'Accept': 'application/json' },
+        })
+        .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+        .then(() => {
+            trayData[type] = trayData[type].filter(x => x.id !== id);
+            if (type === 'habilidades')   renderHabilidades();
+            if (type === 'experiencias')  renderExperiencias();
+            if (type === 'formaciones')   renderFormaciones();
+        })
+        .catch(() => { lastTrayAction = action; mostrarAlertaTray(); });
+
+        lastTrayAction = action;
+        action();
+    }
+
+    // Click fuera del del-overlay
+    document.getElementById('delOverlay').addEventListener('click', function(e) {
+        if (e.target === this) cerrarDelOverlay();
+    });
+
+    // --- Utilidad escape HTML ---
+    function escH(str) {
+        if (!str) return '';
+        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
 </script>
 </body>
 </html>
