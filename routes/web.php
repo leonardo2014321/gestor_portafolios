@@ -28,8 +28,13 @@ Route::get('/home', function () {
 })->name('home');
 
 Route::get('/caracteristicas', function () {
-    return view('caracteristicas');
+    return view('Auth.caracteristicas');
 })->name('caracteristicas');
+
+// ✅ RUTA CORREGIDA: Ahora está en la zona pública y no pedirá login
+Route::get('/portafolios', function () {
+    return view('Auth.portafolios');
+})->name('portafolios.index');
 
 /*
 |--------------------------------------------------------------------------
@@ -53,9 +58,7 @@ Route::middleware('auth')->group(function () {
         return view('Auth.explorador'); 
     })->name('explorador');
 
-    Route::get('/portafolios', function () {
-     return view('portafolios');
-})->name('portafolios.index');
+    // (La ruta de portafolios ya fue eliminada de aquí)
 
     Route::get('/academico', function () {
         return view('academico');

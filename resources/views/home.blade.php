@@ -32,13 +32,13 @@
             <!-- BOTONES -->
             <div class="mt-6 flex gap-4">
 
-                <button class="bg-blue-600 text-white px-6 py-3 rounded-xl flex items-center gap-2">
-                    Empezar Ahora →
+                <<button onclick="document.getElementById('openLoginModal').click();" class="bg-blue-600 text-white px-6 py-3 rounded-xl flex items-center gap-2">
+                Empezar Ahora →
                 </button>
 
-                <button class="border px-6 py-3 rounded-xl text-blue-600 flex items-center gap-2">
-                    Ver portafolios →
-                </button>
+                <a href="{{ route('portafolios.index') }}" class="border px-6 py-3 rounded-xl text-blue-600 flex items-center justify-center gap-2 hover:bg-gray-50 transition">
+                Ver portafolios →
+                </a>
 
             </div>
         </div>

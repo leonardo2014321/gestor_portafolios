@@ -24,7 +24,7 @@
         <div class="hidden sm:flex space-x-6 items-center text-sm sm:text-base">
             <a href="{{ route('inicio') }}" class="text-[#35FFE6] hover:underline">Inicio</a>
             <a href="{{ route('caracteristicas') }}" class="hover:underline">Caracteristicas</a>
-            <a href="{{ route('portafolios.index') }}" class="hover:underline">Portafolios</a>
+           
             
             {{-- Acciones (Modales) --}}
             <button id="openLoginModal" class="hover:underline">Iniciar Sesión</button>
