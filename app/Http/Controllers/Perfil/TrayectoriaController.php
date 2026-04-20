@@ -12,6 +12,16 @@ use App\Models\Formacion;
 
 class TrayectoriaController extends Controller
 {
+    private function sanitize(string $value): string
+    {
+        return preg_replace('/[<>";\`\\\\{}]/', '', strip_tags($value));
+    }
+
+    private function notRegex(): string
+    {
+        return 'not_regex:/[<>";\`\\\\{}]/';
+    }
+
     public function index()
     {
         $usuario = Auth::id();
@@ -26,8 +36,10 @@ class TrayectoriaController extends Controller
     public function storeHabilidad(Request $request)
     {
         $data = $request->validate([
-            'nombre' => 'required|string|max:100',
+            'nombre' => ['required', 'string', 'max:100', $this->notRegex()],
             'nivel'  => ['required', Rule::in(['principiante', 'intermedio', 'avanzado'])],
+        ], [
+            'nombre.not_regex' => 'El nombre contiene caracteres no permitidos.',
         ]);
 
         $usuario_id = Auth::id();
@@ -42,7 +54,7 @@ class TrayectoriaController extends Controller
 
         $habilidad = Habilidad::create([
             'usuario_id' => $usuario_id,
-            'nombre'     => strip_tags($data['nombre']),
+            'nombre'     => $this->sanitize($data['nombre']),
             'nivel'      => $data['nivel'],
         ]);
 
@@ -59,24 +71,27 @@ class TrayectoriaController extends Controller
     public function storeExperiencia(Request $request)
     {
         $data = $request->validate([
-            'empresa'     => 'required|string|max:150',
-            'cargo'       => 'required|string|max:150',
+            'empresa'      => ['required', 'string', 'max:150', $this->notRegex()],
+            'cargo'        => ['required', 'string', 'max:150', $this->notRegex()],
             'fecha_inicio' => 'required|date',
-            'fecha_fin'   => 'nullable|date|after_or_equal:fecha_inicio',
-            'actual'      => 'boolean',
-            'descripcion' => 'nullable|string|max:2000',
+            'fecha_fin'    => 'nullable|date|after_or_equal:fecha_inicio',
+            'actual'       => 'boolean',
+            'descripcion'  => ['nullable', 'string', 'max:2000', $this->notRegex()],
         ], [
+            'empresa.not_regex'     => 'La empresa contiene caracteres no permitidos.',
+            'cargo.not_regex'       => 'El cargo contiene caracteres no permitidos.',
+            'descripcion.not_regex' => 'La descripción contiene caracteres no permitidos.',
             'fecha_fin.after_or_equal' => 'La fecha de fin no puede ser anterior a la de inicio.',
         ]);
 
         $experiencia = Experiencia::create([
-            'usuario_id'  => Auth::id(),
-            'empresa'     => strip_tags($data['empresa']),
-            'cargo'       => strip_tags($data['cargo']),
+            'usuario_id'   => Auth::id(),
+            'empresa'      => $this->sanitize($data['empresa']),
+            'cargo'        => $this->sanitize($data['cargo']),
             'fecha_inicio' => $data['fecha_inicio'],
-            'fecha_fin'   => ($data['actual'] ?? false) ? null : ($data['fecha_fin'] ?? null),
-            'actual'      => $data['actual'] ?? false,
-            'descripcion' => $data['descripcion'] ? strip_tags($data['descripcion']) : null,
+            'fecha_fin'    => ($data['actual'] ?? false) ? null : ($data['fecha_fin'] ?? null),
+            'actual'       => $data['actual'] ?? false,
+            'descripcion'  => $data['descripcion'] ? $this->sanitize($data['descripcion']) : null,
         ]);
 
         return response()->json($experiencia, 201);
@@ -92,20 +107,22 @@ class TrayectoriaController extends Controller
     public function storeFormacion(Request $request)
     {
         $data = $request->validate([
-            'institucion' => 'required|string|max:200',
-            'titulo'      => 'nullable|string|max:200',
+            'institucion'  => ['required', 'string', 'max:200', $this->notRegex()],
+            'titulo'       => ['nullable', 'string', 'max:200', $this->notRegex()],
             'fecha_inicio' => 'required|date',
-            'fecha_fin'   => 'nullable|date|after_or_equal:fecha_inicio',
+            'fecha_fin'    => 'nullable|date|after_or_equal:fecha_inicio',
         ], [
+            'institucion.not_regex' => 'La institución contiene caracteres no permitidos.',
+            'titulo.not_regex'      => 'El título contiene caracteres no permitidos.',
             'fecha_fin.after_or_equal' => 'La fecha de fin no puede ser anterior a la de inicio.',
         ]);
 
         $formacion = Formacion::create([
-            'usuario_id'  => Auth::id(),
-            'institucion' => strip_tags($data['institucion']),
-            'titulo'      => $data['titulo'] ? strip_tags($data['titulo']) : null,
+            'usuario_id'   => Auth::id(),
+            'institucion'  => $this->sanitize($data['institucion']),
+            'titulo'       => $data['titulo'] ? $this->sanitize($data['titulo']) : null,
             'fecha_inicio' => $data['fecha_inicio'],
-            'fecha_fin'   => $data['fecha_fin'] ?? null,
+            'fecha_fin'    => $data['fecha_fin'] ?? null,
         ]);
 
         return response()->json($formacion, 201);

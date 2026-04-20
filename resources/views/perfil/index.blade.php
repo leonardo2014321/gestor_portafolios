@@ -399,19 +399,19 @@
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label>Nombre <span class="req">*</span></label>
-                                        <input type="text" name="nombre" id="fNombre" class="field" value="{{ old('nombre', $usuario->nombre) }}" placeholder="Tu nombre" maxlength="100">
+                                        <input type="text" name="nombre" id="fNombre" class="field" value="{{ old('nombre', $usuario->nombre) }}" placeholder="Tu nombre" maxlength="100" oninput="charCheck(this,'errNombre')">
                                         <span class="field-err" id="errNombre">El nombre es obligatorio.</span>
                                     </div>
                                     <div class="form-group">
                                         <label>Apellido <span class="req">*</span></label>
-                                        <input type="text" name="apellido" id="fApellido" class="field" value="{{ old('apellido', $usuario->apellido) }}" placeholder="Tu apellido" maxlength="100">
+                                        <input type="text" name="apellido" id="fApellido" class="field" value="{{ old('apellido', $usuario->apellido) }}" placeholder="Tu apellido" maxlength="100" oninput="charCheck(this,'errApellido')">
                                         <span class="field-err" id="errApellido">El apellido es obligatorio.</span>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Profesión <span class="req">*</span></label>
-                                    <input type="text" name="profesion" id="fProfesion" class="field" value="{{ old('profesion', $usuario->profesion) }}" placeholder="Ej: Ingeniero de Software" maxlength="150">
+                                    <input type="text" name="profesion" id="fProfesion" class="field" value="{{ old('profesion', $usuario->profesion) }}" placeholder="Ej: Ingeniero de Software" maxlength="150" oninput="charCheck(this,'errProfesion')">
                                     <span class="field-err" id="errProfesion">La profesión es obligatoria.</span>
                                 </div>
                             </div>
@@ -421,7 +421,7 @@
 
                                 <div class="form-group">
                                     <label>Biografía</label>
-                                    <textarea name="biografia" id="fBiografia" class="field" placeholder="Cuéntanos sobre ti, tu experiencia y objetivos profesionales..." maxlength="1100" oninput="updateCounter()">{{ old('biografia', $usuario->biografia) }}</textarea>
+                                    <textarea name="biografia" id="fBiografia" class="field" placeholder="Cuéntanos sobre ti, tu experiencia y objetivos profesionales..." maxlength="1100" oninput="updateCounter();charCheck(this,'errBiografia')">{{ old('biografia', $usuario->biografia) }}</textarea>
                                     <div class="bio-footer">
                                         <span class="field-err" id="errBiografia" style="margin-top:0"></span>
                                         <span class="bio-counter" id="bioCounter">0 / 1000</span>
@@ -519,7 +519,7 @@
                             <div class="tray-fg ac-wrap">
                                 <label>Nombre <span class="req">*</span></label>
                                 <input type="text" id="habNombre" placeholder="Ej: JavaScript, Python, Diseño UX..." autocomplete="off"
-                                       oninput="acFilter(this.value)" onblur="setTimeout(()=>closeAc(),200)">
+                                       oninput="acFilter(this.value);charCheck(this,'errHabNombre')" onblur="setTimeout(()=>closeAc(),200)">
                                 <div class="ac-drop" id="acDrop"></div>
                                 <span class="tray-err" id="errHabNombre">El nombre es obligatorio.</span>
                                 <span class="tray-err" id="errHabDup">Ya tienes registrada esta habilidad.</span>
@@ -553,12 +553,12 @@
                             <div class="tray-row">
                                 <div class="tray-fg">
                                     <label>Empresa <span class="req">*</span></label>
-                                    <input type="text" id="expEmpresa" placeholder="Nombre de la empresa" maxlength="150">
+                                    <input type="text" id="expEmpresa" placeholder="Nombre de la empresa" maxlength="150" oninput="charCheck(this,'errExpEmpresa')">
                                     <span class="tray-err" id="errExpEmpresa">La empresa es obligatoria.</span>
                                 </div>
                                 <div class="tray-fg">
                                     <label>Cargo <span class="req">*</span></label>
-                                    <input type="text" id="expCargo" placeholder="Tu cargo o rol" maxlength="150">
+                                    <input type="text" id="expCargo" placeholder="Tu cargo o rol" maxlength="150" oninput="charCheck(this,'errExpCargo')">
                                     <span class="tray-err" id="errExpCargo">El cargo es obligatorio.</span>
                                 </div>
                             </div>
@@ -582,7 +582,8 @@
                             </div>
                             <div class="tray-fg">
                                 <label>Descripción</label>
-                                <textarea id="expDesc" placeholder="Describe tus actividades y logros..." maxlength="2000"></textarea>
+                                <textarea id="expDesc" placeholder="Describe tus actividades y logros..." maxlength="2000" oninput="charCheck(this,'errExpDesc')"></textarea>
+                                <span class="tray-err" id="errExpDesc"></span>
                             </div>
                             <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addExperiencia()">
                                 <div class="spinner"></div>
@@ -600,12 +601,13 @@
                             <div class="tray-form-title">Agregar formación académica</div>
                             <div class="tray-fg">
                                 <label>Institución <span class="req">*</span></label>
-                                <input type="text" id="forInstitucion" placeholder="Universidad / Instituto / Colegio..." maxlength="200">
+                                <input type="text" id="forInstitucion" placeholder="Universidad / Instituto / Colegio..." maxlength="200" oninput="charCheck(this,'errForInstitucion')">
                                 <span class="tray-err" id="errForInstitucion">La institución es obligatoria.</span>
                             </div>
                             <div class="tray-fg">
                                 <label>Título / Grado</label>
-                                <input type="text" id="forTitulo" placeholder="Ej: Ingeniería en Sistemas..." maxlength="200">
+                                <input type="text" id="forTitulo" placeholder="Ej: Ingeniería en Sistemas..." maxlength="200" oninput="charCheck(this,'errForTitulo')">
+                                <span class="tray-err" id="errForTitulo"></span>
                             </div>
                             <div class="tray-row">
                                 <div class="tray-fg">
@@ -795,19 +797,23 @@
                 err.textContent = f.msg;
                 err.classList.add('show');
                 valid = false;
+            } else if (!charCheck(el, f.err)) {
+                valid = false;
             } else {
                 el.classList.remove('error');
                 err.classList.remove('show');
             }
         });
 
-        // Biografía vacía
+        // Biografía
         const bio    = document.getElementById('fBiografia');
         const errBio = document.getElementById('errBiografia');
         if (bio.value.trim() === '') {
             errBio.textContent = 'La biografía no puede estar vacía.';
             errBio.classList.add('show');
             bio.classList.add('error');
+            valid = false;
+        } else if (!charCheck(bio, 'errBiografia')) {
             valid = false;
         } else if (bio.value.length <= 1000) {
             errBio.classList.remove('show');
@@ -922,6 +928,34 @@
         }).then(() => window.location.href = '/login');
     }
 
+    // ===================== RESTRICCIÓN DE CARACTERES =====================
+    const CHARS_PROHIBIDOS = /[<>";\`\\{}]/;
+    const MSG_CHARS = 'Carácter no permitido: < > " ; ` \\ { }';
+
+    function charCheck(inputEl, errId) {
+        const errEl = errId ? document.getElementById(errId) : null;
+        if (CHARS_PROHIBIDOS.test(inputEl.value)) {
+            inputEl.classList.add('error');
+            if (errEl) { errEl.textContent = MSG_CHARS; errEl.classList.add('show'); }
+            return false;
+        }
+        // Solo limpia si el mensaje actual era el de caracteres (no sobreescribir errores de requerido)
+        if (errEl && errEl.textContent === MSG_CHARS) {
+            errEl.textContent = '';
+            errEl.classList.remove('show');
+            inputEl.classList.remove('error');
+        }
+        return true;
+    }
+
+    function camposConCaracteresInvalidos(ids) {
+        // Recibe array de {inputId, errId} y retorna true si alguno tiene chars prohibidos
+        return ids.some(({ inputId, errId }) => {
+            const el = document.getElementById(inputId);
+            return el ? !charCheck(el, errId) : false;
+        });
+    }
+
     // ===================== TRAYECTORIA =====================
 
     const CSRF = () => document.querySelector('meta[name="csrf-token"]').content;
@@ -1026,6 +1060,7 @@
         document.getElementById('errHabNivel').classList.remove('show');
 
         if (!nombre) { document.getElementById('errHabNombre').classList.add('show'); valid = false; }
+        else if (!charCheck(document.getElementById('habNombre'), 'errHabNombre')) { valid = false; }
         if (!starValue) { document.getElementById('errHabNivel').classList.add('show'); valid = false; }
         if (!valid) return;
 
@@ -1128,9 +1163,12 @@
             document.getElementById(id)?.classList.remove('show');
         });
         if (!empresa) { document.getElementById('errExpEmpresa').classList.add('show'); valid = false; }
+        else if (!charCheck(document.getElementById('expEmpresa'), 'errExpEmpresa')) { valid = false; }
         if (!cargo)   { document.getElementById('errExpCargo').classList.add('show');   valid = false; }
+        else if (!charCheck(document.getElementById('expCargo'), 'errExpCargo')) { valid = false; }
         if (!inicio)  { document.getElementById('errExpInicio').classList.add('show');  valid = false; }
         if (fin && inicio && fin < inicio) { document.getElementById('errExpFin')?.classList.add('show'); valid = false; }
+        if (desc && !charCheck(document.getElementById('expDesc'), 'errExpDesc')) { valid = false; }
         if (!valid) return;
 
         const btn = document.querySelector('#pane-experiencia .btn-save');
@@ -1191,8 +1229,10 @@
         let valid = true;
         ['errForInstitucion','errForInicio','errForFin'].forEach(id => document.getElementById(id)?.classList.remove('show'));
         if (!inst)  { document.getElementById('errForInstitucion').classList.add('show'); valid = false; }
+        else if (!charCheck(document.getElementById('forInstitucion'), 'errForInstitucion')) { valid = false; }
         if (!inicio){ document.getElementById('errForInicio').classList.add('show');      valid = false; }
         if (fin && inicio && fin < inicio) { document.getElementById('errForFin').classList.add('show'); valid = false; }
+        if (titulo && !charCheck(document.getElementById('forTitulo'), 'errForTitulo')) { valid = false; }
         if (!valid) return;
 
         const btn = document.querySelector('#pane-formacion .btn-save');
