@@ -146,3 +146,4 @@ Route::get('/verificar-email', function (Request $request) {
 
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.redirect');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
+
