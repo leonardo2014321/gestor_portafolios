@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? 'SansiFolios - UMSS' }}</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -328,9 +331,20 @@
                 </a>
 
                 <a href="{{ route('perfil') }}" class="sb-item {{ request()->routeIs('perfil') ? 'active' : '' }}">
+
+
                     <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     <span>Mi Perfil</span>
                 </a>
+
+                                    <button class="sb-item" id="btn-redes" onclick="showView('redes')">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M16 8a6 6 0 0 1 6 6v3"/>
+                            <path d="M8 8a6 6 0 0 0-6 6v3"/>
+                            <circle cx="12" cy="8" r="4"/>
+                        </svg>
+                        <span>Redes</span>
+                    </button>
             </div>
 
             <form method="POST" action="{{ route('logout') }}">
@@ -463,6 +477,22 @@
                     <!-- Grid de tarjetas -->
                     <div class="exp-grid" id="expGrid"></div>
                 </div>
+                <!-- ══════════════════════════════
+                    VISTA: REDES
+                ══════════════════════════════ -->
+                <div class="view" id="view-redes">
+
+                    <div class="content-bar">
+                        <div class="content-title">
+                            <h1>Vincular Redes</h1>
+                            <p>Conecta tus cuentas profesionales</p>
+                        </div>
+                    </div>
+
+                    @include('perfil.redPerfil')
+
+                </div>
+
 
             </div>
         </main>
@@ -622,5 +652,6 @@
     /* Activar menú principal por defecto */
     document.getElementById('btn-menu').classList.add('active');
 </script>
+@stack('scripts')
 </body>
 </html>
