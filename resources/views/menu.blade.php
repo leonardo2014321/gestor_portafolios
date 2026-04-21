@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? 'SansiFolios - UMSS' }}</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -331,20 +328,9 @@
                 </a>
 
                 <a href="{{ route('perfil') }}" class="sb-item {{ request()->routeIs('perfil') ? 'active' : '' }}">
-
-
                     <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     <span>Mi Perfil</span>
                 </a>
-
-                                    <button class="sb-item" id="btn-redes" onclick="showView('redes')">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M16 8a6 6 0 0 1 6 6v3"/>
-                            <path d="M8 8a6 6 0 0 0-6 6v3"/>
-                            <circle cx="12" cy="8" r="4"/>
-                        </svg>
-                        <span>Redes</span>
-                    </button>
             </div>
 
             <form method="POST" action="{{ route('logout') }}">
@@ -477,27 +463,11 @@
                     <!-- Grid de tarjetas -->
                     <div class="exp-grid" id="expGrid"></div>
                 </div>
-                <!-- ══════════════════════════════
-                    VISTA: REDES
-                ══════════════════════════════ -->
-                <div class="view" id="view-redes">
-
-                    <div class="content-bar">
-                        <div class="content-title">
-                            <h1>Vincular Redes</h1>
-                            <p>Conecta tus cuentas profesionales</p>
-                        </div>
-                    </div>
-
-                    @include('perfil.redPerfil')
-
-                </div>
-
 
             </div>
         </main>
 
-        <!-- Panel derecho -->
+         <!-- Panel derecho -->
         <div class="rpanel">
             <div class="rp-sec">
                 <div class="cal-hd">
@@ -508,8 +478,8 @@
                     </div>
                 </div>
                 <div class="cal-grid" id="cal-grid">
-                    <div class="cdn">Su</div><div class="cdn">Mo</div><div class="cdn">Tu</div>
-                    <div class="cdn">We</div><div class="cdn">Th</div><div class="cdn">Fr</div><div class="cdn">Sa</div>
+                    <div class="cdn">Do</div><div class="cdn">Lu</div><div class="cdn">Ma</div>
+                    <div class="cdn">Mi</div><div class="cdn">Ju</div><div class="cdn">Vi</div><div class="cdn">Sá</div>
                 </div>
             </div>
 
@@ -549,8 +519,118 @@
     </footer>
 </div>
 
+<!-- Modal detalle del día -->
+<div id="modalDia" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:999;align-items:center;justify-content:center;">
+  <div style="width:440px;background:#fff;border-radius:32px;overflow:hidden;max-height:90vh;overflow-y:auto;">
+
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:28px 28px 0;">
+      <div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#64748b;margin-bottom:4px;">Detalle del día</div>
+        <div id="modalFecha" style="font-size:24px;font-weight:700;color:#171c1f;"></div>
+      </div>
+      <button onclick="cerrarModal()" style="width:36px;height:36px;border-radius:50%;border:1px solid #e2e8f0;background:transparent;cursor:pointer;font-size:16px;color:#64748b;">✕</button>
+    </div>
+
+    <!-- Lista de eventos -->
+    <div style="display:flex;flex-direction:column;gap:10px;padding:20px 28px 0;" id="listaEventos"></div>
+
+    <!-- Formulario nuevo evento -->
+    <div style="padding:16px 28px 0;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;margin-bottom:10px;">Nuevo evento</div>
+      <input id="nuevoEventoInput" type="text" placeholder="Nombre del evento..."
+        style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid #e2e8f0;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;margin-bottom:8px;">
+      <input id="nuevoEventoHora" type="text" placeholder="Hora (ej: 10:00 AM)"
+        style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid #e2e8f0;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;">
+    </div>
+
+    <div style="display:flex;gap:12px;padding:16px 28px 28px;">
+      <button onclick="cerrarModal()" style="flex:1;padding:14px;border-radius:14px;border:1px solid #e2e8f0;background:transparent;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Cerrar</button>
+      <button onclick="agregarEvento()" style="flex:1.3;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:14px;border:none;background:#0049db;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="12" x2="12" y1="14" y2="18"/><line x1="10" x2="14" y1="16" y2="16"/></svg>
+        Agregar evento
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
     /* ══ Vista switcher ══ */
+
+
+    const months_es = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+let eventos = JSON.parse(localStorage.getItem('eventos') || '{}');
+let modalDia = null, modalMes = null, modalAnio = null;
+
+function guardarEventos() {
+    localStorage.setItem('eventos', JSON.stringify(eventos));
+}
+
+function keyFecha(d, m, y) { return `${y}-${m}-${d}`; }
+
+function abrirModal(dia, mes, anio) {
+    modalDia = dia; modalMes = mes; modalAnio = anio;
+    document.getElementById('modalFecha').textContent = dia + ' de ' + months_es[mes] + ', ' + anio;
+    document.getElementById('nuevoEventoInput').value = '';
+    document.getElementById('nuevoEventoHora').value = '';
+    renderEventosModal();
+    const modal = document.getElementById('modalDia');
+    modal.style.display = 'flex';
+}
+
+function cerrarModal() {
+    document.getElementById('modalDia').style.display = 'none';
+}
+
+function renderEventosModal() {
+    const key = keyFecha(modalDia, modalMes, modalAnio);
+    const lista = eventos[key] || [];
+    const container = document.getElementById('listaEventos');
+    if (lista.length === 0) {
+        container.innerHTML = `
+            <div style="display:flex;flex-direction:column;align-items:center;padding:18px;border-radius:20px;border:2px dashed #e2e8f0;gap:4px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="16"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
+                <span style="font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:#94a3b8;">Sin eventos</span>
+            </div>`;
+        return;
+    }
+    container.innerHTML = lista.map((ev, i) => `
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:14px;background:#f0f4f8;border-radius:4px 20px 20px 4px;border-left:4px solid #0049db;">
+            <div style="width:34px;height:34px;border-radius:10px;background:#e8eefb;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0049db" stroke-width="2" stroke-linecap="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+            </div>
+            <div style="flex:1;">
+                <div style="font-size:14px;font-weight:600;color:#171c1f;">${ev.nombre}</div>
+                ${ev.hora ? `<div style="display:flex;align-items:center;gap:5px;color:#64748b;margin-top:4px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span style="font-size:12px;">${ev.hora}</span></div>` : ''}
+            </div>
+            <button onclick="eliminarEvento(${i})" style="background:none;border:none;cursor:pointer;color:#94a3b8;padding:2px;border-radius:6px;display:flex;align-items:center;" title="Eliminar">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+        </div>`).join('');
+}
+
+function agregarEvento() {
+    const nombre = document.getElementById('nuevoEventoInput').value.trim();
+    const hora   = document.getElementById('nuevoEventoHora').value.trim();
+    if (!nombre) return;
+    const key = keyFecha(modalDia, modalMes, modalAnio);
+    if (!eventos[key]) eventos[key] = [];
+    eventos[key].push({ nombre, hora });
+    guardarEventos();
+    renderEventosModal();
+    renderCal();
+    document.getElementById('nuevoEventoInput').value = '';
+    document.getElementById('nuevoEventoHora').value = '';
+}
+
+function eliminarEvento(idx) {
+    const key = keyFecha(modalDia, modalMes, modalAnio);
+    eventos[key].splice(idx, 1);
+    if (eventos[key].length === 0) delete eventos[key];
+    guardarEventos();
+    renderEventosModal();
+    renderCal();
+}
+
     function showView(name) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.getElementById('view-' + name).classList.add('active');
@@ -564,10 +644,10 @@
 
     /* ══ Explorador data ══ */
     const expCards = [
-        { type:"PROYECTO", avClass:"av-blue",   avLetter:"P", title:"Pro grama de Optimización Fiscal 2024",    desc:"Iniciativa estratégica para la mejora de flujos de caja institucionales haciendo el aprovechamiento avanzado de herramientas.", tags:["#FINANCE","#FISCAL","#STRATEGY"], cat:"proyecto" },
-        { type:"PROYECTO", avClass:"av-green",  avLetter:"P", title:"Pro grama de Desarrollo Ambiental 2020",   desc:"Iniciativa estratégica para la mejora del desarrollo ambiental en la gestión de políticas de sostenibilidad.",                tags:["#FINANCE","#LIFE","#STRATEGY"],   cat:"proyecto" },
-        { type:"HABILIDAD",avClass:"av-orange", avLetter:"H", title:"Pro gramación en PHP / Symfony",           desc:"Capacidad funcional en el desarrollo de frameworks para diseño y sistemas de gestión lógica.",                              tags:["#PHP","#BACKEND"],                cat:"habilidad", hasUsers:true },
-        { type:"DOCUMENTO",avClass:"av-teal",   avLetter:"D", title:"Pro tocolos de Seguridad Interna V2",      desc:"Documentación técnica sobre buenas prácticas en encriptación y manejo de datos digitales.",                                 tags:["#SECURITY","#PDF"],               cat:"documento" },
+        { type:"PROYECTO", avClass:"av-blue",   avLetter:"P", title:"Programa de Optimización Fiscal 2024",    desc:"Iniciativa estratégica para la mejora de flujos de caja institucionales haciendo el aprovechamiento avanzado de herramientas.", tags:["#FINANCE","#FISCAL","#STRATEGY"], cat:"proyecto" },
+        { type:"PROYECTO", avClass:"av-green",  avLetter:"P", title:"Programa de Desarrollo Ambiental 2020",   desc:"Iniciativa estratégica para la mejora del desarrollo ambiental en la gestión de políticas de sostenibilidad.",                tags:["#FINANCE","#LIFE","#STRATEGY"],   cat:"proyecto" },
+        { type:"HABILIDAD",avClass:"av-orange", avLetter:"H", title:"Programación en PHP / Symfony",           desc:"Capacidad funcional en el desarrollo de frameworks para diseño y sistemas de gestión lógica.",                              tags:["#PHP","#BACKEND"],                cat:"habilidad", hasUsers:true },
+        { type:"DOCUMENTO",avClass:"av-teal",   avLetter:"D", title:"Protocolos de Seguridad Interna V2",      desc:"Documentación técnica sobre buenas prácticas en encriptación y manejo de datos digitales.",                                 tags:["#SECURITY","#PDF"],               cat:"documento" },
     ];
 
     let expActiveFilter = 'todos';
@@ -643,7 +723,9 @@
             let cls="cd";
             if(y===today.getFullYear()&&m===today.getMonth()&&i===today.getDate()) cls+=" today";
             else if(events.includes(i)) cls+=" ev";
-            d.className=cls;d.textContent=i;grid.appendChild(d);
+            const k = keyFecha(i, m, y);
+if (eventos[k] && eventos[k].length > 0 && !cls.includes('ev')) cls += ' ev';
+d.className=cls;d.textContent=i;d.style.cursor='pointer';d.onclick=()=>abrirModal(i,m,y);grid.appendChild(d);
         }
     }
     function changeMonth(dir){cur.setMonth(cur.getMonth()+dir);renderCal();}
@@ -652,6 +734,5 @@
     /* Activar menú principal por defecto */
     document.getElementById('btn-menu').classList.add('active');
 </script>
-@stack('scripts')
 </body>
 </html>
