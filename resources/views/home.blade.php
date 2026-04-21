@@ -14,11 +14,11 @@
 <!-- ================= HERO ================= -->
 <section class="py-20">
 
-    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center px-10">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center px-6 md:px-10">
 
         <!-- TEXTO -->
         <div>
-            <h2 class="text-6xl font-bold text-[#1f2a44] leading-tight">
+            <h2 class="text-4xl md:text-6xl font-bold text-[#1f2a44] leading-tight">
                 Tu Portafolio,<br>
                 Tu Futuro.<br>
                 <span class="text-blue-600">Sin Limites.</span>
@@ -30,9 +30,9 @@
             </p>
 
             <!-- BOTONES -->
-            <div class="mt-6 flex gap-4">
+            <div class="mt-6 flex flex-col sm:flex-row gap-4">
 
-                <<button onclick="document.getElementById('openLoginModal').click();" class="bg-blue-600 text-white px-6 py-3 rounded-xl flex items-center gap-2">
+                <button onclick="document.getElementById('openLoginModal').click();" class="bg-blue-600 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2">
                 Empezar Ahora →
                 </button>
 
@@ -44,9 +44,9 @@
         </div>
 
         <!-- IMAGEN HERO -->
-        <div class="flex justify-end">
+        <div class="flex justify-center md:justify-end mt-8 md:mt-0">
             <img src="{{ asset('images/imagen-hero.jpeg') }}"
-                 class="w-[550px] rounded-xl shadow-lg">
+                 class="w-full max-w-sm md:max-w-[550px] rounded-xl shadow-lg">
         </div>
 
     </div>
@@ -68,10 +68,10 @@
     </div>
 
     <!-- GRID PRINCIPAL -->
-    <div class="max-w-6xl mx-auto grid grid-cols-3 gap-6 px-6">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 px-6">
 
         <!-- ===== TARJETA PORTAFOLIO (GRANDE) ===== -->
-        <div class="col-span-2 bg-pink-100 p-8 rounded-3xl">
+        <div class="md:col-span-2 bg-pink-100 p-8 rounded-3xl">
 
             <img src="{{ asset('images/folder.png') }}" class="w-8 mb-4">
 
@@ -121,7 +121,7 @@
         </div>
 
         <!-- ===== TARJETA SEGURIDAD ===== -->
-        <div class="col-span-2 bg-sky-100 p-6 rounded-3xl flex justify-between items-center">
+        <div class="md:col-span-2 bg-sky-100 p-6 rounded-3xl flex justify-between items-center">
 
             <div>
                 <img src="{{ asset('images/icono-seguro.png') }}" class="w-12 mb-2">

@@ -626,7 +626,7 @@
     let cur = new Date();
     function renderCal() {
         const y = cur.getFullYear(), m = cur.getMonth();
-        const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        const months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
         document.getElementById("cal-title").textContent = months[m] + " " + y;
         const grid = document.getElementById("cal-grid");
         while (grid.children.length > 7) grid.removeChild(grid.lastChild);
