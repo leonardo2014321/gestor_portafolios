@@ -485,8 +485,13 @@
                     </div>
                 </div>
                 <div class="cal-grid" id="cal-grid">
+<<<<<<< HEAD
                     <div class="cdn">Su</div><div class="cdn">Mo</div><div class="cdn">Tu</div>
                     <div class="cdn">We</div><div class="cdn">Th</div><div class="cdn">Fr</div><div class="cdn">Sa</div>
+=======
+                    <div class="cdn">Do</div><div class="cdn">Lu</div><div class="cdn">Ma</div>
+                 <div class="cdn">Mi</div><div class="cdn">Ju</div><div class="cdn">Vi</div><div class="cdn">Sá</div>
+>>>>>>> 14cc631de5356d11c6b6804070a9e7fe83a1f7cd
                 </div>
             </div>
             <div class="rp-sec">
