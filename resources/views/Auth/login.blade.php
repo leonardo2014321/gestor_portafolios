@@ -1,5 +1,10 @@
 ﻿<div id="loginModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/20 px-4 py-8 backdrop-blur-sm">
-    <div class="w-full max-w-[440px] rounded-[40px] bg-white p-8 shadow-[0_30px_80px_rgba(15,23,42,0.14)] ring-1 ring-slate-200/70 sm:p-10">
+    <div class="relative w-full max-w-[440px] rounded-[40px] bg-white p-8 shadow-[0_30px_80px_rgba(15,23,42,0.14)] ring-1 ring-slate-200/70 sm:p-10">
+        <button type="button" onclick="toggleModal()" class="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-700">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
         <div class="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-[28px] bg-slate-100 shadow-sm">
             <img src="/images/logo.png" alt="Logo" class="h-12 w-12 object-contain" />
         </div>

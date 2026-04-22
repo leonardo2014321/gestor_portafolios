@@ -12,6 +12,7 @@ use App\Services\ActividadService;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Perfil\RedPerfilController;
 use App\Http\Controllers\Perfil\PerfilController;
+use App\Http\Controllers\Perfil\TrayectoriaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +74,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
     Route::post('/perfil/redes', [RedPerfilController::class, 'guardarRedes']);
     Route::get('/perfil/redes', [RedPerfilController::class, 'obtenerRedes']);
+
+    // Trayectoria y Habilidades
+    Route::get('/trayectoria', [TrayectoriaController::class, 'index']);
+    Route::post('/trayectoria/habilidades', [TrayectoriaController::class, 'storeHabilidad']);
+    Route::delete('/trayectoria/habilidades/{id}', [TrayectoriaController::class, 'destroyHabilidad']);
+    Route::post('/trayectoria/experiencias', [TrayectoriaController::class, 'storeExperiencia']);
+    Route::delete('/trayectoria/experiencias/{id}', [TrayectoriaController::class, 'destroyExperiencia']);
+    Route::post('/trayectoria/formaciones', [TrayectoriaController::class, 'storeFormacion']);
+    Route::delete('/trayectoria/formaciones/{id}', [TrayectoriaController::class, 'destroyFormacion']);
     
     // Salida segura
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
@@ -136,3 +146,15 @@ Route::get('/verificar-email', function (Request $request) {
 
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.redirect');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
+
+Route::get('/Calendario', function () {
+    return view('calendario');
+});
+
+Route::middleware('auth')->group(function () {
+
+    Route::post('/perfil/redes', [RedPerfilController::class, 'guardarRedes']);
+    Route::get('/perfil/redes', [RedPerfilController::class, 'obtenerRedes']);
+
+});
+
