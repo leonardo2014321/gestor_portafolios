@@ -479,7 +479,7 @@
                 </div>
                 <div class="cal-grid" id="cal-grid">
                     <div class="cdn">Do</div><div class="cdn">Lu</div><div class="cdn">Ma</div>
-                    <div class="cdn">Mi</div><div class="cdn">Ju</div><div class="cdn">Vi</div><div class="cdn">Sá</div>
+                 <div class="cdn">Mi</div><div class="cdn">Ju</div><div class="cdn">Vi</div><div class="cdn">Sá</div>
                 </div>
             </div>
 
