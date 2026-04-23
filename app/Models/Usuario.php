@@ -26,6 +26,7 @@ class Usuario extends Authenticatable
         'email',
         'contrasena',
         'email_verificado',
+        'activo',
         'google_id',
         'profesion',
         'biografia',

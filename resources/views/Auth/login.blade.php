@@ -5,6 +5,36 @@
                 <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
         </button>
+
+        @if(session('cuenta_desactivada'))
+
+        {{-- ===== PANTALLA DE REACTIVACIÓN ===== --}}
+        <div class="flex flex-col items-center text-center">
+            <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-[28px] bg-amber-50">
+                <svg width="40" height="40" fill="none" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">Cuenta desactivada</h2>
+            <p class="mt-3 text-sm text-slate-500 leading-relaxed">
+                Tu cuenta fue desactivada por ti mismo.<br>¿Deseas reactivarla y volver a entrar?
+            </p>
+
+            <form method="POST" action="{{ route('reactivar') }}" class="mt-7 w-full space-y-3">
+                @csrf
+                <button type="submit" class="w-full rounded-[28px] bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:opacity-95">
+                    Sí, reactivar mi cuenta
+                </button>
+            </form>
+
+            <button type="button" onclick="toggleModal()" class="mt-3 text-sm text-slate-400 hover:text-slate-600 transition">
+                Cancelar
+            </button>
+        </div>
+
+        @else
+
+        {{-- ===== FORMULARIO NORMAL ===== --}}
         <div class="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-[28px] bg-slate-100 shadow-sm">
             <img src="/images/logo.png" alt="Logo" class="h-12 w-12 object-contain" />
         </div>
@@ -13,6 +43,8 @@
             <h2 class="text-3xl font-bold tracking-tight text-slate-900">Bienvenido de nuevo</h2>
             <p class="mt-3 text-sm text-slate-500">Inicia sesión para gestionar tu portafolio profesional digital.</p>
         </div>
+
+        @endif
 
         @php
             $emailInputClasses = 'rounded-[28px] border-2 border-slate-200 bg-white px-4 py-3 focus-within:border-sky-500';
@@ -96,5 +128,8 @@
                 </button>
             </p>
         </form>
+
+        @endif
+
     </div>
 </div>
