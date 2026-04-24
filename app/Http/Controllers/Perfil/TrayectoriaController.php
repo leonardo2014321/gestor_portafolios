@@ -63,6 +63,34 @@ class TrayectoriaController extends Controller
         return response()->json($habilidad, 201);
     }
 
+    public function updateHabilidad(Request $request, $id)
+    {
+        $habilidad = Habilidad::where('id', $id)->where('usuario_id', Auth::id())->firstOrFail();
+
+        $data = $request->validate([
+            'nombre' => ['required', 'string', 'max:100', $this->notRegex()],
+            'nivel'  => ['required', Rule::in(['principiante', 'intermedio', 'avanzado'])],
+        ], [
+            'nombre.not_regex' => 'El nombre contiene caracteres no permitidos.',
+        ]);
+
+        $existe = Habilidad::where('usuario_id', Auth::id())
+            ->where('id', '!=', $id)
+            ->whereRaw('LOWER(nombre) = ?', [strtolower($data['nombre'])])
+            ->exists();
+
+        if ($existe) {
+            return response()->json(['error' => 'Ya tienes registrada esta habilidad.'], 422);
+        }
+
+        $habilidad->update([
+            'nombre' => $this->sanitize($data['nombre']),
+            'nivel'  => $data['nivel'],
+        ]);
+
+        return response()->json($habilidad);
+    }
+
     public function destroyHabilidad($id)
     {
         $habilidad = Habilidad::where('id', $id)->where('usuario_id', Auth::id())->firstOrFail();
@@ -99,6 +127,36 @@ class TrayectoriaController extends Controller
         return response()->json($experiencia, 201);
     }
 
+    public function updateExperiencia(Request $request, $id)
+    {
+        $experiencia = Experiencia::where('id', $id)->where('usuario_id', Auth::id())->firstOrFail();
+
+        $data = $request->validate([
+            'empresa'      => ['required', 'string', 'max:150', $this->notRegex()],
+            'cargo'        => ['required', 'string', 'max:150', $this->notRegex()],
+            'fecha_inicio' => 'required|date',
+            'fecha_fin'    => 'nullable|date|after_or_equal:fecha_inicio',
+            'actual'       => 'boolean',
+            'descripcion'  => ['nullable', 'string', 'max:2000', $this->notRegex()],
+        ], [
+            'empresa.not_regex'     => 'La empresa contiene caracteres no permitidos.',
+            'cargo.not_regex'       => 'El cargo contiene caracteres no permitidos.',
+            'descripcion.not_regex' => 'La descripción contiene caracteres no permitidos.',
+            'fecha_fin.after_or_equal' => 'La fecha de fin no puede ser anterior a la de inicio.',
+        ]);
+
+        $experiencia->update([
+            'empresa'      => $this->sanitize($data['empresa']),
+            'cargo'        => $this->sanitize($data['cargo']),
+            'fecha_inicio' => $data['fecha_inicio'],
+            'fecha_fin'    => ($data['actual'] ?? false) ? null : ($data['fecha_fin'] ?? null),
+            'actual'       => $data['actual'] ?? false,
+            'descripcion'  => $data['descripcion'] ? $this->sanitize($data['descripcion']) : null,
+        ]);
+
+        return response()->json($experiencia->fresh());
+    }
+
     public function destroyExperiencia($id)
     {
         $experiencia = Experiencia::where('id', $id)->where('usuario_id', Auth::id())->firstOrFail();
@@ -130,6 +188,31 @@ class TrayectoriaController extends Controller
         return response()->json($formacion, 201);
     }
 
+    public function updateFormacion(Request $request, $id)
+    {
+        $formacion = Formacion::where('id', $id)->where('usuario_id', Auth::id())->firstOrFail();
+
+        $data = $request->validate([
+            'institucion'  => ['required', 'string', 'max:200', $this->notRegex()],
+            'titulo'       => ['nullable', 'string', 'max:200', $this->notRegex()],
+            'fecha_inicio' => 'required|date',
+            'fecha_fin'    => 'nullable|date|after_or_equal:fecha_inicio',
+        ], [
+            'institucion.not_regex' => 'La institución contiene caracteres no permitidos.',
+            'titulo.not_regex'      => 'El título contiene caracteres no permitidos.',
+            'fecha_fin.after_or_equal' => 'La fecha de fin no puede ser anterior a la de inicio.',
+        ]);
+
+        $formacion->update([
+            'institucion'  => $this->sanitize($data['institucion']),
+            'titulo'       => $data['titulo'] ? $this->sanitize($data['titulo']) : null,
+            'fecha_inicio' => $data['fecha_inicio'],
+            'fecha_fin'    => $data['fecha_fin'] ?? null,
+        ]);
+
+        return response()->json($formacion->fresh());
+    }
+
     public function destroyFormacion($id)
     {
         $formacion = Formacion::where('id', $id)->where('usuario_id', Auth::id())->firstOrFail();
@@ -159,6 +242,31 @@ class TrayectoriaController extends Controller
         ]);
 
         return response()->json($certificacion, 201);
+    }
+
+    public function updateCertificacion(Request $request, $id)
+    {
+        $certificacion = Certificacion::where('id', $id)->where('usuario_id', Auth::id())->firstOrFail();
+
+        $data = $request->validate([
+            'nombre'          => ['required', 'string', 'max:200', $this->notRegex()],
+            'organizacion'    => ['nullable', 'string', 'max:200', $this->notRegex()],
+            'fecha_obtencion' => 'nullable|date',
+            'descripcion'     => ['nullable', 'string', 'max:1000', $this->notRegex()],
+        ], [
+            'nombre.not_regex'       => 'El nombre contiene caracteres no permitidos.',
+            'organizacion.not_regex' => 'La organización contiene caracteres no permitidos.',
+            'descripcion.not_regex'  => 'La descripción contiene caracteres no permitidos.',
+        ]);
+
+        $certificacion->update([
+            'nombre'          => $this->sanitize($data['nombre']),
+            'organizacion'    => $data['organizacion'] ? $this->sanitize($data['organizacion']) : null,
+            'fecha_obtencion' => $data['fecha_obtencion'] ?? null,
+            'descripcion'     => $data['descripcion'] ? $this->sanitize($data['descripcion']) : null,
+        ]);
+
+        return response()->json($certificacion->fresh());
     }
 
     public function destroyCertificacion($id)

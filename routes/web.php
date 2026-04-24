@@ -79,12 +79,16 @@ Route::middleware('auth')->group(function () {
     // Trayectoria y Habilidades
     Route::get('/trayectoria', [TrayectoriaController::class, 'index']);
     Route::post('/trayectoria/habilidades', [TrayectoriaController::class, 'storeHabilidad']);
+    Route::put('/trayectoria/habilidades/{id}', [TrayectoriaController::class, 'updateHabilidad']);
     Route::delete('/trayectoria/habilidades/{id}', [TrayectoriaController::class, 'destroyHabilidad']);
     Route::post('/trayectoria/experiencias', [TrayectoriaController::class, 'storeExperiencia']);
+    Route::put('/trayectoria/experiencias/{id}', [TrayectoriaController::class, 'updateExperiencia']);
     Route::delete('/trayectoria/experiencias/{id}', [TrayectoriaController::class, 'destroyExperiencia']);
     Route::post('/trayectoria/formaciones', [TrayectoriaController::class, 'storeFormacion']);
+    Route::put('/trayectoria/formaciones/{id}', [TrayectoriaController::class, 'updateFormacion']);
     Route::delete('/trayectoria/formaciones/{id}', [TrayectoriaController::class, 'destroyFormacion']);
     Route::post('/trayectoria/certificaciones', [TrayectoriaController::class, 'storeCertificacion']);
+    Route::put('/trayectoria/certificaciones/{id}', [TrayectoriaController::class, 'updateCertificacion']);
     Route::delete('/trayectoria/certificaciones/{id}', [TrayectoriaController::class, 'destroyCertificacion']);
     
     // Salida segura
