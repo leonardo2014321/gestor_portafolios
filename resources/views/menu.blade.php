@@ -305,6 +305,7 @@
                 </button>
 
                 <div class="sb-div"></div>
+<<<<<<< Updated upstream
 
                 <a href="{{ route('portafolios.index') }}" class="sb-item {{ request()->routeIs('portafolios.*') ? 'active' : '' }}">
                     <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
@@ -312,6 +313,9 @@
                 </a>
 
                 <!-- Explorador: abre panel inline -->
+=======
+                
+>>>>>>> Stashed changes
                 <button class="sb-item" id="btn-explorador" onclick="showView('explorador')">
                     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                     <span>Explorador</span>
