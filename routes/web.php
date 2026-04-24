@@ -84,6 +84,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/trayectoria/experiencias/{id}', [TrayectoriaController::class, 'destroyExperiencia']);
     Route::post('/trayectoria/formaciones', [TrayectoriaController::class, 'storeFormacion']);
     Route::delete('/trayectoria/formaciones/{id}', [TrayectoriaController::class, 'destroyFormacion']);
+    Route::post('/trayectoria/certificaciones', [TrayectoriaController::class, 'storeCertificacion']);
+    Route::delete('/trayectoria/certificaciones/{id}', [TrayectoriaController::class, 'destroyCertificacion']);
     
     // Salida segura
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');

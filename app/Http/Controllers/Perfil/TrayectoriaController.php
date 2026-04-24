@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use App\Models\Habilidad;
 use App\Models\Experiencia;
 use App\Models\Formacion;
+use App\Models\Certificacion;
 
 class TrayectoriaController extends Controller
 {
@@ -27,9 +28,10 @@ class TrayectoriaController extends Controller
         $usuario = Auth::id();
 
         return response()->json([
-            'habilidades' => Habilidad::where('usuario_id', $usuario)->orderBy('nombre')->get(),
-            'experiencias' => Experiencia::where('usuario_id', $usuario)->orderByDesc('fecha_inicio')->get(),
-            'formaciones' => Formacion::where('usuario_id', $usuario)->orderByDesc('fecha_inicio')->get(),
+            'habilidades'     => Habilidad::where('usuario_id', $usuario)->orderBy('nombre')->get(),
+            'experiencias'    => Experiencia::where('usuario_id', $usuario)->orderByDesc('fecha_inicio')->get(),
+            'formaciones'     => Formacion::where('usuario_id', $usuario)->orderByDesc('fecha_inicio')->get(),
+            'certificaciones' => Certificacion::where('usuario_id', $usuario)->orderByDesc('fecha_obtencion')->get(),
         ]);
     }
 
@@ -132,6 +134,37 @@ class TrayectoriaController extends Controller
     {
         $formacion = Formacion::where('id', $id)->where('usuario_id', Auth::id())->firstOrFail();
         $formacion->delete();
+        return response()->json(['ok' => true]);
+    }
+
+    public function storeCertificacion(Request $request)
+    {
+        $data = $request->validate([
+            'nombre'          => ['required', 'string', 'max:200', $this->notRegex()],
+            'organizacion'    => ['nullable', 'string', 'max:200', $this->notRegex()],
+            'fecha_obtencion' => 'nullable|date',
+            'descripcion'     => ['nullable', 'string', 'max:1000', $this->notRegex()],
+        ], [
+            'nombre.not_regex'       => 'El nombre contiene caracteres no permitidos.',
+            'organizacion.not_regex' => 'La organización contiene caracteres no permitidos.',
+            'descripcion.not_regex'  => 'La descripción contiene caracteres no permitidos.',
+        ]);
+
+        $certificacion = Certificacion::create([
+            'usuario_id'      => Auth::id(),
+            'nombre'          => $this->sanitize($data['nombre']),
+            'organizacion'    => $data['organizacion'] ? $this->sanitize($data['organizacion']) : null,
+            'fecha_obtencion' => $data['fecha_obtencion'] ?? null,
+            'descripcion'     => $data['descripcion'] ? $this->sanitize($data['descripcion']) : null,
+        ]);
+
+        return response()->json($certificacion, 201);
+    }
+
+    public function destroyCertificacion($id)
+    {
+        $certificacion = Certificacion::where('id', $id)->where('usuario_id', Auth::id())->firstOrFail();
+        $certificacion->delete();
         return response()->json(['ok' => true]);
     }
 }

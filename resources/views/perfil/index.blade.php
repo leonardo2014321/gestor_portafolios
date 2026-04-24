@@ -501,6 +501,7 @@
                     <button class="tray-tab active" onclick="switchTab('habilidades')">Habilidades</button>
                     <button class="tray-tab" onclick="switchTab('experiencia')">Experiencia</button>
                     <button class="tray-tab" onclick="switchTab('formacion')">Formación</button>
+                    <button class="tray-tab" onclick="switchTab('certificacion')">Certificaciones</button>
                 </div>
 
                 <div class="tray-body">
@@ -627,6 +628,41 @@
                             </button>
                         </div>
                         <div class="item-list" id="listFormaciones">
+                            <div class="empty-state">Cargando...</div>
+                        </div>
+                    </div>
+
+                    {{-- Tab: Certificaciones --}}
+                    <div class="tray-pane" id="pane-certificacion">
+                        <div class="tray-form">
+                            <div class="tray-form-title">Agregar certificación</div>
+                            <div class="tray-fg">
+                                <label>Nombre del certificado <span class="req">*</span></label>
+                                <input type="text" id="certNombre" placeholder="Ej: AWS Certified Developer, Scrum Master..." maxlength="200" oninput="charCheck(this,'errCertNombre')">
+                                <span class="tray-err" id="errCertNombre">El nombre es obligatorio.</span>
+                            </div>
+                            <div class="tray-row">
+                                <div class="tray-fg">
+                                    <label>Organización emisora</label>
+                                    <input type="text" id="certOrg" placeholder="Ej: Amazon, Coursera, UMSS..." maxlength="200" oninput="charCheck(this,'errCertOrg')">
+                                    <span class="tray-err" id="errCertOrg"></span>
+                                </div>
+                                <div class="tray-fg">
+                                    <label>Fecha de obtención</label>
+                                    <input type="date" id="certFecha">
+                                </div>
+                            </div>
+                            <div class="tray-fg">
+                                <label>Descripción</label>
+                                <textarea id="certDesc" placeholder="Describe brevemente el certificado, habilidades validadas, etc." maxlength="1000" oninput="charCheck(this,'errCertDesc')"></textarea>
+                                <span class="tray-err" id="errCertDesc"></span>
+                            </div>
+                            <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addCertificacion()">
+                                <div class="spinner"></div>
+                                <span class="btn-label">Agregar</span>
+                            </button>
+                        </div>
+                        <div class="item-list" id="listCertificaciones">
                             <div class="empty-state">Cargando...</div>
                         </div>
                     </div>
@@ -960,7 +996,7 @@
 
     const CSRF = () => document.querySelector('meta[name="csrf-token"]').content;
     let starValue = 0;
-    let trayData  = { habilidades: [], experiencias: [], formaciones: [] };
+    let trayData  = { habilidades: [], experiencias: [], formaciones: [], certificaciones: [] };
     let pendingDel = null; // { type, id }
     let lastTrayAction = null; // para reintento
 
@@ -987,6 +1023,7 @@
                 renderHabilidades();
                 renderExperiencias();
                 renderFormaciones();
+                renderCertificaciones();
             })
             .catch(() => mostrarAlertaTray());
     }
@@ -994,7 +1031,7 @@
     // --- TABS ---
     function switchTab(tab) {
         document.querySelectorAll('.tray-tab').forEach((t, i) => {
-            const names = ['habilidades','experiencia','formacion'];
+            const names = ['habilidades','experiencia','formacion','certificacion'];
             t.classList.toggle('active', names[i] === tab);
         });
         document.querySelectorAll('.tray-pane').forEach(p => p.classList.remove('active'));
@@ -1281,6 +1318,68 @@
         }).join('');
     }
 
+    // --- CERTIFICACIONES ---
+    function addCertificacion() {
+        const nombre = document.getElementById('certNombre').value.trim();
+        const org    = document.getElementById('certOrg').value.trim();
+        const fecha  = document.getElementById('certFecha').value || null;
+        const desc   = document.getElementById('certDesc').value.trim();
+
+        let valid = true;
+        ['errCertNombre','errCertOrg','errCertDesc'].forEach(id => document.getElementById(id)?.classList.remove('show'));
+
+        if (!nombre) { document.getElementById('errCertNombre').classList.add('show'); valid = false; }
+        else if (!charCheck(document.getElementById('certNombre'), 'errCertNombre')) { valid = false; }
+        if (org   && !charCheck(document.getElementById('certOrg'),  'errCertOrg'))  { valid = false; }
+        if (desc  && !charCheck(document.getElementById('certDesc'), 'errCertDesc')) { valid = false; }
+        if (!valid) return;
+
+        const btn = document.querySelector('#pane-certificacion .btn-save');
+        btn.classList.add('loading'); btn.disabled = true;
+        ocultarAlertaTray();
+
+        const action = () => fetch('/trayectoria/certificaciones', {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': CSRF(), 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ nombre, organizacion: org || null, fecha_obtencion: fecha, descripcion: desc || null }),
+        })
+        .then(r => r.json().then(j => ({ status: r.status, body: j })))
+        .then(({ status, body }) => {
+            btn.classList.remove('loading'); btn.disabled = false;
+            if (status !== 201) throw new Error();
+            trayData.certificaciones.unshift(body);
+            renderCertificaciones();
+            ['certNombre','certOrg','certFecha','certDesc'].forEach(id => document.getElementById(id).value = '');
+        })
+        .catch(() => { btn.classList.remove('loading'); btn.disabled = false; lastTrayAction = action; mostrarAlertaTray(); });
+
+        lastTrayAction = action;
+        action();
+    }
+
+    function renderCertificaciones() {
+        const list = document.getElementById('listCertificaciones');
+        if (!trayData.certificaciones.length) {
+            list.innerHTML = '<div class="empty-state">Aún no tienes certificaciones registradas.</div>';
+            return;
+        }
+        list.innerHTML = trayData.certificaciones.map(c => {
+            const fecha = c.fecha_obtencion ? c.fecha_obtencion.substring(0, 7) : '';
+            return `
+            <div class="item-card">
+                <div class="item-card-body">
+                    <strong>${escH(c.nombre)}</strong>
+                    ${c.organizacion ? `<span>${escH(c.organizacion)}</span>` : ''}
+                    ${fecha ? `<span style="margin-top:2px">${escH(fecha)}</span>` : ''}
+                    ${c.descripcion ? `<p>${escH(c.descripcion)}</p>` : ''}
+                </div>
+                <button class="btn-del-item" onclick="pedirDel('certificaciones',${c.id})">
+                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                </button>
+            </div>`;
+        }).join('');
+    }
+
     // --- ELIMINAR ---
     function pedirDel(type, id) {
         pendingDel = { type, id };
@@ -1303,9 +1402,10 @@
         .then(r => { if (!r.ok) throw new Error(); return r.json(); })
         .then(() => {
             trayData[type] = trayData[type].filter(x => x.id !== id);
-            if (type === 'habilidades')   renderHabilidades();
-            if (type === 'experiencias')  renderExperiencias();
-            if (type === 'formaciones')   renderFormaciones();
+            if (type === 'habilidades')     renderHabilidades();
+            if (type === 'experiencias')    renderExperiencias();
+            if (type === 'formaciones')     renderFormaciones();
+            if (type === 'certificaciones') renderCertificaciones();
         })
         .catch(() => { lastTrayAction = action; mostrarAlertaTray(); });
 
