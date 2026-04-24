@@ -123,5 +123,29 @@
     <!-- 3. El Footer siempre quedará al final gracias al flex-1 del main -->
     <x-layout.footer />
 
+    @include('Auth.login')
+    @include('Auth.registro')
+    @include('Auth.recuperar')
+
+    <script>
+        const modal = document.getElementById('loginModal');
+        const toggleModal = () => { if(!modal) return; modal.classList.toggle('hidden'); document.body.classList.toggle('overflow-hidden'); };
+        ['openLoginModal','openLoginModalMobile'].forEach(id => { const b=document.getElementById(id); if(b) b.addEventListener('click',toggleModal); });
+        const closeBtn = document.getElementById('closeModal');
+        if(closeBtn) closeBtn.addEventListener('click', toggleModal);
+        if(modal) modal.addEventListener('click', e => { if(e.target===modal) toggleModal(); });
+
+        const registerModal = document.getElementById('registerModal');
+        const toggleRegister = () => { if(!registerModal) return; registerModal.classList.toggle('hidden'); document.body.classList.toggle('overflow-hidden'); };
+        ['openRegisterModal','openRegisterModalMobile'].forEach(id => { const b=document.getElementById(id); if(b) b.addEventListener('click',toggleRegister); });
+        if(registerModal) registerModal.addEventListener('click', e => { if(e.target===registerModal) toggleRegister(); });
+
+        document.addEventListener('keydown', e => {
+            if(e.key==='Escape'){
+                if(modal && !modal.classList.contains('hidden')) toggleModal();
+                if(registerModal && !registerModal.classList.contains('hidden')) toggleRegister();
+            }
+        });
+    </script>
 </body>
 </html>

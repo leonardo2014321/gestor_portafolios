@@ -254,15 +254,11 @@
         </div>
         <nav class="tb-nav">
             <a href="{{ route('inicio') }}" class="tb-link">Inicio</a>
-            <a href="{{ route('caracteristicas') }}" class="tb-link">Características</a>
-            <a href="{{ route('portafolios.index') }}" class="tb-link">Portafolios</a>
+            <button onclick="showView('caracteristicas')" class="tb-link" style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Características</button>
+            <button onclick="showView('portafolios')" class="tb-link" style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Portafolios</button>
+            <button onclick="showView('explorador')" class="tb-link" style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Explorador</button>
         </nav>
-        <div class="tb-right">
-            <form method="POST" action="{{ route('logout') }}" style="display:inline">
-                @csrf
-                <button type="submit" class="btn-cerrar-ses">Cerrar Sesión</button>
-            </form>
-        </div>
+        <div class="tb-right"></div>
     </div>
 
     <div class="body-row">
@@ -470,7 +466,109 @@
                     </div>
                     <div class="exp-grid" id="expGrid"></div>
                 </div>
+            <!-- ══ VISTA CARACTERÍSTICAS ══ -->
+                <div class="view" id="view-caracteristicas">
+                    <div class="content-bar">
+                        <div class="content-title">
+                            <h1>Características</h1>
+                            <p>Todo lo que SansiFolios ofrece para ti</p>
+                        </div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                        <div style="border-left:4px solid #2563eb;padding:1rem 1.2rem;background:#fff;border-radius:0 12px 12px 0;">
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">Diseño Adaptable</h3>
+                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">Plantillas profesionales diseñadas para resaltar lo mejor de cada carrera.</p>
+                        </div>
+                        <div style="border-left:4px solid #7c3aed;padding:1rem 1.2rem;background:#fff;border-radius:0 12px 12px 0;">
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">Editor Intuitivo</h3>
+                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">Crea y organiza tu información sin complicaciones.</p>
+                        </div>
+                        <div style="border-left:4px solid #ec4899;padding:1rem 1.2rem;background:#fff;border-radius:0 12px 12px 0;">
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">Marca Personal</h3>
+                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">Personaliza colores, tipografías y secciones de tu perfil.</p>
+                        </div>
+                        <div style="border-left:4px solid #f97316;padding:1rem 1.2rem;background:#fff;border-radius:0 12px 12px 0;">
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">Exportación Inteligente</h3>
+                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">Genera una versión en PDF optimizada con un solo clic.</p>
+                        </div>
+                        <div style="border-left:4px solid #10b981;padding:1rem 1.2rem;background:#fff;border-radius:0 12px 12px 0;">
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">Enlace Único</h3>
+                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">Obtén una URL personalizada para compartir en redes sociales.</p>
+                        </div>
+                    </div>
+                </div>
 
+              <!-- ══ VISTA PORTAFOLIOS ══ -->
+<div class="view" id="view-portafolios">
+    <div class="content-bar">
+        <div class="content-title">
+            <h1>Inspírate con profesionales reales</h1>
+            <p>Explora cómo otros expertos destacan en su industria usando SansiFolios.</p>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1.4rem;">
+        <button style="padding:7px 20px;border-radius:999px;background:var(--blue);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;">Todos</button>
+        <button style="padding:7px 20px;border-radius:999px;background:#fff;border:1.5px solid var(--gray2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;">🎨 Creativos</button>
+        <button style="padding:7px 20px;border-radius:999px;background:#fff;border:1.5px solid var(--gray2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;">🩺 Salud</button>
+        <button style="padding:7px 20px;border-radius:999px;background:#fff;border:1.5px solid var(--gray2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;">💼 Negocios</button>
+        <button style="padding:7px 20px;border-radius:999px;background:#fff;border:1.5px solid var(--gray2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;">🎓 Educación</button>
+    </div>
+
+    <!-- Grid -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;">
+
+        <div style="background:#D9EBFF;border-radius:24px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all .3s;cursor:pointer;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 30px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.06)'">
+            <div style="position:relative;height:180px;overflow:hidden;">
+                <img src="{{ asset('images/arqui.png') }}" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+                <div style="position:absolute;top:10px;left:10px;background:#ec4899;color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:1px;text-transform:uppercase;">Arquitectura</div>
+            </div>
+            <div style="padding:1rem;">
+                <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;color:#1e293b;">Arq. Roberto Méndez</div>
+                <div style="font-size:11.5px;color:var(--muted);margin-top:3px;">Diseño Sostenible • Cochabamba</div>
+                <button style="margin-top:10px;width:100%;padding:9px;background:#f8fafc;color:#1e293b;border:none;border-radius:14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='#2563eb';this.style.color='#fff'" onmouseout="this.style.background='#f8fafc';this.style.color='#1e293b'">Ver Perfil →</button>
+            </div>
+        </div>
+
+        <div style="background:#D9EBFF;border-radius:24px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all .3s;cursor:pointer;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 30px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.06)'">
+            <div style="position:relative;height:180px;overflow:hidden;">
+                <img src="{{ asset('images/fisio.png') }}" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+                <div style="position:absolute;top:10px;left:10px;background:#10b981;color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:1px;text-transform:uppercase;">Fisioterapia</div>
+            </div>
+            <div style="padding:1rem;">
+                <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;color:#1e293b;">Dra. Elena Vargas</div>
+                <div style="font-size:11.5px;color:var(--muted);margin-top:3px;">Rehabilitación Deportiva • La Paz</div>
+                <button style="margin-top:10px;width:100%;padding:9px;background:#f8fafc;color:#1e293b;border:none;border-radius:14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='#2563eb';this.style.color='#fff'" onmouseout="this.style.background='#f8fafc';this.style.color='#1e293b'">Ver Perfil →</button>
+            </div>
+        </div>
+
+        <div style="background:#D9EBFF;border-radius:24px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all .3s;cursor:pointer;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 30px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.06)'">
+            <div style="position:relative;height:180px;overflow:hidden;">
+                <img src="{{ asset('images/contador.png') }}" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+                <div style="position:absolute;top:10px;left:10px;background:#3b82f6;color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:1px;text-transform:uppercase;">Consultoría</div>
+            </div>
+            <div style="padding:1rem;">
+                <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;color:#1e293b;">Lic. Carlos Duarte</div>
+                <div style="font-size:11.5px;color:var(--muted);margin-top:3px;">Estrategia Financiera • Santa Cruz</div>
+                <button style="margin-top:10px;width:100%;padding:9px;background:#f8fafc;color:#1e293b;border:none;border-radius:14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='#2563eb';this.style.color='#fff'" onmouseout="this.style.background='#f8fafc';this.style.color='#1e293b'">Ver Perfil →</button>
+            </div>
+        </div>
+
+        <div style="background:#D9EBFF;border-radius:24px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all .3s;cursor:pointer;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 30px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.06)'">
+            <div style="position:relative;height:180px;overflow:hidden;">
+                <img src="{{ asset('images/prof.png') }}" style="width:100%;height:100%;object-fit:cover;transition:transform .5s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+                <div style="position:absolute;top:10px;left:10px;background:#f59e0b;color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:999px;letter-spacing:1px;text-transform:uppercase;">Docencia</div>
+            </div>
+            <div style="padding:1rem;">
+                <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;color:#1e293b;">Msc. Ana Jiménez</div>
+                <div style="font-size:11.5px;color:var(--muted);margin-top:3px;">Metodologías Activas • Sucre</div>
+                <button style="margin-top:10px;width:100%;padding:9px;background:#f8fafc;color:#1e293b;border:none;border-radius:14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='#2563eb';this.style.color='#fff'" onmouseout="this.style.background='#f8fafc';this.style.color='#1e293b'">Ver Perfil →</button>
+            </div>
+        </div>
+
+    </div>
+</div>
             </div>
         </main>
 
@@ -485,13 +583,9 @@
                     </div>
                 </div>
                 <div class="cal-grid" id="cal-grid">
-<<<<<<< HEAD
-                    <div class="cdn">Su</div><div class="cdn">Mo</div><div class="cdn">Tu</div>
-                    <div class="cdn">We</div><div class="cdn">Th</div><div class="cdn">Fr</div><div class="cdn">Sa</div>
-=======
-                    <div class="cdn">Do</div><div class="cdn">Lu</div><div class="cdn">Ma</div>
-                 <div class="cdn">Mi</div><div class="cdn">Ju</div><div class="cdn">Vi</div><div class="cdn">Sá</div>
->>>>>>> 14cc631de5356d11c6b6804070a9e7fe83a1f7cd
+
+                <div class="cdn">Do</div><div class="cdn">Lu</div><div class="cdn">Ma</div>
+                    <div class="cdn">Mi</div><div class="cdn">Ju</div><div class="cdn">Vi</div><div class="cdn">Sá</div>
                 </div>
             </div>
             <div class="rp-sec">
