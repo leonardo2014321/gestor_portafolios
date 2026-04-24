@@ -922,10 +922,10 @@
     // --- Desactivar cuenta ---
     function desactivarCuenta() {
         cerrarModal('modalDesactivar');
-        fetch('{{ route("logout") }}', {
+        fetch('{{ route("perfil.desactivar") }}', {
             method: 'POST',
             headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
-        }).then(() => window.location.href = '/login');
+        }).then(() => window.location.href = '/home');
     }
 
     // ===================== RESTRICCIÓN DE CARACTERES =====================

@@ -247,7 +247,7 @@ document.addEventListener('keydown', (event) => {
 });
 </script>
 
-@if ($errors->any())
+@if ($errors->any() || session('cuenta_desactivada'))
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('loginModal');

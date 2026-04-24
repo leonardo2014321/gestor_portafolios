@@ -13,12 +13,12 @@
     <div class="max-w-full mx-auto flex items-center justify-between w-full">
 
         {{-- Logo con imagen a la izquierda --}}
-        <div class="flex items-center space-x-4">
+        <a href="{{ route('inicio') }}" class="flex items-center space-x-4 no-underline">
             <img src="/images/umss-logo.png" alt="Logo" class="h-10">
-            <h1 class="text-xl font-bold">
+            <h1 class="text-xl font-bold text-white">
                 Sansi<span class="text-red-500">Folios</span>
             </h1>
-        </div>
+        </a>
 
         {{-- Menú de escritorio --}}
         <div class="hidden sm:flex space-x-6 items-center text-sm sm:text-base">

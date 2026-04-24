@@ -61,4 +61,16 @@ class PerfilController extends Controller
 
         return back()->with('success', 'Perfil actualizado correctamente.');
     }
+
+    public function desactivar(Request $request)
+    {
+        $usuario = Auth::user();
+        $usuario->update(['activo' => false]);
+
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json(['ok' => true]);
+    }
 }

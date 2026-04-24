@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
     // Gestión de Perfil y Redes
     Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
     Route::post('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
+    Route::post('/perfil/desactivar', [PerfilController::class, 'desactivar'])->name('perfil.desactivar');
     Route::post('/perfil/redes', [RedPerfilController::class, 'guardarRedes']);
     Route::get('/perfil/redes', [RedPerfilController::class, 'obtenerRedes']);
 
@@ -96,6 +97,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+Route::post('/reactivar-cuenta', [LoginController::class, 'reactivar'])->name('reactivar');
 
 Route::get('/registro', [RegistroController::class, 'show'])->name('registro');
 Route::post('/registro', [RegistroController::class, 'register'])->name('registro.post');
