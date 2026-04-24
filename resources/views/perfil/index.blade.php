@@ -198,9 +198,21 @@
         .tray-alert{display:none;background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:9px 12px;font-size:12.5px;color:#92400e;margin-bottom:.75rem;align-items:center;gap:8px}
         .tray-alert.show{display:flex}
         .tray-alert button{margin-left:auto;background:none;border:none;font-weight:700;color:#92400e;cursor:pointer;font-family:inherit;font-size:12.5px}
-        /* Modal confirmación borrar */
+        /* Modal confirmación borrar / agregar / editar */
         .del-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.5);z-index:300;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .2s}
         .del-overlay.show{opacity:1;pointer-events:all}
+        /* Botón editar item */
+        .btn-edit-item{background:none;border:none;cursor:pointer;color:var(--muted);padding:4px;transition:color .15s;display:flex;flex-shrink:0}
+        .btn-edit-item:hover{color:var(--blue)}
+        .btn-edit-item svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+        .item-card-actions{display:flex;gap:2px;flex-shrink:0;align-items:flex-start}
+        /* Botón cancelar edición */
+        .btn-cancel-edit{display:none;background:none;border:1.5px solid var(--gray2);border-radius:8px;padding:7px 13px;font-size:12.5px;font-weight:500;cursor:pointer;font-family:"DM Sans",sans-serif;color:var(--muted);transition:all .15s;align-items:center;gap:5px}
+        .btn-cancel-edit:hover{border-color:var(--red);color:var(--red)}
+        .btn-cancel-edit.show{display:inline-flex}
+        /* Título de form en modo edición */
+        .tray-form.editing{background:#eff6ff;border:1.5px solid #bfdbfe}
+        .tray-form-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
         /* Botones extra */
         .extra-actions{display:flex;gap:10px;margin-top:1rem}
@@ -515,8 +527,8 @@
 
                     {{-- Tab: Habilidades --}}
                     <div class="tray-pane active" id="pane-habilidades">
-                        <div class="tray-form">
-                            <div class="tray-form-title">Agregar habilidad</div>
+                        <div class="tray-form" id="formHab">
+                            <div class="tray-form-title" id="titleHab">Agregar habilidad</div>
                             <div class="tray-fg ac-wrap">
                                 <label>Nombre <span class="req">*</span></label>
                                 <input type="text" id="habNombre" placeholder="Ej: JavaScript, Python, Diseño UX..." autocomplete="off"
@@ -537,10 +549,16 @@
                                 <span style="font-size:11px;color:var(--muted);margin-top:3px" id="nivelLabel">1-2 ★ Principiante · 3 ★ Intermedio · 4-5 ★ Avanzado</span>
                                 <span class="tray-err" id="errHabNivel">Selecciona un nivel.</span>
                             </div>
-                            <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addHabilidad()">
-                                <div class="spinner"></div>
-                                <span class="btn-label">Agregar</span>
-                            </button>
+                            <div class="tray-form-actions">
+                                <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addHabilidad()">
+                                    <div class="spinner"></div>
+                                    <span class="btn-label">Agregar</span>
+                                </button>
+                                <button type="button" class="btn-cancel-edit" id="cancelEditHab" onclick="cancelEditHabilidad()">
+                                    <svg viewBox="0 0 24 24" style="width:12px;height:12px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    Cancelar edición
+                                </button>
+                            </div>
                         </div>
                         <div class="item-list" id="listHabilidades">
                             <div class="empty-state">Cargando...</div>
@@ -549,8 +567,8 @@
 
                     {{-- Tab: Experiencia --}}
                     <div class="tray-pane" id="pane-experiencia">
-                        <div class="tray-form">
-                            <div class="tray-form-title">Agregar experiencia laboral</div>
+                        <div class="tray-form" id="formExp">
+                            <div class="tray-form-title" id="titleExp">Agregar experiencia laboral</div>
                             <div class="tray-row">
                                 <div class="tray-fg">
                                     <label>Empresa <span class="req">*</span></label>
@@ -586,10 +604,16 @@
                                 <textarea id="expDesc" placeholder="Describe tus actividades y logros..." maxlength="2000" oninput="charCheck(this,'errExpDesc')"></textarea>
                                 <span class="tray-err" id="errExpDesc"></span>
                             </div>
-                            <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addExperiencia()">
-                                <div class="spinner"></div>
-                                <span class="btn-label">Agregar</span>
-                            </button>
+                            <div class="tray-form-actions">
+                                <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addExperiencia()">
+                                    <div class="spinner"></div>
+                                    <span class="btn-label">Agregar</span>
+                                </button>
+                                <button type="button" class="btn-cancel-edit" id="cancelEditExp" onclick="cancelEditExperiencia()">
+                                    <svg viewBox="0 0 24 24" style="width:12px;height:12px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    Cancelar edición
+                                </button>
+                            </div>
                         </div>
                         <div class="item-list" id="listExperiencias">
                             <div class="empty-state">Cargando...</div>
@@ -598,8 +622,8 @@
 
                     {{-- Tab: Formación --}}
                     <div class="tray-pane" id="pane-formacion">
-                        <div class="tray-form">
-                            <div class="tray-form-title">Agregar formación académica</div>
+                        <div class="tray-form" id="formFor">
+                            <div class="tray-form-title" id="titleFor">Agregar formación académica</div>
                             <div class="tray-fg">
                                 <label>Institución <span class="req">*</span></label>
                                 <input type="text" id="forInstitucion" placeholder="Universidad / Instituto / Colegio..." maxlength="200" oninput="charCheck(this,'errForInstitucion')">
@@ -622,10 +646,16 @@
                                     <span class="tray-err" id="errForFin">La fecha fin no puede ser anterior al inicio.</span>
                                 </div>
                             </div>
-                            <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addFormacion()">
-                                <div class="spinner"></div>
-                                <span class="btn-label">Agregar</span>
-                            </button>
+                            <div class="tray-form-actions">
+                                <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addFormacion()">
+                                    <div class="spinner"></div>
+                                    <span class="btn-label">Agregar</span>
+                                </button>
+                                <button type="button" class="btn-cancel-edit" id="cancelEditFor" onclick="cancelEditFormacion()">
+                                    <svg viewBox="0 0 24 24" style="width:12px;height:12px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    Cancelar edición
+                                </button>
+                            </div>
                         </div>
                         <div class="item-list" id="listFormaciones">
                             <div class="empty-state">Cargando...</div>
@@ -634,8 +664,8 @@
 
                     {{-- Tab: Certificaciones --}}
                     <div class="tray-pane" id="pane-certificacion">
-                        <div class="tray-form">
-                            <div class="tray-form-title">Agregar certificación</div>
+                        <div class="tray-form" id="formCert">
+                            <div class="tray-form-title" id="titleCert">Agregar certificación</div>
                             <div class="tray-fg">
                                 <label>Nombre del certificado <span class="req">*</span></label>
                                 <input type="text" id="certNombre" placeholder="Ej: AWS Certified Developer, Scrum Master..." maxlength="200" oninput="charCheck(this,'errCertNombre')">
@@ -657,10 +687,16 @@
                                 <textarea id="certDesc" placeholder="Describe brevemente el certificado, habilidades validadas, etc." maxlength="1000" oninput="charCheck(this,'errCertDesc')"></textarea>
                                 <span class="tray-err" id="errCertDesc"></span>
                             </div>
-                            <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addCertificacion()">
-                                <div class="spinner"></div>
-                                <span class="btn-label">Agregar</span>
-                            </button>
+                            <div class="tray-form-actions">
+                                <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addCertificacion()">
+                                    <div class="spinner"></div>
+                                    <span class="btn-label">Agregar</span>
+                                </button>
+                                <button type="button" class="btn-cancel-edit" id="cancelEditCert" onclick="cancelEditCertificacion()">
+                                    <svg viewBox="0 0 24 24" style="width:12px;height:12px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    Cancelar edición
+                                </button>
+                            </div>
                         </div>
                         <div class="item-list" id="listCertificaciones">
                             <div class="empty-state">Cargando...</div>
@@ -682,6 +718,24 @@
                 <div class="modal-actions">
                     <button class="btn-cancel" onclick="cerrarDelOverlay()">Cancelar</button>
                     <button class="btn-danger" id="btnConfirmDel" onclick="confirmarDel()">Sí, eliminar</button>
+                </div>
+            </div>
+        </div>
+
+        {{-- Mini-modal confirmación agregar / editar --}}
+        <div class="del-overlay" id="confirmOverlay">
+            <div class="modal" style="max-width:380px">
+                <div class="modal-ico blue">
+                    <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                </div>
+                <h3 id="confirmTitle">¿Confirmar acción?</h3>
+                <p id="confirmMsg"></p>
+                <div class="modal-actions">
+                    <button class="btn-cancel" onclick="cerrarConfirmOverlay()">Cancelar</button>
+                    <button class="btn-save" onclick="ejecutarConfirm()">
+                        <div class="spinner"></div>
+                        <span class="btn-label" id="confirmBtnLabel">Confirmar</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -997,8 +1051,10 @@
     const CSRF = () => document.querySelector('meta[name="csrf-token"]').content;
     let starValue = 0;
     let trayData  = { habilidades: [], experiencias: [], formaciones: [], certificaciones: [] };
-    let pendingDel = null; // { type, id }
-    let lastTrayAction = null; // para reintento
+    let pendingDel = null;
+    let pendingConfirm = null;
+    let lastTrayAction = null;
+    const editing = { habilidades: null, experiencias: null, formaciones: null, certificaciones: null };
 
     // Sugerencias de habilidades
     const SUGERENCIAS = [
@@ -1051,6 +1107,27 @@
         if (lastTrayAction) lastTrayAction();
     }
 
+    // --- CONFIRM OVERLAY ---
+    function pedirConfirm(title, msg, btnLabel, fn) {
+        document.getElementById('confirmTitle').textContent = title;
+        document.getElementById('confirmMsg').textContent = msg;
+        document.getElementById('confirmBtnLabel').textContent = btnLabel;
+        pendingConfirm = fn;
+        document.getElementById('confirmOverlay').classList.add('show');
+    }
+    function cerrarConfirmOverlay() {
+        pendingConfirm = null;
+        document.getElementById('confirmOverlay').classList.remove('show');
+    }
+    function ejecutarConfirm() {
+        const fn = pendingConfirm;
+        cerrarConfirmOverlay();
+        if (fn) fn();
+    }
+    document.getElementById('confirmOverlay').addEventListener('click', function(e) {
+        if (e.target === this) cerrarConfirmOverlay();
+    });
+
     // --- AUTOCOMPLETE ---
     function acFilter(val) {
         const drop = document.getElementById('acDrop');
@@ -1091,23 +1168,34 @@
     function addHabilidad() {
         const nombre = document.getElementById('habNombre').value.trim();
         let valid = true;
-
-        document.getElementById('errHabNombre').classList.remove('show');
-        document.getElementById('errHabDup').classList.remove('show');
-        document.getElementById('errHabNivel').classList.remove('show');
-
+        ['errHabNombre','errHabDup','errHabNivel'].forEach(id => document.getElementById(id)?.classList.remove('show'));
         if (!nombre) { document.getElementById('errHabNombre').classList.add('show'); valid = false; }
         else if (!charCheck(document.getElementById('habNombre'), 'errHabNombre')) { valid = false; }
         if (!starValue) { document.getElementById('errHabNivel').classList.add('show'); valid = false; }
         if (!valid) return;
 
         const nivel = nivelFromStars(starValue);
+        const isEdit = editing.habilidades !== null;
+        pedirConfirm(
+            isEdit ? '¿Guardar cambios?' : '¿Agregar habilidad?',
+            isEdit ? `Se actualizarán los datos de "${nombre}".` : `Se añadirá "${nombre}" a tu lista de habilidades.`,
+            isEdit ? 'Guardar' : 'Agregar',
+            () => _doHabilidad(nombre, nivel)
+        );
+    }
+
+    function _doHabilidad(nombre, nivel) {
+        const isEdit = editing.habilidades !== null;
+        const id = editing.habilidades;
         const btn = document.querySelector('#pane-habilidades .btn-save');
         btn.classList.add('loading'); btn.disabled = true;
         ocultarAlertaTray();
 
-        const action = () => fetch('/trayectoria/habilidades', {
-            method: 'POST',
+        const url    = isEdit ? '/trayectoria/habilidades/' + id : '/trayectoria/habilidades';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        const action = () => fetch(url, {
+            method,
             headers: { 'X-CSRF-TOKEN': CSRF(), 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify({ nombre, nivel }),
         })
@@ -1119,19 +1207,48 @@
                 document.getElementById('errHabDup').classList.add('show');
                 return;
             }
-            if (status !== 201) throw new Error();
-            trayData.habilidades.push(body);
+            if (status !== 200 && status !== 201) throw new Error();
+            if (isEdit) {
+                const idx = trayData.habilidades.findIndex(h => h.id === id);
+                if (idx !== -1) trayData.habilidades[idx] = body;
+            } else {
+                trayData.habilidades.push(body);
+            }
             trayData.habilidades.sort((a,b) => a.nombre.localeCompare(b.nombre));
             renderHabilidades();
-            document.getElementById('habNombre').value = '';
-            starValue = 0;
-            document.querySelectorAll('.star').forEach(s => s.classList.remove('on'));
-            document.getElementById('nivelLabel').textContent = '1-2 ★ Principiante · 3 ★ Intermedio · 4-5 ★ Avanzado';
+            cancelEditHabilidad();
         })
         .catch(() => { btn.classList.remove('loading'); btn.disabled = false; lastTrayAction = action; mostrarAlertaTray(); });
 
         lastTrayAction = action;
         action();
+    }
+
+    function editHabilidad(id) {
+        const h = trayData.habilidades.find(x => x.id === id);
+        if (!h) return;
+        editing.habilidades = id;
+        document.getElementById('habNombre').value = h.nombre;
+        const nMap = { principiante: 1, intermedio: 3, avanzado: 5 };
+        setStar(nMap[h.nivel] || 1);
+        document.getElementById('titleHab').textContent = 'Editar habilidad';
+        document.getElementById('formHab').classList.add('editing');
+        document.getElementById('cancelEditHab').classList.add('show');
+        document.querySelector('#pane-habilidades .btn-save .btn-label').textContent = 'Guardar cambios';
+        document.getElementById('formHab').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function cancelEditHabilidad() {
+        editing.habilidades = null;
+        document.getElementById('habNombre').value = '';
+        starValue = 0;
+        document.querySelectorAll('.star').forEach(s => s.classList.remove('on'));
+        document.getElementById('nivelLabel').textContent = '1-2 ★ Principiante · 3 ★ Intermedio · 4-5 ★ Avanzado';
+        document.getElementById('titleHab').textContent = 'Agregar habilidad';
+        document.getElementById('formHab').classList.remove('editing');
+        document.getElementById('cancelEditHab').classList.remove('show');
+        document.querySelector('#pane-habilidades .btn-save .btn-label').textContent = 'Agregar';
+        ['errHabNombre','errHabDup','errHabNivel'].forEach(id => document.getElementById(id)?.classList.remove('show'));
     }
 
     function renderHabilidades() {
@@ -1148,9 +1265,14 @@
                     <strong>${escH(h.nombre)}</strong>
                     <span class="item-badge ${badge[h.nivel] || 'badge-p'}">${label[h.nivel] || h.nivel}</span>
                 </div>
-                <button class="btn-del-item" onclick="pedirDel('habilidades',${h.id})">
-                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-                </button>
+                <div class="item-card-actions">
+                    <button class="btn-edit-item" onclick="editHabilidad(${h.id})" title="Editar">
+                        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </button>
+                    <button class="btn-del-item" onclick="pedirDel('habilidades',${h.id})" title="Eliminar">
+                        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                    </button>
+                </div>
             </div>`).join('');
     }
 
@@ -1188,49 +1310,98 @@
     }
 
     function addExperiencia() {
-        const empresa  = document.getElementById('expEmpresa').value.trim();
-        const cargo    = document.getElementById('expCargo').value.trim();
-        const inicio   = document.getElementById('expInicio').value;
-        const actual   = document.getElementById('expActual').checked;
-        const fin      = actual ? null : document.getElementById('expFin')?.value || null;
-        const desc     = document.getElementById('expDesc').value.trim();
+        const empresa = document.getElementById('expEmpresa').value.trim();
+        const cargo   = document.getElementById('expCargo').value.trim();
+        const inicio  = document.getElementById('expInicio').value;
+        const actual  = document.getElementById('expActual').checked;
+        const fin     = actual ? null : document.getElementById('expFin')?.value || null;
+        const desc    = document.getElementById('expDesc').value.trim();
 
         let valid = true;
-        ['errExpEmpresa','errExpCargo','errExpInicio','errExpFin'].forEach(id => {
-            document.getElementById(id)?.classList.remove('show');
-        });
+        ['errExpEmpresa','errExpCargo','errExpInicio','errExpFin'].forEach(id => document.getElementById(id)?.classList.remove('show'));
         if (!empresa) { document.getElementById('errExpEmpresa').classList.add('show'); valid = false; }
         else if (!charCheck(document.getElementById('expEmpresa'), 'errExpEmpresa')) { valid = false; }
-        if (!cargo)   { document.getElementById('errExpCargo').classList.add('show');   valid = false; }
+        if (!cargo)   { document.getElementById('errExpCargo').classList.add('show'); valid = false; }
         else if (!charCheck(document.getElementById('expCargo'), 'errExpCargo')) { valid = false; }
-        if (!inicio)  { document.getElementById('errExpInicio').classList.add('show');  valid = false; }
+        if (!inicio)  { document.getElementById('errExpInicio').classList.add('show'); valid = false; }
         if (fin && inicio && fin < inicio) { document.getElementById('errExpFin')?.classList.add('show'); valid = false; }
         if (desc && !charCheck(document.getElementById('expDesc'), 'errExpDesc')) { valid = false; }
         if (!valid) return;
 
+        const isEdit = editing.experiencias !== null;
+        pedirConfirm(
+            isEdit ? '¿Guardar cambios?' : '¿Agregar experiencia?',
+            isEdit ? `Se actualizarán los datos de "${cargo}" en ${empresa}.` : `Se añadirá "${cargo}" en ${empresa}.`,
+            isEdit ? 'Guardar' : 'Agregar',
+            () => _doExperiencia(empresa, cargo, inicio, fin, actual, desc)
+        );
+    }
+
+    function _doExperiencia(empresa, cargo, inicio, fin, actual, desc) {
+        const isEdit = editing.experiencias !== null;
+        const id = editing.experiencias;
         const btn = document.querySelector('#pane-experiencia .btn-save');
         btn.classList.add('loading'); btn.disabled = true;
         ocultarAlertaTray();
 
-        const action = () => fetch('/trayectoria/experiencias', {
-            method: 'POST',
+        const url    = isEdit ? '/trayectoria/experiencias/' + id : '/trayectoria/experiencias';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        const action = () => fetch(url, {
+            method,
             headers: { 'X-CSRF-TOKEN': CSRF(), 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify({ empresa, cargo, fecha_inicio: inicio, fecha_fin: fin, actual, descripcion: desc }),
         })
         .then(r => r.json().then(j => ({ status: r.status, body: j })))
         .then(({ status, body }) => {
             btn.classList.remove('loading'); btn.disabled = false;
-            if (status !== 201) throw new Error(JSON.stringify(body));
-            trayData.experiencias.unshift(body);
+            if (status !== 200 && status !== 201) throw new Error(JSON.stringify(body));
+            if (isEdit) {
+                const idx = trayData.experiencias.findIndex(e => e.id === id);
+                if (idx !== -1) trayData.experiencias[idx] = body;
+            } else {
+                trayData.experiencias.unshift(body);
+            }
             renderExperiencias();
-            ['expEmpresa','expCargo','expInicio','expDesc'].forEach(id => document.getElementById(id).value = '');
-            document.getElementById('expActual').checked = false;
-            toggleActual();
+            cancelEditExperiencia();
         })
         .catch(() => { btn.classList.remove('loading'); btn.disabled = false; lastTrayAction = action; mostrarAlertaTray(); });
 
         lastTrayAction = action;
         action();
+    }
+
+    function editExperiencia(id) {
+        const e = trayData.experiencias.find(x => x.id === id);
+        if (!e) return;
+        editing.experiencias = id;
+        document.getElementById('expEmpresa').value = e.empresa || '';
+        document.getElementById('expCargo').value   = e.cargo   || '';
+        document.getElementById('expInicio').value  = e.fecha_inicio ? e.fecha_inicio.substring(0,10) : '';
+        document.getElementById('expActual').checked = e.actual || false;
+        toggleActual();
+        if (!e.actual && e.fecha_fin) {
+            const finEl = document.getElementById('expFin');
+            if (finEl) finEl.value = e.fecha_fin.substring(0,10);
+        }
+        document.getElementById('expDesc').value = e.descripcion || '';
+        document.getElementById('titleExp').textContent = 'Editar experiencia laboral';
+        document.getElementById('formExp').classList.add('editing');
+        document.getElementById('cancelEditExp').classList.add('show');
+        document.querySelector('#pane-experiencia .btn-save .btn-label').textContent = 'Guardar cambios';
+        document.getElementById('formExp').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function cancelEditExperiencia() {
+        editing.experiencias = null;
+        ['expEmpresa','expCargo','expInicio','expDesc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+        document.getElementById('expActual').checked = false;
+        toggleActual();
+        document.getElementById('titleExp').textContent = 'Agregar experiencia laboral';
+        document.getElementById('formExp').classList.remove('editing');
+        document.getElementById('cancelEditExp').classList.remove('show');
+        document.querySelector('#pane-experiencia .btn-save .btn-label').textContent = 'Agregar';
+        ['errExpEmpresa','errExpCargo','errExpInicio','errExpFin'].forEach(id => document.getElementById(id)?.classList.remove('show'));
     }
 
     function renderExperiencias() {
@@ -1249,9 +1420,14 @@
                     <span>${escH(periodo)}</span>
                     ${e.descripcion ? `<p>${escH(e.descripcion)}</p>` : ''}
                 </div>
-                <button class="btn-del-item" onclick="pedirDel('experiencias',${e.id})">
-                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-                </button>
+                <div class="item-card-actions">
+                    <button class="btn-edit-item" onclick="editExperiencia(${e.id})" title="Editar">
+                        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </button>
+                    <button class="btn-del-item" onclick="pedirDel('experiencias',${e.id})" title="Eliminar">
+                        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                    </button>
+                </div>
             </div>`;
         }).join('');
     }
@@ -1267,32 +1443,77 @@
         ['errForInstitucion','errForInicio','errForFin'].forEach(id => document.getElementById(id)?.classList.remove('show'));
         if (!inst)  { document.getElementById('errForInstitucion').classList.add('show'); valid = false; }
         else if (!charCheck(document.getElementById('forInstitucion'), 'errForInstitucion')) { valid = false; }
-        if (!inicio){ document.getElementById('errForInicio').classList.add('show');      valid = false; }
+        if (!inicio){ document.getElementById('errForInicio').classList.add('show'); valid = false; }
         if (fin && inicio && fin < inicio) { document.getElementById('errForFin').classList.add('show'); valid = false; }
         if (titulo && !charCheck(document.getElementById('forTitulo'), 'errForTitulo')) { valid = false; }
         if (!valid) return;
 
+        const isEdit = editing.formaciones !== null;
+        pedirConfirm(
+            isEdit ? '¿Guardar cambios?' : '¿Agregar formación?',
+            isEdit ? `Se actualizarán los datos de "${inst}".` : `Se añadirá "${inst}" a tu formación académica.`,
+            isEdit ? 'Guardar' : 'Agregar',
+            () => _doFormacion(inst, titulo, inicio, fin)
+        );
+    }
+
+    function _doFormacion(inst, titulo, inicio, fin) {
+        const isEdit = editing.formaciones !== null;
+        const id = editing.formaciones;
         const btn = document.querySelector('#pane-formacion .btn-save');
         btn.classList.add('loading'); btn.disabled = true;
         ocultarAlertaTray();
 
-        const action = () => fetch('/trayectoria/formaciones', {
-            method: 'POST',
+        const url    = isEdit ? '/trayectoria/formaciones/' + id : '/trayectoria/formaciones';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        const action = () => fetch(url, {
+            method,
             headers: { 'X-CSRF-TOKEN': CSRF(), 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify({ institucion: inst, titulo: titulo || null, fecha_inicio: inicio, fecha_fin: fin }),
         })
         .then(r => r.json().then(j => ({ status: r.status, body: j })))
         .then(({ status, body }) => {
             btn.classList.remove('loading'); btn.disabled = false;
-            if (status !== 201) throw new Error();
-            trayData.formaciones.unshift(body);
+            if (status !== 200 && status !== 201) throw new Error();
+            if (isEdit) {
+                const idx = trayData.formaciones.findIndex(f => f.id === id);
+                if (idx !== -1) trayData.formaciones[idx] = body;
+            } else {
+                trayData.formaciones.unshift(body);
+            }
             renderFormaciones();
-            ['forInstitucion','forTitulo','forInicio','forFin'].forEach(id => document.getElementById(id).value = '');
+            cancelEditFormacion();
         })
         .catch(() => { btn.classList.remove('loading'); btn.disabled = false; lastTrayAction = action; mostrarAlertaTray(); });
 
         lastTrayAction = action;
         action();
+    }
+
+    function editFormacion(id) {
+        const f = trayData.formaciones.find(x => x.id === id);
+        if (!f) return;
+        editing.formaciones = id;
+        document.getElementById('forInstitucion').value = f.institucion || '';
+        document.getElementById('forTitulo').value      = f.titulo      || '';
+        document.getElementById('forInicio').value      = f.fecha_inicio ? f.fecha_inicio.substring(0,10) : '';
+        document.getElementById('forFin').value         = f.fecha_fin   ? f.fecha_fin.substring(0,10)   : '';
+        document.getElementById('titleFor').textContent = 'Editar formación académica';
+        document.getElementById('formFor').classList.add('editing');
+        document.getElementById('cancelEditFor').classList.add('show');
+        document.querySelector('#pane-formacion .btn-save .btn-label').textContent = 'Guardar cambios';
+        document.getElementById('formFor').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function cancelEditFormacion() {
+        editing.formaciones = null;
+        ['forInstitucion','forTitulo','forInicio','forFin'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+        document.getElementById('titleFor').textContent = 'Agregar formación académica';
+        document.getElementById('formFor').classList.remove('editing');
+        document.getElementById('cancelEditFor').classList.remove('show');
+        document.querySelector('#pane-formacion .btn-save .btn-label').textContent = 'Agregar';
+        ['errForInstitucion','errForTitulo','errForInicio','errForFin'].forEach(id => document.getElementById(id)?.classList.remove('show'));
     }
 
     function renderFormaciones() {
@@ -1311,9 +1532,14 @@
                     ${f.titulo ? `<span>${escH(f.titulo)}</span>` : ''}
                     <span style="margin-top:2px">${escH(periodo)}</span>
                 </div>
-                <button class="btn-del-item" onclick="pedirDel('formaciones',${f.id})">
-                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-                </button>
+                <div class="item-card-actions">
+                    <button class="btn-edit-item" onclick="editFormacion(${f.id})" title="Editar">
+                        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </button>
+                    <button class="btn-del-item" onclick="pedirDel('formaciones',${f.id})" title="Eliminar">
+                        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                    </button>
+                </div>
             </div>`;
         }).join('');
     }
@@ -1327,34 +1553,78 @@
 
         let valid = true;
         ['errCertNombre','errCertOrg','errCertDesc'].forEach(id => document.getElementById(id)?.classList.remove('show'));
-
         if (!nombre) { document.getElementById('errCertNombre').classList.add('show'); valid = false; }
         else if (!charCheck(document.getElementById('certNombre'), 'errCertNombre')) { valid = false; }
-        if (org   && !charCheck(document.getElementById('certOrg'),  'errCertOrg'))  { valid = false; }
-        if (desc  && !charCheck(document.getElementById('certDesc'), 'errCertDesc')) { valid = false; }
+        if (org  && !charCheck(document.getElementById('certOrg'),  'errCertOrg'))  { valid = false; }
+        if (desc && !charCheck(document.getElementById('certDesc'), 'errCertDesc')) { valid = false; }
         if (!valid) return;
 
+        const isEdit = editing.certificaciones !== null;
+        pedirConfirm(
+            isEdit ? '¿Guardar cambios?' : '¿Agregar certificación?',
+            isEdit ? `Se actualizarán los datos de "${nombre}".` : `Se añadirá "${nombre}" a tus certificaciones.`,
+            isEdit ? 'Guardar' : 'Agregar',
+            () => _doCertificacion(nombre, org, fecha, desc)
+        );
+    }
+
+    function _doCertificacion(nombre, org, fecha, desc) {
+        const isEdit = editing.certificaciones !== null;
+        const id = editing.certificaciones;
         const btn = document.querySelector('#pane-certificacion .btn-save');
         btn.classList.add('loading'); btn.disabled = true;
         ocultarAlertaTray();
 
-        const action = () => fetch('/trayectoria/certificaciones', {
-            method: 'POST',
+        const url    = isEdit ? '/trayectoria/certificaciones/' + id : '/trayectoria/certificaciones';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        const action = () => fetch(url, {
+            method,
             headers: { 'X-CSRF-TOKEN': CSRF(), 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify({ nombre, organizacion: org || null, fecha_obtencion: fecha, descripcion: desc || null }),
         })
         .then(r => r.json().then(j => ({ status: r.status, body: j })))
         .then(({ status, body }) => {
             btn.classList.remove('loading'); btn.disabled = false;
-            if (status !== 201) throw new Error();
-            trayData.certificaciones.unshift(body);
+            if (status !== 200 && status !== 201) throw new Error();
+            if (isEdit) {
+                const idx = trayData.certificaciones.findIndex(c => c.id === id);
+                if (idx !== -1) trayData.certificaciones[idx] = body;
+            } else {
+                trayData.certificaciones.unshift(body);
+            }
             renderCertificaciones();
-            ['certNombre','certOrg','certFecha','certDesc'].forEach(id => document.getElementById(id).value = '');
+            cancelEditCertificacion();
         })
         .catch(() => { btn.classList.remove('loading'); btn.disabled = false; lastTrayAction = action; mostrarAlertaTray(); });
 
         lastTrayAction = action;
         action();
+    }
+
+    function editCertificacion(id) {
+        const c = trayData.certificaciones.find(x => x.id === id);
+        if (!c) return;
+        editing.certificaciones = id;
+        document.getElementById('certNombre').value = c.nombre          || '';
+        document.getElementById('certOrg').value    = c.organizacion    || '';
+        document.getElementById('certFecha').value  = c.fecha_obtencion ? c.fecha_obtencion.substring(0,10) : '';
+        document.getElementById('certDesc').value   = c.descripcion     || '';
+        document.getElementById('titleCert').textContent = 'Editar certificación';
+        document.getElementById('formCert').classList.add('editing');
+        document.getElementById('cancelEditCert').classList.add('show');
+        document.querySelector('#pane-certificacion .btn-save .btn-label').textContent = 'Guardar cambios';
+        document.getElementById('formCert').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function cancelEditCertificacion() {
+        editing.certificaciones = null;
+        ['certNombre','certOrg','certFecha','certDesc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+        document.getElementById('titleCert').textContent = 'Agregar certificación';
+        document.getElementById('formCert').classList.remove('editing');
+        document.getElementById('cancelEditCert').classList.remove('show');
+        document.querySelector('#pane-certificacion .btn-save .btn-label').textContent = 'Agregar';
+        ['errCertNombre','errCertOrg','errCertDesc'].forEach(id => document.getElementById(id)?.classList.remove('show'));
     }
 
     function renderCertificaciones() {
@@ -1373,9 +1643,14 @@
                     ${fecha ? `<span style="margin-top:2px">${escH(fecha)}</span>` : ''}
                     ${c.descripcion ? `<p>${escH(c.descripcion)}</p>` : ''}
                 </div>
-                <button class="btn-del-item" onclick="pedirDel('certificaciones',${c.id})">
-                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-                </button>
+                <div class="item-card-actions">
+                    <button class="btn-edit-item" onclick="editCertificacion(${c.id})" title="Editar">
+                        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </button>
+                    <button class="btn-del-item" onclick="pedirDel('certificaciones',${c.id})" title="Eliminar">
+                        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                    </button>
+                </div>
             </div>`;
         }).join('');
     }
