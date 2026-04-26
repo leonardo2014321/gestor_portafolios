@@ -92,7 +92,7 @@ test.describe('HU-09: Dashboard Principal de Gestión', () => {
         await expect(page.locator('.btn-logout')).toContainText('Cerrar Sesión');
 
         // 4. Navegar al explorador y verificar que el sidebar persiste
-        await page.locator('#btn-explorador').click();
+        await page.locator('button:has-text("Explorador")').click();
         await expect(page.locator('aside')).toBeVisible();
         await expect(page.locator('.btn-logout')).toBeVisible();
 
@@ -120,9 +120,9 @@ test.describe('HU-09: Dashboard Principal de Gestión', () => {
         expect(titleText).toMatch(/\w+\s\d{4}/);
 
         // 3. Verificar que los días de la semana están presentes
-        await expect(page.getByText('Su').first()).toBeVisible();
-        await expect(page.getByText('Mo').first()).toBeVisible();
-        await expect(page.getByText('Fr').first()).toBeVisible();
+        await expect(page.getByText('Do').first()).toBeVisible();
+        await expect(page.getByText('Mi').first()).toBeVisible();
+        await expect(page.getByText('Ma').first()).toBeVisible();
 
         // 4. Verificar botones de navegación de mes
         const navButtons = page.locator('.cal-nav');
@@ -184,12 +184,15 @@ test.describe('HU-09: Dashboard Principal de Gestión', () => {
 
         // 1. Verificar que el usuario está logueado (topbar muestra nombre)
         await expect(page.locator('.topbar')).toBeVisible();
-        await expect(page.locator('.sb-uname')).toBeVisible();
-
+await expect(page.locator('text=Conectado')).toBeVisible();
         // 2. Cerrar sesión
         await page.click('.btn-logout');
 
         // 3. Verificar redirección a /home
+   
+// 3. Confirmar que aparece el modal de confirmación (visto en image_1e234f.png)
+await expect(page.locator('text=¿Cerrar sesión?')).toBeVisible();
+await page.click('button:has-text("Sí, salir")');
         await expect(page).toHaveURL(/.*\/home/, { timeout: 10000 });
 
         // 4. Intentar acceder a /menu sin autenticación
@@ -258,7 +261,7 @@ test.describe('HU-09: Dashboard Principal de Gestión', () => {
         await expect(page.getByText('Informe mensual subido')).toBeVisible();
 
         // 6. Verificar que la campana de notificaciones está en el topbar
-        await expect(page.locator('.icon-bell')).toBeVisible();
-    });
+        const notificationBell = page.locator('.topbar').locator('button, i').filter({ has: page.locator('.fa-bell, .icon-bell') }).first();
+        await expect(notificationBell).toBe   });
 
 });

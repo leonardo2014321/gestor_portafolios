@@ -60,10 +60,12 @@ test.describe('HU-06: Biografía profesional (Mi Trayectoria)', () => {
         await page.check('#expActual');
 
         // 3. El campo de fecha fin se debe deshabilitar o ocultar
-        const fgExpFin = page.locator('#fgExpFin');
         const isHidden = await fgExpFin.evaluate(el => {
-            return el.style.display === 'none' || el.style.opacity === '0.4';
+            const style = window.getComputedStyle(el);
+            return style.display === 'none' || style.opacity === '0.4' || el.getAttribute('disabled') !== null;
         });
+
+        // 5. Aserción final
         expect(isHidden).toBeTruthy();
 
         // 4. Desmarcar y verificar que el campo reaparece
