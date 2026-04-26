@@ -315,7 +315,12 @@
   </div>
 
   <div class="results-bar">
-    <span class="results-count" id="results-count">4 Resultados Encontrados</span>
+    <span class="results-count" id="results-count">0 Resultados</span>
+    @if(count($busquedas) > 0)
+        <span style="background: #dcfce7; color: #166534; padding: 2px 10px; border-radius: 5px; font-size: 11px; font-weight: bold; margin-left: 10px;">
+            DIFUSION: BASE DE DATOS ACTIVA
+        </span>
+    @endif
     <button class="sort-btn">
       Ordenar por relevancia
       <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -328,7 +333,11 @@
 </div>
 
 <script>
-  const allCards = [
+  // Datos dinámicos desde la base de datos (Supabase)
+  const dbCards = @json($busquedas);
+  
+  // Ejemplos pre-cargados
+  const exampleCards = [
     {
       type: "PROYECTO",
       avatarClass: "av-blue",
@@ -367,6 +376,18 @@
       category: "documento",
     },
   ];
+
+  // Mapeo de datos de la base de datos al formato de la interfaz
+  const allCards = dbCards.length > 0 ? dbCards.map(c => ({
+      type: (c.tipo || 'S/T').toUpperCase(),
+      avatarClass: c.avatar_class || 'av-blue',
+      avatarLetter: c.avatar_letter || '?',
+      title: c.titulo || 'Sin título',
+      desc: c.descripcion || 'Sin descripción',
+      tags: Array.isArray(c.tags) ? c.tags : (typeof c.tags === 'string' ? JSON.parse(c.tags) : []),
+      category: c.tipo || 'otros',
+      hasUsers: !!c.has_users
+  })) : exampleCards;
 
   let activeFilter = 'todos';
 

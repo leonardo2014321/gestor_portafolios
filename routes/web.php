@@ -48,16 +48,15 @@ Route::middleware('auth')->group(function () {
     
     // Panel Principal
     Route::get('/menu', function () {
-        return view('menu');
+        $busquedas = \App\Models\Busqueda::all();
+        return view('menu', compact('busquedas'));
     })->name('menu');
 
     /**
      * IMPLEMENTACIÓN DEL EXPLORADOR
      * Carga la vista ubicada en resources/views/Auth/explorador.blade.php
      */
-    Route::get('/explorador', function () {
-        return view('Auth.explorador'); 
-    })->name('explorador');
+    Route::get('/explorador', [App\Http\Controllers\ExploradorController::class, 'index'])->name('explorador');
 
     // (La ruta de portafolios ya fue eliminada de aquí)
 

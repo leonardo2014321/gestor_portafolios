@@ -473,11 +473,18 @@
                     <div class="exp-filters">
                         <button class="exp-filter active" onclick="expSetFilter(this,'todos')">Todos</button>
                         <button class="exp-filter" onclick="expSetFilter(this,'proyecto')">Proyectos</button>
+                        <button class="exp-filter" onclick="expSetFilter(this,'perfil')">Perfiles</button>
                         <button class="exp-filter" onclick="expSetFilter(this,'documento')">Documentos</button>
                         <button class="exp-filter" onclick="expSetFilter(this,'habilidad')">Habilidades</button>
                     </div>
+
                     <div class="exp-results-bar">
-                        <span class="exp-count" id="expCount">4 Resultados Encontrados</span>
+                        <span class="exp-count" id="expCount">0 Resultados</span>
+                        @if(isset($busquedas) && count($busquedas) > 0)
+                            <span style="background: #dcfce7; color: #166534; padding: 2px 10px; border-radius: 5px; font-size: 11px; font-weight: bold; margin-left: 10px;">
+                                DIFUSION: BASE DE DATOS ACTIVA
+                            </span>
+                        @endif
                         <button class="exp-sort">Ordenar por relevancia<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
                     </div>
                     <div class="exp-grid" id="expGrid"></div>
@@ -740,12 +747,26 @@
     }
 
     /* ══ Explorador ══ */
-    const expCards=[
+    const dbCards = @json($busquedas ?? []);
+    
+    const fallbackCards = [
         {type:"PROYECTO",avClass:"av-blue",avLetter:"P",title:"Programa de Optimización Fiscal 2024",desc:"Iniciativa estratégica para la mejora de flujos de caja institucionales.",tags:["#FINANCE","#FISCAL","#STRATEGY"],cat:"proyecto"},
         {type:"PROYECTO",avClass:"av-green",avLetter:"P",title:"Programa de Desarrollo Ambiental 2020",desc:"Iniciativa estratégica para la mejora del desarrollo ambiental.",tags:["#FINANCE","#LIFE","#STRATEGY"],cat:"proyecto"},
         {type:"HABILIDAD",avClass:"av-orange",avLetter:"H",title:"Programación en PHP / Symfony",desc:"Capacidad funcional en el desarrollo de frameworks para diseño y sistemas.",tags:["#PHP","#BACKEND"],cat:"habilidad",hasUsers:true},
         {type:"DOCUMENTO",avClass:"av-teal",avLetter:"D",title:"Protocolos de Seguridad Interna V2",desc:"Documentación técnica sobre buenas prácticas en encriptación.",tags:["#SECURITY","#PDF"],cat:"documento"},
     ];
+
+    const expCards = dbCards.length > 0 ? dbCards.map(c => ({
+        type: (c.tipo || 'S/T').toUpperCase(),
+        avClass: c.avatar_class || 'av-blue',
+        avLetter: c.avatar_letter || '?',
+        title: c.titulo || 'Sin título',
+        desc: c.descripcion || 'Sin descripción',
+        tags: Array.isArray(c.tags) ? c.tags : (typeof c.tags === 'string' ? JSON.parse(c.tags || '[]') : []),
+        cat: c.tipo || 'otros',
+        hasUsers: !!c.has_users
+    })) : fallbackCards;
+
     let expActiveFilter='todos';
 
     function expHL(text){
@@ -776,7 +797,13 @@
 
     function expFilter(){
         const q=document.getElementById('expSearch').value.toLowerCase();
-        expRender(expCards.filter(c=>(c.title.toLowerCase().includes(q)||c.desc.toLowerCase().includes(q))&&(expActiveFilter==='todos'||c.cat===expActiveFilter)));
+        expRender(expCards.filter(c => {
+            const matchText = c.title.toLowerCase().includes(q) || 
+                              c.desc.toLowerCase().includes(q) || 
+                              (c.tags && c.tags.some(t => t.toLowerCase().includes(q)));
+            const matchCat = expActiveFilter === 'todos' || c.cat === expActiveFilter;
+            return matchText && matchCat;
+        }));
     }
 
     function expSetFilter(btn,cat){
