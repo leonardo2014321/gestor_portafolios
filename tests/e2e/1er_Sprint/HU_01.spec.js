@@ -1,46 +1,89 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Pruebas de botones de la Landing Page', () => {
+const BASE = 'http://localhost:8000';
+
+test.describe('HU-01: Gestión de perfil profesional (Landing Page)', () => {
 
     test.beforeEach(async ({ page }) => {
-        // Ajusta la URL según tu entorno local de Laravel
-        await page.goto('http://localhost:8000');
+        await page.goto(BASE);
     });
 
-    test('debe abrir el modal de login al hacer clic en Empezar Ahora', async ({ page }) => {
-        // 1. Localizar el botón por su texto (incluye flecha →)
-        const btnEmpezar = page.getByRole('button', { name: /empezar ahora/i });
+    // ═══════════════════════════════════════════════════════════
+    // TC-1: Validación de Identidad Visual y Estructura (UI/UX)
+    // ═══════════════════════════════════════════════════════════
+    test('TC-1: Validación de Identidad Visual y Estructura (UI/UX)', async ({ page }) => {
+        // 1. Verificar que el título principal del hero está visible
+        await expect(page.locator('h2')).toContainText('Tu Portafolio');
 
-        // 2. Verificar que el botón sea visible
+        // 2. Verificar que el botón "Empezar Ahora" existe y es funcional
+        const btnEmpezar = page.getByRole('button', { name: /empezar ahora/i });
         await expect(btnEmpezar).toBeVisible();
 
-        // 3. Hacer clic para abrir el modal de login
+        // 3. Click abre el modal de login
         await btnEmpezar.click();
-
-        // 4. Validar que el modal de login se abrió
-        // El modal tiene el título "Bienvenido de nuevo"
         await expect(page.getByText('Bienvenido de nuevo')).toBeVisible();
 
-        // 5. Verificar que los campos del formulario de login estén presentes
+        // 4. Verificar que los campos del formulario de login estén presentes
         await expect(page.getByPlaceholder('ejemplo@gmail.com')).toBeVisible();
         await expect(page.getByPlaceholder('••••••••••••')).toBeVisible();
 
-        // 6. Verificar que el botón de submit del modal esté visible
+        // 5. Verificar que el botón de submit del modal esté visible
         await expect(page.getByRole('button', { name: /entrar al sistema/i })).toBeVisible();
     });
 
-    test('debe navegar a la sección de portafolios', async ({ page }) => {
-        // 1. Localizar el enlace "Ver portafolios →"
+    // ═══════════════════════════════════════════════════════════
+    // TC-2: Validación de Navegación, Header Sticky y Rendimiento
+    // ═══════════════════════════════════════════════════════════
+    test('TC-2: Validación de Navegación, Header Sticky y Rendimiento', async ({ page }) => {
+        // 1. Verificar el enlace "Ver portafolios →"
         const linkPortafolios = page.getByRole('link', { name: /ver portafolios/i });
-
-        // 2. Verificar que el enlace sea visible
         await expect(linkPortafolios).toBeVisible();
 
-        // 3. Hacer clic y esperar navegación
+        // 2. Hacer clic y verificar navegación
         await linkPortafolios.click();
-
-        // 4. Verificar que la URL sea la correcta (portafolios)
         await expect(page).toHaveURL(/.*portafolios/);
+
+        // 3. Volver a la landing
+        await page.goto(BASE);
+
+        // 4. Verificar que la sección de características existe
+        await expect(page.getByText('Todo tu perfil profesional en un solo lugar')).toBeVisible();
+
+        // 5. Verificar que las tarjetas de características existen
+        await expect(page.getByText('Creación de Portafolio')).toBeVisible();
+        await expect(page.getByText('Gestión de Proyectos')).toBeVisible();
+        await expect(page.getByText('Perfil Profesional')).toBeVisible();
+        await expect(page.getByText('Acceso Seguro')).toBeVisible();
+    });
+
+    // ═══════════════════════════════════════════════════════════
+    // TC-3: Verificación de Diseño Responsivo (Adaptabilidad Móvil)
+    // ═══════════════════════════════════════════════════════════
+    test('TC-3: Verificación de Diseño Responsivo (Adaptabilidad Móvil)', async ({ page }) => {
+        // 1. Cambiar viewport a móvil (iPhone SE)
+        await page.setViewportSize({ width: 375, height: 667 });
+        await page.goto(BASE);
+
+        // 2. Verificar que el hero sigue visible
+        await expect(page.locator('h2')).toContainText('Tu Portafolio');
+
+        // 3. Verificar que el botón "Empezar Ahora" sigue accesible
+        const btnEmpezar = page.getByRole('button', { name: /empezar ahora/i });
+        await expect(btnEmpezar).toBeVisible();
+
+        // 4. Verificar que "Ver portafolios" sigue visible
+        await expect(page.getByRole('link', { name: /ver portafolios/i })).toBeVisible();
+
+        // 5. Verificar la sección de características en móvil
+        await expect(page.getByText('Todo tu perfil profesional en un solo lugar')).toBeVisible();
+
+        // 6. Verificar que las tarjetas de características se ven en móvil
+        await expect(page.getByText('Creación de Portafolio')).toBeVisible();
+
+        // 7. Probar en tamaño tablet (iPad)
+        await page.setViewportSize({ width: 768, height: 1024 });
+        await expect(page.locator('h2')).toContainText('Tu Portafolio');
+        await expect(btnEmpezar).toBeVisible();
     });
 
 });

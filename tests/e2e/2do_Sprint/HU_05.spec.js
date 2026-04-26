@@ -22,9 +22,9 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
     }
 
     // ═══════════════════════════════════════════════════════════
-    // TC-26: Verificar campos obligatorios (nombre, apellido y profesión)
+    // TC-25: Verificar campos obligatorios (nombre, apellido y profesión)
     // ═══════════════════════════════════════════════════════════
-    test('TC-26: Verificar campos obligatorios (nombre, apellido y profesión)', async ({ page }) => {
+    test('TC-25: Verificar campos obligatorios (nombre, apellido y profesión)', async ({ page }) => {
         await loginYPerfil(page);
 
         // 1. Vaciar campos obligatorios
@@ -52,9 +52,9 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-27: Verificar campo profesión que sea coherente
+    // TC-26: Verificar campo profesión que sea coherente
     // ═══════════════════════════════════════════════════════════
-    test('TC-27: Verificar campo profesión que sea coherente', async ({ page }) => {
+    test('TC-26: Verificar campo profesión que sea coherente', async ({ page }) => {
         await loginYPerfil(page);
 
         // 1. Verificar que el campo tiene placeholder descriptivo
@@ -80,9 +80,9 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-28: Verificar límite de caracteres en la biografía sin espacios vacíos
+    // TC-27: Verificar límite de caracteres en la biografía sin espacios vacíos
     // ═══════════════════════════════════════════════════════════
-    test('TC-28: Verificar límite de caracteres en la biografía', async ({ page }) => {
+    test('TC-27: Verificar límite de caracteres en la biografía', async ({ page }) => {
         await loginYPerfil(page);
 
         // 1. Verificar que el contador de caracteres es visible
@@ -113,9 +113,9 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-29: Verificar guardado de imagen
+    // TC-28: Verificar guardado de imagen
     // ═══════════════════════════════════════════════════════════
-    test('TC-29: Verificar guardado de imagen', async ({ page }) => {
+    test('TC-28: Verificar guardado de imagen', async ({ page }) => {
         await loginYPerfil(page);
 
         // 1. Verificar que el área de foto existe
@@ -132,9 +132,9 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-30: Verificar formato de foto de perfil
+    // TC-29: Verificar formato de foto de perfil
     // ═══════════════════════════════════════════════════════════
-    test('TC-30: Verificar formato de foto de perfil', async ({ page }) => {
+    test('TC-29: Verificar formato de foto de perfil', async ({ page }) => {
         await loginYPerfil(page);
 
         // 1. Verificar que solo acepta jpg, jpeg, png
@@ -158,9 +158,9 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-31: Verificar peso de la imagen de perfil
+    // TC-30: Verificar peso de la imagen de perfil
     // ═══════════════════════════════════════════════════════════
-    test('TC-31: Verificar peso de la imagen de perfil', async ({ page }) => {
+    test('TC-30: Verificar peso de la imagen de perfil', async ({ page }) => {
         await loginYPerfil(page);
 
         // 1. Simular subida de archivo que excede 2MB
@@ -181,9 +181,9 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-32: Verificar limpieza de datos (XSS)
+    // TC-31: Verificar limpieza de datos (XSS)
     // ═══════════════════════════════════════════════════════════
-    test('TC-32: Verificar limpieza de datos (XSS)', async ({ page }) => {
+    test('TC-31: Verificar limpieza de datos (XSS)', async ({ page }) => {
         await loginYPerfil(page);
 
         const xssPayloads = [
@@ -223,9 +223,9 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-33: Verificar persistencia de cambios
+    // TC-32: Verificar persistencia de cambios
     // ═══════════════════════════════════════════════════════════
-    test('TC-33: Verificar persistencia de cambios', async ({ page }) => {
+    test('TC-32: Verificar persistencia de cambios', async ({ page }) => {
         await loginYPerfil(page);
 
         // 1. Guardar los valores actuales
@@ -267,9 +267,9 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-34: Verificar cancelación de edición
+    // TC-33: Verificar cancelación de edición
     // ═══════════════════════════════════════════════════════════
-    test('TC-34: Verificar cancelación de edición', async ({ page }) => {
+    test('TC-33: Verificar cancelación de edición', async ({ page }) => {
         await loginYPerfil(page);
 
         // 1. Guardar valores originales
@@ -289,9 +289,9 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-35: Verificar feedback de éxito
+    // TC-34: Verificar feedback de éxito
     // ═══════════════════════════════════════════════════════════
-    test('TC-35: Verificar feedback de éxito', async ({ page }) => {
+    test('TC-34: Verificar feedback de éxito', async ({ page }) => {
         await loginYPerfil(page);
 
         // 1. Asegurar que los campos obligatorios tengan valores
@@ -320,9 +320,9 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-36: Verificar previsualización
+    // TC-35: Verificar previsualización
     // ═══════════════════════════════════════════════════════════
-    test('TC-36: Verificar previsualización', async ({ page }) => {
+    test('TC-35: Verificar previsualización', async ({ page }) => {
         await loginYPerfil(page);
 
         // 1. Verificar que el botón "Vista Previa" existe
@@ -359,9 +359,9 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-37: Verificar redundancia de red
+    // TC-36: Verificar redundancia de red
     // ═══════════════════════════════════════════════════════════
-    test('TC-37: Verificar redundancia de red (alerta de reintento)', async ({ page }) => {
+    test('TC-36: Verificar redundancia de red (alerta de reintento)', async ({ page }) => {
         await loginYPerfil(page);
 
         // 1. Verificar que la alerta de reintento existe pero está oculta
@@ -401,9 +401,9 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-38: Verificar la restricción de datos vacíos
+    // TC-37: Verificar la restricción de datos vacíos
     // ═══════════════════════════════════════════════════════════
-    test('TC-38: Verificar la restricción de datos vacíos', async ({ page }) => {
+    test('TC-37: Verificar la restricción de datos vacíos', async ({ page }) => {
         await loginYPerfil(page);
 
         // 1. Vaciar TODOS los campos incluyendo biografía

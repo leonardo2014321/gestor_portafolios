@@ -16,9 +16,9 @@ test.describe('HU-09: Dashboard Principal de Gestión', () => {
     }
 
     // ═══════════════════════════════════════════════════════════
-    // TC-75: Verificar conteo dinámico de tarjetas
+    // TC-79: Verificar conteo dinámico de tarjetas
     // ═══════════════════════════════════════════════════════════
-    test('TC-75: Verificar conteo dinámico de tarjetas', async ({ page }) => {
+    test('TC-79: Verificar conteo dinámico de tarjetas', async ({ page }) => {
         await loginYMenu(page);
 
         // 1. Verificar que las 3 tarjetas de estadísticas están visibles
@@ -42,9 +42,9 @@ test.describe('HU-09: Dashboard Principal de Gestión', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-76: Verificar renderizado de estado vacío
+    // TC-79: Verificar renderizado de estado vacío
     // ═══════════════════════════════════════════════════════════
-    test('TC-76: Verificar renderizado de estado vacío', async ({ page }) => {
+    test('TC-79: Verificar renderizado de estado vacío', async ({ page }) => {
         await loginYMenu(page);
 
         // El dashboard muestra cards de portafolios O un estado vacío
@@ -71,9 +71,9 @@ test.describe('HU-09: Dashboard Principal de Gestión', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-77: Verificar persistencia del Sidebar
+    // TC-79: Verificar persistencia del Sidebar
     // ═══════════════════════════════════════════════════════════
-    test('TC-77: Verificar persistencia del Sidebar', async ({ page }) => {
+    test('TC-79: Verificar persistencia del Sidebar', async ({ page }) => {
         await loginYMenu(page);
 
         // 1. Verificar que el sidebar está visible con todos sus elementos
@@ -102,9 +102,9 @@ test.describe('HU-09: Dashboard Principal de Gestión', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-78: Verificar visualización del calendario
+    // TC-79: Verificar visualización del calendario
     // ═══════════════════════════════════════════════════════════
-    test('TC-78: Verificar visualización del calendario', async ({ page }) => {
+    test('TC-79: Verificar visualización del calendario', async ({ page }) => {
         // Asegurar viewport amplio para que se muestre el panel derecho
         await page.setViewportSize({ width: 1400, height: 900 });
         await loginYMenu(page);
@@ -232,9 +232,9 @@ test.describe('HU-09: Dashboard Principal de Gestión', () => {
     });
 
     // ═══════════════════════════════════════════════════════════
-    // TC-84: Verificar visualización de logs de notificación
+    // TC-83: Verificar visualización de logs de notificación
     // ═══════════════════════════════════════════════════════════
-    test('TC-84: Verificar visualización de logs de notificación', async ({ page }) => {
+    test('TC-83: Verificar visualización de logs de notificación', async ({ page }) => {
         await page.setViewportSize({ width: 1400, height: 900 });
         await loginYMenu(page);
 
