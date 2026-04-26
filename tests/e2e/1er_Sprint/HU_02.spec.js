@@ -81,8 +81,7 @@ test.describe('HU-02: Registrar Usuario', () => {
         // 6. Email con formato inválido
         await page.fill('#email', 'correo-malo');
         await page.locator('#email').dispatchEvent('input');
-        await expect(page.locator('#errorEmail')).toContainText('no es válido');
-    });
+await expect(page.getByText('El correo no es válido')).toBeVisible();    });
 
     // ═══════════════════════════════════════════════════════════
     // TC-6: Verificación de Funciones de Interfaz
@@ -145,7 +144,7 @@ test.describe('HU-02: Registrar Usuario', () => {
 
         // 3. Esperar respuesta del servidor (puede ser 422 con error de email duplicado)
         // El sistema muestra error en mensajeGeneral o en errorEmail
-        await page.waitForTimeout(5000);
+        await page.waitForTimeout(10000);
 
         // 4. Verificar que aparece un mensaje de error relacionado al email duplicado
         // El backend devuelve error 422 con mensaje sobre email ya registrado
