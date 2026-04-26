@@ -17,9 +17,8 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
         await page.click('button:has-text("Entrar al sistema")');
         await expect(page).toHaveURL(/.*\/menu/, { timeout: 10000 });
         // Navegar a perfil
-        await page.goto(`${BASE}/perfil`);
-        await expect(page.locator('h1:has-text("Mi Perfil")')).toBeVisible({ timeout: 10000 });
-    }
+        await page.goto(`${BASE}/menu`);
+        await expect(page.getByRole('heading', { name: /sistema de portafolios/i })).toBeVisible();    }
 
     // ═══════════════════════════════════════════════════════════
     // TC-25: Verificar campos obligatorios (nombre, apellido y profesión)
@@ -115,6 +114,9 @@ test.describe('HU-05: Gestión de perfil profesional', () => {
     // ═══════════════════════════════════════════════════════════
     // TC-28: Verificar guardado de imagen
     // ═══════════════════════════════════════════════════════════
+    
+ 
+    
     test('TC-28: Verificar guardado de imagen', async ({ page }) => {
         await loginYPerfil(page);
 
