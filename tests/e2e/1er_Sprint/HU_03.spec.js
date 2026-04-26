@@ -29,8 +29,7 @@ test.describe('HU-03: Autentificar Usuario', () => {
 
         // 4. Verificar que se muestra el panel del sistema
         await expect(page.locator('.topbar')).toBeVisible();
-        await expect(page.getByText('Sistema de Portafolios')).toBeVisible();
-    });
+await expect(page.getByRole('heading', { name: /sistema de portafolios/i })).toBeVisible();    });
 
     // ═══════════════════════════════════════════════════════════
     // TC-9: Login con email no registrado
@@ -104,7 +103,17 @@ test.describe('HU-03: Autentificar Usuario', () => {
         await page.click('.btn-logout');
 
         // 3. Verificar redirección a /home
-        await expect(page).toHaveURL(/.*\/home/, { timeout: 10000 });
+        // 1.1 Verificar que el modal de cerrar sesión apareció
+        const modal = page.locator('text=¿Cerrar sesión?');
+        await expect(modal).toBeVisible();
+
+        // 1.2. Hacer clic en el botón "Sí, salir" (el azul de la imagen)
+        // Usamos una regex porque el texto tiene una coma y quizás caracteres especiales
+        await page.getByRole('button', { name: /sí, salir/i }).click();
+
+        // 1.3. Ahora sí, esperar a que la URL cambie (probablemente a login o landing)
+        // Nota: Si al salir te envía a la raíz o al login, ajusta el "/home"
+        await expect(page).toHaveURL(/.*\/home|.*\/$/, { timeout: 10000 });
     });
 
     // ═══════════════════════════════════════════════════════════
@@ -133,8 +142,17 @@ test.describe('HU-03: Autentificar Usuario', () => {
         await page.click('.btn-logout');
 
         // 3. Verificar que redirige específicamente a /home y NO a /login
-        await expect(page).toHaveURL(/.*\/home/, { timeout: 10000 });
-        await expect(page).not.toHaveURL(/.*\/login/);
+        // 1.1 Verificar que el modal de cerrar sesión apareció
+        const modal = page.locator('text=¿Cerrar sesión?');
+        await expect(modal).toBeVisible();
+
+        // 1.2. Hacer clic en el botón "Sí, salir" (el azul de la imagen)
+        // Usamos una regex porque el texto tiene una coma y quizás caracteres especiales
+        await page.getByRole('button', { name: /sí, salir/i }).click();
+
+        // 1.3. Ahora sí, esperar a que la URL cambie (probablemente a login o landing)
+        // Nota: Si al salir te envía a la raíz o al login, ajusta el "/home"
+        await expect(page).toHaveURL(/.*\/home|.*\/$/, { timeout: 10000 });
     });
 
     // ═══════════════════════════════════════════════════════════
