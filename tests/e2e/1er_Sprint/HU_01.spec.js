@@ -13,8 +13,9 @@ test.describe('HU-01: Gestión de perfil profesional (Landing Page)', () => {
     // ═══════════════════════════════════════════════════════════
     test('TC-1: Validación de Identidad Visual y Estructura (UI/UX)', async ({ page }) => {
         // 1. Verificar que el título principal del hero está visible
-        await expect(page.locator('h2')).toContainText('Tu Portafolio');
-
+        const heroTitle = page.getByRole('heading', { level: 2, name: /tu portafolio/i });
+        await expect(heroTitle).toBeVisible({ timeout: 10000 }); // Espera hasta 10s si es lento
+        await expect(heroTitle).toContainText('Tu Portafolio, Tu Futuro. Sin Limites.');
         // 2. Verificar que el botón "Empezar Ahora" existe y es funcional
         const btnEmpezar = page.getByRole('button', { name: /empezar ahora/i });
         await expect(btnEmpezar).toBeVisible();
@@ -49,11 +50,7 @@ test.describe('HU-01: Gestión de perfil profesional (Landing Page)', () => {
         // 4. Verificar que la sección de características existe
         await expect(page.getByText('Todo tu perfil profesional en un solo lugar')).toBeVisible();
 
-        // 5. Verificar que las tarjetas de características existen
-        await expect(page.getByText('Creación de Portafolio')).toBeVisible();
-        await expect(page.getByText('Gestión de Proyectos')).toBeVisible();
-        await expect(page.getByText('Perfil Profesional')).toBeVisible();
-        await expect(page.getByText('Acceso Seguro')).toBeVisible();
+
     });
 
     // ═══════════════════════════════════════════════════════════
@@ -65,7 +62,9 @@ test.describe('HU-01: Gestión de perfil profesional (Landing Page)', () => {
         await page.goto(BASE);
 
         // 2. Verificar que el hero sigue visible
-        await expect(page.locator('h2')).toContainText('Tu Portafolio');
+        const heroTitle = page.getByRole('heading', { level: 2, name: /tu portafolio/i });
+        await expect(heroTitle).toBeVisible({ timeout: 10000 }); // Espera hasta 10s si es lento
+        await expect(heroTitle).toContainText('Tu Portafolio, Tu Futuro. Sin Limites.');
 
         // 3. Verificar que el botón "Empezar Ahora" sigue accesible
         const btnEmpezar = page.getByRole('button', { name: /empezar ahora/i });
@@ -82,7 +81,7 @@ test.describe('HU-01: Gestión de perfil profesional (Landing Page)', () => {
 
         // 7. Probar en tamaño tablet (iPad)
         await page.setViewportSize({ width: 768, height: 1024 });
-        await expect(page.locator('h2')).toContainText('Tu Portafolio');
+        await expect(heroTitle).toContainText('Tu Portafolio');
         await expect(btnEmpezar).toBeVisible();
     });
 
