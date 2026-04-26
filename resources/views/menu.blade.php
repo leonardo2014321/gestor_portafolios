@@ -51,7 +51,8 @@
         aside{width:var(--sw);background:var(--navy);flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,0.06)}
         .sb-top{padding:14px 0;flex:1}
         .sb-item{display:flex;align-items:center;gap:11px;padding:10px 20px;cursor:pointer;color:#8ba5c8;font-size:13px;font-weight:400;transition:all .18s;border-left:3px solid transparent;font-family:"DM Sans",sans-serif;text-decoration:none;background:none;border-top:none;border-right:none;border-bottom:none;width:100%}
-        .sb-item:hover{background:rgba(255,255,255,0.05);color:#c8d8ef}
+        .sb-item:hover{background:rgba(255,255,255,0.05);color:#c8d8ef;transform:translateX(4px)}
+        .sb-item{transition:all .18s;}
         .sb-item.active{background:rgba(37,99,235,0.18);color:#fff;border-left-color:#3b82f6;font-weight:600}
         .sb-item svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;flex-shrink:0;stroke-linecap:round;stroke-linejoin:round}
         .sb-div{height:1px;background:rgba(255,255,255,0.06);margin:6px 14px}
@@ -253,12 +254,29 @@
             <div class="sysname">Sansi<span>Folios</span></div>
         </div>
         <nav class="tb-nav">
-            <a href="{{ route('inicio') }}" class="tb-link">Inicio</a>
+            <button onclick="showView('menu')" class="tb-link" style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Inicio</button>
             <button onclick="showView('caracteristicas')" class="tb-link" style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Características</button>
             <button onclick="showView('portafolios')" class="tb-link" style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Portafolios</button>
             <button onclick="showView('explorador')" class="tb-link" style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Explorador</button>
         </nav>
-        <div class="tb-right"></div>
+        <div class="tb-right" style="display:flex;align-items:center;gap:12px;">
+            <div class="tb-bell" style="cursor:pointer;">
+                <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <div class="sb-av">
+                    @if(auth()->user()->foto_perfil)
+                        <img src="{{ asset('storage/' . auth()->user()->foto_perfil) }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+                    @else
+                        {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}
+                    @endif
+                </div>
+                <div>
+                    <div style="font-size:13px;color:#fff;font-weight:600;">{{ auth()->user()->nombre }}</div>
+                    <div style="font-size:11px;color:#8ba5c8;">Conectado</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="body-row">
@@ -278,10 +296,10 @@
                 </a>
 
 
-                <button class="sb-item" id="btn-explorador" onclick="showView('explorador')">
-                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    <span>Académico</span>
-                </button>
+                <a href="{{ route('academico') }}" class="sb-item {{ request()->routeIs('academico') ? 'active' : '' }}">
+    <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+    <span>Académico</span>
+</a>
                 <a href="{{ route('reportes') }}" class="sb-item {{ request()->routeIs('reportes') ? 'active' : '' }}">
                     <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                     <span>Reportes</span>
@@ -292,27 +310,29 @@
                 </a>
             </div>
 
-            <!-- User block bottom -->
-            <div class="sb-user-block">
-                <div class="sb-av">
-                    @if(auth()->user()->foto_perfil)
-                        <img src="{{ asset('storage/' . auth()->user()->foto_perfil) }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
-                    @else
-                        {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}
-                    @endif
-                </div>
-                <div>
-                    <div class="sb-uname">{{ auth()->user()->codigo ?? auth()->user()->nombre }}</div>
-                    <div class="sb-uid">Conectado</div>
-                </div>
-            </div>
-            <form method="POST" action="{{ route('logout') }}">
+            
+            <form method="POST" action="{{ route('logout') }}" id="formLogout">
                 @csrf
-                <button type="submit" class="btn-logout">
+                <button type="button" onclick="confirmarLogout()" class="btn-logout">
                     <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                     <span>Cerrar Sesión</span>
                 </button>
             </form>
+
+            <!-- Modal confirmación logout -->
+            <div id="modalLogout" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;">
+                <div style="background:#fff;border-radius:20px;padding:32px;width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+                   <div style="width:52px;height:52px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round">
+                    </div>
+                    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:#0f172a;margin-bottom:8px;">¿Cerrar sesión?</div>
+                    <div style="font-size:13px;color:#64748b;margin-bottom:24px;">¿Estás seguro que deseas salir de tu cuenta?</div>
+                    <div style="display:flex;gap:10px;">
+                        <button onclick="document.getElementById('modalLogout').style.display='none'" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid #e2e8f0;background:transparent;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Cancelar</button>
+                        <button onclick="document.getElementById('formLogout').submit()" style="flex:1;padding:12px;border-radius:12px;border:none;background:#2563eb;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Sí, salir</button>
+                    </div>
+                </div>
+            </div>
         </aside>
 
         <!-- Main content -->
@@ -331,13 +351,6 @@
                                 <svg viewBox="0 0 24 24" style="stroke:var(--muted)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                                 <input type="text" placeholder="Search" style="color:var(--text);width:140px;">
                             </div>
-                            <div class="tb-bell" style="background:#fff;border:1.5px solid var(--gray2);">
-                                <svg viewBox="0 0 24 24" style="stroke:var(--muted)"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                            </div>
-                            <form method="POST" action="{{ route('logout') }}" style="display:inline">
-                                @csrf
-                                <button type="submit" class="btn-cerrar-ses" style="background:#fff;border:1.5px solid var(--gray2);color:var(--text);">Cerrar Sesión</button>
-                            </form>
                         </div>
                     </div>
 
@@ -460,11 +473,18 @@
                     <div class="exp-filters">
                         <button class="exp-filter active" onclick="expSetFilter(this,'todos')">Todos</button>
                         <button class="exp-filter" onclick="expSetFilter(this,'proyecto')">Proyectos</button>
+                        <button class="exp-filter" onclick="expSetFilter(this,'perfil')">Perfiles</button>
                         <button class="exp-filter" onclick="expSetFilter(this,'documento')">Documentos</button>
                         <button class="exp-filter" onclick="expSetFilter(this,'habilidad')">Habilidades</button>
                     </div>
+
                     <div class="exp-results-bar">
-                        <span class="exp-count" id="expCount">4 Resultados Encontrados</span>
+                        <span class="exp-count" id="expCount">0 Resultados</span>
+                        @if(isset($busquedas) && count($busquedas) > 0)
+                            <span style="background: #dcfce7; color: #166534; padding: 2px 10px; border-radius: 5px; font-size: 11px; font-weight: bold; margin-left: 10px;">
+                                DIFUSION: BASE DE DATOS ACTIVA
+                            </span>
+                        @endif
                         <button class="exp-sort">Ordenar por relevancia<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
                     </div>
                     <div class="exp-grid" id="expGrid"></div>
@@ -727,12 +747,26 @@
     }
 
     /* ══ Explorador ══ */
-    const expCards=[
+    const dbCards = @json($busquedas ?? []);
+    
+    const fallbackCards = [
         {type:"PROYECTO",avClass:"av-blue",avLetter:"P",title:"Programa de Optimización Fiscal 2024",desc:"Iniciativa estratégica para la mejora de flujos de caja institucionales.",tags:["#FINANCE","#FISCAL","#STRATEGY"],cat:"proyecto"},
         {type:"PROYECTO",avClass:"av-green",avLetter:"P",title:"Programa de Desarrollo Ambiental 2020",desc:"Iniciativa estratégica para la mejora del desarrollo ambiental.",tags:["#FINANCE","#LIFE","#STRATEGY"],cat:"proyecto"},
         {type:"HABILIDAD",avClass:"av-orange",avLetter:"H",title:"Programación en PHP / Symfony",desc:"Capacidad funcional en el desarrollo de frameworks para diseño y sistemas.",tags:["#PHP","#BACKEND"],cat:"habilidad",hasUsers:true},
         {type:"DOCUMENTO",avClass:"av-teal",avLetter:"D",title:"Protocolos de Seguridad Interna V2",desc:"Documentación técnica sobre buenas prácticas en encriptación.",tags:["#SECURITY","#PDF"],cat:"documento"},
     ];
+
+    const expCards = dbCards.length > 0 ? dbCards.map(c => ({
+        type: (c.tipo || 'S/T').toUpperCase(),
+        avClass: c.avatar_class || 'av-blue',
+        avLetter: c.avatar_letter || '?',
+        title: c.titulo || 'Sin título',
+        desc: c.descripcion || 'Sin descripción',
+        tags: Array.isArray(c.tags) ? c.tags : (typeof c.tags === 'string' ? JSON.parse(c.tags || '[]') : []),
+        cat: c.tipo || 'otros',
+        hasUsers: !!c.has_users
+    })) : fallbackCards;
+
     let expActiveFilter='todos';
 
     function expHL(text){
@@ -763,7 +797,13 @@
 
     function expFilter(){
         const q=document.getElementById('expSearch').value.toLowerCase();
-        expRender(expCards.filter(c=>(c.title.toLowerCase().includes(q)||c.desc.toLowerCase().includes(q))&&(expActiveFilter==='todos'||c.cat===expActiveFilter)));
+        expRender(expCards.filter(c => {
+            const matchText = c.title.toLowerCase().includes(q) || 
+                              c.desc.toLowerCase().includes(q) || 
+                              (c.tags && c.tags.some(t => t.toLowerCase().includes(q)));
+            const matchCat = expActiveFilter === 'todos' || c.cat === expActiveFilter;
+            return matchText && matchCat;
+        }));
     }
 
     function expSetFilter(btn,cat){
@@ -802,6 +842,9 @@
     renderCal();
 
     document.getElementById('btn-menu').classList.add('active');
+    function confirmarLogout(){
+        document.getElementById('modalLogout').style.display='flex';
+    }
 </script>
 </body>
 </html>

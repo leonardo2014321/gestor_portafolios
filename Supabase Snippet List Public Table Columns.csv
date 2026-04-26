@@ -1,0 +1,101 @@
+informacion
+TABLA: usuarios
+TABLA: usuario_roles
+TABLA: users
+TABLA: tokens_recuperacion
+TABLA: sessions
+TABLA: sesiones_usuario
+TABLA: roles
+TABLA: redes_perfil
+TABLA: portafolios
+TABLA: password_reset_tokens
+TABLA: migrations
+TABLA: jobs
+TABLA: job_batches
+TABLA: habilidades
+TABLA: formaciones
+TABLA: failed_jobs
+TABLA: experiencias
+TABLA: certificaciones
+TABLA: cache_locks
+TABLA: cache
+TABLA: actividades_log
+"  Columna: visible | Tipo: boolean"
+"  Columna: value | Tipo: text"
+"  Columna: uuid | Tipo: character varying"
+"  Columna: usuario_id | Tipo: integer"
+"  Columna: usuario_id | Tipo: integer"
+"  Columna: usuario_id | Tipo: integer"
+"  Columna: usuario_id | Tipo: integer"
+"  Columna: usuario_id | Tipo: integer"
+"  Columna: usuario_id | Tipo: integer"
+"  Columna: usuario_id | Tipo: bigint"
+"  Columna: usuario_id | Tipo: bigint"
+"  Columna: usuario_id | Tipo: bigint"
+"  Columna: usuario_id | Tipo: bigint"
+"  Columna: user_id | Tipo: bigint"
+"  Columna: user_agent | Tipo: text"
+"  Columna: user_agent | Tipo: text"
+"  Columna: user_agent | Tipo: text"
+"  Columna: usado | Tipo: boolean"
+"  Columna: url | Tipo: text"
+"  Columna: updated_at | Tipo: timestamp without time zone"
+"  Columna: updated_at | Tipo: timestamp without time zone"
+"  Columna: updated_at | Tipo: timestamp without time zone"
+"  Columna: updated_at | Tipo: timestamp without time zone"
+"  Columna: updated_at | Tipo: timestamp without time zone"
+"  Columna: updated_at | Tipo: timestamp without time zone"
+"  Columna: updated_at | Tipo: timestamp without time zone"
+"  Columna: total_jobs | Tipo: integer"
+"  Columna: token | Tipo: character varying"
+"  Columna: token | Tipo: character varying"
+"  Columna: token | Tipo: character varying"
+"  Columna: titulo | Tipo: character varying"
+"  Columna: tipo | Tipo: character varying"
+"  Columna: rol_id | Tipo: integer"
+"  Columna: reserved_at | Tipo: integer"
+"  Columna: remember_token | Tipo: character varying"
+"  Columna: queue | Tipo: text"
+"  Columna: queue | Tipo: character varying"
+"  Columna: profesion | Tipo: character varying"
+"  Columna: pending_jobs | Tipo: integer"
+"  Columna: payload | Tipo: text"
+"  Columna: payload | Tipo: text"
+"  Columna: payload | Tipo: text"
+"  Columna: password | Tipo: character varying"
+"  Columna: owner | Tipo: character varying"
+"  Columna: organizacion | Tipo: character varying"
+"  Columna: options | Tipo: text"
+"  Columna: nombre | Tipo: character varying"
+"  Columna: nombre | Tipo: character varying"
+"  Columna: nombre | Tipo: character varying"
+"  Columna: nombre | Tipo: character varying"
+"  Columna: nombre | Tipo: character varying"
+"  Columna: nivel | Tipo: character varying"
+"  Columna: nivel | Tipo: character varying"
+"  Columna: name | Tipo: character varying"
+"  Columna: name | Tipo: character varying"
+"  Columna: migration | Tipo: character varying"
+"  Columna: last_activity | Tipo: integer"
+"  Columna: key | Tipo: character varying"
+"  Columna: key | Tipo: character varying"
+"  Columna: ip_address | Tipo: inet"
+"  Columna: ip_address | Tipo: inet"
+"  Columna: ip_address | Tipo: character varying"
+"  Columna: institucion | Tipo: character varying"
+"  Columna: id | Tipo: integer"
+"  Columna: id | Tipo: integer"
+"  Columna: id | Tipo: integer"
+"  Columna: id | Tipo: integer"
+"  Columna: id | Tipo: integer"
+"  Columna: id | Tipo: integer"
+"  Columna: id | Tipo: integer"
+"  Columna: id | Tipo: character varying"
+"  Columna: id | Tipo: character varying"
+"  Columna: id | Tipo: bigint"
+"  Columna: id | Tipo: bigint"
+"  Columna: id | Tipo: bigint"
+"  Columna: id | Tipo: bigint"
+"  Columna: id | Tipo: bigint"
+"  Columna: id | Tipo: bigint"
+"  Columna: id | Tipo: bigint"
