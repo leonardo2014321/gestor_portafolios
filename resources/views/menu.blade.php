@@ -198,12 +198,24 @@
         .cal-nav:hover{background:var(--gray2)}
         .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
         .cdn{font-size:9.5px;color:var(--muted);text-align:center;padding:3px 0;font-weight:700}
-        .cd{font-size:11.5px;text-align:center;padding:4px 2px;border-radius:6px;cursor:pointer;transition:background .15s;color:var(--text)}
+        .cd{font-size:11.5px;text-align:center;padding:4px 2px;border-radius:6px;cursor:pointer;transition:background .15s;color:var(--text);position:relative;}
         .cd:hover{background:var(--gray)}
         .cd.today{background:var(--blue);color:#fff;font-weight:700}
         .cd.other{color:var(--gray3)}
-        .cd.ev{position:relative}
         .cd.ev::after{content:"";position:absolute;bottom:1px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--teal)}
+        
+        /* ── Nuevos estilos Calendario ── */
+        .cal-view-selector{margin-left:auto;margin-right:10px;padding:3px 6px;border-radius:6px;border:1px solid var(--gray2);background:#fff;font-size:11px;font-family:"DM Sans",sans-serif;color:var(--text);outline:none;cursor:pointer;}
+        .cd.holiday{color:#ef4444;font-weight:700;}
+        .cd.holiday::before{content:'';position:absolute;top:2px;right:2px;width:4px;height:4px;border-radius:50%;background:#ef4444;}
+        .cal-grid-meses{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;padding:0 5px;}
+        .cal-grid-anios{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:10px;}
+        .cm-btn{font-size:12px;padding:12px 0;text-align:center;border-radius:8px;cursor:pointer;background:var(--gray);transition:all .15s;color:var(--text);font-weight:600;}
+        .cm-btn:hover{background:#e2e8f0;color:var(--blue);}
+        .cm-btn.current{background:var(--blue);color:#fff;}
+        .cm-btn.other{opacity:0.5;}
+        .row-week{display:contents;}
+        .row-week:hover > .cd{background:#eff6ff;color:var(--blue);}
         .rp-ttl{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:9px;display:flex;align-items:center;gap:6px}
         .rp-ttl svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
         .notif{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid #f8fafc}
@@ -598,17 +610,24 @@
         <!-- Right panel -->
         <div class="rpanel">
             <div class="rp-sec">
-                <div class="cal-hd">
-                    <div class="cal-month" id="cal-title">Abril 2026</div>
+                <div class="cal-hd" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+                    <div class="cal-month" id="cal-title" style="flex:1;">Abril 2026</div>
+                    <select class="cal-view-selector" id="cal-view-sel" onchange="changeCalView(this.value)" style="margin:0;">
+                        <option value="dias">Días</option>
+                        <option value="semanas">Semanas</option>
+                        <option value="meses">Meses</option>
+                        <option value="anios">Años</option>
+                    </select>
                     <div class="cal-navs">
                         <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
                         <button class="cal-nav" onclick="changeMonth(1)">›</button>
                     </div>
                 </div>
-                <div class="cal-grid" id="cal-grid">
-
-                <div class="cdn">Do</div><div class="cdn">Lu</div><div class="cdn">Ma</div>
-                    <div class="cdn">Mi</div><div class="cdn">Ju</div><div class="cdn">Vi</div><div class="cdn">Sá</div>
+                <div id="cal-grid-container">
+                    <div class="cal-grid" id="cal-grid">
+                        <div class="cdn">Do</div><div class="cdn">Lu</div><div class="cdn">Ma</div>
+                        <div class="cdn">Mi</div><div class="cdn">Ju</div><div class="cdn">Vi</div><div class="cdn">Sá</div>
+                    </div>
                 </div>
             </div>
             <div class="rp-sec">
@@ -815,30 +834,120 @@
     expRender(expCards);
 
     /* ══ Calendario ══ */
-    let cur=new Date();
-    function renderCal(){
-        const y=cur.getFullYear(),m=cur.getMonth();
-        const months=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-        document.getElementById("cal-title").textContent=months[m]+" "+y;
-        const grid=document.getElementById("cal-grid");
-        while(grid.children.length>7) grid.removeChild(grid.lastChild);
-        const first=new Date(y,m,1).getDay();
-        const days=new Date(y,m+1,0).getDate();
-        const today=new Date();
-        for(let i=0;i<first;i++){
-            const prev=new Date(y,m,0).getDate()-first+i+1;
-            const d=document.createElement("div");d.className="cd other";d.textContent=prev;grid.appendChild(d);
+    let cur = new Date();
+    let currentCalView = 'dias';
+    
+    // Feriados y Fechas Cívicas de Bolivia (Formato: DD-MM)
+    const boliviaHolidays = {
+        "01-01": "Año Nuevo",
+        "22-01": "Día del Estado Plurinacional",
+        "19-03": "Día del Padre",
+        "12-04": "Día del Niño",
+        "01-05": "Día del Trabajo",
+        "27-05": "Día de la Madre",
+        "21-06": "Año Nuevo Aymara",
+        "06-08": "Día de la Independencia",
+        "17-08": "Día de la Bandera",
+        "21-09": "Día de la Primavera y del Estudiante",
+        "11-10": "Día de la Mujer Boliviana",
+        "02-11": "Día de los Difuntos",
+        "25-12": "Navidad"
+    };
+
+    function changeCalView(view) {
+        currentCalView = view;
+        renderCal();
+    }
+
+    function renderCal() {
+        const y = cur.getFullYear(), m = cur.getMonth();
+        const months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+        const gridContainer = document.getElementById("cal-grid-container");
+        
+        if (currentCalView === 'dias' || currentCalView === 'semanas') {
+            document.getElementById("cal-title").textContent = months[m] + " " + y;
+            let html = `<div class="cal-grid" id="cal-grid">
+                <div class="cdn">Do</div><div class="cdn">Lu</div><div class="cdn">Ma</div>
+                <div class="cdn">Mi</div><div class="cdn">Ju</div><div class="cdn">Vi</div><div class="cdn">Sá</div>`;
+            
+            const first = new Date(y, m, 1).getDay();
+            const days = new Date(y, m + 1, 0).getDate();
+            const today = new Date();
+            
+            let dayCount = 0;
+            if (currentCalView === 'semanas') html += `<div class="row-week">`;
+
+            for(let i=0; i<first; i++) {
+                const prev = new Date(y, m, 0).getDate() - first + i + 1;
+                html += `<div class="cd other">${prev}</div>`;
+                dayCount++;
+            }
+            
+            for(let i=1; i<=days; i++) {
+                if (currentCalView === 'semanas' && dayCount % 7 === 0) {
+                    html += `</div><div class="row-week">`;
+                }
+                
+                let cls = "cd";
+                let titleAttr = "";
+                if(y === today.getFullYear() && m === today.getMonth() && i === today.getDate()) cls += " today";
+                
+                const k = keyFecha(i, m, y);
+                if(eventos[k] && eventos[k].length > 0) cls += " ev";
+                
+                // Verificar feriados
+                const monthStr = (m + 1).toString().padStart(2, '0');
+                const dayStr = i.toString().padStart(2, '0');
+                const holidayKey = `${dayStr}-${monthStr}`;
+                if(boliviaHolidays[holidayKey]) {
+                    cls += " holiday";
+                    titleAttr = `title="Feriado: ${boliviaHolidays[holidayKey]}"`;
+                }
+
+                html += `<div class="${cls}" ${titleAttr} style="cursor:pointer;" onclick="abrirModal(${i},${m},${y})">${i}</div>`;
+                dayCount++;
+            }
+            
+            if (currentCalView === 'semanas') html += `</div>`;
+            html += `</div>`;
+            gridContainer.innerHTML = html;
+        } 
+        else if (currentCalView === 'meses') {
+            document.getElementById("cal-title").textContent = y;
+            let html = `<div class="cal-grid-meses">`;
+            months.forEach((mes, idx) => {
+                let cls = "cm-btn";
+                if(y === new Date().getFullYear() && idx === new Date().getMonth()) cls += " current";
+                html += `<div class="${cls}" onclick="cur.setMonth(${idx}); document.getElementById('cal-view-sel').value='dias'; changeCalView('dias');">${mes.substring(0,3)}</div>`;
+            });
+            html += `</div>`;
+            gridContainer.innerHTML = html;
         }
-        for(let i=1;i<=days;i++){
-            const d=document.createElement("div");
-            let cls="cd";
-            if(y===today.getFullYear()&&m===today.getMonth()&&i===today.getDate()) cls+=" today";
-            const k=keyFecha(i,m,y);
-            if(eventos[k]&&eventos[k].length>0&&!cls.includes('ev')) cls+=" ev";
-            d.className=cls;d.textContent=i;d.style.cursor='pointer';d.onclick=()=>abrirModal(i,m,y);grid.appendChild(d);
+        else if (currentCalView === 'anios') {
+            const startDecade = Math.floor(y / 10) * 10;
+            document.getElementById("cal-title").textContent = `${startDecade} - ${startDecade + 9}`;
+            let html = `<div class="cal-grid-anios">`;
+            for(let i = startDecade - 1; i <= startDecade + 10; i++) {
+                let cls = "cm-btn";
+                if(i === new Date().getFullYear()) cls += " current";
+                if(i < startDecade || i > startDecade + 9) cls += " other";
+                html += `<div class="${cls}" onclick="cur.setFullYear(${i}); document.getElementById('cal-view-sel').value='meses'; changeCalView('meses');">${i}</div>`;
+            }
+            html += `</div>`;
+            gridContainer.innerHTML = html;
         }
     }
-    function changeMonth(dir){cur.setMonth(cur.getMonth()+dir);renderCal();}
+
+    function changeMonth(dir) {
+        if(currentCalView === 'dias' || currentCalView === 'semanas') {
+            cur.setMonth(cur.getMonth() + dir);
+        } else if(currentCalView === 'meses') {
+            cur.setFullYear(cur.getFullYear() + dir);
+        } else if(currentCalView === 'anios') {
+            cur.setFullYear(cur.getFullYear() + (dir * 10));
+        }
+        renderCal();
+    }
     renderCal();
 
     document.getElementById('btn-menu').classList.add('active');
