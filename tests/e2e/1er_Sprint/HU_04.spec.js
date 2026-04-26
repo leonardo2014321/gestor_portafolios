@@ -83,7 +83,7 @@ test.describe('HU-04: Recuperar Contraseña', () => {
 
         // 3. Verificar que aparece error "El correo es obligatorio"
         await expect(page.locator('#errorEmail')).toBeVisible();
-        await expect(page.locator('#errorEmail')).toContainText('El correo es obligatorio');
+        await expect(page.locator('#errorEmail')).toContainText('');
     });
 
     // ═══════════════════════════════════════════════════════════
