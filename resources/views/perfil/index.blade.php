@@ -102,7 +102,7 @@
         .field-err.show{display:block}
 
         /* Textarea */
-        textarea.field{resize:vertical;min-height:110px;line-height:1.5}
+        textarea.field{resize:vertical;min-height:110px;line-height:1.5;word-break:break-word;overflow-wrap:break-word;white-space:pre-wrap}
         .bio-footer{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
         .bio-counter{font-size:11.5px;color:var(--muted);font-weight:500}
         .bio-counter.over{color:var(--red);font-weight:700}
@@ -239,7 +239,7 @@
         .preview-av img{width:100%;height:100%;object-fit:cover}
         .preview-name{font-family:"Plus Jakarta Sans",sans-serif;font-size:18px;font-weight:800}
         .preview-prof{font-size:13px;color:#93c5fd;margin-top:3px;font-weight:500}
-        .preview-bio{font-size:13px;color:#cbd5e1;margin-top:10px;line-height:1.6;white-space:pre-wrap}
+        .preview-bio{font-size:13px;color:#cbd5e1;margin-top:10px;line-height:1.6;white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word}
         .preview-lbl{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#5a7fa0;margin-bottom:10px}
 
         /* Footer */

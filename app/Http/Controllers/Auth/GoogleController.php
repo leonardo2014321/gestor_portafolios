@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Usuario;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -16,13 +17,19 @@ class GoogleController extends Controller
 
     public function callback()
     {
-        $googleUser = Socialite::driver('google')->user();
+        $googleUser = Socialite::driver('google')
+            ->setHttpClient(new Client(['verify' => base_path('cacert.pem')]))
+            ->user();
+
+        $nombre = $googleUser->getName() ?? $googleUser->getNickname() ?? 'Usuario';
 
         $user = Usuario::updateOrCreate(
             ['email' => $googleUser->getEmail()],
             [
-                'name'     => $googleUser->getName(),
-                'password' => bcrypt(uniqid()),
+                'nombre'           => $nombre,
+                'contrasena'       => bcrypt(uniqid()),
+                'email_verificado' => true,
+                'activo'           => true,
             ]
         );
 
