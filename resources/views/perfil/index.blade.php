@@ -514,6 +514,7 @@
                     <button class="tray-tab" onclick="switchTab('experiencia')">Experiencia</button>
                     <button class="tray-tab" onclick="switchTab('formacion')">Formación</button>
                     <button class="tray-tab" onclick="switchTab('certificacion')">Certificaciones</button>
+                    <button class="tray-tab" onclick="switchTab('redes')">Redes</button>
                 </div>
 
                 <div class="tray-body">
@@ -717,6 +718,8 @@
                     </div>
 
                 </div>{{-- end tray-body --}}
+                 {{-- Tab: Redes --}}
+                 @include('perfil._tab_redes')
             </div>
         </div>
 
@@ -1745,5 +1748,6 @@ function updateForTitulo() {
     document.getElementById('errForNivel').classList.remove('show');
 }
 </script>
+@include('perfil._script_redes')
 </body>
 </html>
