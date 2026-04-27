@@ -630,10 +630,23 @@
                                 <span class="tray-err" id="errForInstitucion">La institución es obligatoria.</span>
                             </div>
                             <div class="tray-fg">
-                                <label>Título / Grado</label>
-                                <input type="text" id="forTitulo" placeholder="Ej: Ingeniería en Sistemas..." maxlength="200" oninput="charCheck(this,'errForTitulo')">
-                                <span class="tray-err" id="errForTitulo"></span>
-                            </div>
+    <label>Nivel de grado <span class="req">*</span></label>
+    <select id="forNivel" onchange="updateForTitulo()">
+        <option value="">Selecciona un nivel...</option>
+        <option value="Primaria / Secundaria">Primaria / Secundaria</option>
+        <option value="Técnico / Técnico Superior">Técnico / Técnico Superior</option>
+        <option value="Pregrado">Pregrado (Licenciatura, Ingeniería)</option>
+        <option value="Postgrado">Postgrado (Especialización, Maestría, Doctorado)</option>
+        <option value="Curso / Diplomado">Curso / Diplomado</option>
+    </select>
+    <span class="tray-err" id="errForNivel">El nivel es obligatorio.</span>
+</div>
+<div class="tray-fg" id="fgForTitulo" style="display:none">
+    <label>Título / Especialidad</label>
+    <input type="text" id="forTitulo" placeholder="" maxlength="200" oninput="charCheck(this,'errForTitulo')">
+    <span class="hint" id="forTituloHint" style="font-size:11px;color:var(--muted);margin-top:2px"></span>
+    <span class="tray-err" id="errForTitulo"></span>
+</div>
                             <div class="tray-row">
                                 <div class="tray-fg">
                                     <label>Fecha inicio <span class="req">*</span></label>
@@ -1434,115 +1447,128 @@
 
     // --- FORMACIÓN ---
     function addFormacion() {
-        const inst   = document.getElementById('forInstitucion').value.trim();
-        const titulo = document.getElementById('forTitulo').value.trim();
-        const inicio = document.getElementById('forInicio').value;
-        const fin    = document.getElementById('forFin').value || null;
+    const nivel  = document.getElementById('forNivel').value;
+    const inst   = document.getElementById('forInstitucion').value.trim();
+    const titulo = document.getElementById('forTitulo').value.trim();
+    const inicio = document.getElementById('forInicio').value;
+    const fin    = document.getElementById('forFin').value || null;
 
-        let valid = true;
-        ['errForInstitucion','errForInicio','errForFin'].forEach(id => document.getElementById(id)?.classList.remove('show'));
-        if (!inst)  { document.getElementById('errForInstitucion').classList.add('show'); valid = false; }
-        else if (!charCheck(document.getElementById('forInstitucion'), 'errForInstitucion')) { valid = false; }
-        if (!inicio){ document.getElementById('errForInicio').classList.add('show'); valid = false; }
-        if (fin && inicio && fin < inicio) { document.getElementById('errForFin').classList.add('show'); valid = false; }
-        if (titulo && !charCheck(document.getElementById('forTitulo'), 'errForTitulo')) { valid = false; }
-        if (!valid) return;
+    let valid = true;
+    ['errForInstitucion','errForNivel','errForInicio','errForFin'].forEach(id => document.getElementById(id)?.classList.remove('show'));
+    if (!inst)  { document.getElementById('errForInstitucion').classList.add('show'); valid = false; }
+    else if (!charCheck(document.getElementById('forInstitucion'), 'errForInstitucion')) { valid = false; }
+    if (!nivel) { document.getElementById('errForNivel').classList.add('show'); valid = false; }
+    if (!inicio){ document.getElementById('errForInicio').classList.add('show'); valid = false; }
+    if (fin && inicio && fin < inicio) { document.getElementById('errForFin').classList.add('show'); valid = false; }
+    if (titulo && !charCheck(document.getElementById('forTitulo'), 'errForTitulo')) { valid = false; }
+    if (!valid) return;
 
-        const isEdit = editing.formaciones !== null;
-        pedirConfirm(
-            isEdit ? '¿Guardar cambios?' : '¿Agregar formación?',
-            isEdit ? `Se actualizarán los datos de "${inst}".` : `Se añadirá "${inst}" a tu formación académica.`,
-            isEdit ? 'Guardar' : 'Agregar',
-            () => _doFormacion(inst, titulo, inicio, fin)
-        );
-    }
+    const isEdit = editing.formaciones !== null;
+    pedirConfirm(
+        isEdit ? '¿Guardar cambios?' : '¿Agregar formación?',
+        isEdit ? `Se actualizarán los datos de "${inst}".` : `Se añadirá "${inst}" a tu formación académica.`,
+        isEdit ? 'Guardar' : 'Agregar',
+        () => _doFormacion(inst, nivel, titulo, inicio, fin)
+    );
+}
+    function _doFormacion(inst, nivel, titulo, inicio, fin) {
+    const isEdit = editing.formaciones !== null;
+    const id = editing.formaciones;
+    const btn = document.querySelector('#pane-formacion .btn-save');
+    btn.classList.add('loading'); btn.disabled = true;
+    ocultarAlertaTray();
 
-    function _doFormacion(inst, titulo, inicio, fin) {
-        const isEdit = editing.formaciones !== null;
-        const id = editing.formaciones;
-        const btn = document.querySelector('#pane-formacion .btn-save');
-        btn.classList.add('loading'); btn.disabled = true;
-        ocultarAlertaTray();
+    const url    = isEdit ? '/trayectoria/formaciones/' + id : '/trayectoria/formaciones';
+    const method = isEdit ? 'PUT' : 'POST';
 
-        const url    = isEdit ? '/trayectoria/formaciones/' + id : '/trayectoria/formaciones';
-        const method = isEdit ? 'PUT' : 'POST';
+    const action = () => fetch(url, {
+        method,
+        headers: { 'X-CSRF-TOKEN': CSRF(), 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ institucion: inst, nivel: nivel, titulo: titulo || null, fecha_inicio: inicio, fecha_fin: fin }),
+    })
+    .then(r => r.json().then(j => ({ status: r.status, body: j })))
+    .then(({ status, body }) => {
+        btn.classList.remove('loading'); btn.disabled = false;
+        if (status !== 200 && status !== 201) throw new Error();
+        if (isEdit) {
+            const idx = trayData.formaciones.findIndex(f => f.id === id);
+            if (idx !== -1) trayData.formaciones[idx] = body;
+        } else {
+            trayData.formaciones.unshift(body);
+        }
+        renderFormaciones();
+        cancelEditFormacion();
+    })
+    .catch(() => { btn.classList.remove('loading'); btn.disabled = false; lastTrayAction = action; mostrarAlertaTray(); });
 
-        const action = () => fetch(url, {
-            method,
-            headers: { 'X-CSRF-TOKEN': CSRF(), 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ institucion: inst, titulo: titulo || null, fecha_inicio: inicio, fecha_fin: fin }),
-        })
-        .then(r => r.json().then(j => ({ status: r.status, body: j })))
-        .then(({ status, body }) => {
-            btn.classList.remove('loading'); btn.disabled = false;
-            if (status !== 200 && status !== 201) throw new Error();
-            if (isEdit) {
-                const idx = trayData.formaciones.findIndex(f => f.id === id);
-                if (idx !== -1) trayData.formaciones[idx] = body;
-            } else {
-                trayData.formaciones.unshift(body);
-            }
-            renderFormaciones();
-            cancelEditFormacion();
-        })
-        .catch(() => { btn.classList.remove('loading'); btn.disabled = false; lastTrayAction = action; mostrarAlertaTray(); });
-
-        lastTrayAction = action;
-        action();
-    }
-
+    lastTrayAction = action;
+    action();
+}
     function editFormacion(id) {
-        const f = trayData.formaciones.find(x => x.id === id);
-        if (!f) return;
-        editing.formaciones = id;
-        document.getElementById('forInstitucion').value = f.institucion || '';
-        document.getElementById('forTitulo').value      = f.titulo      || '';
-        document.getElementById('forInicio').value      = f.fecha_inicio ? f.fecha_inicio.substring(0,10) : '';
-        document.getElementById('forFin').value         = f.fecha_fin   ? f.fecha_fin.substring(0,10)   : '';
-        document.getElementById('titleFor').textContent = 'Editar formación académica';
-        document.getElementById('formFor').classList.add('editing');
-        document.getElementById('cancelEditFor').classList.add('show');
-        document.querySelector('#pane-formacion .btn-save .btn-label').textContent = 'Guardar cambios';
-        document.getElementById('formFor').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
+    const f = trayData.formaciones.find(x => x.id === id);
+    if (!f) return;
+    editing.formaciones = id;
+    document.getElementById('forInstitucion').value = f.institucion || '';
+    document.getElementById('forNivel').value        = f.nivel       || '';
+    updateForTitulo();
+    document.getElementById('forTitulo').value       = f.titulo      || '';
+    document.getElementById('forInicio').value       = f.fecha_inicio ? f.fecha_inicio.substring(0,10) : '';
+    document.getElementById('forFin').value          = f.fecha_fin   ? f.fecha_fin.substring(0,10)   : '';
+    document.getElementById('titleFor').textContent  = 'Editar formación académica';
+    document.getElementById('formFor').classList.add('editing');
+    document.getElementById('cancelEditFor').classList.add('show');
+    document.querySelector('#pane-formacion .btn-save .btn-label').textContent = 'Guardar cambios';
+    document.getElementById('formFor').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
 
     function cancelEditFormacion() {
-        editing.formaciones = null;
-        ['forInstitucion','forTitulo','forInicio','forFin'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-        document.getElementById('titleFor').textContent = 'Agregar formación académica';
-        document.getElementById('formFor').classList.remove('editing');
-        document.getElementById('cancelEditFor').classList.remove('show');
-        document.querySelector('#pane-formacion .btn-save .btn-label').textContent = 'Agregar';
-        ['errForInstitucion','errForTitulo','errForInicio','errForFin'].forEach(id => document.getElementById(id)?.classList.remove('show'));
-    }
+    editing.formaciones = null;
+    ['forInstitucion','forTitulo','forInicio','forFin'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    document.getElementById('forNivel').value = '';
+    updateForTitulo();
+    document.getElementById('titleFor').textContent = 'Agregar formación académica';
+    document.getElementById('formFor').classList.remove('editing');
+    document.getElementById('cancelEditFor').classList.remove('show');
+    document.querySelector('#pane-formacion .btn-save .btn-label').textContent = 'Agregar';
+    ['errForInstitucion','errForNivel','errForTitulo','errForInicio','errForFin'].forEach(id => document.getElementById(id)?.classList.remove('show'));
+}
 
     function renderFormaciones() {
-        const list = document.getElementById('listFormaciones');
-        if (!trayData.formaciones.length) {
-            list.innerHTML = '<div class="empty-state">Aún no tienes formaciones registradas.</div>';
-            return;
-        }
-        list.innerHTML = trayData.formaciones.map(f => {
-            const finLabel = f.fecha_fin ? f.fecha_fin.substring(0,7) : 'En curso';
-            const periodo  = f.fecha_inicio ? f.fecha_inicio.substring(0,7) + ' — ' + finLabel : '';
-            return `
-            <div class="item-card">
-                <div class="item-card-body">
-                    <strong>${escH(f.institucion)}</strong>
-                    ${f.titulo ? `<span>${escH(f.titulo)}</span>` : ''}
-                    <span style="margin-top:2px">${escH(periodo)}</span>
-                </div>
-                <div class="item-card-actions">
-                    <button class="btn-edit-item" onclick="editFormacion(${f.id})" title="Editar">
-                        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                    </button>
-                    <button class="btn-del-item" onclick="pedirDel('formaciones',${f.id})" title="Eliminar">
-                        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-                    </button>
-                </div>
-            </div>`;
-        }).join('');
+    const list = document.getElementById('listFormaciones');
+    if (!trayData.formaciones.length) {
+        list.innerHTML = '<div class="empty-state">Aún no tienes formaciones registradas.</div>';
+        return;
     }
+    const nivelBadge = {
+        'Primaria / Secundaria':        'badge-p',
+        'Técnico / Técnico Superior':   'badge-i',
+        'Pregrado':                     'badge-a',
+        'Postgrado':                    'badge-a',
+        'Curso / Diplomado':            'badge-p',
+    };
+    list.innerHTML = trayData.formaciones.map(f => {
+        const finLabel = f.fecha_fin ? f.fecha_fin.substring(0,7) : 'En curso';
+        const periodo  = f.fecha_inicio ? f.fecha_inicio.substring(0,7) + ' — ' + finLabel : '';
+        const badge    = nivelBadge[f.nivel] || 'badge-p';
+        return `
+        <div class="item-card">
+            <div class="item-card-body">
+                <strong>${escH(f.institucion)}</strong>
+                ${f.nivel   ? `<span class="item-badge ${badge}">${escH(f.nivel)}</span>` : ''}
+                ${f.titulo  ? `<span>${escH(f.titulo)}</span>` : ''}
+                <span style="margin-top:2px">${escH(periodo)}</span>
+            </div>
+            <div class="item-card-actions">
+                <button class="btn-edit-item" onclick="editFormacion(${f.id})" title="Editar">
+                    <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+                <button class="btn-del-item" onclick="pedirDel('formaciones',${f.id})" title="Eliminar">
+                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                </button>
+            </div>
+        </div>`;
+    }).join('');
+}
 
     // --- CERTIFICACIONES ---
     function addCertificacion() {
@@ -1698,6 +1724,26 @@
         if (!str) return '';
         return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
+    const FOR_TITULO_HINTS = {
+    'Primaria / Secundaria':        ['Ej: Bachillerato, 6to de Secundaria...', 'Nivel o año completado (opcional)'],
+    'Técnico / Técnico Superior':   ['Ej: Técnico en Electricidad Industrial...', 'Nombre de la carrera técnica'],
+    'Pregrado':                     ['Ej: Ingeniería de Sistemas, Lic. en Administración...', 'Nombre completo de la carrera'],
+    'Postgrado':                    ['Ej: Maestría en Ciencias de Datos, Doctorado en Física...', 'Nombre del postgrado'],
+    'Curso / Diplomado':            ['Ej: Diplomado en Marketing Digital, Curso de AWS...', 'Nombre del curso o diplomado'],
+};
+
+function updateForTitulo() {
+    const val  = document.getElementById('forNivel').value;
+    const fg   = document.getElementById('fgForTitulo');
+    const inp  = document.getElementById('forTitulo');
+    const hint = document.getElementById('forTituloHint');
+    if (!val) { fg.style.display = 'none'; inp.value = ''; return; }
+    fg.style.display = 'flex';
+    const [placeholder, hintText] = FOR_TITULO_HINTS[val] || ['', ''];
+    inp.placeholder = placeholder;
+    hint.textContent = hintText;
+    document.getElementById('errForNivel').classList.remove('show');
+}
 </script>
 </body>
 </html>
