@@ -165,53 +165,67 @@ class TrayectoriaController extends Controller
     }
 
     public function storeFormacion(Request $request)
-    {
-        $data = $request->validate([
-            'institucion'  => ['required', 'string', 'max:200', $this->notRegex()],
-            'titulo'       => ['nullable', 'string', 'max:200', $this->notRegex()],
-            'fecha_inicio' => 'required|date',
-            'fecha_fin'    => 'nullable|date|after_or_equal:fecha_inicio',
-        ], [
-            'institucion.not_regex' => 'La institución contiene caracteres no permitidos.',
-            'titulo.not_regex'      => 'El título contiene caracteres no permitidos.',
-            'fecha_fin.after_or_equal' => 'La fecha de fin no puede ser anterior a la de inicio.',
-        ]);
-
-        $formacion = Formacion::create([
-            'usuario_id'   => Auth::id(),
-            'institucion'  => $this->sanitize($data['institucion']),
-            'titulo'       => $data['titulo'] ? $this->sanitize($data['titulo']) : null,
-            'fecha_inicio' => $data['fecha_inicio'],
-            'fecha_fin'    => $data['fecha_fin'] ?? null,
-        ]);
-
-        return response()->json($formacion, 201);
-    }
-
+{
+    $data = $request->validate([
+        'institucion'  => ['required', 'string', 'max:200', $this->notRegex()],
+        'nivel'        => ['required', 'string', Rule::in([
+            'Primaria / Secundaria',
+            'Técnico / Técnico Superior',
+            'Pregrado',
+            'Postgrado',
+            'Curso / Diplomado',
+        ])],
+        'titulo'       => ['nullable', 'string', 'max:200', $this->notRegex()],
+        'fecha_inicio' => 'required|date',
+        'fecha_fin'    => 'nullable|date|after_or_equal:fecha_inicio',
+    ], [
+        'institucion.not_regex'    => 'La institución contiene caracteres no permitidos.',
+        'titulo.not_regex'         => 'El título contiene caracteres no permitidos.',
+        'nivel.required'           => 'El nivel de grado es obligatorio.',
+        'nivel.in'                 => 'El nivel de grado no es válido.',
+        'fecha_fin.after_or_equal' => 'La fecha de fin no puede ser anterior a la de inicio.',
+    ]);
+    $formacion = Formacion::create([
+        'usuario_id'   => Auth::id(),
+        'institucion'  => $this->sanitize($data['institucion']),
+        'nivel'        => $data['nivel'],
+        'titulo'       => isset($data['titulo']) ? $this->sanitize($data['titulo']) : null,
+        'fecha_inicio' => $data['fecha_inicio'],
+        'fecha_fin'    => $data['fecha_fin'] ?? null,
+    ]);
+    return response()->json($formacion, 201);
+}
     public function updateFormacion(Request $request, $id)
-    {
-        $formacion = Formacion::where('id', $id)->where('usuario_id', Auth::id())->firstOrFail();
-
-        $data = $request->validate([
-            'institucion'  => ['required', 'string', 'max:200', $this->notRegex()],
-            'titulo'       => ['nullable', 'string', 'max:200', $this->notRegex()],
-            'fecha_inicio' => 'required|date',
-            'fecha_fin'    => 'nullable|date|after_or_equal:fecha_inicio',
-        ], [
-            'institucion.not_regex' => 'La institución contiene caracteres no permitidos.',
-            'titulo.not_regex'      => 'El título contiene caracteres no permitidos.',
-            'fecha_fin.after_or_equal' => 'La fecha de fin no puede ser anterior a la de inicio.',
-        ]);
-
-        $formacion->update([
-            'institucion'  => $this->sanitize($data['institucion']),
-            'titulo'       => $data['titulo'] ? $this->sanitize($data['titulo']) : null,
-            'fecha_inicio' => $data['fecha_inicio'],
-            'fecha_fin'    => $data['fecha_fin'] ?? null,
-        ]);
-
-        return response()->json($formacion->fresh());
-    }
+{
+    $formacion = Formacion::where('id', $id)->where('usuario_id', Auth::id())->firstOrFail();
+    $data = $request->validate([
+        'institucion'  => ['required', 'string', 'max:200', $this->notRegex()],
+        'nivel'        => ['required', 'string', Rule::in([
+            'Primaria / Secundaria',
+            'Técnico / Técnico Superior',
+            'Pregrado',
+            'Postgrado',
+            'Curso / Diplomado',
+        ])],
+        'titulo'       => ['nullable', 'string', 'max:200', $this->notRegex()],
+        'fecha_inicio' => 'required|date',
+        'fecha_fin'    => 'nullable|date|after_or_equal:fecha_inicio',
+    ], [
+        'institucion.not_regex'    => 'La institución contiene caracteres no permitidos.',
+        'titulo.not_regex'         => 'El título contiene caracteres no permitidos.',
+        'nivel.required'           => 'El nivel de grado es obligatorio.',
+        'nivel.in'                 => 'El nivel de grado no es válido.',
+        'fecha_fin.after_or_equal' => 'La fecha de fin no puede ser anterior a la de inicio.',
+    ]);
+    $formacion->update([
+        'institucion'  => $this->sanitize($data['institucion']),
+        'nivel'        => $data['nivel'],
+        'titulo'       => isset($data['titulo']) ? $this->sanitize($data['titulo']) : null,
+        'fecha_inicio' => $data['fecha_inicio'],
+        'fecha_fin'    => $data['fecha_fin'] ?? null,
+    ]);
+    return response()->json($formacion->fresh());
+}
 
     public function destroyFormacion($id)
     {
