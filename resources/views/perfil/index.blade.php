@@ -214,6 +214,15 @@
         .tray-form.editing{background:#eff6ff;border:1.5px solid #bfdbfe}
         .tray-form-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
+        /* Tipo habilidad (fuerte / blanda) */
+        .tipo-toggle{display:flex;gap:6px;margin-top:2px}
+        .tipo-btn{flex:1;padding:7px 10px;border-radius:8px;border:1.5px solid var(--gray2);background:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;color:var(--muted);transition:all .15s;text-align:center}
+        .tipo-btn.active-fuerte{border-color:#2563eb;background:#dbeafe;color:#1d4ed8}
+        .tipo-btn.active-blanda{border-color:#0d9488;background:#ccfbf1;color:#0f766e}
+        .badge-fuerte{background:#dbeafe;color:#1d4ed8}
+        .badge-blanda{background:#ccfbf1;color:#0f766e}
+        .hab-section-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:6px 0 4px;border-bottom:1px solid var(--gray2);margin-bottom:6px}
+
         /* Botones extra */
         .extra-actions{display:flex;gap:10px;margin-top:1rem}
         .btn-tray{background:#fff;color:var(--navy);border:1.5px solid var(--gray2);border-radius:9px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;display:inline-flex;align-items:center;gap:7px;transition:all .2s}
@@ -538,17 +547,28 @@
                                 <span class="tray-err" id="errHabNombre">El nombre es obligatorio.</span>
                                 <span class="tray-err" id="errHabDup">Ya tienes registrada esta habilidad.</span>
                             </div>
-                            <div class="tray-fg">
-                                <label>Nivel de dominio <span class="req">*</span></label>
-                                <div class="stars" id="starsWrap">
-                                    <span class="star" data-v="1" onclick="setStar(1)">★</span>
-                                    <span class="star" data-v="2" onclick="setStar(2)">★</span>
-                                    <span class="star" data-v="3" onclick="setStar(3)">★</span>
-                                    <span class="star" data-v="4" onclick="setStar(4)">★</span>
-                                    <span class="star" data-v="5" onclick="setStar(5)">★</span>
+                            <div class="tray-row">
+                                <div class="tray-fg">
+                                    <label>Nivel de dominio <span class="req">*</span></label>
+                                    <div class="stars" id="starsWrap">
+                                        <span class="star" data-v="1" onclick="setStar(1)">★</span>
+                                        <span class="star" data-v="2" onclick="setStar(2)">★</span>
+                                        <span class="star" data-v="3" onclick="setStar(3)">★</span>
+                                        <span class="star" data-v="4" onclick="setStar(4)">★</span>
+                                        <span class="star" data-v="5" onclick="setStar(5)">★</span>
+                                    </div>
+                                    <span style="font-size:11px;color:var(--muted);margin-top:3px" id="nivelLabel">1-2 ★ Principiante · 3 ★ Intermedio · 4-5 ★ Avanzado</span>
+                                    <span class="tray-err" id="errHabNivel">Selecciona un nivel.</span>
                                 </div>
-                                <span style="font-size:11px;color:var(--muted);margin-top:3px" id="nivelLabel">1-2 ★ Principiante · 3 ★ Intermedio · 4-5 ★ Avanzado</span>
-                                <span class="tray-err" id="errHabNivel">Selecciona un nivel.</span>
+                                <div class="tray-fg">
+                                    <label>Tipo <span class="req">*</span></label>
+                                    <div class="tipo-toggle">
+                                        <button type="button" class="tipo-btn active-fuerte" id="btnTipoFuerte" onclick="setTipo('fuerte')">💪 Fuerte</button>
+                                        <button type="button" class="tipo-btn" id="btnTipoBlanda" onclick="setTipo('blanda')">🤝 Blanda</button>
+                                    </div>
+                                    <span style="font-size:11px;color:var(--muted);margin-top:4px">Ej: fuerte → programación · blanda → comunicación</span>
+                                    <span class="tray-err" id="errHabTipo">Selecciona un tipo.</span>
+                                </div>
                             </div>
                             <div class="tray-form-actions">
                                 <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addHabilidad()">
@@ -1066,6 +1086,7 @@
 
     const CSRF = () => document.querySelector('meta[name="csrf-token"]').content;
     let starValue = 0;
+    let habTipo   = 'fuerte';
     let trayData  = { habilidades: [], experiencias: [], formaciones: [], certificaciones: [] };
     let pendingDel = null;
     let pendingConfirm = null;
@@ -1180,27 +1201,37 @@
         return 'avanzado';
     }
 
+    // --- TIPO HABILIDAD ---
+    function setTipo(tipo) {
+        habTipo = tipo;
+        document.getElementById('btnTipoFuerte').className = 'tipo-btn' + (tipo === 'fuerte' ? ' active-fuerte' : '');
+        document.getElementById('btnTipoBlanda').className = 'tipo-btn' + (tipo === 'blanda' ? ' active-blanda' : '');
+        document.getElementById('errHabTipo')?.classList.remove('show');
+    }
+
     // --- HABILIDADES ---
     function addHabilidad() {
         const nombre = document.getElementById('habNombre').value.trim();
         let valid = true;
-        ['errHabNombre','errHabDup','errHabNivel'].forEach(id => document.getElementById(id)?.classList.remove('show'));
+        ['errHabNombre','errHabDup','errHabNivel','errHabTipo'].forEach(id => document.getElementById(id)?.classList.remove('show'));
         if (!nombre) { document.getElementById('errHabNombre').classList.add('show'); valid = false; }
         else if (!charCheck(document.getElementById('habNombre'), 'errHabNombre')) { valid = false; }
         if (!starValue) { document.getElementById('errHabNivel').classList.add('show'); valid = false; }
+        if (!habTipo)   { document.getElementById('errHabTipo').classList.add('show'); valid = false; }
         if (!valid) return;
 
         const nivel = nivelFromStars(starValue);
         const isEdit = editing.habilidades !== null;
+        const tipoLabel = habTipo === 'fuerte' ? 'fuerte' : 'blanda';
         pedirConfirm(
             isEdit ? '¿Guardar cambios?' : '¿Agregar habilidad?',
-            isEdit ? `Se actualizarán los datos de "${nombre}".` : `Se añadirá "${nombre}" a tu lista de habilidades.`,
+            isEdit ? `Se actualizarán los datos de "${nombre}" (${tipoLabel}).` : `Se añadirá "${nombre}" como habilidad ${tipoLabel}.`,
             isEdit ? 'Guardar' : 'Agregar',
-            () => _doHabilidad(nombre, nivel)
+            () => _doHabilidad(nombre, nivel, habTipo)
         );
     }
 
-    function _doHabilidad(nombre, nivel) {
+    function _doHabilidad(nombre, nivel, tipo) {
         const isEdit = editing.habilidades !== null;
         const id = editing.habilidades;
         const btn = document.querySelector('#pane-habilidades .btn-save');
@@ -1213,7 +1244,7 @@
         const action = () => fetch(url, {
             method,
             headers: { 'X-CSRF-TOKEN': CSRF(), 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ nombre, nivel }),
+            body: JSON.stringify({ nombre, nivel, tipo }),
         })
         .then(r => r.json().then(j => ({ status: r.status, body: j })))
         .then(({ status, body }) => {
@@ -1247,6 +1278,7 @@
         document.getElementById('habNombre').value = h.nombre;
         const nMap = { principiante: 1, intermedio: 3, avanzado: 5 };
         setStar(nMap[h.nivel] || 1);
+        setTipo(h.tipo || 'fuerte');
         document.getElementById('titleHab').textContent = 'Editar habilidad';
         document.getElementById('formHab').classList.add('editing');
         document.getElementById('cancelEditHab').classList.add('show');
@@ -1260,11 +1292,12 @@
         starValue = 0;
         document.querySelectorAll('.star').forEach(s => s.classList.remove('on'));
         document.getElementById('nivelLabel').textContent = '1-2 ★ Principiante · 3 ★ Intermedio · 4-5 ★ Avanzado';
+        setTipo('fuerte');
         document.getElementById('titleHab').textContent = 'Agregar habilidad';
         document.getElementById('formHab').classList.remove('editing');
         document.getElementById('cancelEditHab').classList.remove('show');
         document.querySelector('#pane-habilidades .btn-save .btn-label').textContent = 'Agregar';
-        ['errHabNombre','errHabDup','errHabNivel'].forEach(id => document.getElementById(id)?.classList.remove('show'));
+        ['errHabNombre','errHabDup','errHabNivel','errHabTipo'].forEach(id => document.getElementById(id)?.classList.remove('show'));
     }
 
     function renderHabilidades() {
@@ -1273,13 +1306,19 @@
             list.innerHTML = '<div class="empty-state">Aún no tienes habilidades registradas.</div>';
             return;
         }
-        const badge = { principiante: 'badge-p', intermedio: 'badge-i', avanzado: 'badge-a' };
-        const label = { principiante: 'Principiante', intermedio: 'Intermedio', avanzado: 'Avanzado' };
-        list.innerHTML = trayData.habilidades.map(h => `
+        const badge  = { principiante: 'badge-p', intermedio: 'badge-i', avanzado: 'badge-a' };
+        const label  = { principiante: 'Principiante', intermedio: 'Intermedio', avanzado: 'Avanzado' };
+        const fuertes = trayData.habilidades.filter(h => (h.tipo || 'fuerte') === 'fuerte');
+        const blandas = trayData.habilidades.filter(h => h.tipo === 'blanda');
+
+        const cardHtml = h => `
             <div class="item-card">
                 <div class="item-card-body">
                     <strong>${escH(h.nombre)}</strong>
-                    <span class="item-badge ${badge[h.nivel] || 'badge-p'}">${label[h.nivel] || h.nivel}</span>
+                    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:3px">
+                        <span class="item-badge ${badge[h.nivel] || 'badge-p'}">${label[h.nivel] || h.nivel}</span>
+                        <span class="item-badge ${h.tipo === 'blanda' ? 'badge-blanda' : 'badge-fuerte'}">${h.tipo === 'blanda' ? '🤝 Blanda' : '💪 Fuerte'}</span>
+                    </div>
                 </div>
                 <div class="item-card-actions">
                     <button class="btn-edit-item" onclick="editHabilidad(${h.id})" title="Editar">
@@ -1289,7 +1328,18 @@
                         <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
                     </button>
                 </div>
-            </div>`).join('');
+            </div>`;
+
+        let html = '';
+        if (fuertes.length) {
+            html += `<div class="hab-section-label">💪 Habilidades Fuertes</div>`;
+            html += fuertes.map(cardHtml).join('');
+        }
+        if (blandas.length) {
+            html += `<div class="hab-section-label" style="margin-top:10px">🤝 Habilidades Blandas</div>`;
+            html += blandas.map(cardHtml).join('');
+        }
+        list.innerHTML = html;
     }
 
     // --- EXPERIENCIA ---

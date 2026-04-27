@@ -8,7 +8,7 @@ class Habilidad extends Model
 {
     protected $table = 'habilidades';
 
-    protected $fillable = ['usuario_id', 'nombre', 'nivel'];
+    protected $fillable = ['usuario_id', 'nombre', 'nivel', 'tipo'];
 
     public function usuario()
     {

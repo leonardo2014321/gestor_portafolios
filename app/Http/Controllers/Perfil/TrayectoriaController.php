@@ -40,6 +40,7 @@ class TrayectoriaController extends Controller
         $data = $request->validate([
             'nombre' => ['required', 'string', 'max:100', $this->notRegex()],
             'nivel'  => ['required', Rule::in(['principiante', 'intermedio', 'avanzado'])],
+            'tipo'   => ['required', Rule::in(['fuerte', 'blanda'])],
         ], [
             'nombre.not_regex' => 'El nombre contiene caracteres no permitidos.',
         ]);
@@ -58,6 +59,7 @@ class TrayectoriaController extends Controller
             'usuario_id' => $usuario_id,
             'nombre'     => $this->sanitize($data['nombre']),
             'nivel'      => $data['nivel'],
+            'tipo'       => $data['tipo'],
         ]);
 
         return response()->json($habilidad, 201);
@@ -70,6 +72,7 @@ class TrayectoriaController extends Controller
         $data = $request->validate([
             'nombre' => ['required', 'string', 'max:100', $this->notRegex()],
             'nivel'  => ['required', Rule::in(['principiante', 'intermedio', 'avanzado'])],
+            'tipo'   => ['required', Rule::in(['fuerte', 'blanda'])],
         ], [
             'nombre.not_regex' => 'El nombre contiene caracteres no permitidos.',
         ]);
@@ -86,9 +89,10 @@ class TrayectoriaController extends Controller
         $habilidad->update([
             'nombre' => $this->sanitize($data['nombre']),
             'nivel'  => $data['nivel'],
+            'tipo'   => $data['tipo'],
         ]);
 
-        return response()->json($habilidad);
+        return response()->json($habilidad->fresh());
     }
 
     public function destroyHabilidad($id)
