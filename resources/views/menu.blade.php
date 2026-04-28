@@ -302,10 +302,10 @@
                 </button>
                 <div class="sb-div"></div>
 
-                <a href="{{ route('portafolios.index') }}" class="sb-item {{ request()->routeIs('portafolios.*') ? 'active' : '' }}">
+                <button id="btn-portafolios" class="sb-item" onclick="showView('portafolios')">
                     <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
                     <span>Portafolios</span>
-                </a>
+                </button>
 
 
                 <a href="{{ route('academico') }}" class="sb-item {{ request()->routeIs('academico') ? 'active' : '' }}">
@@ -497,7 +497,17 @@
                                 DIFUSION: BASE DE DATOS ACTIVA
                             </span>
                         @endif
-                        <button class="exp-sort">Ordenar por relevancia<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+                        <div id="sortContainer" style="position: relative; display: inline-block;">
+                            <button class="exp-filter" onclick="document.getElementById('sortMenu').style.display = document.getElementById('sortMenu').style.display === 'block' ? 'none' : 'block'" style="display:inline-flex; align-items:center; gap:6px;">
+                                <span id="sortLabel">Ordenar por relevancia</span>
+                                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div id="sortMenu" style="display: none; position: absolute; right: 0; top: 110%; background: #fff; border: 1.5px solid var(--gray2); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 10; min-width: 160px; overflow: hidden;">
+                                <div onclick="expSetSort('relevancia', 'Ordenar por relevancia')" style="padding: 8px 16px; font-size: 13px; font-family:'DM Sans',sans-serif; cursor: pointer; transition: background 0.2s; color: var(--text);" onmouseover="this.style.background='var(--gray)'" onmouseout="this.style.background='transparent'">Relevancia</div>
+                                <div onclick="expSetSort('az', 'Ordenar: A - Z')" style="padding: 8px 16px; font-size: 13px; font-family:'DM Sans',sans-serif; cursor: pointer; transition: background 0.2s; color: var(--text);" onmouseover="this.style.background='var(--gray)'" onmouseout="this.style.background='transparent'">A - Z</div>
+                                <div onclick="expSetSort('za', 'Ordenar: Z - A')" style="padding: 8px 16px; font-size: 13px; font-family:'DM Sans',sans-serif; cursor: pointer; transition: background 0.2s; color: var(--text);" onmouseover="this.style.background='var(--gray)'" onmouseout="this.style.background='transparent'">Z - A</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exp-grid" id="expGrid"></div>
                 </div>
@@ -786,6 +796,8 @@
         hasUsers: !!c.has_users
     })) : fallbackCards;
 
+    const originalExpCards = [...expCards];
+
     let expActiveFilter='todos';
 
     function expHL(text){
@@ -831,6 +843,30 @@
         btn.classList.add('active');
         expFilter();
     }
+
+    function expSetSort(mode, label) {
+        document.getElementById('sortLabel').innerText = label;
+        document.getElementById('sortMenu').style.display = 'none';
+        
+        if (mode === 'az') {
+            expCards.sort((a,b) => a.title.localeCompare(b.title));
+        } else if (mode === 'za') {
+            expCards.sort((a,b) => b.title.localeCompare(a.title));
+        } else if (mode === 'relevancia') {
+            expCards.length = 0;
+            expCards.push(...originalExpCards);
+        }
+        expFilter();
+    }
+
+    document.addEventListener('click', function(e) {
+        const sortContainer = document.getElementById('sortContainer');
+        if (sortContainer && !sortContainer.contains(e.target)) {
+            const menu = document.getElementById('sortMenu');
+            if(menu) menu.style.display = 'none';
+        }
+    });
+
     expRender(expCards);
 
     /* ══ Calendario ══ */
