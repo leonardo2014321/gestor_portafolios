@@ -8,7 +8,7 @@ class Formacion extends Model
 {
     protected $table = 'formaciones';
 
-    protected $fillable = ['usuario_id', 'institucion', 'titulo', 'fecha_inicio', 'fecha_fin'];
+    protected $fillable = ['usuario_id', 'institucion', 'nivel', 'titulo', 'fecha_inicio', 'fecha_fin'];
 
     protected $casts = [
         'fecha_inicio' => 'date',

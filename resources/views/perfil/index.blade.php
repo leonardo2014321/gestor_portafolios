@@ -102,7 +102,7 @@
         .field-err.show{display:block}
 
         /* Textarea */
-        textarea.field{resize:vertical;min-height:110px;line-height:1.5}
+        textarea.field{resize:vertical;min-height:110px;line-height:1.5;word-break:break-word;overflow-wrap:break-word;white-space:pre-wrap}
         .bio-footer{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
         .bio-counter{font-size:11.5px;color:var(--muted);font-weight:500}
         .bio-counter.over{color:var(--red);font-weight:700}
@@ -214,6 +214,15 @@
         .tray-form.editing{background:#eff6ff;border:1.5px solid #bfdbfe}
         .tray-form-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
+        /* Tipo habilidad (fuerte / blanda) */
+        .tipo-toggle{display:flex;gap:6px;margin-top:2px}
+        .tipo-btn{flex:1;padding:7px 10px;border-radius:8px;border:1.5px solid var(--gray2);background:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;color:var(--muted);transition:all .15s;text-align:center}
+        .tipo-btn.active-fuerte{border-color:#2563eb;background:#dbeafe;color:#1d4ed8}
+        .tipo-btn.active-blanda{border-color:#0d9488;background:#ccfbf1;color:#0f766e}
+        .badge-fuerte{background:#dbeafe;color:#1d4ed8}
+        .badge-blanda{background:#ccfbf1;color:#0f766e}
+        .hab-section-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:6px 0 4px;border-bottom:1px solid var(--gray2);margin-bottom:6px}
+
         /* Botones extra */
         .extra-actions{display:flex;gap:10px;margin-top:1rem}
         .btn-tray{background:#fff;color:var(--navy);border:1.5px solid var(--gray2);border-radius:9px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;display:inline-flex;align-items:center;gap:7px;transition:all .2s}
@@ -230,7 +239,7 @@
         .preview-av img{width:100%;height:100%;object-fit:cover}
         .preview-name{font-family:"Plus Jakarta Sans",sans-serif;font-size:18px;font-weight:800}
         .preview-prof{font-size:13px;color:#93c5fd;margin-top:3px;font-weight:500}
-        .preview-bio{font-size:13px;color:#cbd5e1;margin-top:10px;line-height:1.6;white-space:pre-wrap}
+        .preview-bio{font-size:13px;color:#cbd5e1;margin-top:10px;line-height:1.6;white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word}
         .preview-lbl{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#5a7fa0;margin-bottom:10px}
 
         /* Footer */
@@ -514,6 +523,7 @@
                     <button class="tray-tab" onclick="switchTab('experiencia')">Experiencia</button>
                     <button class="tray-tab" onclick="switchTab('formacion')">Formación</button>
                     <button class="tray-tab" onclick="switchTab('certificacion')">Certificaciones</button>
+                    <button class="tray-tab" onclick="switchTab('redes')">Redes</button>
                 </div>
 
                 <div class="tray-body">
@@ -537,17 +547,28 @@
                                 <span class="tray-err" id="errHabNombre">El nombre es obligatorio.</span>
                                 <span class="tray-err" id="errHabDup">Ya tienes registrada esta habilidad.</span>
                             </div>
-                            <div class="tray-fg">
-                                <label>Nivel de dominio <span class="req">*</span></label>
-                                <div class="stars" id="starsWrap">
-                                    <span class="star" data-v="1" onclick="setStar(1)">★</span>
-                                    <span class="star" data-v="2" onclick="setStar(2)">★</span>
-                                    <span class="star" data-v="3" onclick="setStar(3)">★</span>
-                                    <span class="star" data-v="4" onclick="setStar(4)">★</span>
-                                    <span class="star" data-v="5" onclick="setStar(5)">★</span>
+                            <div class="tray-row">
+                                <div class="tray-fg">
+                                    <label>Nivel de dominio <span class="req">*</span></label>
+                                    <div class="stars" id="starsWrap">
+                                        <span class="star" data-v="1" onclick="setStar(1)">★</span>
+                                        <span class="star" data-v="2" onclick="setStar(2)">★</span>
+                                        <span class="star" data-v="3" onclick="setStar(3)">★</span>
+                                        <span class="star" data-v="4" onclick="setStar(4)">★</span>
+                                        <span class="star" data-v="5" onclick="setStar(5)">★</span>
+                                    </div>
+                                    <span style="font-size:11px;color:var(--muted);margin-top:3px" id="nivelLabel">1-2 ★ Principiante · 3 ★ Intermedio · 4-5 ★ Avanzado</span>
+                                    <span class="tray-err" id="errHabNivel">Selecciona un nivel.</span>
                                 </div>
-                                <span style="font-size:11px;color:var(--muted);margin-top:3px" id="nivelLabel">1-2 ★ Principiante · 3 ★ Intermedio · 4-5 ★ Avanzado</span>
-                                <span class="tray-err" id="errHabNivel">Selecciona un nivel.</span>
+                                <div class="tray-fg">
+                                    <label>Tipo <span class="req">*</span></label>
+                                    <div class="tipo-toggle">
+                                        <button type="button" class="tipo-btn active-fuerte" id="btnTipoFuerte" onclick="setTipo('fuerte')">💪 Fuerte</button>
+                                        <button type="button" class="tipo-btn" id="btnTipoBlanda" onclick="setTipo('blanda')">🤝 Blanda</button>
+                                    </div>
+                                    <span style="font-size:11px;color:var(--muted);margin-top:4px">Ej: fuerte → programación · blanda → comunicación</span>
+                                    <span class="tray-err" id="errHabTipo">Selecciona un tipo.</span>
+                                </div>
                             </div>
                             <div class="tray-form-actions">
                                 <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addHabilidad()">
@@ -630,10 +651,23 @@
                                 <span class="tray-err" id="errForInstitucion">La institución es obligatoria.</span>
                             </div>
                             <div class="tray-fg">
-                                <label>Título / Grado</label>
-                                <input type="text" id="forTitulo" placeholder="Ej: Ingeniería en Sistemas..." maxlength="200" oninput="charCheck(this,'errForTitulo')">
-                                <span class="tray-err" id="errForTitulo"></span>
-                            </div>
+    <label>Nivel de grado <span class="req">*</span></label>
+    <select id="forNivel" onchange="updateForTitulo()">
+        <option value="">Selecciona un nivel...</option>
+        <option value="Primaria / Secundaria">Primaria / Secundaria</option>
+        <option value="Técnico / Técnico Superior">Técnico / Técnico Superior</option>
+        <option value="Pregrado">Pregrado (Licenciatura, Ingeniería)</option>
+        <option value="Postgrado">Postgrado (Especialización, Maestría, Doctorado)</option>
+        <option value="Curso / Diplomado">Curso / Diplomado</option>
+    </select>
+    <span class="tray-err" id="errForNivel">El nivel es obligatorio.</span>
+</div>
+<div class="tray-fg" id="fgForTitulo" style="display:none">
+    <label>Título / Especialidad</label>
+    <input type="text" id="forTitulo" placeholder="" maxlength="200" oninput="charCheck(this,'errForTitulo')">
+    <span class="hint" id="forTituloHint" style="font-size:11px;color:var(--muted);margin-top:2px"></span>
+    <span class="tray-err" id="errForTitulo"></span>
+</div>
                             <div class="tray-row">
                                 <div class="tray-fg">
                                     <label>Fecha inicio <span class="req">*</span></label>
@@ -704,6 +738,8 @@
                     </div>
 
                 </div>{{-- end tray-body --}}
+                 {{-- Tab: Redes --}}
+                 @include('perfil._tab_redes')
             </div>
         </div>
 
@@ -1050,6 +1086,7 @@
 
     const CSRF = () => document.querySelector('meta[name="csrf-token"]').content;
     let starValue = 0;
+    let habTipo   = 'fuerte';
     let trayData  = { habilidades: [], experiencias: [], formaciones: [], certificaciones: [] };
     let pendingDel = null;
     let pendingConfirm = null;
@@ -1164,27 +1201,37 @@
         return 'avanzado';
     }
 
+    // --- TIPO HABILIDAD ---
+    function setTipo(tipo) {
+        habTipo = tipo;
+        document.getElementById('btnTipoFuerte').className = 'tipo-btn' + (tipo === 'fuerte' ? ' active-fuerte' : '');
+        document.getElementById('btnTipoBlanda').className = 'tipo-btn' + (tipo === 'blanda' ? ' active-blanda' : '');
+        document.getElementById('errHabTipo')?.classList.remove('show');
+    }
+
     // --- HABILIDADES ---
     function addHabilidad() {
         const nombre = document.getElementById('habNombre').value.trim();
         let valid = true;
-        ['errHabNombre','errHabDup','errHabNivel'].forEach(id => document.getElementById(id)?.classList.remove('show'));
+        ['errHabNombre','errHabDup','errHabNivel','errHabTipo'].forEach(id => document.getElementById(id)?.classList.remove('show'));
         if (!nombre) { document.getElementById('errHabNombre').classList.add('show'); valid = false; }
         else if (!charCheck(document.getElementById('habNombre'), 'errHabNombre')) { valid = false; }
         if (!starValue) { document.getElementById('errHabNivel').classList.add('show'); valid = false; }
+        if (!habTipo)   { document.getElementById('errHabTipo').classList.add('show'); valid = false; }
         if (!valid) return;
 
         const nivel = nivelFromStars(starValue);
         const isEdit = editing.habilidades !== null;
+        const tipoLabel = habTipo === 'fuerte' ? 'fuerte' : 'blanda';
         pedirConfirm(
             isEdit ? '¿Guardar cambios?' : '¿Agregar habilidad?',
-            isEdit ? `Se actualizarán los datos de "${nombre}".` : `Se añadirá "${nombre}" a tu lista de habilidades.`,
+            isEdit ? `Se actualizarán los datos de "${nombre}" (${tipoLabel}).` : `Se añadirá "${nombre}" como habilidad ${tipoLabel}.`,
             isEdit ? 'Guardar' : 'Agregar',
-            () => _doHabilidad(nombre, nivel)
+            () => _doHabilidad(nombre, nivel, habTipo)
         );
     }
 
-    function _doHabilidad(nombre, nivel) {
+    function _doHabilidad(nombre, nivel, tipo) {
         const isEdit = editing.habilidades !== null;
         const id = editing.habilidades;
         const btn = document.querySelector('#pane-habilidades .btn-save');
@@ -1197,7 +1244,7 @@
         const action = () => fetch(url, {
             method,
             headers: { 'X-CSRF-TOKEN': CSRF(), 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ nombre, nivel }),
+            body: JSON.stringify({ nombre, nivel, tipo }),
         })
         .then(r => r.json().then(j => ({ status: r.status, body: j })))
         .then(({ status, body }) => {
@@ -1231,6 +1278,7 @@
         document.getElementById('habNombre').value = h.nombre;
         const nMap = { principiante: 1, intermedio: 3, avanzado: 5 };
         setStar(nMap[h.nivel] || 1);
+        setTipo(h.tipo || 'fuerte');
         document.getElementById('titleHab').textContent = 'Editar habilidad';
         document.getElementById('formHab').classList.add('editing');
         document.getElementById('cancelEditHab').classList.add('show');
@@ -1244,11 +1292,12 @@
         starValue = 0;
         document.querySelectorAll('.star').forEach(s => s.classList.remove('on'));
         document.getElementById('nivelLabel').textContent = '1-2 ★ Principiante · 3 ★ Intermedio · 4-5 ★ Avanzado';
+        setTipo('fuerte');
         document.getElementById('titleHab').textContent = 'Agregar habilidad';
         document.getElementById('formHab').classList.remove('editing');
         document.getElementById('cancelEditHab').classList.remove('show');
         document.querySelector('#pane-habilidades .btn-save .btn-label').textContent = 'Agregar';
-        ['errHabNombre','errHabDup','errHabNivel'].forEach(id => document.getElementById(id)?.classList.remove('show'));
+        ['errHabNombre','errHabDup','errHabNivel','errHabTipo'].forEach(id => document.getElementById(id)?.classList.remove('show'));
     }
 
     function renderHabilidades() {
@@ -1257,13 +1306,19 @@
             list.innerHTML = '<div class="empty-state">Aún no tienes habilidades registradas.</div>';
             return;
         }
-        const badge = { principiante: 'badge-p', intermedio: 'badge-i', avanzado: 'badge-a' };
-        const label = { principiante: 'Principiante', intermedio: 'Intermedio', avanzado: 'Avanzado' };
-        list.innerHTML = trayData.habilidades.map(h => `
+        const badge  = { principiante: 'badge-p', intermedio: 'badge-i', avanzado: 'badge-a' };
+        const label  = { principiante: 'Principiante', intermedio: 'Intermedio', avanzado: 'Avanzado' };
+        const fuertes = trayData.habilidades.filter(h => (h.tipo || 'fuerte') === 'fuerte');
+        const blandas = trayData.habilidades.filter(h => h.tipo === 'blanda');
+
+        const cardHtml = h => `
             <div class="item-card">
                 <div class="item-card-body">
                     <strong>${escH(h.nombre)}</strong>
-                    <span class="item-badge ${badge[h.nivel] || 'badge-p'}">${label[h.nivel] || h.nivel}</span>
+                    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:3px">
+                        <span class="item-badge ${badge[h.nivel] || 'badge-p'}">${label[h.nivel] || h.nivel}</span>
+                        <span class="item-badge ${h.tipo === 'blanda' ? 'badge-blanda' : 'badge-fuerte'}">${h.tipo === 'blanda' ? '🤝 Blanda' : '💪 Fuerte'}</span>
+                    </div>
                 </div>
                 <div class="item-card-actions">
                     <button class="btn-edit-item" onclick="editHabilidad(${h.id})" title="Editar">
@@ -1273,7 +1328,18 @@
                         <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
                     </button>
                 </div>
-            </div>`).join('');
+            </div>`;
+
+        let html = '';
+        if (fuertes.length) {
+            html += `<div class="hab-section-label">💪 Habilidades Fuertes</div>`;
+            html += fuertes.map(cardHtml).join('');
+        }
+        if (blandas.length) {
+            html += `<div class="hab-section-label" style="margin-top:10px">🤝 Habilidades Blandas</div>`;
+            html += blandas.map(cardHtml).join('');
+        }
+        list.innerHTML = html;
     }
 
     // --- EXPERIENCIA ---
@@ -1434,115 +1500,128 @@
 
     // --- FORMACIÓN ---
     function addFormacion() {
-        const inst   = document.getElementById('forInstitucion').value.trim();
-        const titulo = document.getElementById('forTitulo').value.trim();
-        const inicio = document.getElementById('forInicio').value;
-        const fin    = document.getElementById('forFin').value || null;
+    const nivel  = document.getElementById('forNivel').value;
+    const inst   = document.getElementById('forInstitucion').value.trim();
+    const titulo = document.getElementById('forTitulo').value.trim();
+    const inicio = document.getElementById('forInicio').value;
+    const fin    = document.getElementById('forFin').value || null;
 
-        let valid = true;
-        ['errForInstitucion','errForInicio','errForFin'].forEach(id => document.getElementById(id)?.classList.remove('show'));
-        if (!inst)  { document.getElementById('errForInstitucion').classList.add('show'); valid = false; }
-        else if (!charCheck(document.getElementById('forInstitucion'), 'errForInstitucion')) { valid = false; }
-        if (!inicio){ document.getElementById('errForInicio').classList.add('show'); valid = false; }
-        if (fin && inicio && fin < inicio) { document.getElementById('errForFin').classList.add('show'); valid = false; }
-        if (titulo && !charCheck(document.getElementById('forTitulo'), 'errForTitulo')) { valid = false; }
-        if (!valid) return;
+    let valid = true;
+    ['errForInstitucion','errForNivel','errForInicio','errForFin'].forEach(id => document.getElementById(id)?.classList.remove('show'));
+    if (!inst)  { document.getElementById('errForInstitucion').classList.add('show'); valid = false; }
+    else if (!charCheck(document.getElementById('forInstitucion'), 'errForInstitucion')) { valid = false; }
+    if (!nivel) { document.getElementById('errForNivel').classList.add('show'); valid = false; }
+    if (!inicio){ document.getElementById('errForInicio').classList.add('show'); valid = false; }
+    if (fin && inicio && fin < inicio) { document.getElementById('errForFin').classList.add('show'); valid = false; }
+    if (titulo && !charCheck(document.getElementById('forTitulo'), 'errForTitulo')) { valid = false; }
+    if (!valid) return;
 
-        const isEdit = editing.formaciones !== null;
-        pedirConfirm(
-            isEdit ? '¿Guardar cambios?' : '¿Agregar formación?',
-            isEdit ? `Se actualizarán los datos de "${inst}".` : `Se añadirá "${inst}" a tu formación académica.`,
-            isEdit ? 'Guardar' : 'Agregar',
-            () => _doFormacion(inst, titulo, inicio, fin)
-        );
-    }
+    const isEdit = editing.formaciones !== null;
+    pedirConfirm(
+        isEdit ? '¿Guardar cambios?' : '¿Agregar formación?',
+        isEdit ? `Se actualizarán los datos de "${inst}".` : `Se añadirá "${inst}" a tu formación académica.`,
+        isEdit ? 'Guardar' : 'Agregar',
+        () => _doFormacion(inst, nivel, titulo, inicio, fin)
+    );
+}
+    function _doFormacion(inst, nivel, titulo, inicio, fin) {
+    const isEdit = editing.formaciones !== null;
+    const id = editing.formaciones;
+    const btn = document.querySelector('#pane-formacion .btn-save');
+    btn.classList.add('loading'); btn.disabled = true;
+    ocultarAlertaTray();
 
-    function _doFormacion(inst, titulo, inicio, fin) {
-        const isEdit = editing.formaciones !== null;
-        const id = editing.formaciones;
-        const btn = document.querySelector('#pane-formacion .btn-save');
-        btn.classList.add('loading'); btn.disabled = true;
-        ocultarAlertaTray();
+    const url    = isEdit ? '/trayectoria/formaciones/' + id : '/trayectoria/formaciones';
+    const method = isEdit ? 'PUT' : 'POST';
 
-        const url    = isEdit ? '/trayectoria/formaciones/' + id : '/trayectoria/formaciones';
-        const method = isEdit ? 'PUT' : 'POST';
+    const action = () => fetch(url, {
+        method,
+        headers: { 'X-CSRF-TOKEN': CSRF(), 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ institucion: inst, nivel: nivel, titulo: titulo || null, fecha_inicio: inicio, fecha_fin: fin }),
+    })
+    .then(r => r.json().then(j => ({ status: r.status, body: j })))
+    .then(({ status, body }) => {
+        btn.classList.remove('loading'); btn.disabled = false;
+        if (status !== 200 && status !== 201) throw new Error();
+        if (isEdit) {
+            const idx = trayData.formaciones.findIndex(f => f.id === id);
+            if (idx !== -1) trayData.formaciones[idx] = body;
+        } else {
+            trayData.formaciones.unshift(body);
+        }
+        renderFormaciones();
+        cancelEditFormacion();
+    })
+    .catch(() => { btn.classList.remove('loading'); btn.disabled = false; lastTrayAction = action; mostrarAlertaTray(); });
 
-        const action = () => fetch(url, {
-            method,
-            headers: { 'X-CSRF-TOKEN': CSRF(), 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ institucion: inst, titulo: titulo || null, fecha_inicio: inicio, fecha_fin: fin }),
-        })
-        .then(r => r.json().then(j => ({ status: r.status, body: j })))
-        .then(({ status, body }) => {
-            btn.classList.remove('loading'); btn.disabled = false;
-            if (status !== 200 && status !== 201) throw new Error();
-            if (isEdit) {
-                const idx = trayData.formaciones.findIndex(f => f.id === id);
-                if (idx !== -1) trayData.formaciones[idx] = body;
-            } else {
-                trayData.formaciones.unshift(body);
-            }
-            renderFormaciones();
-            cancelEditFormacion();
-        })
-        .catch(() => { btn.classList.remove('loading'); btn.disabled = false; lastTrayAction = action; mostrarAlertaTray(); });
-
-        lastTrayAction = action;
-        action();
-    }
-
+    lastTrayAction = action;
+    action();
+}
     function editFormacion(id) {
-        const f = trayData.formaciones.find(x => x.id === id);
-        if (!f) return;
-        editing.formaciones = id;
-        document.getElementById('forInstitucion').value = f.institucion || '';
-        document.getElementById('forTitulo').value      = f.titulo      || '';
-        document.getElementById('forInicio').value      = f.fecha_inicio ? f.fecha_inicio.substring(0,10) : '';
-        document.getElementById('forFin').value         = f.fecha_fin   ? f.fecha_fin.substring(0,10)   : '';
-        document.getElementById('titleFor').textContent = 'Editar formación académica';
-        document.getElementById('formFor').classList.add('editing');
-        document.getElementById('cancelEditFor').classList.add('show');
-        document.querySelector('#pane-formacion .btn-save .btn-label').textContent = 'Guardar cambios';
-        document.getElementById('formFor').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
+    const f = trayData.formaciones.find(x => x.id === id);
+    if (!f) return;
+    editing.formaciones = id;
+    document.getElementById('forInstitucion').value = f.institucion || '';
+    document.getElementById('forNivel').value        = f.nivel       || '';
+    updateForTitulo();
+    document.getElementById('forTitulo').value       = f.titulo      || '';
+    document.getElementById('forInicio').value       = f.fecha_inicio ? f.fecha_inicio.substring(0,10) : '';
+    document.getElementById('forFin').value          = f.fecha_fin   ? f.fecha_fin.substring(0,10)   : '';
+    document.getElementById('titleFor').textContent  = 'Editar formación académica';
+    document.getElementById('formFor').classList.add('editing');
+    document.getElementById('cancelEditFor').classList.add('show');
+    document.querySelector('#pane-formacion .btn-save .btn-label').textContent = 'Guardar cambios';
+    document.getElementById('formFor').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
 
     function cancelEditFormacion() {
-        editing.formaciones = null;
-        ['forInstitucion','forTitulo','forInicio','forFin'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-        document.getElementById('titleFor').textContent = 'Agregar formación académica';
-        document.getElementById('formFor').classList.remove('editing');
-        document.getElementById('cancelEditFor').classList.remove('show');
-        document.querySelector('#pane-formacion .btn-save .btn-label').textContent = 'Agregar';
-        ['errForInstitucion','errForTitulo','errForInicio','errForFin'].forEach(id => document.getElementById(id)?.classList.remove('show'));
-    }
+    editing.formaciones = null;
+    ['forInstitucion','forTitulo','forInicio','forFin'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    document.getElementById('forNivel').value = '';
+    updateForTitulo();
+    document.getElementById('titleFor').textContent = 'Agregar formación académica';
+    document.getElementById('formFor').classList.remove('editing');
+    document.getElementById('cancelEditFor').classList.remove('show');
+    document.querySelector('#pane-formacion .btn-save .btn-label').textContent = 'Agregar';
+    ['errForInstitucion','errForNivel','errForTitulo','errForInicio','errForFin'].forEach(id => document.getElementById(id)?.classList.remove('show'));
+}
 
     function renderFormaciones() {
-        const list = document.getElementById('listFormaciones');
-        if (!trayData.formaciones.length) {
-            list.innerHTML = '<div class="empty-state">Aún no tienes formaciones registradas.</div>';
-            return;
-        }
-        list.innerHTML = trayData.formaciones.map(f => {
-            const finLabel = f.fecha_fin ? f.fecha_fin.substring(0,7) : 'En curso';
-            const periodo  = f.fecha_inicio ? f.fecha_inicio.substring(0,7) + ' — ' + finLabel : '';
-            return `
-            <div class="item-card">
-                <div class="item-card-body">
-                    <strong>${escH(f.institucion)}</strong>
-                    ${f.titulo ? `<span>${escH(f.titulo)}</span>` : ''}
-                    <span style="margin-top:2px">${escH(periodo)}</span>
-                </div>
-                <div class="item-card-actions">
-                    <button class="btn-edit-item" onclick="editFormacion(${f.id})" title="Editar">
-                        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                    </button>
-                    <button class="btn-del-item" onclick="pedirDel('formaciones',${f.id})" title="Eliminar">
-                        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-                    </button>
-                </div>
-            </div>`;
-        }).join('');
+    const list = document.getElementById('listFormaciones');
+    if (!trayData.formaciones.length) {
+        list.innerHTML = '<div class="empty-state">Aún no tienes formaciones registradas.</div>';
+        return;
     }
+    const nivelBadge = {
+        'Primaria / Secundaria':        'badge-p',
+        'Técnico / Técnico Superior':   'badge-i',
+        'Pregrado':                     'badge-a',
+        'Postgrado':                    'badge-a',
+        'Curso / Diplomado':            'badge-p',
+    };
+    list.innerHTML = trayData.formaciones.map(f => {
+        const finLabel = f.fecha_fin ? f.fecha_fin.substring(0,7) : 'En curso';
+        const periodo  = f.fecha_inicio ? f.fecha_inicio.substring(0,7) + ' — ' + finLabel : '';
+        const badge    = nivelBadge[f.nivel] || 'badge-p';
+        return `
+        <div class="item-card">
+            <div class="item-card-body">
+                <strong>${escH(f.institucion)}</strong>
+                ${f.nivel   ? `<span class="item-badge ${badge}">${escH(f.nivel)}</span>` : ''}
+                ${f.titulo  ? `<span>${escH(f.titulo)}</span>` : ''}
+                <span style="margin-top:2px">${escH(periodo)}</span>
+            </div>
+            <div class="item-card-actions">
+                <button class="btn-edit-item" onclick="editFormacion(${f.id})" title="Editar">
+                    <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+                <button class="btn-del-item" onclick="pedirDel('formaciones',${f.id})" title="Eliminar">
+                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                </button>
+            </div>
+        </div>`;
+    }).join('');
+}
 
     // --- CERTIFICACIONES ---
     function addCertificacion() {
@@ -1698,6 +1777,27 @@
         if (!str) return '';
         return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
+    const FOR_TITULO_HINTS = {
+    'Primaria / Secundaria':        ['Ej: Bachillerato, 6to de Secundaria...', 'Nivel o año completado (opcional)'],
+    'Técnico / Técnico Superior':   ['Ej: Técnico en Electricidad Industrial...', 'Nombre de la carrera técnica'],
+    'Pregrado':                     ['Ej: Ingeniería de Sistemas, Lic. en Administración...', 'Nombre completo de la carrera'],
+    'Postgrado':                    ['Ej: Maestría en Ciencias de Datos, Doctorado en Física...', 'Nombre del postgrado'],
+    'Curso / Diplomado':            ['Ej: Diplomado en Marketing Digital, Curso de AWS...', 'Nombre del curso o diplomado'],
+};
+
+function updateForTitulo() {
+    const val  = document.getElementById('forNivel').value;
+    const fg   = document.getElementById('fgForTitulo');
+    const inp  = document.getElementById('forTitulo');
+    const hint = document.getElementById('forTituloHint');
+    if (!val) { fg.style.display = 'none'; inp.value = ''; return; }
+    fg.style.display = 'flex';
+    const [placeholder, hintText] = FOR_TITULO_HINTS[val] || ['', ''];
+    inp.placeholder = placeholder;
+    hint.textContent = hintText;
+    document.getElementById('errForNivel').classList.remove('show');
+}
 </script>
+@include('perfil._script_redes')
 </body>
 </html>
