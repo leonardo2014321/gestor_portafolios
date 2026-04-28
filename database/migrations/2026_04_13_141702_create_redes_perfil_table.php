@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
+        if (Schema::hasTable('redes_perfil')) return;
         Schema::create('redes_perfil', function (Blueprint $table) {
             $table->id();
 

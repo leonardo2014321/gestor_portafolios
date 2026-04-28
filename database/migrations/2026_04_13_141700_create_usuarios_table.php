@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
+        if (Schema::hasTable('usuarios')) return;
         Schema::create('usuarios', function (Blueprint $table) {
             $table->id();
 
