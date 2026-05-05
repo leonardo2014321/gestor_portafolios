@@ -44,4 +44,24 @@ class Usuario extends Authenticatable
     {
         return $this->hasMany(\App\Models\RedPerfil::class, 'usuario_id');
     }
+
+    public function experiencias()
+    {
+        return $this->hasMany(\App\Models\Experiencia::class, 'usuario_id');
+    }
+
+    public function formaciones()
+    {
+        return $this->hasMany(\App\Models\Formacion::class, 'usuario_id');
+    }
+
+    public function habilidades()
+    {
+        return $this->hasMany(\App\Models\Habilidad::class, 'usuario_id');
+    }
+
+    public function certificaciones()
+    {
+        return $this->hasMany(\App\Models\Certificacion::class, 'usuario_id');
+    }
 }
