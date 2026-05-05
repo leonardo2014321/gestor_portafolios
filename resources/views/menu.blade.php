@@ -637,7 +637,7 @@
                         <svg viewBox="0 0 24 24" style="width:48px;height:48px;fill:none;stroke:var(--gray3);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin:0 auto 1rem;display:block"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
                         <p style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px">Sin portafolios aún</p>
                         <p style="font-size:13px">Crea tu primer portafolio para comenzar.</p>
-                        <a href="{{ route('portafolios.index') }}" style="display:inline-block;margin-top:1rem;padding:9px 22px;background:var(--blue);color:#fff;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none">Crear portafolio</a>
+                        <button onclick="abrirModalPortafolio()" style="display:inline-block;margin-top:1rem;padding:9px 22px;background:var(--blue);color:#fff;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none;border:none;cursor:pointer">Crear portafolio</button>
                     </div>
                     @endif
                 </div>
@@ -1873,6 +1873,112 @@
             btn.style.background = '#e2e8f0';
             btn.style.color = '#1e293b';
         }
+    }
+</script>
+
+<!-- ══ MODAL CREAR PORTAFOLIO ══ -->
+<style>
+    .mp-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9000;display:none;align-items:center;justify-content:center;padding:24px}
+    .mp-overlay.open{display:flex}
+    .mp-modal{background:#1e293b;border-radius:16px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.5);color:#f1f5f9}
+    .mp-header{padding:28px 32px 20px;border-bottom:1px solid rgba(255,255,255,0.08)}
+    .mp-header h2{font-family:"Plus Jakarta Sans",sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:4px}
+    .mp-header p{font-size:12.5px;color:#64748b}
+    .mp-body{padding:24px 32px}
+    .mp-section{margin-bottom:24px}
+    .mp-section-label{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#64748b;margin-bottom:14px}
+    .mp-section-label svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .mp-field{margin-bottom:14px}
+    .mp-label{display:block;font-size:11.5px;font-weight:600;color:#94a3b8;margin-bottom:6px;letter-spacing:.03em}
+    .mp-label span{color:#ef4444;margin-left:2px}
+    .mp-input,.mp-textarea{width:100%;background:#0f172a;border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:10px 14px;font-size:13px;color:#f1f5f9;font-family:"DM Sans",sans-serif;outline:none;transition:border-color .2s}
+    .mp-input:focus,.mp-textarea:focus{border-color:#3b82f6}
+    .mp-textarea{min-height:90px;resize:vertical}
+    .mp-drop{border:2px dashed rgba(255,255,255,0.12);border-radius:12px;padding:32px 20px;text-align:center;color:#64748b;cursor:pointer;transition:border-color .2s;background:rgba(255,255,255,0.02)}
+    .mp-drop:hover{border-color:#3b82f6;color:#94a3b8}
+    .mp-drop svg{width:32px;height:32px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;margin:0 auto 10px;display:block;color:#475569}
+    .mp-drop p{font-size:13px;font-weight:500;margin-bottom:4px}
+    .mp-drop span{font-size:11.5px}
+    .mp-footer{padding:20px 32px;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .mp-btn-ghost{background:rgba(255,255,255,0.06);color:#94a3b8;border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:9px 20px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;transition:all .2s}
+    .mp-btn-ghost:hover{background:rgba(255,255,255,0.1);color:#fff}
+    .mp-btn-primary{background:var(--blue);color:#fff;border:none;border-radius:9px;padding:9px 22px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;display:inline-flex;align-items:center;gap:8px;transition:background .2s;box-shadow:0 4px 12px rgba(37,99,235,0.25)}
+    .mp-btn-primary:hover{background:var(--blue2)}
+    .mp-btn-primary svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .mp-close{position:absolute;top:20px;right:24px;background:rgba(255,255,255,0.07);border:none;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#94a3b8;transition:all .2s}
+    .mp-close:hover{background:rgba(255,255,255,0.14);color:#fff}
+    .mp-close svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .mp-header-wrap{position:relative}
+</style>
+
+<div class="mp-overlay" id="modalPortafolio" onclick="cerrarModalPortafolio(event)">
+    <div class="mp-modal">
+        <div class="mp-header-wrap">
+            <div class="mp-header">
+                <h2>Crear Nuevo Portafolio</h2>
+                <p>Configure su proyecto para la red SansiFolios.</p>
+            </div>
+            <button class="mp-close" onclick="document.getElementById('modalPortafolio').classList.remove('open')">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="mp-body">
+            <!-- Información del proyecto -->
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
+                    Información del Proyecto
+                </div>
+                <div class="mp-field">
+                    <label class="mp-label">Título del Proyecto <span>*</span></label>
+                    <input class="mp-input" type="text" placeholder="p.ej. Neural Engine v2">
+                </div>
+                <div class="mp-field">
+                    <label class="mp-label">Descripción Técnica <span>*</span></label>
+                    <textarea class="mp-textarea" placeholder="Describa la arquitectura, lenguajes y stacks utilizados..."></textarea>
+                </div>
+            </div>
+            <!-- Vinculación de repositorio -->
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    Vinculación de Repositorio
+                </div>
+                <div class="mp-field">
+                    <label class="mp-label">Enlace de GitHub</label>
+                    <input class="mp-input" type="text" placeholder="https://github.com/usuario/repositorio">
+                </div>
+            </div>
+            <!-- Cargar archivos -->
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Cargar Archivos
+                </div>
+                <div class="mp-drop">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <p>Arrastra tus archivos aquí</p>
+                    <span>o haz clic para explorar</span>
+                </div>
+            </div>
+        </div>
+        <div class="mp-footer">
+            <button class="mp-btn-ghost" onclick="document.getElementById('modalPortafolio').classList.remove('open')">Guardar como borrador</button>
+            <button class="mp-btn-primary">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Publicar Proyecto
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirModalPortafolio() {
+        document.getElementById('modalPortafolio').classList.add('open');
+    }
+    function cerrarModalPortafolio(e) {
+        if (e.target === document.getElementById('modalPortafolio'))
+            document.getElementById('modalPortafolio').classList.remove('open');
     }
 </script>
 </body>
