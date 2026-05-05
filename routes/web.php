@@ -52,6 +52,11 @@ Route::middleware('auth')->group(function () {
         return view('menu', compact('busquedas'));
     })->name('menu');
 
+    // Panel de Administrador
+    Route::get('/admin', function () {
+        return view('admin');
+    })->name('admin');
+
     /**
      * IMPLEMENTACIÓN DEL EXPLORADOR
      * Carga la vista ubicada en resources/views/Auth/explorador.blade.php
