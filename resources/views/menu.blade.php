@@ -245,7 +245,18 @@
         ::-webkit-scrollbar-track{background:transparent}
         ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
 
-        @media(max-width:1200px){.rpanel{display:none}}
+        /* ── Responsive grids ── */
+        .content-wrapper { flex: 1; display: flex; flex-direction: row; overflow: hidden; }
+        .caract-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+        .porta-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.2rem; }
+
+        @media(max-width:1200px){
+          .content-wrapper { flex-direction: column; overflow-y: auto; }
+          main { overflow-y: visible; flex: none; }
+          .rpanel { display: flex; flex-direction: row; flex-wrap: wrap; width: 100%; height: auto; border-left: none; border-top: 1.5px solid var(--gray2); overflow-y: visible; }
+          .rpanel > .rp-sec { flex: 1; min-width: 250px; }
+          .porta-grid{grid-template-columns:repeat(3,1fr)}
+        }
         @media(max-width:992px){
           aside{width:72px}
           .sb-item span,.sb-uname,.sb-uid,.btn-logout span{display:none}
@@ -253,6 +264,30 @@
           .sb-user-block{justify-content:center}
           .btn-logout{justify-content:center}
           .stats,.pgrid,.exp-grid{grid-template-columns:1fr}
+          .caract-grid{grid-template-columns:1fr}
+          .porta-grid{grid-template-columns:repeat(2,1fr)}
+          .tb-nav{display:none}
+        }
+        @media(max-width:768px){
+          .topbar{padding:0 16px}
+          .sysname{font-size:18px}
+          .main-inner{padding:1.2rem 1rem}
+          .porta-grid{grid-template-columns:1fr}
+          .content-title h1{font-size:22px}
+          .exp-hero{padding:1.2rem}
+          .exp-search-wrap{flex-direction:column; align-items:stretch}
+          .exp-filters{flex-wrap:wrap}
+        }
+        @media(max-width:480px){
+          aside{width:60px}
+          .tb-search{display:none}
+          .sysname{display:none}
+          .tb-left{gap:0}
+          .tb-right > div > div:nth-child(2) { display: none; }
+          .pcard-dark, .pcard-teal, .pcard-light{padding:1rem}
+          .exp-card-actions{flex-direction:column; align-items:flex-start; gap:10px}
+          .stat{flex-direction:row; align-items:center}
+          .stat-num{font-size:28px}
         }
     </style>
 </head>
@@ -333,9 +368,9 @@
 
             <!-- Modal confirmación logout -->
             <div id="modalLogout" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;">
-                <div style="background:#fff;border-radius:20px;padding:32px;width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+                <div style="background:#fff;border-radius:20px;padding:32px;width:90%;max-width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
                    <div style="width:52px;height:52px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                     </div>
                     <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:#0f172a;margin-bottom:8px;">¿Cerrar sesión?</div>
                     <div style="font-size:13px;color:#64748b;margin-bottom:24px;">¿Estás seguro que deseas salir de tu cuenta?</div>
@@ -347,6 +382,7 @@
             </div>
         </aside>
 
+        <div class="content-wrapper">
         <!-- Main content -->
         <main>
             <div class="main-inner">
@@ -519,7 +555,7 @@
                             <p>Todo lo que SansiFolios ofrece para ti</p>
                         </div>
                     </div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                    <div class="caract-grid">
                         <div style="border-left:4px solid #2563eb;padding:1rem 1.2rem;background:#fff;border-radius:0 12px 12px 0;">
                             <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">Diseño Adaptable</h3>
                             <p style="font-size:13px;color:var(--muted);margin-top:6px;">Plantillas profesionales diseñadas para resaltar lo mejor de cada carrera.</p>
@@ -562,7 +598,7 @@
     </div>
 
     <!-- Grid -->
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;">
+    <div class="porta-grid">
 
         <div style="background:#D9EBFF;border-radius:24px;overflow:hidden;border:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all .3s;cursor:pointer;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 30px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='';this.style.boxShadow='0 2px 8px rgba(0,0,0,0.06)'">
             <div style="position:relative;height:180px;overflow:hidden;">
@@ -665,6 +701,7 @@
                 <a href="#" class="enlace"><div class="en-ico blue"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="en-lbl">Aula Virtual</div></a>
             </div>
         </div>
+        </div>
     </div>
 
     <footer>
@@ -677,7 +714,7 @@
 
 <!-- Modal detalle del día -->
 <div id="modalDia" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:999;align-items:center;justify-content:center;">
-  <div style="width:440px;background:#fff;border-radius:28px;overflow:hidden;max-height:90vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.2);">
+  <div style="width:90%;max-width:440px;background:#fff;border-radius:28px;overflow:hidden;max-height:90vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.2);">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:28px 28px 0;">
       <div>
         <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#64748b;margin-bottom:4px;">Detalle del día</div>

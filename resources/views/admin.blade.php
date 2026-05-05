@@ -27,42 +27,42 @@
         .app{display:flex;flex-direction:column;height:100vh}
 
         /* ── Topbar ── */
-        .topbar{height:var(--hh);background:#ffffff;display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0;border-bottom:1px solid var(--gray2); box-shadow: 0 2px 10px rgba(0,0,0,0.02);}
+        .topbar{height:var(--hh);background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,0.06);}
         .tb-left{display:flex;align-items:center;gap:16px}
         .logo-img{width:40px;height:40px;object-fit:contain;border-radius:10px;background:var(--admin-purple);padding:4px}
-        .sysname{font-family:"Plus Jakarta Sans",sans-serif;font-size:20px;font-weight:800;color:var(--navy);letter-spacing:-0.5px}
-        .sysname span{color:var(--admin-purple)}
+        .sysname{font-family:"Plus Jakarta Sans",sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.5px}
+        .sysname span{color:#f87171}
         .tb-nav{display:flex;align-items:center;gap:28px}
-        .badge-admin{background: rgba(99, 102, 241, 0.1); color: var(--admin-purple); padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid rgba(99, 102, 241, 0.2);}
+        .badge-admin{background: rgba(255,255,255,0.1); color: #fff; padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2);}
         
         .tb-right{display:flex;align-items:center;gap:16px}
-        .tb-search{display:flex;align-items:center;gap:8px;background:var(--gray);border:1px solid var(--gray2);border-radius:10px;padding:8px 16px;height:40px;transition: all 0.2s;}
-        .tb-search:focus-within {border-color: var(--admin-purple); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);}
-        .tb-search svg{width:16px;height:16px;fill:none;stroke:var(--muted);stroke-width:2;flex-shrink:0}
-        .tb-search input{border:none;outline:none;background:transparent;font-family:"DM Sans",sans-serif;font-size:13.5px;color:var(--text);width:180px}
-        .tb-search input::placeholder{color:var(--muted)}
-        .tb-bell{width:40px;height:40px;border-radius:10px;background:var(--gray);border:1px solid var(--gray2);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative; transition: all 0.2s;}
-        .tb-bell:hover {background: #093d70ff; transform: translateY(-1px);}
-        .tb-bell::after{content:'';position:absolute;top:10px;right:10px;width:8px;height:8px;background:var(--rose);border-radius:50%; border: 2px solid #fff;}
-        .tb-bell svg{width:18px;height:18px;fill:none;stroke:var(--text);stroke-width:2;stroke-linecap:round}
+        .tb-search{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:8px 16px;height:40px;transition: all 0.2s;}
+        .tb-search:focus-within {border-color: rgba(255,255,255,0.3); box-shadow: 0 0 0 3px rgba(255,255,255,0.05);}
+        .tb-search svg{width:16px;height:16px;fill:none;stroke:rgba(255,255,255,0.5);stroke-width:2;flex-shrink:0}
+        .tb-search input{border:none;outline:none;background:transparent;font-family:"DM Sans",sans-serif;font-size:13.5px;color:#fff;width:180px}
+        .tb-search input::placeholder{color:rgba(255,255,255,0.4)}
+        .tb-bell{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative; transition: all 0.2s;}
+        .tb-bell:hover {background: rgba(255,255,255,0.16); transform: translateY(-1px);}
+        .tb-bell::after{content:'';position:absolute;top:10px;right:10px;width:8px;height:8px;background:var(--rose);border-radius:50%; border: 2px solid var(--navy);}
+        .tb-bell svg{width:18px;height:18px;fill:none;stroke:rgba(255,255,255,0.7);stroke-width:2;stroke-linecap:round}
 
         /* ── Body ── */
         .body-row{flex:1;display:flex;overflow:hidden}
 
         /* ── Sidebar ── */
-        aside{width:var(--sw);background:#ffffff;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid var(--gray2)}
+        aside{width:var(--sw);background:var(--navy);flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,0.06)}
         .sb-top{padding:20px 0;flex:1; overflow-y: auto;}
-        .sb-label {font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; padding: 0 24px; margin-bottom: 12px; margin-top: 10px;}
-        .sb-item{display:flex;align-items:center;gap:14px;padding:12px 24px;cursor:pointer;color:var(--muted);font-size:13.5px;font-weight:600;transition:all .2s;border-right:3px solid transparent;font-family:"DM Sans",sans-serif;text-decoration:none;background:none;border-top:none;border-left:none;border-bottom:none;width:100%; text-align: left;}
-        .sb-item:hover{background:var(--gray);color:var(--admin-purple);}
-        .sb-item.active{background:rgba(99, 102, 241, 0.05);color:var(--admin-purple-dark);border-right-color:var(--admin-purple);}
-        .sb-item svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;flex-shrink:0;stroke-linecap:round;stroke-linejoin:round}
-        .sb-div{height:1px;background:var(--gray2);margin:12px 24px}
+        .sb-label {font-size: 11px; font-weight: 700; color: #8ba5c8; text-transform: uppercase; letter-spacing: 1px; padding: 0 24px; margin-bottom: 12px; margin-top: 10px;}
+        .sb-item{display:flex;align-items:center;gap:14px;padding:12px 24px;cursor:pointer;color:#8ba5c8;font-size:13.5px;font-weight:500;transition:all .2s;border-left:3px solid transparent;font-family:"DM Sans",sans-serif;text-decoration:none;background:none;border-top:none;border-right:none;border-bottom:none;width:100%; text-align: left;}
+        .sb-item:hover{background:rgba(255,255,255,0.05);color:#c8d8ef;}
+        .sb-item.active{background:rgba(37,99,235,0.18);color:#fff;border-left-color:#3b82f6;font-weight:600;}
+        .sb-item svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;flex-shrink:0;stroke-linecap:round;stroke-linejoin:round}
+        .sb-div{height:1px;background:rgba(255,255,255,0.06);margin:12px 24px}
         
-        .sb-user-block{padding:16px 24px;display:flex;align-items:center;gap:12px;border-top:1px solid var(--gray2);background:var(--gray)}
-        .sb-av{width:40px;height:40px;border-radius:12px;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,var(--admin-purple),var(--teal));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff; box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);}
-        .sb-uname{font-size:14px;color:var(--text);font-weight:700}
-        .sb-uid{font-size:12px;color:var(--muted)}
+        .sb-user-block{padding:16px 24px;display:flex;align-items:center;gap:12px;border-top:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.03)}
+        .sb-av{width:40px;height:40px;border-radius:12px;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,#3b82f6,#0d9488);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff; box-shadow: 0 4px 10px rgba(59,130,246,0.3);}
+        .sb-uname{font-size:14px;color:#fff;font-weight:700}
+        .sb-uid{font-size:12px;color:#5a7fa0}
 
         /* ── Main ── */
         main{flex:1;display:grid;grid-template-columns:1fr 320px;overflow:hidden;background:var(--gray);position:relative;}
@@ -161,7 +161,7 @@
             }
         }
 
-        .mobile-menu-btn { display: none; background: none; border: none; color: var(--navy); cursor: pointer; padding: 4px; margin-right: 8px; }
+        .mobile-menu-btn { display: none; background: none; border: none; color: #fff; cursor: pointer; padding: 4px; margin-right: 8px; }
         .mobile-menu-btn svg { width: 24px; height: 24px; }
         .sidebar-overlay { position: fixed; top: var(--hh); left: 0; width: 100%; height: calc(100vh - var(--hh)); background: rgba(0,0,0,0.4); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .sidebar-overlay.show { opacity: 1; visibility: visible; }
@@ -186,7 +186,7 @@
                 height: calc(100vh - var(--hh));
                 z-index: 1000;
                 transition: left 0.3s ease;
-                box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+                box-shadow: 4px 0 15px rgba(0,0,0,0.3);
             }
             aside.open { left: 0; }
             .stats-grid { grid-template-columns: 1fr; }
@@ -262,13 +262,13 @@
             </div>
             
             <div style="position:relative;">
-                <div style="display:flex;align-items:center;gap:12px;border-left:1px solid var(--gray2);padding-left:16px;cursor:pointer;" onclick="document.getElementById('admin-dropdown').style.display = document.getElementById('admin-dropdown').style.display === 'block' ? 'none' : 'block'">
+                <div style="display:flex;align-items:center;gap:12px;border-left:1px solid rgba(255,255,255,0.1);padding-left:16px;cursor:pointer;" onclick="document.getElementById('admin-dropdown').style.display = document.getElementById('admin-dropdown').style.display === 'block' ? 'none' : 'block'">
                     <div class="sb-av" style="width:36px;height:36px;border-radius:10px;">A</div>
                     <div style="display:flex;flex-direction:column;">
-                        <div class="sb-uname" style="font-size:13px;">Administrador</div>
-                        <div class="sb-uid" style="font-size:11px;">admin@umss.edu.bo</div>
+                        <div style="font-size:13px;color:#fff;font-weight:600;">Administrador</div>
+                        <div style="font-size:11px;color:#8ba5c8;">admin@umss.edu.bo</div>
                     </div>
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                 </div>
                 
                 <div id="admin-dropdown" style="display:none;position:absolute;top:100%;right:0;margin-top:10px;background:#fff;border:1px solid var(--gray2);border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);width:160px;overflow:hidden;z-index:100;">
