@@ -254,6 +254,143 @@
           .btn-logout{justify-content:center}
           .stats,.pgrid,.exp-grid{grid-template-columns:1fr}
         }
+        
+        /* ── CV TEMPLATE STYLES ── */
+        .cv-wrapper { display: flex; justify-content: center; padding-bottom: 40px; }
+        .cv-container { width: 210mm; min-height: 297mm; background: #fff; box-shadow: 0 10px 40px rgba(0,0,0,0.15); display: flex; overflow: hidden; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #1e293b; }
+        .cv-left { width: 35%; background-color: #3b82f6; color: #fff; padding: 30px 25px; display: flex; flex-direction: column; position: relative; }
+        .cv-right { width: 65%; background-color: #fff; padding: 40px 35px; }
+        .cv-photo-box { background-color: #1e293b; padding: 15px; margin-bottom: 30px; position: relative; z-index: 1; }
+        .cv-photo { width: 100%; height: auto; border: 3px solid #93c5fd; display: block; object-fit: cover; aspect-ratio: 1; }
+        .cv-section-left { margin-bottom: 30px; position: relative; z-index: 1; }
+        .cv-title-left { font-size: 14px; font-weight: 700; border-top: 1px solid rgba(255,255,255,0.4); border-bottom: 1px solid rgba(255,255,255,0.4); padding: 8px 0; margin-bottom: 15px; letter-spacing: 1px; text-transform: uppercase; }
+        .cv-contact-item { display: flex; align-items: center; gap: 10px; font-size: 11px; margin-bottom: 12px; line-height: 1.4; }
+        .cv-contact-item svg { width: 14px; height: 14px; flex-shrink: 0; }
+        .cv-list-left, .cv-list-right, .cv-job-desc { list-style: none; padding: 0; margin: 0; }
+        .cv-list-left li, .cv-list-right li, .cv-job-desc li { font-size: 11.5px; margin-bottom: 8px; position: relative; padding-left: 12px; line-height: 1.4; }
+        .cv-list-left li::before { content: ""; width: 4px; height: 4px; background: #fff; border-radius: 50%; position: absolute; left: 0; top: 6px; }
+        .cv-list-right li, .cv-job-desc li { font-size: 12px; margin-bottom: 6px; }
+        .cv-list-right li::before, .cv-job-desc li::before { content: ""; width: 4px; height: 4px; background: #1e293b; border-radius: 50%; position: absolute; left: 0; top: 6px; }
+        .cv-text-left { font-size: 11.5px; line-height: 1.6; text-align: justify; }
+        .cv-name { font-size: 38px; font-weight: 800; color: #3b82f6; line-height: 1.1; margin-bottom: 35px; font-family: Arial, sans-serif; }
+        .cv-section-right { margin-bottom: 25px; }
+        .cv-title-right { font-size: 14px; font-weight: 700; color: #1e293b; border-bottom: 2px solid #93c5fd; padding-bottom: 5px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .cv-job-container { margin-bottom: 15px; }
+        .cv-job-date { font-size: 11px; color: #475569; margin-bottom: 3px; }
+        .cv-job-title { font-size: 12.5px; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+        .cv-job-achievements { font-size: 12px; font-weight: 700; margin-top: 6px; margin-bottom: 4px; }
+        .cv-bg-pattern { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PHBhdGggZD0iTTAgMGg0MHY0MEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0wIDIwaDQwTTIwIDB2NDAiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9zdmc+'); pointer-events: none; }
+        .btn-export{background:var(--blue);color:#fff;border:none;border-radius:9px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;display:inline-flex;align-items:center;gap:8px;transition:background .2s;box-shadow:0 4px 12px rgba(37,99,235,0.2)}
+        .btn-export:hover{background:var(--blue2)}
+        .btn-export svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+        /* ── TEMPLATE SELECTOR & NEW TEMPLATES ── */
+        .template-selector { display: flex; gap: 10px; margin-bottom: 20px; }
+        .ts-btn { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--gray2); background: #fff; color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: "DM Sans", sans-serif; }
+        .ts-btn:hover { border-color: var(--blue); color: var(--blue); }
+        .ts-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+        .cv-template-view:not(.active-tpl) { display: none !important; }
+
+        /* CV TEMPLATE 2 (Clásico) */
+        #cv-template-2 { flex-direction: column; padding: 50px; font-family: 'Times New Roman', Times, serif; }
+        #cv-template-2 .cv2-header { text-align: center; border-bottom: 2px solid #1e293b; padding-bottom: 20px; margin-bottom: 30px; }
+        #cv-template-2 .cv2-name { font-size: 32px; font-weight: bold; color: #1e293b; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
+        #cv-template-2 .cv2-contact { font-size: 13px; color: #475569; display: flex; justify-content: center; gap: 15px; }
+        #cv-template-2 .cv2-section { margin-bottom: 25px; }
+        #cv-template-2 .cv2-title { font-size: 16px; font-weight: bold; color: #1e293b; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; padding-bottom: 5px; margin-bottom: 15px; }
+        #cv-template-2 .cv2-item { margin-bottom: 15px; }
+        #cv-template-2 .cv2-item-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+        #cv-template-2 .cv2-item-title { font-weight: bold; font-size: 14px; }
+        #cv-template-2 .cv2-item-date { font-style: italic; font-size: 13px; color: #64748b; }
+        #cv-template-2 ul { list-style-type: disc; padding-left: 20px; font-size: 13px; color: #334155; line-height: 1.5; }
+
+        /* CV TEMPLATE 3 (Minimalista) */
+        #cv-template-3 { font-family: 'Helvetica Neue', Arial, sans-serif; padding: 40px; display: grid; grid-template-columns: 1fr 2.5fr; gap: 30px; }
+        #cv-template-3 .cv3-left { border-right: 1px solid #e2e8f0; padding-right: 20px; }
+        #cv-template-3 .cv3-name { font-size: 28px; font-weight: 800; color: #0f172a; margin-bottom: 5px; line-height: 1.1; }
+        #cv-template-3 .cv3-role { font-size: 14px; color: #64748b; font-weight: 500; margin-bottom: 30px; }
+        #cv-template-3 .cv3-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #94a3b8; margin-bottom: 15px; margin-top: 30px; }
+        #cv-template-3 .cv3-contact-item { font-size: 12px; color: #475569; margin-bottom: 8px; word-break: break-all; }
+        #cv-template-3 .cv3-skill { display: inline-block; background: #f1f5f9; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 500; color: #334155; margin: 0 4px 6px 0; }
+        #cv-template-3 .cv3-job { margin-bottom: 20px; }
+        #cv-template-3 .cv3-job-date { font-size: 12px; color: #64748b; margin-bottom: 4px; font-weight: 500; }
+        #cv-template-3 .cv3-job-title { font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 4px; }
+        #cv-template-3 .cv3-job-desc { font-size: 13px; color: #475569; line-height: 1.5; }
+
+        /* CV TEMPLATE 4 (Elegante - Gris/Azul) */
+        #cv-template-4 { display: flex; font-family: 'Helvetica', Arial, sans-serif; color: #333; position: relative; padding-top: 180px; }
+        #cv-template-4 .cv4-header { position: absolute; top: 0; left: 0; width: 100%; height: 210px; background: #374856; clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%); display: flex; z-index: 1; }
+        #cv-template-4 .cv4-name-box { margin-left: 35%; padding-top: 35px; text-align: right; width: 60%; color: #fff; }
+        #cv-template-4 .cv4-name { font-size: 38px; font-weight: bold; margin-bottom: 5px; letter-spacing: 1px; }
+        #cv-template-4 .cv4-role { font-size: 16px; text-transform: uppercase; letter-spacing: 2px; color: #cbd5e1; }
+        #cv-template-4 .cv4-photo { position: absolute; top: 40px; left: 5%; width: 150px; height: 150px; border-radius: 50%; object-fit: cover; z-index: 2; border: 6px solid #fff; }
+        #cv-template-4 .cv4-left { width: 33%; background: #eef1f4; padding: 40px 20px 20px; z-index: 0; }
+        #cv-template-4 .cv4-right { width: 67%; padding: 40px 30px 20px; background: #fff; z-index: 0; }
+        #cv-template-4 .cv4-title { font-size: 15px; font-weight: bold; text-transform: uppercase; color: #1e293b; border-bottom: 2px solid #1e293b; padding-bottom: 5px; margin-bottom: 15px; margin-top: 25px; }
+        #cv-template-4 .cv4-title:first-child { margin-top: 0; }
+        #cv-template-4 .cv4-text { font-size: 13px; line-height: 1.5; color: #475569; margin-bottom: 15px; }
+        #cv-template-4 .cv4-list { list-style: none; padding: 0; margin: 0; font-size: 13px; color: #1e293b; }
+        #cv-template-4 .cv4-list li { margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        #cv-template-4 .cv4-list-bullet { list-style-type: disc; padding-left: 20px; font-size: 13px; color: #475569; line-height: 1.5; }
+        #cv-template-4 .cv4-job { margin-bottom: 20px; }
+        #cv-template-4 .cv4-job-title { font-weight: bold; font-size: 14px; color: #1e293b; margin-bottom: 2px; }
+        #cv-template-4 .cv4-job-meta { font-size: 13px; font-style: italic; color: #64748b; margin-bottom: 8px; }
+        #cv-template-4 .cv4-bar { width: 100%; height: 8px; background: #cbd5e1; border-radius: 4px; margin-top: 6px; }
+        #cv-template-4 .cv4-bar-fill { height: 100%; background: #475a68; border-radius: 4px; }
+
+        /* CV TEMPLATE 5 (Creativo - Verde/Rosa) */
+        #cv-template-5 { display: flex; font-family: 'Georgia', serif; position: relative; }
+        #cv-template-5 .cv5-left { width: 35%; background: #6a9a98; color: #fff; padding: 200px 30px 30px; display: flex; flex-direction: column; }
+        #cv-template-5 .cv5-right { width: 65%; background: #fff; padding: 180px 40px 30px; position: relative; }
+        #cv-template-5 .cv5-banner { position: absolute; top: 40px; left: 35%; width: 65%; height: 120px; background: #b88a8d; z-index: 1; display: flex; flex-direction: column; justify-content: center; padding-left: 110px; color: #fff; }
+        #cv-template-5 .cv5-photo { position: absolute; top: 20px; left: 10%; width: 160px; height: 160px; border-radius: 50%; object-fit: cover; z-index: 2; border: 4px solid #fff; }
+        #cv-template-5 .cv5-name { font-size: 30px; font-weight: bold; letter-spacing: 3px; text-transform: uppercase; line-height: 1.2; margin-bottom: 5px; }
+        #cv-template-5 .cv5-role { font-size: 15px; font-style: italic; opacity: 0.9; }
+        #cv-template-5 .cv5-title-left { font-size: 15px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; margin-top: 35px; }
+        #cv-template-5 .cv5-title-left:first-child { margin-top: 0; }
+        #cv-template-5 .cv5-text-left { font-size: 13px; line-height: 1.6; font-family: 'Helvetica', sans-serif; }
+        #cv-template-5 .cv5-contact-item { font-family: 'Helvetica', sans-serif; font-size: 13px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+        #cv-template-5 .cv5-title-right { font-size: 16px; font-weight: bold; color: #2d3748; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; margin-top: 25px; display: flex; align-items: center; gap: 8px; }
+        #cv-template-5 .cv5-title-right:first-child { margin-top: 0; }
+        #cv-template-5 .cv5-title-icon { color: #6a9a98; font-size: 20px; font-weight: bold; }
+        #cv-template-5 .cv5-item { font-family: 'Helvetica', sans-serif; margin-bottom: 15px; }
+        #cv-template-5 .cv5-item-title { font-weight: bold; font-size: 13px; color: #1e293b; text-transform: uppercase; letter-spacing: 1px; }
+        #cv-template-5 .cv5-item-meta { font-size: 13px; color: #64748b; font-style: italic; margin-bottom: 6px; }
+        #cv-template-5 .cv5-list { padding-left: 20px; font-size: 13px; color: #475569; line-height: 1.6; }
+
+        /* CV TEMPLATE 6 (Moderno - Malva) */
+        #cv-template-6 { display: flex; font-family: 'Helvetica', sans-serif; position: relative; padding-top: 160px; }
+        #cv-template-6 .cv6-banner { position: absolute; top: 0; right: 0; width: 62%; height: 160px; background: #ab8589; color: #fff; padding: 30px 40px; display: flex; flex-direction: column; justify-content: center; }
+        #cv-template-6 .cv6-name { font-size: 34px; font-weight: 300; margin-bottom: 5px; }
+        #cv-template-6 .cv6-role { font-size: 14px; text-transform: uppercase; letter-spacing: 3px; font-weight: 600; margin-bottom: 12px; opacity: 0.9; }
+        #cv-template-6 .cv6-banner-text { font-size: 12px; line-height: 1.5; opacity: 0.85; }
+        #cv-template-6 .cv6-photo { position: absolute; top: 30px; left: 8%; width: 140px; height: 140px; border-radius: 50%; object-fit: cover; z-index: 2; border: 5px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        #cv-template-6 .cv6-left { width: 38%; background: #f8f9fa; padding: 40px 30px; border-right: 1px solid #e2e8f0; }
+        #cv-template-6 .cv6-right { width: 62%; background: #fff; padding: 40px; }
+        #cv-template-6 .cv6-title { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #1e293b; margin-bottom: 20px; margin-top: 30px; }
+        #cv-template-6 .cv6-title:first-child { margin-top: 0; }
+        #cv-template-6 .cv6-item { margin-bottom: 20px; }
+        #cv-template-6 .cv6-item-title { font-weight: 600; font-size: 14px; color: #0f172a; }
+        #cv-template-6 .cv6-item-meta { font-size: 12px; color: #64748b; margin-bottom: 5px; }
+        #cv-template-6 .cv6-list { list-style-type: none; padding: 0; margin: 0; font-size: 13px; color: #475569; }
+        #cv-template-6 .cv6-list li { margin-bottom: 8px; position: relative; padding-left: 14px; line-height: 1.5; }
+        #cv-template-6 .cv6-list li::before { content: '•'; position: absolute; left: 0; top: 0; color: #ab8589; font-weight: bold; font-size: 16px; }
+        #cv-template-6 .cv6-contact-item { font-size: 13px; color: #475569; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+
+        @media print {
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            body * { visibility: hidden; }
+            #view-reportes, #view-reportes * { visibility: visible; }
+            #view-reportes { position: absolute; left: 0; top: 0; width: 100%; min-height: 100vh; }
+            .topbar, aside, .rpanel, .content-bar, footer, .template-selector { display: none !important; }
+            .cv-template-view { display: none !important; }
+            .cv-template-view.active-tpl { display: flex !important; }
+            main { background: #fff; padding: 0; overflow: visible; width: 100%; min-height: 100vh; display: block; }
+            .main-inner { padding: 0; display: block; }
+            .cv-wrapper { padding-bottom: 0; justify-content: flex-start; min-height: 100vh; }
+            .cv-container { box-shadow: none; width: 100%; min-height: 100vh; }
+            @page { size: auto; margin: 0; }
+        }
     </style>
 </head>
 <body>
@@ -312,10 +449,10 @@
     <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
     <span>Académico</span>
 </a>
-                <a href="{{ route('reportes') }}" class="sb-item {{ request()->routeIs('reportes') ? 'active' : '' }}">
+                <button id="btn-reportes" class="sb-item" onclick="showView('reportes')" style="background:none;border-top:none;border-right:none;border-bottom:none;width:100%;text-align:left;">
                     <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                     <span>Reportes</span>
-                </a>
+                </button>
                 <a href="{{ route('perfil') }}" class="sb-item {{ request()->routeIs('perfil') ? 'active' : '' }}">
                     <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     <span>Mi Perfil</span>
@@ -614,6 +751,684 @@
 
     </div>
 </div>
+
+                <!-- ══ VISTA REPORTES ══ -->
+                <div class="view" id="view-reportes">
+                    @php
+                        $r_user = auth()->user();
+                        $r_exp = $r_user ? $r_user->experiencias()->orderBy('fecha_inicio', 'desc')->get() : [];
+                        $r_form = $r_user ? $r_user->formaciones()->orderBy('fecha_inicio', 'desc')->get() : [];
+                        $r_habF = $r_user ? $r_user->habilidades()->where('tipo', 'fuerte')->get() : [];
+                        $r_habB = $r_user ? $r_user->habilidades()->where('tipo', 'blanda')->get() : [];
+                        $r_cert = $r_user ? $r_user->certificaciones()->orderBy('fecha_obtencion', 'desc')->get() : [];
+                    @endphp
+                    <div class="content-bar">
+                        <div class="content-title">
+                            <h1>Reportes y Documentos</h1>
+                            <p>Genera y exporta planillas, hojas de vida y curriculum vitae en formato PDF.</p>
+                        </div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <button id="btn-edit-cv" class="btn-export" onclick="toggleEditCV()" style="background: #e2e8f0; color: #1e293b; border: none;">
+                                <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                Editar en pantalla
+                            </button>
+                            <button class="btn-export" onclick="window.print()">
+                                <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Exportar PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="template-selector" style="display: flex; align-items: center; gap: 12px; margin-bottom: 25px; background: #f8fafc; padding: 15px 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                        <label for="cv-template-select" style="font-size: 14px; font-weight: 600; color: #475569; margin: 0;">Seleccionar Plantilla:</label>
+                        <select id="cv-template-select" onchange="selectTemplate(this.value)" style="padding: 10px 14px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 14px; font-weight: 500; color: #1e293b; outline: none; cursor: pointer; flex: 1; max-width: 320px; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                            <option value="cv-template-1">Moderno (Azul)</option>
+                            <option value="cv-template-2">Clásico (Formal)</option>
+                            <option value="cv-template-3">Minimalista</option>
+                            <option value="cv-template-4">Elegante (Gris)</option>
+                            <option value="cv-template-5">Creativo (Verde/Rosa)</option>
+                            <option value="cv-template-6">Moderno (Malva)</option>
+                        </select>
+                    </div>
+
+                    <div class="cv-wrapper">
+                        <!-- CV TEMPLATE 1 (Moderno) -->
+                        <div class="cv-container cv-template-view active-tpl" id="cv-template-1">
+                            <div class="cv-left">
+                                <div class="cv-bg-pattern"></div>
+                                <div class="cv-photo-box">
+                                    @if(auth()->check() && auth()->user()->foto_perfil)
+                                        <img src="{{ asset('storage/' . auth()->user()->foto_perfil) }}" alt="Foto" class="cv-photo">
+                                    @else
+                                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop" alt="Foto" class="cv-photo">
+                                    @endif
+                                </div>
+
+                                <div class="cv-section-left">
+                                    <div class="cv-contact-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                        <span>Avda. de Andaluc&iacute;a, 41,<br>Archidona 29300</span>
+                                    </div>
+                                    <div class="cv-contact-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                                        <span>692 454 731</span>
+                                    </div>
+                                    <div class="cv-contact-item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                        <span>{{ auth()->check() ? auth()->user()->email : 'evasanchezlinares@gmail.com' }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="cv-section-left">
+                                    <div class="cv-title-left">APTITUDES</div>
+                                    <ul class="cv-list-left">
+                                        @if(count($r_habB) > 0)
+                                            @foreach($r_habB as $hab)
+                                                <li>{{ $hab->nombre }}</li>
+                                            @endforeach
+                                        @else
+                                            <li>Trabajo en equipo.</li>
+                                            <li>Iniciativa.</li>
+                                            <li>Resoluci&oacute;n de problemas.</li>
+                                            <li>Aprendizaje fluido.</li>
+                                            <li>Comunicaci&oacute;n efectiva.</li>
+                                        @endif
+                                    </ul>
+                                </div>
+
+                                <div class="cv-section-left">
+                                    <div class="cv-title-left">RESUMEN PROFESIONAL</div>
+                                    <div class="cv-text-left">
+                                        @if(auth()->check() && auth()->user()->biografia)
+                                            {{ auth()->user()->biografia }}
+                                        @else
+                                            Programadora web con m&aacute;s de 5 a&ntilde;os de trayectoria desarrolladas en el eCommerce. A lo largo de estos a&ntilde;os, he tenido el privilegio de formar parte en la creaci&oacute;n de webs como geekletics.es y peternappi.es, las cuales han cultivado un gran &eacute;xito, tanto en tr&aacute;fico como en conversiones.
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="cv-right">
+                                <h1 class="cv-name">
+                                    @if(auth()->check())
+                                        {{ auth()->user()->nombre }}<br>{{ auth()->user()->apellido }}
+                                    @else
+                                        Eva S&aacute;nchez<br>Linares
+                                    @endif
+                                </h1>
+
+                                <div class="cv-section-right">
+                                    <div class="cv-title-right">HABILIDADES INFORM&Aacute;TICAS</div>
+                                    <ul class="cv-list-right">
+                                        @if(count($r_habF) > 0)
+                                            @foreach($r_habF as $hab)
+                                                <li>{{ $hab->nombre }}{{ $hab->nivel ? ' ('.$hab->nivel.')' : '' }}</li>
+                                            @endforeach
+                                        @else
+                                            <li>Programaci&oacute;n con JavaScript, CSS, HTML, C#, SQL.</li>
+                                            <li>Conocimientos avanzados de Prestashop.</li>
+                                            <li>Manejo de MySQL, MariaDB, Mongodb.</li>
+                                            <li>Desarrollo de aplicaciones m&oacute;viles.</li>
+                                        @endif
+                                    </ul>
+                                </div>
+
+                                <div class="cv-section-right">
+                                    <div class="cv-title-right">CURSOS Y CERTIFICADOS</div>
+                                    <ul class="cv-list-right">
+                                        @if(count($r_cert) > 0)
+                                            @foreach($r_cert as $cert)
+                                                <li>{{ $cert->nombre }} ({{ $cert->fecha_obtencion ? $cert->fecha_obtencion->format('Y') : '' }}) - {{ $cert->organizacion }}</li>
+                                            @endforeach
+                                        @else
+                                            <li>Programaci&oacute;n avanzada en JavaScript (200 horas) - Edx</li>
+                                            <li>Adobe Illustrator para dise&ntilde;o gr&aacute;fico (140 horas) - Domestika</li>
+                                        @endif
+                                    </ul>
+                                </div>
+
+                                <div class="cv-section-right">
+                                    <div class="cv-title-right">HISTORIAL LABORAL</div>
+                                    @if(count($r_exp) > 0)
+                                        @foreach($r_exp as $exp)
+                                            <div class="cv-job-container">
+                                                <div class="cv-job-date">{{ $exp->fecha_inicio ? $exp->fecha_inicio->format('M Y') : '' }} - {{ $exp->actual ? 'Actualidad' : ($exp->fecha_fin ? $exp->fecha_fin->format('M Y') : '') }}</div>
+                                                <div class="cv-job-title">{{ $exp->cargo }} &middot; {{ $exp->empresa }}</div>
+                                                @if($exp->descripcion)
+                                                    <div class="cv-job-desc" style="white-space: pre-line; line-height: 1.5;">{{ $exp->descripcion }}</div>
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <div class="cv-job-container">
+                                            <div class="cv-job-date">Junio 2017 - Marzo 2020</div>
+                                            <div class="cv-job-title">Desarrolladora web eCommerce Hays Response, Zaragoza</div>
+                                            <ul class="cv-job-desc">
+                                                <li>Maquetaci&oacute;n mediante CSS.</li>
+                                                <li>Optimizaci&oacute;n de SEO on page.</li>
+                                                <li>Programaci&oacute;n con JavaScript.</li>
+                                            </ul>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <div class="cv-section-right" style="margin-bottom: 0;">
+                                    <div class="cv-title-right">FORMACI&Oacute;N</div>
+                                    @if(count($r_form) > 0)
+                                        @foreach($r_form as $form)
+                                            <div class="cv-job-container" style="margin-bottom: 10px;">
+                                                <div class="cv-job-date" style="color: #1e293b; font-weight: 700; margin-bottom: 2px;">{{ $form->fecha_inicio ? $form->fecha_inicio->format('Y') : '' }}</div>
+                                                <div style="font-size: 12px;">{{ $form->titulo }} - {{ $form->institucion }}</div>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <div class="cv-job-container" style="margin-bottom: 0;">
+                                            <div class="cv-job-date" style="color: #1e293b; font-weight: 700; margin-bottom: 2px;">2015</div>
+                                            <div style="font-size: 12px;">Grado Superior en Desarrollo de Aplicaciones Web</div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CV TEMPLATE 2 (Clásico) -->
+                        <div class="cv-container cv-template-view" id="cv-template-2">
+                            <div class="cv2-header">
+                                <div class="cv2-name">
+                                    @if(auth()->check())
+                                        {{ auth()->user()->nombre }} {{ auth()->user()->apellido }}
+                                    @else
+                                        Eva S&aacute;nchez Linares
+                                    @endif
+                                </div>
+                                <div class="cv2-contact">
+                                    <span>Avda. de Andaluc&iacute;a, 41</span>
+                                    <span>|</span>
+                                    <span>692 454 731</span>
+                                    <span>|</span>
+                                    <span>{{ auth()->check() ? auth()->user()->email : 'evasanchezlinares@gmail.com' }}</span>
+                                </div>
+                            </div>
+
+                            <div class="cv2-section">
+                                <div class="cv2-title">Resumen Profesional</div>
+                                <div style="font-size: 13px; line-height: 1.5; color: #334155;">
+                                    @if(auth()->check() && auth()->user()->biografia)
+                                        {{ auth()->user()->biografia }}
+                                    @else
+                                        Programadora web con m&aacute;s de 5 a&ntilde;os de trayectoria desarrolladas en el eCommerce. A lo largo de estos a&ntilde;os, he tenido el privilegio de formar parte en la creaci&oacute;n de webs de gran &eacute;xito. Busco formar parte de Gesico Sistemas para mi capacidad creativa al siguiente nivel, aportando mis amplio conocimientos en CSS y Prestashop.
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="cv2-section">
+                                <div class="cv2-title">Experiencia Laboral</div>
+                                @if(count($r_exp) > 0)
+                                    @foreach($r_exp as $exp)
+                                        <div class="cv2-item">
+                                            <div class="cv2-item-header">
+                                                <div class="cv2-item-title">{{ $exp->cargo }} - {{ $exp->empresa }}</div>
+                                                <div class="cv2-item-date">{{ $exp->fecha_inicio ? $exp->fecha_inicio->format('M Y') : '' }} - {{ $exp->actual ? 'Actualidad' : ($exp->fecha_fin ? $exp->fecha_fin->format('M Y') : '') }}</div>
+                                            </div>
+                                            @if($exp->descripcion)
+                                                <div style="font-size: 13px; color: #334155; line-height: 1.5; white-space: pre-line; padding-left: 10px;">{{ $exp->descripcion }}</div>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="cv2-item">
+                                        <div class="cv2-item-header">
+                                            <div class="cv2-item-title">Desarrolladora web eCommerce - Hays Response</div>
+                                            <div class="cv2-item-date">Junio 2017 - Marzo 2020</div>
+                                        </div>
+                                        <ul>
+                                            <li>Maquetaci&oacute;n mediante CSS y Optimizaci&oacute;n SEO on page.</li>
+                                            <li>Programaci&oacute;n con JavaScript e implementaci&oacute;n de BBDD.</li>
+                                            <li>Incremento en un 30% del tr&aacute;fico de clientes.</li>
+                                        </ul>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="cv2-section">
+                                <div class="cv2-title">Formaci&oacute;n Acad&eacute;mica</div>
+                                @if(count($r_form) > 0)
+                                    @foreach($r_form as $form)
+                                        <div class="cv2-item">
+                                            <div class="cv2-item-header">
+                                                <div class="cv2-item-title">{{ $form->titulo }} - {{ $form->institucion }}</div>
+                                                <div class="cv2-item-date">{{ $form->fecha_inicio ? $form->fecha_inicio->format('Y') : '' }}</div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="cv2-item">
+                                        <div class="cv2-item-header">
+                                            <div class="cv2-item-title">Grado Superior en Desarrollo de Aplicaciones Web</div>
+                                            <div class="cv2-item-date">2015</div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="cv2-section">
+                                <div class="cv2-title">Habilidades e Idiomas</div>
+                                <div style="display: flex; gap: 40px; font-size: 13px; color: #334155; line-height: 1.5;">
+                                    <div>
+                                        <strong>Competencias:</strong><br>
+                                        @if(count($r_habB) > 0)
+                                            @foreach($r_habB as $hab)
+                                                {{ $hab->nombre }}<br>
+                                            @endforeach
+                                        @else
+                                            Trabajo en equipo<br>Iniciativa
+                                        @endif
+                                    </div>
+                                    <div>
+                                        <strong>Inform&aacute;tica:</strong><br>
+                                        @if(count($r_habF) > 0)
+                                            @foreach($r_habF as $hab)
+                                                {{ $hab->nombre }}{{ $hab->nivel ? ' ('.$hab->nivel.')' : '' }}<br>
+                                            @endforeach
+                                        @else
+                                            JavaScript, CSS, HTML, SQL<br>MySQL, MariaDB
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CV TEMPLATE 3 (Minimalista) -->
+                        <div class="cv-container cv-template-view" id="cv-template-3">
+                            <div class="cv3-left">
+                                <div class="cv3-name">
+                                    @if(auth()->check())
+                                        {{ auth()->user()->nombre }}<br>{{ auth()->user()->apellido }}
+                                    @else
+                                        Eva<br>S&aacute;nchez
+                                    @endif
+                                </div>
+                                <div class="cv3-role">{{ auth()->check() && auth()->user()->profesion ? auth()->user()->profesion : 'Programadora Web' }}</div>
+
+                                <div class="cv3-section-title">Contacto</div>
+                                <div class="cv3-contact-item">Avda. de Andaluc&iacute;a, 41</div>
+                                <div class="cv3-contact-item">692 454 731</div>
+                                <div class="cv3-contact-item">{{ auth()->check() ? auth()->user()->email : 'evasanchezlinares@gmail.com' }}</div>
+
+                                <div class="cv3-section-title">Habilidades</div>
+                                <div>
+                                    @if(count($r_habF) > 0 || count($r_habB) > 0)
+                                        @foreach($r_habF as $hab)
+                                            <span class="cv3-skill">{{ $hab->nombre }}</span>
+                                        @endforeach
+                                        @foreach($r_habB as $hab)
+                                            <span class="cv3-skill">{{ $hab->nombre }}</span>
+                                        @endforeach
+                                    @else
+                                        <span class="cv3-skill">JavaScript</span>
+                                        <span class="cv3-skill">CSS</span>
+                                        <span class="cv3-skill">HTML</span>
+                                        <span class="cv3-skill">SQL</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div style="padding-left: 20px;">
+                                <div class="cv3-section-title" style="margin-top:0;">Perfil</div>
+                                <div style="font-size:13px; color:#475569; line-height:1.6; margin-bottom: 30px;">
+                                    @if(auth()->check() && auth()->user()->biografia)
+                                        {{ auth()->user()->biografia }}
+                                    @else
+                                        Programadora web con m&aacute;s de 5 a&ntilde;os de trayectoria desarrolladas en el eCommerce. A lo largo de estos a&ntilde;os, he tenido el privilegio de formar parte en la creaci&oacute;n de webs como geekletics.es y peternappi.es.
+                                    @endif
+                                </div>
+
+                                <div class="cv3-section-title">Experiencia</div>
+                                @if(count($r_exp) > 0)
+                                    @foreach($r_exp as $exp)
+                                        <div class="cv3-job">
+                                            <div class="cv3-job-date">{{ $exp->fecha_inicio ? $exp->fecha_inicio->format('M Y') : '' }} - {{ $exp->actual ? 'Actualidad' : ($exp->fecha_fin ? $exp->fecha_fin->format('M Y') : '') }}</div>
+                                            <div class="cv3-job-title">{{ $exp->cargo }} &middot; {{ $exp->empresa }}</div>
+                                            @if($exp->descripcion)
+                                                <div class="cv3-job-desc" style="white-space: pre-line;">{{ $exp->descripcion }}</div>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="cv3-job">
+                                        <div class="cv3-job-date">Junio 2017 - Marzo 2020</div>
+                                        <div class="cv3-job-title">Desarrolladora web eCommerce &middot; Hays Response</div>
+                                        <div class="cv3-job-desc">
+                                            Maquetaci&oacute;n mediante CSS y Optimizaci&oacute;n SEO on page. Programaci&oacute;n con JavaScript.
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <div class="cv3-section-title">Educaci&oacute;n</div>
+                                @if(count($r_form) > 0)
+                                    @foreach($r_form as $form)
+                                        <div class="cv3-job" style="margin-bottom:15px;">
+                                            <div class="cv3-job-date">{{ $form->fecha_inicio ? $form->fecha_inicio->format('Y') : '' }}</div>
+                                            <div class="cv3-job-title">{{ $form->titulo }} &middot; {{ $form->institucion }}</div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="cv3-job" style="margin-bottom:0;">
+                                        <div class="cv3-job-date">2015</div>
+                                        <div class="cv3-job-title">Grado Superior en Desarrollo de Aplicaciones Web</div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- CV TEMPLATE 4 (Elegante) -->
+                        <div class="cv-container cv-template-view" id="cv-template-4">
+                            <div class="cv4-header">
+                                <div class="cv4-name-box">
+                                    <div class="cv4-name">{!! auth()->check() ? auth()->user()->nombre . ' ' . auth()->user()->apellido : 'Nombres Apellidos' !!}</div>
+                                    <div class="cv4-role">{!! auth()->check() && auth()->user()->profesion ? auth()->user()->profesion : 'Puesto Ocupado' !!}</div>
+                                </div>
+                            </div>
+                            @if(auth()->check() && auth()->user()->foto_perfil)
+                                <img src="{{ asset('storage/' . auth()->user()->foto_perfil) }}" alt="Foto" class="cv4-photo">
+                            @else
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop" alt="Foto" class="cv4-photo">
+                            @endif
+                            <div class="cv4-left">
+                                <div class="cv4-title" style="margin-top:0;">Contacto</div>
+                                <div class="cv4-text">
+                                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                        692 454 731
+                                    </div>
+                                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;word-break:break-all;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                        {{ auth()->check() ? auth()->user()->email : 'nombre.apellido@mail.com' }}
+                                    </div>
+                                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                        Ciudad, Pa&iacute;s
+                                    </div>
+                                </div>
+
+                                <div class="cv4-title">Idiomas</div>
+                                <div class="cv4-text">
+                                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                                        <span>Ingl&eacute;s</span><div style="width:60%;height:6px;background:#475a68;border-radius:3px;"></div>
+                                    </div>
+                                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                                        <span>Franc&eacute;s</span><div style="width:40%;height:6px;background:#475a68;border-radius:3px;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="cv4-title">Habilidades</div>
+                                <ul class="cv4-list">
+                                    @if(count($r_habB) > 0 || count($r_habF) > 0)
+                                        @foreach($r_habF as $hab)
+                                            <li>{{ $hab->nombre }}</li>
+                                        @endforeach
+                                        @foreach($r_habB as $hab)
+                                            <li>{{ $hab->nombre }}</li>
+                                        @endforeach
+                                    @else
+                                        <li>Trabajo en equipo</li>
+                                        <li>Comunicaci&oacute;n</li>
+                                        <li>Capacidad de adaptaci&oacute;n</li>
+                                        <li>Creatividad</li>
+                                        <li>Liderazgo</li>
+                                    @endif
+                                </ul>
+
+                                <div class="cv4-title">Intereses</div>
+                                <ul class="cv4-list">
+                                    <li>Lectura</li>
+                                    <li>Arte</li>
+                                    <li>Deportes</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="cv4-right">
+                                <div class="cv4-title" style="margin-top:0;">Perfil</div>
+                                <div class="cv4-text">
+                                    @if(auth()->check() && auth()->user()->biografia)
+                                        {{ auth()->user()->biografia }}
+                                    @else
+                                        En este apartado de tu hoja de vida debes escribir tu experiencia profesional y habilidades m&aacute;s importantes.
+                                    @endif
+                                </div>
+
+                                <div class="cv4-title">Experiencia Profesional</div>
+                                @if(count($r_exp) > 0)
+                                    @foreach($r_exp as $exp)
+                                        <div class="cv4-job">
+                                            <div class="cv4-job-title">{{ $exp->cargo }}</div>
+                                            <div class="cv4-job-meta"><strong>{{ $exp->empresa }}</strong> | {{ $exp->fecha_inicio ? $exp->fecha_inicio->format('Y') : '' }} - {{ $exp->actual ? 'Actualidad' : ($exp->fecha_fin ? $exp->fecha_fin->format('Y') : '') }}</div>
+                                            @if($exp->descripcion)
+                                                <ul class="cv4-list-bullet">
+                                                    <li>{{ $exp->descripcion }}</li>
+                                                </ul>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="cv4-job">
+                                        <div class="cv4-job-title">Puesto ocupado</div>
+                                        <div class="cv4-job-meta"><strong>NOMBRE DE LA EMPRESA</strong> | 20XX - 20XX</div>
+                                        <ul class="cv4-list-bullet">
+                                            <li>Descripci&oacute;n de las actividades realizadas.</li>
+                                        </ul>
+                                    </div>
+                                @endif
+
+                                <div class="cv4-title">Formaci&oacute;n</div>
+                                @if(count($r_form) > 0)
+                                    @foreach($r_form as $form)
+                                        <div class="cv4-job">
+                                            <div class="cv4-job-title">{{ $form->titulo }}</div>
+                                            <div class="cv4-job-meta"><strong>{{ $form->institucion }}</strong> | {{ $form->fecha_inicio ? $form->fecha_inicio->format('Y') : '' }}</div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="cv4-job">
+                                        <div class="cv4-job-title">Nombre del grado o t&iacute;tulo obtenido</div>
+                                        <div class="cv4-job-meta"><strong>Nombre de la instituci&oacute;n</strong> | 20XX</div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- CV TEMPLATE 5 (Creativo) -->
+                        <div class="cv-container cv-template-view" id="cv-template-5">
+                            <div class="cv5-banner">
+                                <div class="cv5-name">{!! auth()->check() ? auth()->user()->nombre . '<br>' . auth()->user()->apellido : 'Nombres<br>Apellidos' !!}</div>
+                                <div class="cv5-role">{!! auth()->check() && auth()->user()->profesion ? auth()->user()->profesion : 'Lic. Ingenier&iacute;a de Sistemas' !!}</div>
+                            </div>
+                            @if(auth()->check() && auth()->user()->foto_perfil)
+                                <img src="{{ asset('storage/' . auth()->user()->foto_perfil) }}" alt="Foto" class="cv5-photo">
+                            @else
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop" alt="Foto" class="cv5-photo">
+                            @endif
+
+                            <div class="cv5-left">
+                                <div class="cv5-title-left">Perfil</div>
+                                <div class="cv5-text-left" style="margin-bottom:30px;">
+                                    @if(auth()->check() && auth()->user()->biografia)
+                                        {{ auth()->user()->biografia }}
+                                    @else
+                                        Ingeniero de Sistemas, responsable y comprometido con el aprendizaje continuo. Poseo grandes expectativas de desarrollo profesional.
+                                    @endif
+                                </div>
+
+                                <div class="cv5-title-left">Contacto</div>
+                                <div class="cv5-contact-item">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                    692 454 731
+                                </div>
+                                <div class="cv5-contact-item" style="word-break:break-all;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                    {{ auth()->check() ? auth()->user()->email : 'correo@ejemplo.com' }}
+                                </div>
+                                <div class="cv5-contact-item">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    Cochabamba, Bolivia
+                                </div>
+                            </div>
+
+                            <div class="cv5-right">
+                                <div class="cv5-title-right"><span class="cv5-title-icon">❯</span> Educaci&oacute;n</div>
+                                @if(count($r_form) > 0)
+                                    @foreach($r_form as $form)
+                                        <ul class="cv5-list" style="margin-bottom:10px;list-style:disc;">
+                                            <li><strong>{{ $form->institucion }}</strong><br>{{ $form->titulo }}</li>
+                                        </ul>
+                                    @endforeach
+                                @else
+                                    <ul class="cv5-list" style="margin-bottom:10px;list-style:disc;">
+                                        <li><strong>UNIVERSIDAD MAYOR DE SAN SIMON</strong><br>Carrera en licenciatura de ingenier&iacute;a de sistemas</li>
+                                    </ul>
+                                @endif
+
+                                <div class="cv5-title-right"><span class="cv5-title-icon">❯</span> Lenguaje</div>
+                                <ul class="cv5-list" style="list-style:disc;">
+                                    <li>Espa&ntilde;ol: Nativo</li>
+                                    <li>Ingl&eacute;s: B&aacute;sico</li>
+                                </ul>
+
+                                <div class="cv5-title-right"><span class="cv5-title-icon">❯</span> Habilidades (T&eacute;cnicas)</div>
+                                <ul class="cv5-list" style="list-style:disc;">
+                                    @if(count($r_habF) > 0)
+                                        @foreach($r_habF as $hab)
+                                            <li><strong>{{ $hab->nombre }}</strong>: Nivel {{ $hab->nivel ?: 'Básico' }}</li>
+                                        @endforeach
+                                    @else
+                                        <li><strong>Curso de Python b&aacute;sico</strong>: manejo b&aacute;sico de lenguaje.</li>
+                                        <li><strong>Java</strong>: manejo de fundamentos de programaci&oacute;n.</li>
+                                    @endif
+                                </ul>
+
+                                <div class="cv5-title-right"><span class="cv5-title-icon">❯</span> Certificados</div>
+                                <ul class="cv5-list" style="list-style:disc;">
+                                    @if(count($r_cert) > 0)
+                                        @foreach($r_cert as $cert)
+                                            <li>Certificado de {{ $cert->nombre }}</li>
+                                        @endforeach
+                                    @else
+                                        <li>Certificado de participaci&oacute;n de agente censal</li>
+                                    @endif
+                                </ul>
+
+                                <div class="cv5-title-right"><span class="cv5-title-icon">❯</span> Experiencia Laboral</div>
+                                <ul class="cv5-list" style="list-style:disc;">
+                                    @if(count($r_exp) > 0)
+                                        @foreach($r_exp as $exp)
+                                            <li><strong>{{ $exp->empresa }}</strong><br>{{ $exp->cargo }}</li>
+                                        @endforeach
+                                    @else
+                                        <li><strong>SISTEMA DE INVENTARIO Y VENTAS</strong><br>Desarrollador</li>
+                                    @endif
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- CV TEMPLATE 6 (Moderno) -->
+                        <div class="cv-container cv-template-view" id="cv-template-6">
+                            <div class="cv6-banner">
+                                <div class="cv6-name">{!! auth()->check() ? auth()->user()->nombre . ' ' . auth()->user()->apellido : 'Emilia Ram&iacute;rez' !!}</div>
+                                <div class="cv6-role">{!! auth()->check() && auth()->user()->profesion ? auth()->user()->profesion : 'ESTUDIANTE' !!}</div>
+                                <div class="cv6-banner-text">
+                                    @if(auth()->check() && auth()->user()->biografia)
+                                        {{ auth()->user()->biografia }}
+                                    @else
+                                        Estudiante de Administraci&oacute;n de Empresas. Me considero una persona responsable y ordenada.
+                                    @endif
+                                </div>
+                            </div>
+                            @if(auth()->check() && auth()->user()->foto_perfil)
+                                <img src="{{ asset('storage/' . auth()->user()->foto_perfil) }}" alt="Foto" class="cv6-photo">
+                            @else
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop" alt="Foto" class="cv6-photo">
+                            @endif
+
+                            <div class="cv6-left">
+                                <div class="cv6-title">Educaci&oacute;n</div>
+                                @if(count($r_form) > 0)
+                                    @foreach($r_form as $form)
+                                        <div class="cv6-item">
+                                            <ul class="cv6-list">
+                                                <li>{{ $form->institucion }}<br>
+                                                <span style="color:#64748b;">{{ $form->fecha_inicio ? $form->fecha_inicio->format('Y') : '' }}</span><br>
+                                                {{ $form->titulo }}</li>
+                                            </ul>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="cv6-item">
+                                        <ul class="cv6-list">
+                                            <li>Universidad Borcelle<br>
+                                            <span style="color:#64748b;">2019-2023</span><br>
+                                            Carrera de Derecho, en Curso.</li>
+                                        </ul>
+                                    </div>
+                                @endif
+
+                                <div class="cv6-title">Idiomas</div>
+                                <ul class="cv6-list">
+                                    <li>Idioma Ingl&eacute;s Avanzado<br>
+                                    <span style="color:#64748b;">Nivel Oral: Biling&uuml;e</span></li>
+                                </ul>
+
+                                <div class="cv6-title" style="margin-top:40px;">Contacto</div>
+                                <div class="cv6-contact-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                    {{ auth()->check() ? auth()->user()->email : 'hola@sitio.com' }}
+                                </div>
+                                <div class="cv6-contact-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                    Celular: 1234-5678
+                                </div>
+                            </div>
+
+                            <div class="cv6-right">
+                                <div class="cv6-title" style="margin-top:0;">Experiencia Laboral</div>
+                                @if(count($r_exp) > 0)
+                                    @foreach($r_exp as $exp)
+                                        <div class="cv6-item">
+                                            <div class="cv6-item-title">{{ $exp->cargo }}</div>
+                                            <div class="cv6-item-meta">En {{ $exp->empresa }}, {{ $exp->fecha_inicio ? $exp->fecha_inicio->format('M Y') : '' }} - {{ $exp->actual ? 'presente' : ($exp->fecha_fin ? $exp->fecha_fin->format('M Y') : '') }}</div>
+                                            @if($exp->descripcion)
+                                                <ul class="cv6-list" style="margin-top:8px;">
+                                                    <li>{{ $exp->descripcion }}</li>
+                                                </ul>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="cv6-item">
+                                        <div class="cv6-item-title">Vendedora, Atenci&oacute;n al cliente.</div>
+                                        <div class="cv6-item-meta">En Casa Colombia, marzo 2021 - presente</div>
+                                        <ul class="cv6-list" style="margin-top:8px;">
+                                            <li>Atenci&oacute;n al cliente.</li>
+                                            <li>Control de caja.</li>
+                                        </ul>
+                                    </div>
+                                @endif
+
+                                <div class="cv6-title">Habilidades y Conocimientos</div>
+                                <ul class="cv6-list">
+                                    @if(count($r_habF) > 0 || count($r_habB) > 0)
+                                        @foreach($r_habF as $hab)
+                                            <li>{{ $hab->nombre }}</li>
+                                        @endforeach
+                                        @foreach($r_habB as $hab)
+                                            <li>{{ $hab->nombre }}</li>
+                                        @endforeach
+                                    @else
+                                        <li>Procesador de texto, hoja de c&aacute;lculos y presentaci&oacute;n de Diapositivas.</li>
+                                    @endif
+                                </ul>
+                            </div>
+                        </div>
+                </div>
+
             </div>
         </main>
 
@@ -989,6 +1804,38 @@
     document.getElementById('btn-menu').classList.add('active');
     function confirmarLogout(){
         document.getElementById('modalLogout').style.display='flex';
+    }
+
+    function selectTemplate(tplId) {
+        document.querySelectorAll('.cv-template-view').forEach(el => {
+            el.classList.remove('active-tpl');
+        });
+        document.getElementById(tplId).classList.add('active-tpl');
+    }
+
+    let isEditingCV = false;
+    function toggleEditCV() {
+        isEditingCV = !isEditingCV;
+        const btn = document.getElementById('btn-edit-cv');
+        
+        if (isEditingCV) {
+            document.querySelectorAll('.cv-template-view').forEach(tpl => {
+                tpl.setAttribute('contenteditable', 'true');
+                tpl.style.outline = '2px dashed #3b82f6';
+                tpl.style.outlineOffset = '4px';
+            });
+            btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Finalizar Edición';
+            btn.style.background = '#3b82f6';
+            btn.style.color = '#fff';
+        } else {
+            document.querySelectorAll('.cv-template-view').forEach(tpl => {
+                tpl.setAttribute('contenteditable', 'false');
+                tpl.style.outline = 'none';
+            });
+            btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Editar en pantalla';
+            btn.style.background = '#e2e8f0';
+            btn.style.color = '#1e293b';
+        }
     }
 </script>
 </body>
