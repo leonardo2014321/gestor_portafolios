@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Services\ActividadService;
 
 class PerfilController extends Controller
 {
@@ -59,6 +60,8 @@ class PerfilController extends Controller
 
         $usuario->update($data);
 
+        ActividadService::log($usuario->id, 'PERFIL_ACTUALIZADO');
+
         return back()->with('success', 'Perfil actualizado correctamente.');
     }
 
@@ -70,6 +73,8 @@ class PerfilController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        ActividadService::log($usuario->id, 'CUENTA_DESACTIVADA');
 
         return response()->json(['ok' => true]);
     }
