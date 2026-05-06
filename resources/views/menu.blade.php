@@ -148,8 +148,10 @@
         .badge-review::before{content:'';width:7px;height:7px;border-radius:50%;background:#fbbf24;display:inline-block}
 
         /* ── Explorador ── */
-        .exp-hero{background:linear-gradient(135deg,#1340b0 0%,#1a56db 60%,#3b82f6 100%);padding:1.6rem 2rem 2.2rem;border-radius:16px;margin-bottom:1.4rem;position:relative;overflow:hidden}
-        .exp-hero::after{content:'';position:absolute;right:-40px;bottom:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.06)}
+        .exp-hero{position:relative;margin-bottom:1.4rem;z-index:10;}
+        .exp-hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#1340b0 0%,#1a56db 60%,#3b82f6 100%);border-radius:16px;overflow:hidden;z-index:0}
+        .exp-hero-bg::after{content:'';position:absolute;right:-40px;bottom:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.06)}
+        .exp-hero-content{position:relative;z-index:1;padding:1.6rem 2rem 2.2rem}
         .exp-hero-title{font-family:"Plus Jakarta Sans",sans-serif;font-size:20px;font-weight:800;color:#fff;line-height:1.2}
         .exp-hero-sub{font-size:12px;color:rgba(255,255,255,.7);margin-top:3px}
         .exp-search-wrap{display:flex;align-items:center;gap:10px;margin-top:1.2rem;max-width:600px;position:relative;z-index:1}
@@ -269,7 +271,10 @@
           .tb-nav{display:none}
         }
         @media(max-width:768px){
-          .topbar{padding:0 16px}
+          .topbar{padding:0 16px; height: auto; padding-top: 10px; padding-bottom: 10px; flex-wrap: wrap; gap: 10px;}
+          .tb-nav{display:none}
+          .tb-left { width: 100%; justify-content: space-between; }
+          .tb-right { width: 100%; justify-content: flex-end; }
           .sysname{font-size:18px}
           .main-inner{padding:1.2rem 1rem}
           .porta-grid{grid-template-columns:1fr}
@@ -277,18 +282,83 @@
           .exp-hero{padding:1.2rem}
           .exp-search-wrap{flex-direction:column; align-items:stretch}
           .exp-filters{flex-wrap:wrap}
+          .stats { grid-template-columns: 1fr; }
         }
         @media(max-width:480px){
           aside{width:60px}
           .tb-search{display:none}
           .sysname{display:none}
-          .tb-left{gap:0}
+          .tb-left{gap:0; justify-content: center;}
+          .tb-right{justify-content: center;}
           .tb-right > div > div:nth-child(2) { display: none; }
           .pcard-dark, .pcard-teal, .pcard-light{padding:1rem}
           .exp-card-actions{flex-direction:column; align-items:flex-start; gap:10px}
-          .stat{flex-direction:row; align-items:center}
+          .stat{flex-direction:row; align-items:center; padding: 1rem;}
           .stat-num{font-size:28px}
+          .content-bar { flex-direction: column; gap: 10px; }
         }
+
+        /* ── Estilos Historial ── */
+        .exp-search-wrap { position: relative; }
+        .exp-history-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: calc(100% - 100px); /* Ajustado para el botón buscar */
+            background: #fff;
+            border: 1.5px solid var(--gray2);
+            border-radius: 9px;
+            margin-top: 5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        @media (max-width: 768px) { .exp-history-dropdown { width: 100%; } }
+        .exp-history-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            font-size: 13px;
+            color: var(--text);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .exp-history-item:hover { background: var(--gray); }
+        .exp-history-item svg { width: 12px; height: 12px; color: var(--muted); }
+        .exp-history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 14px;
+            border-bottom: 1px solid var(--gray);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn-clear-history {
+            color: var(--blue);
+            cursor: pointer;
+            text-transform: none;
+            font-weight: 600;
+        }
+        .btn-clear-history:hover { text-decoration: underline; }
+        .btn-remove-history {
+            padding: 4px;
+            border-radius: 4px;
+            color: var(--muted);
+            opacity: 0;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .exp-history-item:hover .btn-remove-history { opacity: 1; }
+        .btn-remove-history:hover { background: rgba(220,38,38,0.1); color: #ef4444; }
+        .btn-remove-history svg { width: 14px !important; height: 14px !important; }
         
         /* ── CV TEMPLATE STYLES ── */
         .cv-wrapper { display: flex; justify-content: center; padding-bottom: 40px; }
@@ -645,14 +715,18 @@
                 <!-- ══ VISTA EXPLORADOR ══ -->
                 <div class="view" id="view-explorador">
                     <div class="exp-hero">
-                        <div class="exp-hero-title">Sistema de Portafolios</div>
-                        <div class="exp-hero-sub">Gestión Institucional de Activos Digitales · UMSS</div>
-                        <div class="exp-search-wrap">
-                            <div class="exp-search-box">
-                                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                                <input type="text" id="expSearch" placeholder="Buscar..." oninput="expFilter()"/>
+                        <div class="exp-hero-bg"></div>
+                        <div class="exp-hero-content">
+                            <div class="exp-hero-title">Sistema de Portafolios</div>
+                            <div class="exp-hero-sub">Gestión Institucional de Activos Digitales · UMSS</div>
+                            <div class="exp-search-wrap">
+                                <div class="exp-search-box">
+                                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                    <input type="text" id="expSearch" placeholder="Buscar... (Ctrl + K)" onfocus="expShowHistory()" onkeydown="if(event.key==='Enter') expSearchAction()"/>
+                                </div>
+                                <button class="btn-buscar" onclick="expSearchAction()">Buscar</button>
+                                <div id="expHistory" class="exp-history-dropdown" style="display:none;"></div>
                             </div>
-                            <button class="btn-buscar" onclick="expFilter()">Buscar</button>
                         </div>
                     </div>
                     <div class="exp-filters">
@@ -1627,6 +1701,26 @@
         document.querySelector('main').scrollTop=0;
     }
 
+    /* ── Atajos de Teclado ── */
+    document.addEventListener('keydown', function(e) {
+        // Ctrl + K para buscar
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            showView('explorador');
+            document.getElementById('expSearch').focus();
+        }
+        // Esc para cerrar buscador o limpiar
+        if (e.key === 'Escape') {
+            const input = document.getElementById('expSearch');
+            if (document.activeElement === input) {
+                input.value = '';
+                expFilter();
+                input.blur();
+                document.getElementById('expHistory').style.display = 'none';
+            }
+        }
+    });
+
     /* ══ Explorador ══ */
     const dbCards = @json($busquedas ?? []);
     
@@ -1654,20 +1748,38 @@
 
     function expHL(text){
         const q=document.getElementById('expSearch').value.trim();
-        if(!q) return text;
+        if(!q) return escapeHTML(text);
+        const escapedText = escapeHTML(text);
         const re=new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi');
-        return text.replace(re,'<mark>$1</mark>');
+        return escapedText.replace(re,'<mark>$1</mark>');
+    }
+
+    function escapeHTML(str) {
+        const p = document.createElement('p');
+        p.textContent = str;
+        return p.innerHTML;
     }
 
     function expRender(cards){
-        document.getElementById('expCount').textContent=`${cards.length} Resultado${cards.length!==1?'s':''} Encontrado${cards.length!==1?'s':''}`;
+        const countEl = document.getElementById('expCount');
+        if (cards.length === 0) {
+            countEl.textContent = "0 Resultados";
+            document.getElementById('expGrid').innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--muted);">
+                    <svg viewBox="0 0 24 24" style="width:48px;height:48px;margin-bottom:1rem;stroke:var(--gray3);fill:none;stroke-width:1.5;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <p style="font-weight:600; color:var(--text);">No se encontraron resultados</p>
+                    <p style="font-size:13px;">Intenta con otros términos o filtros.</p>
+                </div>`;
+            return;
+        }
+        countEl.textContent=`${cards.length} Resultado${cards.length!==1?'s':''} Encontrado${cards.length!==1?'s':''}`;
         document.getElementById('expGrid').innerHTML=cards.map(c=>`
             <div class="exp-card">
-                <div class="exp-card-type">${c.type}</div>
-                <div class="exp-card-top"><div class="exp-avatar ${c.avClass}">${c.avLetter}</div><div class="exp-card-title">${expHL(c.title)}</div></div>
-                <div class="exp-card-desc">${c.desc}</div>
+                <div class="exp-card-type">${escapeHTML(c.type)}</div>
+                <div class="exp-card-top"><div class="exp-avatar ${escapeHTML(c.avClass)}">${escapeHTML(c.avLetter)}</div><div class="exp-card-title">${expHL(c.title)}</div></div>
+                <div class="exp-card-desc">${escapeHTML(c.desc)}</div>
                 <div class="exp-card-actions">
-                    <div class="exp-tags">${c.tags.map(t=>`<span class="exp-tag">${t}</span>`).join('')}</div>
+                    <div class="exp-tags">${c.tags.map(t=>`<span class="exp-tag">${escapeHTML(t)}</span>`).join('')}</div>
                     <div class="exp-icons">
                         ${c.hasUsers?`<div style="display:flex;align-items:center"><div style="width:18px;height:18px;border-radius:50%;background:#1a56db;border:2px solid #fff"></div><div style="width:18px;height:18px;border-radius:50%;background:#059669;border:2px solid #fff;margin-left:-5px"></div></div>`:''}
                         <button class="exp-icon-btn" title="Guardar"><svg viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg></button>
@@ -1677,6 +1789,82 @@
                 <div class="trend-icon"><svg viewBox="0 0 38 26" fill="none" stroke="#1a56db" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,20 10,12 16,16 26,6 36,10"/></svg></div>
             </div>`).join('');
     }
+
+    /* ── Historial ── */
+    function expSaveSearch(q) {
+        if(!q || q.length < 2) return;
+        let history = JSON.parse(localStorage.getItem('exp_history') || '[]');
+        history = history.filter(h => h.toLowerCase() !== q.toLowerCase());
+        history.unshift(q);
+        history = history.slice(0, 5);
+        localStorage.setItem('exp_history', JSON.stringify(history));
+    }
+
+    function expShowHistory() {
+        const history = JSON.parse(localStorage.getItem('exp_history') || '[]');
+        const div = document.getElementById('expHistory');
+        if (history.length === 0) {
+            div.style.display = 'none';
+            return;
+        }
+        div.innerHTML = `
+            <div class="exp-history-header">
+                <span>Búsquedas recientes</span>
+                <span class="btn-clear-history" onclick="expClearHistory()">Limpiar</span>
+            </div>
+            ${history.map((h, i) => `
+                <div class="exp-history-item">
+                    <div style="flex:1; display:flex; align-items:center; gap:10px;" onclick="expSelectHistory('${h.replace(/'/g, "\\'")}')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span>${escapeHTML(h)}</span>
+                    </div>
+                    <button class="btn-remove-history" onclick="event.stopPropagation(); expRemoveHistoryItem(${i})" title="Eliminar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+            `).join('')}
+        `;
+        div.style.display = 'block';
+    }
+
+    function expSelectHistory(val) {
+        const input = document.getElementById('expSearch');
+        input.value = val;
+        document.getElementById('expHistory').style.display = 'none';
+        expFilter();
+    }
+
+    function expClearHistory() {
+        localStorage.removeItem('exp_history');
+        document.getElementById('expHistory').style.display = 'none';
+    }
+
+    function expRemoveHistoryItem(idx) {
+        let history = JSON.parse(localStorage.getItem('exp_history') || '[]');
+        history.splice(idx, 1);
+        if (history.length === 0) {
+            localStorage.removeItem('exp_history');
+            document.getElementById('expHistory').style.display = 'none';
+        } else {
+            localStorage.setItem('exp_history', JSON.stringify(history));
+            expShowHistory();
+        }
+    }
+
+    function expSearchAction() {
+        const q = document.getElementById('expSearch').value.trim();
+        expSaveSearch(q);
+        document.getElementById('expHistory').style.display = 'none';
+        expFilter();
+    }
+
+    // Cerrar historial al hacer click fuera
+    document.addEventListener('click', function(e) {
+        const wrap = document.querySelector('.exp-search-wrap');
+        if (wrap && !wrap.contains(e.target)) {
+            document.getElementById('expHistory').style.display = 'none';
+        }
+    });
 
     function expFilter(){
         const q=document.getElementById('expSearch').value.toLowerCase();

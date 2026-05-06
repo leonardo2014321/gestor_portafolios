@@ -260,10 +260,7 @@
             <div class="sysname">Sansi<span>Folios</span></div>
         </div>
         <div class="tb-right">
-            <div class="tb-search">
-                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" placeholder="Buscar usuarios, IDs...">
-            </div>
+
             <div class="tb-bell">
                 <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             </div>
@@ -347,10 +344,10 @@
                     <div class="stat-card">
                         <div class="stat-info">
                             <div class="stat-label">Usuarios Totales</div>
-                            <div class="stat-val">1,248</div>
+                            <div class="stat-val">{{ number_format($stats['total_usuarios']) }}</div>
                             <div class="stat-trend trend-up">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                                +12% vs mes anterior
+                                {{ $stats['usuarios_activos'] }} activos
                             </div>
                         </div>
                         <div class="stat-icon icon-purple">
@@ -360,11 +357,11 @@
 
                     <div class="stat-card">
                         <div class="stat-info">
-                            <div class="stat-label">Portafolios Activos</div>
-                            <div class="stat-val">856</div>
+                            <div class="stat-label">Portafolios Registrados</div>
+                            <div class="stat-val">{{ number_format($portafolios_stats['total']) }}</div>
                             <div class="stat-trend trend-up">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                                +5% vs mes anterior
+                                {{ $portafolios_stats['con_usuarios'] }} con vinculación
                             </div>
                         </div>
                         <div class="stat-icon icon-blue">
@@ -388,11 +385,11 @@
 
                     <div class="stat-card">
                         <div class="stat-info">
-                            <div class="stat-label">Alertas de Sistema</div>
-                            <div class="stat-val">3</div>
+                            <div class="stat-label">Administradores</div>
+                            <div class="stat-val">{{ $stats['total_admins'] }}</div>
                             <div class="stat-trend trend-down">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
-                                Requieren atención
+                                Personal de gestión
                             </div>
                         </div>
                         <div class="stat-icon icon-rose">
@@ -422,19 +419,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($usuarios_recientes as $usuario)
                                     <tr>
                                         <td>
                                             <div class="user-cell">
-                                                <div class="u-avatar">MV</div>
+                                                <div class="u-avatar" style="{{ $usuario->activo ? '' : 'background: #f1f5f9; color: #475569;' }}">
+                                                    {{ strtoupper(substr($usuario->nombre, 0, 1)) }}{{ strtoupper(substr($usuario->apellido, 0, 1)) }}
+                                                </div>
                                                 <div class="u-info">
-                                                    <span class="u-name">María Vargas</span>
-                                                    <span class="u-email">m.vargas@est.umss.edu</span>
+                                                    <span class="u-name">{{ $usuario->nombre }} {{ $usuario->apellido }}</span>
+                                                    <span class="u-email">{{ $usuario->email }}</span>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td id="role-1">Usuario</td>
-                                        <td>Hoy, 10:24 AM</td>
-                                        <td><span class="status-badge st-active" id="status-1">Activo</span></td>
+                                        <td id="role-{{ $usuario->id }}">{{ $usuario->es_admin ? 'Administrador' : 'Usuario' }}</td>
+                                        <td>{{ $usuario->created_at->diffForHumans() }}</td>
+                                        <td>
+                                            <span class="status-badge {{ $usuario->activo ? 'st-active' : 'st-inactive' }}" id="status-{{ $usuario->id }}">
+                                                {{ $usuario->activo ? 'Activo' : 'Inactivo' }}
+                                            </span>
+                                        </td>
                                         <td>
                                             <div class="action-dropdown-container">
                                                 <button class="action-btn" onclick="toggleActionMenu(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
@@ -442,7 +446,7 @@
                                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                                         <span style="font-size: 13px; font-weight: 600; color: var(--text);">Estado</span>
                                                         <label class="switch">
-                                                            <input type="checkbox" checked onchange="toggleStatus(this, 'status-1')">
+                                                            <input type="checkbox" {{ $usuario->activo ? 'checked' : '' }} onchange="toggleStatus(this, 'status-{{ $usuario->id }}')">
                                                             <span class="slider"></span>
                                                         </label>
                                                     </div>
@@ -450,7 +454,7 @@
                                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                                         <span style="font-size: 13px; font-weight: 600; color: var(--text);">Rol Admin</span>
                                                         <label class="switch">
-                                                            <input type="checkbox" onchange="toggleRole(this, 'role-1')">
+                                                            <input type="checkbox" {{ $usuario->es_admin ? 'checked' : '' }} onchange="toggleRole(this, 'role-{{ $usuario->id }}')">
                                                             <span class="slider"></span>
                                                         </label>
                                                     </div>
@@ -458,114 +462,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="user-cell">
-                                                <div class="u-avatar" style="background: #dbeafe; color: #1e3a8a;">JR</div>
-                                                <div class="u-info">
-                                                    <span class="u-name">Juan Robles</span>
-                                                    <span class="u-email">j.robles@est.umss.edu</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td id="role-2">Usuario</td>
-                                        <td>Ayer, 16:40 PM</td>
-                                        <td><span class="status-badge st-pending" id="status-2">Pendiente</span></td>
-                                        <td>
-                                            <div class="action-dropdown-container">
-                                                <button class="action-btn" onclick="toggleActionMenu(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
-                                                <div class="action-menu">
-                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <span style="font-size: 13px; font-weight: 600; color: var(--text);">Estado</span>
-                                                        <label class="switch">
-                                                            <input type="checkbox" onchange="toggleStatus(this, 'status-2')">
-                                                            <span class="slider"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div style="height: 1px; background: var(--gray2);"></div>
-                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <span style="font-size: 13px; font-weight: 600; color: var(--text);">Rol Admin</span>
-                                                        <label class="switch">
-                                                            <input type="checkbox" onchange="toggleRole(this, 'role-2')">
-                                                            <span class="slider"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="user-cell">
-                                                <div class="u-avatar" style="background: #fce7f3; color: #be185d;">LC</div>
-                                                <div class="u-info">
-                                                    <span class="u-name">Lucía Castro</span>
-                                                    <span class="u-email">l.castro@doc.umss.edu</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td id="role-3">Usuario</td>
-                                        <td>Ayer, 09:15 AM</td>
-                                        <td><span class="status-badge st-active" id="status-3">Activo</span></td>
-                                        <td>
-                                            <div class="action-dropdown-container">
-                                                <button class="action-btn" onclick="toggleActionMenu(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
-                                                <div class="action-menu">
-                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <span style="font-size: 13px; font-weight: 600; color: var(--text);">Estado</span>
-                                                        <label class="switch">
-                                                            <input type="checkbox" checked onchange="toggleStatus(this, 'status-3')">
-                                                            <span class="slider"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div style="height: 1px; background: var(--gray2);"></div>
-                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <span style="font-size: 13px; font-weight: 600; color: var(--text);">Rol Admin</span>
-                                                        <label class="switch">
-                                                            <input type="checkbox" onchange="toggleRole(this, 'role-3')">
-                                                            <span class="slider"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="user-cell">
-                                                <div class="u-avatar" style="background: #dcfce7; color: #166534;">CM</div>
-                                                <div class="u-info">
-                                                    <span class="u-name">Carlos Mendoza</span>
-                                                    <span class="u-email">c.mendoza@est.umss.edu</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td id="role-4">Usuario</td>
-                                        <td>Hace 2 días</td>
-                                        <td><span class="status-badge st-active" id="status-4">Activo</span></td>
-                                        <td>
-                                            <div class="action-dropdown-container">
-                                                <button class="action-btn" onclick="toggleActionMenu(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
-                                                <div class="action-menu">
-                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <span style="font-size: 13px; font-weight: 600; color: var(--text);">Estado</span>
-                                                        <label class="switch">
-                                                            <input type="checkbox" checked onchange="toggleStatus(this, 'status-4')">
-                                                            <span class="slider"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div style="height: 1px; background: var(--gray2);"></div>
-                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <span style="font-size: 13px; font-weight: 600; color: var(--text);">Rol Admin</span>
-                                                        <label class="switch">
-                                                            <input type="checkbox" onchange="toggleRole(this, 'role-4')">
-                                                            <span class="slider"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

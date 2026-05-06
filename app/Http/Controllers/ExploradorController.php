@@ -14,7 +14,7 @@ class ExploradorController extends Controller
     {
         // Obtenemos todos los registros de la tabla busquedas
         // Si la tabla está vacía en este momento, enviará un array vacío
-        $busquedas = Busqueda::all();
+        $busquedas = Busqueda::where('titulo', '!=', 'Administrador')->get();
 
         return view('Auth.explorador', compact('busquedas'));
     }
