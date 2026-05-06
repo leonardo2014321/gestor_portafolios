@@ -236,6 +236,15 @@
         .cm-btn.other{opacity:0.5;}
         .row-week{display:contents;}
         .row-week:hover > .cd{background:rgba(99, 102, 241, 0.1);color:var(--admin-purple);}
+
+        /* ══ Vista Usuarios ══ */
+        .user-cell{display:flex;align-items:center;gap:10px}
+        .u-avatar{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--admin-purple),#818cf8);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .u-info{display:flex;flex-direction:column;gap:2px}
+        .u-name{font-size:13px;font-weight:600;color:var(--text)}
+        .u-email{font-size:11.5px;color:var(--muted)}
+        .icon-rose{background:linear-gradient(135deg,#fce7f3,#fbcfe8);color:#be185d}
+        .st-pending{background:#fef9c3;color:#854d0e;border:1px solid #fde68a}
     </style>
 </head>
 <body>
@@ -247,16 +256,11 @@
             <button id="mobile-menu-btn" class="mobile-menu-btn" onclick="toggleSidebar()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             </button>
-            <div class="logo-img">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            </div>
+            <img class="logo-img" src="{{ asset('images/logo.png') }}" alt="UMSS" style="height: 32px; width: auto; object-fit: contain;">
             <div class="sysname">Sansi<span>Folios</span></div>
         </div>
         <div class="tb-right">
-            <div class="tb-search">
-                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" placeholder="Buscar usuarios, IDs...">
-            </div>
+
             <div class="tb-bell">
                 <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             </div>
@@ -271,11 +275,30 @@
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                 </div>
                 
-                <div id="admin-dropdown" style="display:none;position:absolute;top:100%;right:0;margin-top:10px;background:#fff;border:1px solid var(--gray2);border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);width:160px;overflow:hidden;z-index:100;">
-                    <a href="{{ url('/') }}" style="padding:12px 16px;font-size:13px;font-weight:600;color:var(--rose);text-decoration:none;display:flex;align-items:center;gap:8px;transition:background 0.2s;" onmouseover="this.style.background='var(--gray)'" onmouseout="this.style.background='transparent'">
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-                        Salir
-                    </a>
+                <div id="admin-dropdown" style="display:none;position:absolute;top:100%;right:0;margin-top:10px;background:#fff;border:1px solid var(--gray2);border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);width:180px;overflow:hidden;z-index:100;">
+                    <form method="POST" action="{{ route('logout') }}" id="formLogoutAdmin">
+                        @csrf
+                        <button type="button" onclick="abrirLogoutAdmin()" style="width:100%;padding:12px 16px;font-size:13px;font-weight:600;color:var(--rose);background:transparent;border:none;text-align:left;display:flex;align-items:center;gap:8px;cursor:pointer;transition:background 0.2s;font-family:'DM Sans',sans-serif;" onmouseover="this.style.background='var(--gray)'" onmouseout="this.style.background='transparent'">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                            Cerrar sesión
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Modal confirmación logout -->
+                <div id="modal-logout-confirm" onclick="if(event.target===this)cerrarLogoutAdmin()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+                    <div style="background:#fff;border-radius:24px;padding:2.2rem 2rem 1.8rem;width:370px;max-width:92vw;box-shadow:0 24px 64px rgba(0,0,0,0.22);text-align:center;animation:fadeInScale .2s ease;">
+                        <style>@keyframes fadeInScale{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}</style>
+                        <div style="width:60px;height:60px;border-radius:18px;background:#eff2ff;display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem;">
+                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#1428c6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                        </div>
+                        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:800;color:#0f172a;margin-bottom:8px;">¿Cerrar sesión?</h3>
+                        <p style="font-size:13.5px;color:#64748b;line-height:1.65;margin-bottom:1.8rem;">Serás redirigido a la página de inicio.<br>Podrás volver a ingresar cuando quieras.</p>
+                        <div style="display:flex;gap:10px;">
+                            <button onclick="cerrarLogoutAdmin()" style="flex:1;padding:12px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;font-size:13.5px;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='#fff'">Cancelar</button>
+                            <button onclick="document.getElementById('formLogoutAdmin').submit()" style="flex:1;padding:12px;border-radius:14px;border:none;background:linear-gradient(135deg,#1428c6,#1e3adb);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 14px rgba(20,40,198,0.4);transition:all 0.2s;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">Sí, salir</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -288,15 +311,15 @@
         <aside>
             <div class="sb-top">
                 <div class="sb-label">General</div>
-                <button class="sb-item active">
+                <button id="btn-dashboard" class="sb-item active" onclick="mostrarVista('dashboard')">
                     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                     <span>Menu Principal</span>
                 </button>
-                <button class="sb-item">
+                <button id="btn-usuarios" class="sb-item" onclick="mostrarVista('usuarios')">
                     <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     <span>Usuarios</span>
                 </button>
-                <button class="sb-item">
+                <button id="btn-portafolios" class="sb-item" onclick="mostrarVista('portafolios')">
                     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                     <span>Portafolios</span>
                 </button>
@@ -306,6 +329,8 @@
         <!-- Main content -->
         <main>
             <div class="main-inner">
+                <!-- ═══ VISTA: DASHBOARD ═══ -->
+                <div id="view-dashboard" class="admin-view" style="display:block">
                 <!-- Hero -->
                 <div class="admin-hero">
                     <div class="hero-content">
@@ -319,10 +344,10 @@
                     <div class="stat-card">
                         <div class="stat-info">
                             <div class="stat-label">Usuarios Totales</div>
-                            <div class="stat-val">1,248</div>
+                            <div class="stat-val">{{ number_format($stats['total_usuarios']) }}</div>
                             <div class="stat-trend trend-up">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                                +12% vs mes anterior
+                                {{ $stats['usuarios_activos'] }} activos
                             </div>
                         </div>
                         <div class="stat-icon icon-purple">
@@ -332,11 +357,11 @@
 
                     <div class="stat-card">
                         <div class="stat-info">
-                            <div class="stat-label">Portafolios Activos</div>
-                            <div class="stat-val">856</div>
+                            <div class="stat-label">Portafolios Registrados</div>
+                            <div class="stat-val">{{ number_format($portafolios_stats['total']) }}</div>
                             <div class="stat-trend trend-up">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                                +5% vs mes anterior
+                                {{ $portafolios_stats['con_usuarios'] }} con vinculación
                             </div>
                         </div>
                         <div class="stat-icon icon-blue">
@@ -360,11 +385,11 @@
 
                     <div class="stat-card">
                         <div class="stat-info">
-                            <div class="stat-label">Alertas de Sistema</div>
-                            <div class="stat-val">3</div>
+                            <div class="stat-label">Administradores</div>
+                            <div class="stat-val">{{ $stats['total_admins'] }}</div>
                             <div class="stat-trend trend-down">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
-                                Requieren atención
+                                Personal de gestión
                             </div>
                         </div>
                         <div class="stat-icon icon-rose">
@@ -394,19 +419,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($usuarios_recientes as $usuario)
                                     <tr>
                                         <td>
                                             <div class="user-cell">
-                                                <div class="u-avatar">MV</div>
+                                                <div class="u-avatar" style="{{ $usuario->activo ? '' : 'background: #f1f5f9; color: #475569;' }}">
+                                                    {{ strtoupper(substr($usuario->nombre, 0, 1)) }}{{ strtoupper(substr($usuario->apellido, 0, 1)) }}
+                                                </div>
                                                 <div class="u-info">
-                                                    <span class="u-name">María Vargas</span>
-                                                    <span class="u-email">m.vargas@est.umss.edu</span>
+                                                    <span class="u-name">{{ $usuario->nombre }} {{ $usuario->apellido }}</span>
+                                                    <span class="u-email">{{ $usuario->email }}</span>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td id="role-1">Usuario</td>
-                                        <td>Hoy, 10:24 AM</td>
-                                        <td><span class="status-badge st-active" id="status-1">Activo</span></td>
+                                        <td id="role-{{ $usuario->id }}">{{ $usuario->es_admin ? 'Administrador' : 'Usuario' }}</td>
+                                        <td>{{ $usuario->created_at->diffForHumans() }}</td>
+                                        <td>
+                                            <span class="status-badge {{ $usuario->activo ? 'st-active' : 'st-inactive' }}" id="status-{{ $usuario->id }}">
+                                                {{ $usuario->activo ? 'Activo' : 'Inactivo' }}
+                                            </span>
+                                        </td>
                                         <td>
                                             <div class="action-dropdown-container">
                                                 <button class="action-btn" onclick="toggleActionMenu(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
@@ -414,7 +446,7 @@
                                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                                         <span style="font-size: 13px; font-weight: 600; color: var(--text);">Estado</span>
                                                         <label class="switch">
-                                                            <input type="checkbox" checked onchange="toggleStatus(this, 'status-1')">
+                                                            <input type="checkbox" {{ $usuario->activo ? 'checked' : '' }} onchange="toggleStatus(this, 'status-{{ $usuario->id }}')">
                                                             <span class="slider"></span>
                                                         </label>
                                                     </div>
@@ -422,7 +454,7 @@
                                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                                         <span style="font-size: 13px; font-weight: 600; color: var(--text);">Rol Admin</span>
                                                         <label class="switch">
-                                                            <input type="checkbox" onchange="toggleRole(this, 'role-1')">
+                                                            <input type="checkbox" {{ $usuario->es_admin ? 'checked' : '' }} onchange="toggleRole(this, 'role-{{ $usuario->id }}')">
                                                             <span class="slider"></span>
                                                         </label>
                                                     </div>
@@ -430,120 +462,18 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="user-cell">
-                                                <div class="u-avatar" style="background: #dbeafe; color: #1e3a8a;">JR</div>
-                                                <div class="u-info">
-                                                    <span class="u-name">Juan Robles</span>
-                                                    <span class="u-email">j.robles@est.umss.edu</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td id="role-2">Usuario</td>
-                                        <td>Ayer, 16:40 PM</td>
-                                        <td><span class="status-badge st-pending" id="status-2">Pendiente</span></td>
-                                        <td>
-                                            <div class="action-dropdown-container">
-                                                <button class="action-btn" onclick="toggleActionMenu(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
-                                                <div class="action-menu">
-                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <span style="font-size: 13px; font-weight: 600; color: var(--text);">Estado</span>
-                                                        <label class="switch">
-                                                            <input type="checkbox" onchange="toggleStatus(this, 'status-2')">
-                                                            <span class="slider"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div style="height: 1px; background: var(--gray2);"></div>
-                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <span style="font-size: 13px; font-weight: 600; color: var(--text);">Rol Admin</span>
-                                                        <label class="switch">
-                                                            <input type="checkbox" onchange="toggleRole(this, 'role-2')">
-                                                            <span class="slider"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="user-cell">
-                                                <div class="u-avatar" style="background: #fce7f3; color: #be185d;">LC</div>
-                                                <div class="u-info">
-                                                    <span class="u-name">Lucía Castro</span>
-                                                    <span class="u-email">l.castro@doc.umss.edu</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td id="role-3">Usuario</td>
-                                        <td>Ayer, 09:15 AM</td>
-                                        <td><span class="status-badge st-active" id="status-3">Activo</span></td>
-                                        <td>
-                                            <div class="action-dropdown-container">
-                                                <button class="action-btn" onclick="toggleActionMenu(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
-                                                <div class="action-menu">
-                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <span style="font-size: 13px; font-weight: 600; color: var(--text);">Estado</span>
-                                                        <label class="switch">
-                                                            <input type="checkbox" checked onchange="toggleStatus(this, 'status-3')">
-                                                            <span class="slider"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div style="height: 1px; background: var(--gray2);"></div>
-                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <span style="font-size: 13px; font-weight: 600; color: var(--text);">Rol Admin</span>
-                                                        <label class="switch">
-                                                            <input type="checkbox" onchange="toggleRole(this, 'role-3')">
-                                                            <span class="slider"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="user-cell">
-                                                <div class="u-avatar" style="background: #dcfce7; color: #166534;">CM</div>
-                                                <div class="u-info">
-                                                    <span class="u-name">Carlos Mendoza</span>
-                                                    <span class="u-email">c.mendoza@est.umss.edu</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td id="role-4">Usuario</td>
-                                        <td>Hace 2 días</td>
-                                        <td><span class="status-badge st-active" id="status-4">Activo</span></td>
-                                        <td>
-                                            <div class="action-dropdown-container">
-                                                <button class="action-btn" onclick="toggleActionMenu(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
-                                                <div class="action-menu">
-                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <span style="font-size: 13px; font-weight: 600; color: var(--text);">Estado</span>
-                                                        <label class="switch">
-                                                            <input type="checkbox" checked onchange="toggleStatus(this, 'status-4')">
-                                                            <span class="slider"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div style="height: 1px; background: var(--gray2);"></div>
-                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <span style="font-size: 13px; font-weight: 600; color: var(--text);">Rol Admin</span>
-                                                        <label class="switch">
-                                                            <input type="checkbox" onchange="toggleRole(this, 'role-4')">
-                                                            <span class="slider"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
                 </div>
+                </div><!-- /view-dashboard -->
+
+                @include('usuarios_admin')
+
+                @include('portafolios_admin')
 
             </div>
 
@@ -575,42 +505,92 @@
                         <h2 class="panel-title">Actividad Reciente</h2>
                     </div>
                     <div class="activity-list">
-                        <div class="act-item" style="padding: 1rem; gap: 10px;">
-                            <div class="act-icon icon-teal" style="width: 32px; height: 32px;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        @forelse($actividades_recientes as $act)
+                            @php
+                                $titulo = "Acción: " . $act->accion;
+                                $iconClass = "icon-purple";
+                                $svg = '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'; // User icon default
+
+                                switch($act->accion) {
+                                    case 'login':
+                                        $titulo = "Sesión iniciada";
+                                        $iconClass = "icon-teal";
+                                        $svg = '<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>';
+                                        break;
+                                    case 'logout':
+                                        $titulo = "Sesión cerrada";
+                                        $iconClass = "icon-rose";
+                                        $svg = '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>';
+                                        break;
+                                    case 'registro_usuario':
+                                        $titulo = "Nuevo registro";
+                                        $iconClass = "icon-purple";
+                                        $svg = '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>';
+                                        break;
+                                    case 'PASSWORD_ACTUALIZADO':
+                                        $titulo = "Contraseña cambiada";
+                                        $iconClass = "icon-teal";
+                                        $svg = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>';
+                                        break;
+                                    case 'SOLICITAR_RECUPERACION':
+                                        $titulo = "Recuperación solicitada";
+                                        $iconClass = "icon-blue";
+                                        $svg = '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>';
+                                        break;
+                                    case 'reactivacion_cuenta':
+                                        $titulo = "Cuenta reactivada";
+                                        $iconClass = "icon-teal";
+                                        $svg = '<path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>';
+                                        break;
+                                    case 'SOLICITUD_REGISTRO':
+                                        $titulo = "Nueva solicitud registro";
+                                        $iconClass = "icon-purple";
+                                        $svg = '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>';
+                                        break;
+                                    case 'RECUPERACION_EMAIL_NO_EXISTE':
+                                        $titulo = "Error: Email no existe";
+                                        $iconClass = "icon-rose";
+                                        $svg = '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>';
+                                        break;
+                                    case 'TOKEN_INVALIDO':
+                                        $titulo = "Error: Token inválido";
+                                        $iconClass = "icon-rose";
+                                        $svg = '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>';
+                                        break;
+                                    case 'ERROR_RECUPERACION':
+                                        $titulo = "Falla en recuperación";
+                                        $iconClass = "icon-rose";
+                                        $svg = '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>';
+                                        break;
+                                    case 'PERFIL_ACTUALIZADO':
+                                        $titulo = "Perfil actualizado";
+                                        $iconClass = "icon-blue";
+                                        $svg = '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>';
+                                        break;
+                                    case 'CUENTA_DESACTIVADA':
+                                        $titulo = "Cuenta desactivada";
+                                        $iconClass = "icon-rose";
+                                        $svg = '<path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/>';
+                                        break;
+                                }
+                            @endphp
+                            <div class="act-item" style="padding: 1rem; gap: 10px;">
+                                <div class="act-icon {{ $iconClass }}" style="width: 32px; height: 32px;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $svg !!}</svg>
+                                </div>
+                                <div class="act-content">
+                                    <div class="act-title" style="font-size: 12px;">
+                                        {{ $titulo }} <br>
+                                        <span>{{ $act->usuario ? $act->usuario->nombre . ' ' . $act->usuario->apellido : 'Sistema/Invitado' }}</span>
+                                    </div>
+                                    <div class="act-time" style="font-size: 10px;">{{ $act->created_at ? $act->created_at->diffForHumans() : 'Recientemente' }}</div>
+                                </div>
                             </div>
-                            <div class="act-content">
-                                <div class="act-title" style="font-size: 12px;">Nuevo portafolio aprobado <br><span>"Arquitectura Moderna"</span></div>
-                                <div class="act-time" style="font-size: 10px;">Hace 15 minutos</div>
+                        @empty
+                            <div style="padding: 2rem; text-align: center; color: var(--muted); font-size: 13px;">
+                                No hay actividad reciente registrada.
                             </div>
-                        </div>
-                        <div class="act-item" style="padding: 1rem; gap: 10px;">
-                            <div class="act-icon icon-purple" style="width: 32px; height: 32px;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                            </div>
-                            <div class="act-content">
-                                <div class="act-title" style="font-size: 12px;">Usuario <span>Juan Robles</span> completó su registro.</div>
-                                <div class="act-time" style="font-size: 10px;">Hace 2 horas</div>
-                            </div>
-                        </div>
-                        <div class="act-item" style="padding: 1rem; gap: 10px;">
-                            <div class="act-icon icon-rose" style="width: 32px; height: 32px;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                            </div>
-                            <div class="act-content">
-                                <div class="act-title" style="font-size: 12px;">Alerta de seguridad <span>Intentos fallidos de acceso (IP: 192.168.x.x)</span></div>
-                                <div class="act-time" style="font-size: 10px;">Hace 5 horas</div>
-                            </div>
-                        </div>
-                        <div class="act-item" style="padding: 1rem; gap: 10px;">
-                            <div class="act-icon icon-blue" style="width: 32px; height: 32px;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                            </div>
-                            <div class="act-content">
-                                <div class="act-title" style="font-size: 12px;">Reporte generado <span>Estadísticas mensuales descargadas</span></div>
-                                <div class="act-time" style="font-size: 10px;">Ayer</div>
-                            </div>
-                        </div>
+                        @endforelse
                         
                         <a href="#" style="display: block; text-align: center; padding: 1rem; font-size: 12px; font-weight: 600; color: var(--admin-purple); text-decoration: none; border-top: 1px solid var(--gray2);">Ver todo el registro</a>
                     </div>
@@ -624,6 +604,45 @@
 </div>
 
 <script>
+    function abrirLogoutAdmin() {
+        document.getElementById('modal-logout-confirm').style.display = 'flex';
+        document.getElementById('admin-dropdown').style.display = 'none';
+    }
+    function cerrarLogoutAdmin() {
+        document.getElementById('modal-logout-confirm').style.display = 'none';
+    }
+
+    /* ══ Navegación entre vistas ══ */
+    function mostrarVista(nombre) {
+        document.querySelectorAll('.admin-view').forEach(v => v.style.display = 'none');
+        var vista = document.getElementById('view-' + nombre);
+        if (vista) vista.style.display = 'block';
+        document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+        var btn = document.getElementById('btn-' + nombre);
+        if (btn) btn.classList.add('active');
+    }
+
+    /* ══ Buscar y filtrar usuarios ══ */
+    function filtrarUsuarios() {
+        var q     = (document.getElementById('buscar-usuario').value || '').toLowerCase();
+        var est   = (document.getElementById('filtro-estado').value || '').toLowerCase();
+        document.querySelectorAll('#tabla-usuarios tbody tr').forEach(function(fila) {
+            var texto  = fila.textContent.toLowerCase();
+            var estado = (fila.getAttribute('data-estado') || '').toLowerCase();
+            var okQ    = !q || texto.includes(q);
+            var okEst  = !est || estado === est;
+            fila.style.display = (okQ && okEst) ? '' : 'none';
+        });
+    }
+
+    function filtrarPortafolios() {
+        var q = (document.getElementById('buscar-portafolio').value || '').toLowerCase();
+        document.querySelectorAll('#tabla-portafolios tbody tr').forEach(function(fila) {
+            var texto = fila.textContent.toLowerCase();
+            fila.style.display = (!q || texto.includes(q)) ? '' : 'none';
+        });
+    }
+
     function toggleSidebar() {
         const sidebar = document.querySelector('aside');
         const overlay = document.getElementById('sidebar-overlay');

@@ -8,6 +8,7 @@ use App\Services\Auth\RegistroService;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Usuario;
+use App\Services\ActividadService;
 
 class RegistroController extends Controller
 {
@@ -71,6 +72,8 @@ class RegistroController extends Controller
                     ]
                 ], 422);
             }
+
+            ActividadService::log(null, 'SOLICITUD_REGISTRO', ['email' => $request->email]);
 
             // 👇 RESPUESTA PARA FETCH
             if ($request->expectsJson()) {

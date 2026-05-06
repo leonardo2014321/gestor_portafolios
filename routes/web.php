@@ -13,6 +13,8 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Perfil\RedPerfilController;
 use App\Http\Controllers\Perfil\PerfilController;
 use App\Http\Controllers\Perfil\TrayectoriaController;
+use App\Http\Controllers\AdminController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -48,14 +50,13 @@ Route::middleware('auth')->group(function () {
     
     // Panel Principal
     Route::get('/menu', function () {
-        $busquedas = \App\Models\Busqueda::all();
+        $busquedas = \App\Models\Busqueda::where('titulo', '!=', 'Administrador')->get();
         return view('menu', compact('busquedas'));
     })->name('menu');
 
-    // Panel de Administrador
-    Route::get('/admin', function () {
-        return view('admin');
-    })->name('admin');
+    // Panel de Administrador (solo accesible para cuentas admin)
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin')->middleware('es_admin');
+
 
     /**
      * IMPLEMENTACIÓN DEL EXPLORADOR

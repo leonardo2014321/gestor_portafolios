@@ -78,6 +78,10 @@ class RecuperacionController extends Controller
                 'archivo' => $e->getFile()
             ]);
 
+            ActividadService::log(null, 'ERROR_RECUPERACION', [
+                'mensaje' => $e->getMessage()
+            ]);
+
             return response()->json([
                 'mensaje' => 'Error al enviar correo',
                 'error' => $e->getMessage()
