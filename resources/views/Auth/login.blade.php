@@ -65,11 +65,13 @@
                     <label class="mb-3 block text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">Correo electrónico</label>
                     <div class="{{ $emailInputClasses }}">
                         <input
+                            id="input-email"
                             type="email"
                             name="email"
                             value="{{ old('email') }}"
                             placeholder="ejemplo@gmail.com"
                             class="w-full border-0 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
+                            autocomplete="email"
                             required autofocus
                         />
                     </div>
@@ -82,10 +84,12 @@
                     <label class="mb-3 block text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">Contraseña</label>
                     <div class="{{ $passwordInputClasses }}">
                         <input
+                            id="input-password"
                             type="password"
                             name="password"
                             placeholder="••••••••••••"
                             class="w-full border-0 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
+                            autocomplete="current-password"
                             required
                         />
                     </div>
@@ -131,3 +135,28 @@
 
     </div>
 </div>
+
+<script>
+(function () {
+    var modal = document.getElementById('loginModal');
+    if (!modal) return;
+
+    function vaciarCampos() {
+        var e = document.getElementById('input-email');
+        var p = document.getElementById('input-password');
+        if (e) e.value = '';
+        if (p) p.value = '';
+    }
+
+    // Limpiar cada vez que el modal se hace visible (se quita la clase 'hidden')
+    new MutationObserver(function (muts) {
+        muts.forEach(function (m) {
+            if (m.attributeName === 'class' && !modal.classList.contains('hidden')) {
+                setTimeout(vaciarCampos, 0);
+                setTimeout(vaciarCampos, 100);
+                setTimeout(vaciarCampos, 300);
+            }
+        });
+    }).observe(modal, { attributes: true });
+})();
+</script>

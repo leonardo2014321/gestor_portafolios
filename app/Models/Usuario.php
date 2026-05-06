@@ -27,10 +27,17 @@ class Usuario extends Authenticatable
         'contrasena',
         'email_verificado',
         'activo',
+        'es_admin',
         'google_id',
         'profesion',
         'biografia',
         'foto_perfil',
+    ];
+
+    protected $casts = [
+        'email_verificado' => 'boolean',
+        'activo'           => 'boolean',
+        'es_admin'         => 'boolean',
     ];
 
     public $timestamps = true;

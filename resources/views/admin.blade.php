@@ -236,6 +236,15 @@
         .cm-btn.other{opacity:0.5;}
         .row-week{display:contents;}
         .row-week:hover > .cd{background:rgba(99, 102, 241, 0.1);color:var(--admin-purple);}
+
+        /* ══ Vista Usuarios ══ */
+        .user-cell{display:flex;align-items:center;gap:10px}
+        .u-avatar{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--admin-purple),#818cf8);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .u-info{display:flex;flex-direction:column;gap:2px}
+        .u-name{font-size:13px;font-weight:600;color:var(--text)}
+        .u-email{font-size:11.5px;color:var(--muted)}
+        .icon-rose{background:linear-gradient(135deg,#fce7f3,#fbcfe8);color:#be185d}
+        .st-pending{background:#fef9c3;color:#854d0e;border:1px solid #fde68a}
     </style>
 </head>
 <body>
@@ -247,9 +256,7 @@
             <button id="mobile-menu-btn" class="mobile-menu-btn" onclick="toggleSidebar()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             </button>
-            <div class="logo-img">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            </div>
+            <img class="logo-img" src="{{ asset('images/logo.png') }}" alt="UMSS" style="height: 32px; width: auto; object-fit: contain;">
             <div class="sysname">Sansi<span>Folios</span></div>
         </div>
         <div class="tb-right">
@@ -271,11 +278,30 @@
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                 </div>
                 
-                <div id="admin-dropdown" style="display:none;position:absolute;top:100%;right:0;margin-top:10px;background:#fff;border:1px solid var(--gray2);border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);width:160px;overflow:hidden;z-index:100;">
-                    <a href="{{ url('/') }}" style="padding:12px 16px;font-size:13px;font-weight:600;color:var(--rose);text-decoration:none;display:flex;align-items:center;gap:8px;transition:background 0.2s;" onmouseover="this.style.background='var(--gray)'" onmouseout="this.style.background='transparent'">
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-                        Salir
-                    </a>
+                <div id="admin-dropdown" style="display:none;position:absolute;top:100%;right:0;margin-top:10px;background:#fff;border:1px solid var(--gray2);border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);width:180px;overflow:hidden;z-index:100;">
+                    <form method="POST" action="{{ route('logout') }}" id="formLogoutAdmin">
+                        @csrf
+                        <button type="button" onclick="abrirLogoutAdmin()" style="width:100%;padding:12px 16px;font-size:13px;font-weight:600;color:var(--rose);background:transparent;border:none;text-align:left;display:flex;align-items:center;gap:8px;cursor:pointer;transition:background 0.2s;font-family:'DM Sans',sans-serif;" onmouseover="this.style.background='var(--gray)'" onmouseout="this.style.background='transparent'">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                            Cerrar sesión
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Modal confirmación logout -->
+                <div id="modal-logout-confirm" onclick="if(event.target===this)cerrarLogoutAdmin()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+                    <div style="background:#fff;border-radius:24px;padding:2.2rem 2rem 1.8rem;width:370px;max-width:92vw;box-shadow:0 24px 64px rgba(0,0,0,0.22);text-align:center;animation:fadeInScale .2s ease;">
+                        <style>@keyframes fadeInScale{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}</style>
+                        <div style="width:60px;height:60px;border-radius:18px;background:#eff2ff;display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem;">
+                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#1428c6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                        </div>
+                        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:800;color:#0f172a;margin-bottom:8px;">¿Cerrar sesión?</h3>
+                        <p style="font-size:13.5px;color:#64748b;line-height:1.65;margin-bottom:1.8rem;">Serás redirigido a la página de inicio.<br>Podrás volver a ingresar cuando quieras.</p>
+                        <div style="display:flex;gap:10px;">
+                            <button onclick="cerrarLogoutAdmin()" style="flex:1;padding:12px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;font-size:13.5px;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='#fff'">Cancelar</button>
+                            <button onclick="document.getElementById('formLogoutAdmin').submit()" style="flex:1;padding:12px;border-radius:14px;border:none;background:linear-gradient(135deg,#1428c6,#1e3adb);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 14px rgba(20,40,198,0.4);transition:all 0.2s;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">Sí, salir</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -288,15 +314,15 @@
         <aside>
             <div class="sb-top">
                 <div class="sb-label">General</div>
-                <button class="sb-item active">
+                <button id="btn-dashboard" class="sb-item active" onclick="mostrarVista('dashboard')">
                     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                     <span>Menu Principal</span>
                 </button>
-                <button class="sb-item">
+                <button id="btn-usuarios" class="sb-item" onclick="mostrarVista('usuarios')">
                     <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     <span>Usuarios</span>
                 </button>
-                <button class="sb-item">
+                <button id="btn-portafolios" class="sb-item" onclick="mostrarVista('portafolios')">
                     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                     <span>Portafolios</span>
                 </button>
@@ -306,6 +332,8 @@
         <!-- Main content -->
         <main>
             <div class="main-inner">
+                <!-- ═══ VISTA: DASHBOARD ═══ -->
+                <div id="view-dashboard" class="admin-view" style="display:block">
                 <!-- Hero -->
                 <div class="admin-hero">
                     <div class="hero-content">
@@ -544,6 +572,11 @@
                     </div>
 
                 </div>
+                </div><!-- /view-dashboard -->
+
+                @include('usuarios_admin')
+
+                @include('portafolios_admin')
 
             </div>
 
@@ -624,6 +657,37 @@
 </div>
 
 <script>
+    function abrirLogoutAdmin() {
+        document.getElementById('modal-logout-confirm').style.display = 'flex';
+        document.getElementById('admin-dropdown').style.display = 'none';
+    }
+    function cerrarLogoutAdmin() {
+        document.getElementById('modal-logout-confirm').style.display = 'none';
+    }
+
+    /* ══ Navegación entre vistas ══ */
+    function mostrarVista(nombre) {
+        document.querySelectorAll('.admin-view').forEach(v => v.style.display = 'none');
+        var vista = document.getElementById('view-' + nombre);
+        if (vista) vista.style.display = 'block';
+        document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+        var btn = document.getElementById('btn-' + nombre);
+        if (btn) btn.classList.add('active');
+    }
+
+    /* ══ Buscar y filtrar usuarios ══ */
+    function filtrarUsuarios() {
+        var q     = (document.getElementById('buscar-usuario').value || '').toLowerCase();
+        var est   = (document.getElementById('filtro-estado').value || '').toLowerCase();
+        document.querySelectorAll('#tabla-usuarios tbody tr').forEach(function(fila) {
+            var texto  = fila.textContent.toLowerCase();
+            var estado = (fila.getAttribute('data-estado') || '').toLowerCase();
+            var okQ    = !q || texto.includes(q);
+            var okEst  = !est || estado === est;
+            fila.style.display = (okQ && okEst) ? '' : 'none';
+        });
+    }
+
     function toggleSidebar() {
         const sidebar = document.querySelector('aside');
         const overlay = document.getElementById('sidebar-overlay');

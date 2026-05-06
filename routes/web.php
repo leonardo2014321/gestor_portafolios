@@ -52,10 +52,10 @@ Route::middleware('auth')->group(function () {
         return view('menu', compact('busquedas'));
     })->name('menu');
 
-    // Panel de Administrador
+    // Panel de Administrador (solo accesible para cuentas admin)
     Route::get('/admin', function () {
         return view('admin');
-    })->name('admin');
+    })->name('admin')->middleware('es_admin');
 
     /**
      * IMPLEMENTACIÓN DEL EXPLORADOR

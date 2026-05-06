@@ -47,6 +47,12 @@ class LoginController extends Controller
 
     Auth::login($usuario, $request->boolean('remember'));
     $request->session()->regenerate();
+
+    // Redirigir al panel de administrador si corresponde
+    if ($usuario->es_admin) {
+        return redirect('/admin');
+    }
+
     return redirect()->intended('/menu');
 }
 
