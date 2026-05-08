@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Perfil\RedPerfilController;
 use App\Http\Controllers\Perfil\PerfilController;
 use App\Http\Controllers\Perfil\TrayectoriaController;
+use App\Http\Controllers\Portafolio\PortafolioController;
 use App\Http\Controllers\AdminController;
 
 
@@ -80,6 +81,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/perfil/desactivar', [PerfilController::class, 'desactivar'])->name('perfil.desactivar');
     Route::post('/perfil/redes', [RedPerfilController::class, 'guardarRedes']);
     Route::get('/perfil/redes', [RedPerfilController::class, 'obtenerRedes']);
+
+    // Portafolios
+    Route::get('/mis-portafolios', [PortafolioController::class, 'index']);
+    Route::post('/mis-portafolios', [PortafolioController::class, 'store']);
+    Route::delete('/mis-portafolios/{id}', [PortafolioController::class, 'destroy']);
 
     // Trayectoria y Habilidades
     Route::get('/trayectoria', [TrayectoriaController::class, 'index']);

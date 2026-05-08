@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? 'SansiFolios - UMSS' }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -2106,7 +2107,7 @@
                 <h2>Crear Nuevo Portafolio</h2>
                 <p>Configure su proyecto para la red SansiFolios.</p>
             </div>
-            <button class="mp-close" onclick="document.getElementById('modalPortafolio').classList.remove('open')">
+            <button class="mp-close" onclick="mpCerrar()">
                 <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
         </div>
@@ -2119,11 +2120,13 @@
                 </div>
                 <div class="mp-field">
                     <label class="mp-label">Título del Proyecto <span>*</span></label>
-                    <input class="mp-input" type="text" placeholder="p.ej. Neural Engine v2">
+                    <input class="mp-input" id="mpNombre" type="text" placeholder="p.ej. Neural Engine v2" oninput="mpCheckBtns()">
+                    <div class="mp-err" id="mpErrNombre">Este campo es obligatorio para continuar.</div>
                 </div>
                 <div class="mp-field">
                     <label class="mp-label">Descripción Técnica <span>*</span></label>
-                    <textarea class="mp-textarea" placeholder="Describa la arquitectura, lenguajes y stacks utilizados..."></textarea>
+                    <textarea class="mp-textarea" id="mpDesc" placeholder="Describa la arquitectura, lenguajes y stacks utilizados..." oninput="mpCheckBtns()"></textarea>
+                    <div class="mp-err" id="mpErrDesc">Se requiere una descripción detallada del proyecto.</div>
                 </div>
             </div>
             <!-- Vinculación de repositorio -->
@@ -2134,7 +2137,11 @@
                 </div>
                 <div class="mp-field">
                     <label class="mp-label">Enlace de GitHub</label>
-                    <input class="mp-input" type="text" placeholder="https://github.com/usuario/repositorio">
+                    <div class="mp-url-wrap">
+                        <input class="mp-input" id="mpRepo" type="text" placeholder="https://github.com/usuario/repositorio" oninput="mpValidarUrl()" style="padding-right:36px">
+                        <svg class="mp-url-tick" id="mpUrlTick" viewBox="0 0 24 24"></svg>
+                    </div>
+                    <div class="mp-err" id="mpErrRepo">Ingresa una URL válida (ej. https://github.com/...).</div>
                 </div>
             </div>
             <!-- Cargar archivos -->
@@ -2143,16 +2150,23 @@
                     <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                     Cargar Archivos
                 </div>
-                <div class="mp-drop">
+                <input type="file" id="mpFileInput" multiple accept=".pdf,.zip,.png,.jpg,.jpeg" style="display:none" onchange="mpHandleFiles(this.files)">
+                <div class="mp-drop" id="mpDrop"
+                     onclick="document.getElementById('mpFileInput').click()"
+                     ondragover="event.preventDefault();this.classList.add('dragover')"
+                     ondragleave="this.classList.remove('dragover')"
+                     ondrop="event.preventDefault();this.classList.remove('dragover');mpHandleFiles(event.dataTransfer.files)">
                     <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                     <p>Arrastra tus archivos aquí</p>
-                    <span>o haz clic para explorar</span>
+                    <span>o haz clic para explorar · .pdf .zip .png .jpg (máx. 10MB)</span>
                 </div>
+                <div class="mp-file-errs" id="mpFileErrs"></div>
+                <div class="mp-flist" id="mpFlist"></div>
             </div>
         </div>
         <div class="mp-footer">
-            <button class="mp-btn-ghost" onclick="document.getElementById('modalPortafolio').classList.remove('open')">Guardar como borrador</button>
-            <button class="mp-btn-primary">
+            <button class="mp-btn-ghost" id="mpBtnBorrador" onclick="mpGuardar('borrador')" disabled>Guardar como borrador</button>
+            <button class="mp-btn-primary" id="mpBtnPublicar" onclick="mpGuardar('publicado')" disabled>
                 <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
                 Publicar Proyecto
             </button>
@@ -2160,13 +2174,143 @@
     </div>
 </div>
 
+<style>
+    .mp-err{font-size:11.5px;color:#ef4444;margin-top:5px;display:none}
+    .mp-input.mp-invalid,.mp-textarea.mp-invalid{border-color:#ef4444!important;background:#fff5f5!important}
+    .mp-input.mp-ok{border-color:#22c55e!important}
+    .mp-url-wrap{position:relative}
+    .mp-url-tick{position:absolute;right:11px;top:50%;transform:translateY(-50%);display:none;width:16px;height:16px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .mp-file-errs{margin-top:8px;display:flex;flex-direction:column;gap:5px}
+    .mp-ferr{display:flex;align-items:flex-start;gap:8px;background:#fff5f5;border:1px solid #fecaca;border-radius:8px;padding:8px 12px;font-size:11.5px;color:#dc2626}
+    .mp-ferr svg{width:13px;height:13px;flex-shrink:0;margin-top:1px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .mp-flist{margin-top:8px;display:flex;flex-direction:column;gap:4px}
+    .mp-fitem{display:flex;align-items:center;justify-content:space-between;background:var(--gray);border-radius:7px;padding:7px 12px;font-size:12px}
+    .mp-fitem-name{font-weight:500;color:var(--text)}
+    .mp-fitem-size{color:var(--muted);font-size:11px;margin-left:8px}
+    .mp-frem{background:none;border:none;cursor:pointer;color:var(--muted);padding:0;margin-left:8px}
+    .mp-frem:hover{color:#ef4444}
+    .mp-frem svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .mp-btn-primary:disabled,.mp-btn-ghost:disabled{opacity:.45;cursor:not-allowed}
+    .mp-drop.dragover{border-color:var(--blue)!important;background:#eff6ff!important}
+</style>
+
 <script>
+    const MP_FORMATOS = ['pdf','zip','png','jpg','jpeg'];
+    const MP_MAX     = 10 * 1024 * 1024;
+    let mpFiles      = [];
+
     function abrirModalPortafolio() {
+        mpReset();
         document.getElementById('modalPortafolio').classList.add('open');
     }
     function cerrarModalPortafolio(e) {
-        if (e.target === document.getElementById('modalPortafolio'))
-            document.getElementById('modalPortafolio').classList.remove('open');
+        if (e.target === document.getElementById('modalPortafolio')) mpCerrar();
+    }
+    function mpCerrar() {
+        document.getElementById('modalPortafolio').classList.remove('open');
+    }
+    function mpReset() {
+        ['mpNombre','mpDesc','mpRepo'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.value = ''; el.classList.remove('mp-invalid','mp-ok'); }
+        });
+        ['mpErrNombre','mpErrDesc','mpErrRepo'].forEach(id => {
+            const el = document.getElementById(id); if (el) el.style.display = 'none';
+        });
+        const tick = document.getElementById('mpUrlTick');
+        if (tick) tick.style.display = 'none';
+        document.getElementById('mpFileErrs').innerHTML = '';
+        document.getElementById('mpFlist').innerHTML = '';
+        mpFiles = [];
+        mpCheckBtns();
+    }
+    function mpCheckBtns() {
+        const ok = document.getElementById('mpNombre').value.trim() !== '' &&
+                   document.getElementById('mpDesc').value.trim() !== '';
+        document.getElementById('mpBtnBorrador').disabled = !ok;
+        document.getElementById('mpBtnPublicar').disabled = !ok;
+    }
+    function mpValidarUrl() {
+        const val  = document.getElementById('mpRepo').value.trim();
+        const tick = document.getElementById('mpUrlTick');
+        const err  = document.getElementById('mpErrRepo');
+        if (!val) { tick.style.display='none'; err.style.display='none'; document.getElementById('mpRepo').classList.remove('mp-invalid','mp-ok'); return true; }
+        let valid = false;
+        try { new URL(val); valid = true; } catch(_) {}
+        tick.style.display = 'block';
+        tick.style.stroke   = valid ? '#22c55e' : '#ef4444';
+        tick.innerHTML      = valid ? '<polyline points="20 6 9 17 4 12"/>' : '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
+        err.style.display   = valid ? 'none' : 'block';
+        document.getElementById('mpRepo').classList.toggle('mp-invalid', !valid);
+        document.getElementById('mpRepo').classList.toggle('mp-ok', valid);
+        return valid;
+    }
+    function mpHandleFiles(files) {
+        const errBox = document.getElementById('mpFileErrs');
+        errBox.innerHTML = '';
+        Array.from(files).forEach(f => {
+            const ext = f.name.split('.').pop().toLowerCase();
+            if (!MP_FORMATOS.includes(ext)) {
+                errBox.innerHTML += `<div class="mp-ferr"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Formato de archivo no válido — "${f.name}". Formatos aceptados: .pdf .zip .png .jpg</div>`;
+                return;
+            }
+            if (f.size > MP_MAX) {
+                errBox.innerHTML += `<div class="mp-ferr"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Tamaño de archivo excedido — "${f.name}" (${(f.size/1024/1024).toFixed(1)}MB). Máximo 10MB.</div>`;
+                return;
+            }
+            mpFiles.push(f);
+        });
+        mpRenderFlist();
+    }
+    function mpRenderFlist() {
+        const box = document.getElementById('mpFlist');
+        box.innerHTML = mpFiles.map((f,i) =>
+            `<div class="mp-fitem">
+                <span class="mp-fitem-name">${f.name}</span>
+                <span><span class="mp-fitem-size">${(f.size/1024).toFixed(0)} KB</span>
+                <button class="mp-frem" onclick="mpRemoveFile(${i})"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></span>
+            </div>`
+        ).join('');
+    }
+    function mpRemoveFile(i) { mpFiles.splice(i,1); mpRenderFlist(); }
+
+    async function mpGuardar(estado) {
+        const nombre = document.getElementById('mpNombre').value.trim();
+        const desc   = document.getElementById('mpDesc').value.trim();
+        let valid = true;
+        if (!nombre) { document.getElementById('mpErrNombre').style.display='block'; document.getElementById('mpNombre').classList.add('mp-invalid'); valid=false; }
+        else          { document.getElementById('mpErrNombre').style.display='none';  document.getElementById('mpNombre').classList.remove('mp-invalid'); }
+        if (!desc)   { document.getElementById('mpErrDesc').style.display='block';   document.getElementById('mpDesc').classList.add('mp-invalid');   valid=false; }
+        else          { document.getElementById('mpErrDesc').style.display='none';    document.getElementById('mpDesc').classList.remove('mp-invalid'); }
+        if (!mpValidarUrl()) valid = false;
+        if (!valid) return;
+
+        const form = new FormData();
+        form.append('nombre',          nombre);
+        form.append('descripcion',     desc);
+        form.append('repositorio_url', document.getElementById('mpRepo').value.trim());
+        form.append('estado',          estado);
+        form.append('_token',          document.querySelector('meta[name="csrf-token"]').content);
+        mpFiles.forEach(f => form.append('archivos[]', f));
+
+        const btnB = document.getElementById('mpBtnBorrador');
+        const btnP = document.getElementById('mpBtnPublicar');
+        btnB.disabled = btnP.disabled = true;
+        btnP.innerHTML = 'Guardando...';
+
+        try {
+            const res  = await fetch('/mis-portafolios', { method: 'POST', body: form });
+            const text = await res.text();
+            let json;
+            try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
+            if (json.ok) { mpCerrar(); location.reload(); return; }
+            const msg = json.errors ? Object.values(json.errors).flat().join('\n') : 'Error al guardar.';
+            alert(msg);
+        } catch(err) {
+            alert(err.message);
+        }
+        btnB.disabled = btnP.disabled = false;
+        btnP.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> Publicar Proyecto';
     }
 </script>
 </body>
