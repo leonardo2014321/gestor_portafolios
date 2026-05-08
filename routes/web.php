@@ -52,7 +52,14 @@ Route::middleware('auth')->group(function () {
     // Panel Principal
     Route::get('/menu', function () {
         $busquedas = \App\Models\Busqueda::where('titulo', '!=', 'Administrador')->get();
-        return view('menu', compact('busquedas'));
+        $portafolios      = \App\Models\Portafolio::where('usuario_id', auth()->id())
+                                ->with('archivos')
+                                ->orderByDesc('updated_at')
+                                ->get();
+        $totalPortafolios = $portafolios->count();
+        $totalDocumentos  = \App\Models\PortafolioArchivo::whereIn('portafolio_id', $portafolios->pluck('id'))->count();
+        $totalAprobados   = $portafolios->where('estado', 'publicado')->count();
+        return view('menu', compact('busquedas', 'portafolios', 'totalPortafolios', 'totalDocumentos', 'totalAprobados'));
     })->name('menu');
 
     // Panel de Administrador (solo accesible para cuentas admin)
@@ -85,6 +92,7 @@ Route::middleware('auth')->group(function () {
     // Portafolios
     Route::get('/mis-portafolios', [PortafolioController::class, 'index']);
     Route::post('/mis-portafolios', [PortafolioController::class, 'store']);
+    Route::post('/mis-portafolios/{id}', [PortafolioController::class, 'update']);
     Route::delete('/mis-portafolios/{id}', [PortafolioController::class, 'destroy']);
 
     // Trayectoria y Habilidades

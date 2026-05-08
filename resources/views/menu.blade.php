@@ -97,13 +97,13 @@
         .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
 
         /* Dark card */
-        .pcard-dark{border-radius:16px;padding:1.2rem 1.4rem;background:linear-gradient(140deg,#1e2d50,#0f172a);color:#fff;box-shadow:0 4px 20px rgba(15,23,42,0.25);display:flex;flex-direction:column;gap:14px}
-        .pcard-dark .pcard-top{display:flex;align-items:center;gap:12px}
+        .pcard-dark{border-radius:16px;padding:1.2rem 1.4rem;background:linear-gradient(140deg,#1e2d50,#0f172a);color:#fff;box-shadow:0 4px 20px rgba(15,23,42,0.25);display:flex;flex-direction:column;gap:14px;height:160px;min-height:160px;max-height:160px;overflow:hidden}
+        .pcard-dark .pcard-top{display:flex;align-items:flex-start;gap:12px;flex:1;min-height:0;overflow:hidden}
         .pcard-dark .pcard-ico{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
         .pcard-dark .pcard-ico svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-        .pcard-dark .pcard-name{font-family:"Plus Jakarta Sans",sans-serif;font-size:15px;font-weight:700}
-        .pcard-dark .pcard-sub{font-size:11.5px;opacity:.55;margin-top:2px}
-        .pcard-dark .pcard-bot{display:flex;align-items:flex-end;justify-content:space-between}
+        .pcard-dark .pcard-name{font-family:"Plus Jakarta Sans",sans-serif;font-size:15px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+        .pcard-dark .pcard-sub{font-size:11.5px;opacity:.55;margin-top:2px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+        .pcard-dark .pcard-bot{display:flex;align-items:flex-end;justify-content:space-between;flex-shrink:0}
         .pcard-dark .pcard-num{font-family:"Plus Jakarta Sans",sans-serif;font-size:26px;font-weight:800;line-height:1}
         .pcard-dark .pcard-num small{font-size:11px;font-weight:600;opacity:.6;margin-left:3px}
         .pcard-dark .pcard-st{font-size:11px;opacity:.65;display:flex;align-items:center;gap:5px;margin-top:4px}
@@ -113,25 +113,25 @@
         .btn-ver:hover{background:rgba(255,255,255,0.25)}
 
         /* Teal card */
-        .pcard-teal{border-radius:16px;padding:1.2rem 1.4rem;background:linear-gradient(140deg,#0f766e,#0d9488);color:#fff;box-shadow:0 4px 20px rgba(13,148,136,0.25);display:flex;flex-direction:column;gap:14px}
-        .pcard-teal .pcard-top{display:flex;align-items:center;gap:12px}
+        .pcard-teal{border-radius:16px;padding:1.2rem 1.4rem;background:linear-gradient(140deg,#0f766e,#0d9488);color:#fff;box-shadow:0 4px 20px rgba(13,148,136,0.25);display:flex;flex-direction:column;gap:14px;height:160px;min-height:160px;max-height:160px;overflow:hidden}
+        .pcard-teal .pcard-top{display:flex;align-items:flex-start;gap:12px;flex:1;min-height:0;overflow:hidden}
         .pcard-teal .pcard-ico{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
         .pcard-teal .pcard-ico svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-        .pcard-teal .pcard-name{font-family:"Plus Jakarta Sans",sans-serif;font-size:15px;font-weight:700}
-        .pcard-teal .pcard-sub{font-size:11.5px;opacity:.6;margin-top:2px}
-        .pcard-teal .pcard-bot{display:flex;align-items:flex-end;justify-content:space-between}
+        .pcard-teal .pcard-name{font-family:"Plus Jakarta Sans",sans-serif;font-size:15px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+        .pcard-teal .pcard-sub{font-size:11.5px;opacity:.6;margin-top:2px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+        .pcard-teal .pcard-bot{display:flex;align-items:flex-end;justify-content:space-between;flex-shrink:0}
         .pcard-teal .pcard-num{font-family:"Plus Jakarta Sans",sans-serif;font-size:26px;font-weight:800;line-height:1}
         .pcard-teal .pcard-num small{font-size:11px;font-weight:600;opacity:.6;margin-left:3px}
         .pcard-teal .pcard-st{font-size:11px;opacity:.7;display:flex;align-items:center;gap:5px;margin-top:4px}
 
         /* Light card */
-        .pcard-light{border-radius:16px;padding:1.2rem 1.4rem;background:#fff;border:1.5px solid var(--gray2);color:var(--text);display:flex;flex-direction:column;gap:14px}
-        .pcard-light .pcard-top{display:flex;align-items:center;gap:12px}
+        .pcard-light{border-radius:16px;padding:1.2rem 1.4rem;background:#fff;border:1.5px solid var(--gray2);color:var(--text);display:flex;flex-direction:column;gap:14px;height:160px;min-height:160px;max-height:160px;overflow:hidden}
+        .pcard-light .pcard-top{display:flex;align-items:flex-start;gap:12px;flex:1;min-height:0;overflow:hidden}
         .pcard-light .pcard-ico{width:40px;height:40px;border-radius:10px;background:#f0f4ff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
         .pcard-light .pcard-ico svg{width:18px;height:18px;fill:none;stroke:#2563eb;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-        .pcard-light .pcard-name{font-family:"Plus Jakarta Sans",sans-serif;font-size:15px;font-weight:700;color:var(--text)}
-        .pcard-light .pcard-sub{font-size:11.5px;color:var(--muted);margin-top:2px}
-        .pcard-light .pcard-bot{display:flex;align-items:flex-end;justify-content:space-between}
+        .pcard-light .pcard-name{font-family:"Plus Jakarta Sans",sans-serif;font-size:15px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+        .pcard-light .pcard-sub{font-size:11.5px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+        .pcard-light .pcard-bot{display:flex;align-items:flex-end;justify-content:space-between;flex-shrink:0}
         .pcard-light .pcard-num{font-family:"Plus Jakarta Sans",sans-serif;font-size:26px;font-weight:800;line-height:1;color:var(--text)}
         .pcard-light .pcard-num small{font-size:11px;font-weight:600;color:var(--muted);margin-left:3px}
         .pcard-light .pcard-st{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:4px}
@@ -607,6 +607,10 @@
                                 <svg viewBox="0 0 24 24" style="stroke:var(--muted)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                                 <input type="text" placeholder="Search" style="color:var(--text);width:140px;">
                             </div>
+                            <button onclick="abrirModalPortafolio()" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:var(--blue);color:#fff;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;">
+                                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                Crear portafolio
+                            </button>
                         </div>
                     </div>
 
@@ -649,38 +653,26 @@
                     @if(isset($portafolios) && $portafolios->count() > 0)
                     <div class="pgrid">
                         @foreach($portafolios as $index => $portafolio)
-                        @if($index % 4 == 0)
-                        <div class="pcard-dark">
+                        @php
+                            $nArchivos   = $portafolio->archivos->count();
+                            $publicado   = $portafolio->estado === 'publicado';
+                            $estadoBadge = $publicado ? 'Publicado' : 'Borrador';
+                        @endphp
+                        @if($publicado)
+                        <div class="pcard-teal">
                             <div class="pcard-top">
                                 <div class="pcard-ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
                                 <div>
                                     <div class="pcard-name">{{ $portafolio->nombre }}</div>
-                                    <div class="pcard-sub">{{ $portafolio->descripcion ?? 'Sin descripción' }}</div>
+                                    <div class="pcard-sub">{{ Str::limit($portafolio->descripcion, 60) }}</div>
                                 </div>
                             </div>
                             <div class="pcard-bot">
                                 <div>
-                                    <div class="pcard-num">0 <small>ITEMS</small></div>
-                                    <div class="pcard-st"><span class="dot dg"></span> Actualizado hoy</div>
+                                    <div class="pcard-num">{{ $nArchivos }} <small>ARCHIVOS</small></div>
+                                    <div class="pcard-st"><span class="dot dg"></span> Publicado</div>
                                 </div>
-                                <a href="#" class="btn-ver">Ver Panel</a>
-                            </div>
-                        </div>
-                        @elseif($index % 4 == 1)
-                        <div class="pcard-teal">
-                            <div class="pcard-top">
-                                <div class="pcard-ico"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-                                <div>
-                                    <div class="pcard-name">{{ $portafolio->nombre }}</div>
-                                    <div class="pcard-sub">{{ $portafolio->descripcion ?? 'Sin descripción' }}</div>
-                                </div>
-                            </div>
-                            <div class="pcard-bot">
-                                <div>
-                                    <div class="pcard-num">0 <small>ITEMS</small></div>
-                                    <div class="pcard-st"><span class="dot dg"></span> Sincronizado</div>
-                                </div>
-                                <a href="#" class="btn-ver">Ver Panel</a>
+                                <a href="#" class="btn-ver" onclick="verPortafolio({{ $portafolio->id }});return false;">Ver Panel</a>
                             </div>
                         </div>
                         @else
@@ -689,15 +681,15 @@
                                 <div class="pcard-ico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
                                 <div>
                                     <div class="pcard-name">{{ $portafolio->nombre }}</div>
-                                    <div class="pcard-sub">{{ $portafolio->descripcion ?? 'Sin descripción' }}</div>
+                                    <div class="pcard-sub">{{ Str::limit($portafolio->descripcion, 60) }}</div>
                                 </div>
                             </div>
                             <div class="pcard-bot">
                                 <div>
-                                    <div class="pcard-num">0 <small>ITEMS</small></div>
-                                    <div class="pcard-st"><span class="dot dy"></span> Hace 2 días</div>
+                                    <div class="pcard-num">{{ $nArchivos }} <small>ARCHIVOS</small></div>
+                                    <div class="pcard-st"><span class="dot dy"></span> Borrador</div>
                                 </div>
-                                <a href="#" class="btn-ver-dk">Ver Panel</a>
+                                <a href="#" class="btn-ver-dk" onclick="verPortafolio({{ $portafolio->id }});return false;">Ver Panel</a>
                             </div>
                         </div>
                         @endif
@@ -2120,12 +2112,13 @@
                 </div>
                 <div class="mp-field">
                     <label class="mp-label">Título del Proyecto <span>*</span></label>
-                    <input class="mp-input" id="mpNombre" type="text" placeholder="p.ej. Neural Engine v2" oninput="mpCheckBtns()">
+                    <input class="mp-input" id="mpNombre" type="text" maxlength="100" placeholder="p.ej. Neural Engine v2" oninput="mpCheckBtns()">
                     <div class="mp-err" id="mpErrNombre">Este campo es obligatorio para continuar.</div>
                 </div>
                 <div class="mp-field">
                     <label class="mp-label">Descripción Técnica <span>*</span></label>
-                    <textarea class="mp-textarea" id="mpDesc" placeholder="Describa la arquitectura, lenguajes y stacks utilizados..." oninput="mpCheckBtns()"></textarea>
+                    <textarea class="mp-textarea" id="mpDesc" maxlength="500" placeholder="Describa la arquitectura, lenguajes y stacks utilizados..." oninput="mpCheckBtns();document.getElementById('mpDescCount').textContent=this.value.length"></textarea>
+                    <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:3px"><span id="mpDescCount">0</span>/500</div>
                     <div class="mp-err" id="mpErrDesc">Se requiere una descripción detallada del proyecto.</div>
                 </div>
             </div>
@@ -2138,7 +2131,7 @@
                 <div class="mp-field">
                     <label class="mp-label">Enlace de GitHub</label>
                     <div class="mp-url-wrap">
-                        <input class="mp-input" id="mpRepo" type="text" placeholder="https://github.com/usuario/repositorio" oninput="mpValidarUrl()" style="padding-right:36px">
+                        <input class="mp-input" id="mpRepo" type="text" maxlength="500" placeholder="https://github.com/usuario/repositorio" oninput="mpValidarUrl()" style="padding-right:36px">
                         <svg class="mp-url-tick" id="mpUrlTick" viewBox="0 0 24 24"></svg>
                     </div>
                     <div class="mp-err" id="mpErrRepo">Ingresa una URL válida (ej. https://github.com/...).</div>
@@ -2174,6 +2167,128 @@
     </div>
 </div>
 
+<!-- Modal Ver Portafolio -->
+<div class="vp-overlay" id="modalVerPortafolio" onclick="if(event.target===this)vpCerrar()">
+    <div class="vp-box">
+        <div class="vp-head">
+            <div>
+                <div class="vp-title" id="vpNombre"></div>
+                <span class="vp-badge" id="vpBadge"></span>
+            </div>
+            <button class="vp-close" onclick="vpCerrar()">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="vp-body">
+            <p class="vp-desc" id="vpDesc"></p>
+            <div class="vp-row" id="vpRepoWrap" style="display:none">
+                <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                <a id="vpRepo" href="#" target="_blank" rel="noopener"></a>
+            </div>
+            <div class="vp-row">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span id="vpFecha"></span>
+            </div>
+            <div class="vp-sec">Archivos adjuntos</div>
+            <div id="vpArchivos"></div>
+        </div>
+        <div class="vp-foot">
+            <button class="vp-btn-del" id="vpBtnEliminar" onclick="vpConfirmarEliminar()">Eliminar portafolio</button>
+            <button class="vp-btn-edit" id="vpBtnEditar" onclick="vpAbrirEditar()">Editar</button>
+            <button class="vp-btn-close" onclick="vpCerrar()">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Confirmación -->
+<div class="conf-overlay" id="modalConf">
+    <div class="conf-box">
+        <div class="conf-ico" id="confIco">
+            <svg id="confIcoSvg" viewBox="0 0 24 24"></svg>
+        </div>
+        <div class="conf-title" id="confTitle"></div>
+        <div class="conf-desc" id="confDesc"></div>
+        <div class="conf-btns">
+            <button class="conf-btn-cancel" onclick="confCerrar()">Cancelar</button>
+            <button class="conf-btn-ok" id="confBtnOk">Confirmar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Portafolio -->
+<div class="mp-overlay" id="modalEditarPortafolio" onclick="if(event.target===this)epCerrar()">
+    <div class="mp-modal">
+        <div class="mp-header-wrap">
+            <div class="mp-header">
+                <h2>Editar Portafolio</h2>
+                <p>Modifica la información de tu proyecto.</p>
+            </div>
+            <button class="mp-close" onclick="epCerrar()">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="mp-body">
+            <input type="hidden" id="epId">
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    Información del Proyecto
+                </div>
+                <div class="mp-field">
+                    <label class="mp-label">Nombre del proyecto <span style="color:#ef4444">*</span></label>
+                    <input class="mp-input" id="epNombre" type="text" maxlength="100" placeholder="Ej. Sistema de inventario" oninput="epCheckBtns()">
+                    <div class="mp-err" id="epErrNombre">El nombre es obligatorio.</div>
+                </div>
+                <div class="mp-field">
+                    <label class="mp-label">Descripción <span style="color:#ef4444">*</span></label>
+                    <textarea class="mp-textarea" id="epDesc" maxlength="500" rows="3" placeholder="Describe brevemente tu proyecto..." oninput="epCheckBtns();document.getElementById('epDescCount').textContent=this.value.length"></textarea>
+                    <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:3px"><span id="epDescCount">0</span>/500</div>
+                    <div class="mp-err" id="epErrDesc">La descripción es obligatoria.</div>
+                </div>
+            </div>
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    Vinculación de Repositorio
+                </div>
+                <div class="mp-field">
+                    <label class="mp-label">Enlace de GitHub</label>
+                    <div class="mp-url-wrap">
+                        <input class="mp-input" id="epRepo" type="text" maxlength="500" placeholder="https://github.com/usuario/repositorio" oninput="epValidarUrl()" style="padding-right:36px">
+                        <svg class="mp-url-tick" id="epUrlTick" viewBox="0 0 24 24"></svg>
+                    </div>
+                    <div class="mp-err" id="epErrRepo">Ingresa una URL válida.</div>
+                </div>
+            </div>
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Agregar Archivos
+                </div>
+                <input type="file" id="epFileInput" multiple accept=".pdf,.zip,.png,.jpg,.jpeg" style="display:none" onchange="epHandleFiles(this.files)">
+                <div class="mp-drop" id="epDrop"
+                     onclick="document.getElementById('epFileInput').click()"
+                     ondragover="event.preventDefault();this.classList.add('dragover')"
+                     ondragleave="this.classList.remove('dragover')"
+                     ondrop="event.preventDefault();this.classList.remove('dragover');epHandleFiles(event.dataTransfer.files)">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <p>Arrastra archivos nuevos aquí</p>
+                    <span>o haz clic para explorar · .pdf .zip .png .jpg (máx. 10MB)</span>
+                </div>
+                <div class="mp-file-errs" id="epFileErrs"></div>
+                <div class="mp-flist" id="epFlist"></div>
+            </div>
+        </div>
+        <div class="mp-footer">
+            <button class="mp-btn-ghost" id="epBtnBorrador" onclick="epConfirmarGuardar('borrador')" disabled>Guardar como borrador</button>
+            <button class="mp-btn-primary" id="epBtnPublicar" onclick="epConfirmarGuardar('publicado')" disabled>
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Guardar cambios
+            </button>
+        </div>
+    </div>
+</div>
+
 <style>
     .mp-err{font-size:11.5px;color:#ef4444;margin-top:5px;display:none}
     .mp-input.mp-invalid,.mp-textarea.mp-invalid{border-color:#ef4444!important;background:#fff5f5!important}
@@ -2192,9 +2307,253 @@
     .mp-frem svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
     .mp-btn-primary:disabled,.mp-btn-ghost:disabled{opacity:.45;cursor:not-allowed}
     .mp-drop.dragover{border-color:var(--blue)!important;background:#eff6ff!important}
+    /* Modal Ver Portafolio */
+    .vp-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+    .vp-overlay.open{opacity:1;pointer-events:all}
+    .vp-box{background:#fff;border-radius:18px;width:min(680px,95vw);max-height:88vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.18);transform:translateY(16px);transition:transform .2s}
+    .vp-overlay.open .vp-box{transform:translateY(0)}
+    .vp-head{display:flex;align-items:flex-start;justify-content:space-between;padding:24px 28px 0}
+    .vp-title{font-size:20px;font-weight:700;color:var(--text)}
+    .vp-badge{display:inline-block;margin-top:6px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.4px}
+    .vp-badge.publicado{background:#d1fae5;color:#065f46}
+    .vp-badge.borrador{background:#fef3c7;color:#92400e}
+    .vp-close{background:none;border:none;cursor:pointer;color:var(--muted);padding:4px}
+    .vp-close:hover{color:var(--text)}
+    .vp-close svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+    .vp-body{padding:20px 28px 28px}
+    .vp-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:16px;word-break:break-word;white-space:pre-wrap;max-height:160px;overflow-y:auto}
+    .vp-title{font-size:20px;font-weight:700;color:var(--text);word-break:break-word}
+    .vp-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-bottom:10px}
+    .vp-row svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;flex-shrink:0}
+    .vp-row a{color:var(--blue);text-decoration:none;word-break:break-all}
+    .vp-row a:hover{text-decoration:underline}
+    .vp-sec{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:18px 0 8px}
+    .vp-file{display:flex;align-items:center;gap:10px;background:var(--gray);border-radius:8px;padding:9px 14px;margin-bottom:6px;font-size:13px}
+    .vp-file svg{width:16px;height:16px;fill:none;stroke:var(--blue);stroke-width:2;stroke-linecap:round;flex-shrink:0}
+    .vp-file-name{font-weight:500;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .vp-file-size{color:var(--muted);font-size:11px;flex-shrink:0}
+    .vp-empty{text-align:center;padding:14px;color:var(--muted);font-size:13px}
+    .vp-foot{display:flex;justify-content:flex-end;padding:0 28px 24px;gap:10px}
+    .vp-btn-del{padding:8px 18px;border-radius:9px;border:1.5px solid #fca5a5;background:#fff;color:#ef4444;font-size:13px;font-weight:600;cursor:pointer}
+    .vp-btn-del:hover{background:#fef2f2}
+    .vp-btn-close{padding:8px 18px;border-radius:9px;border:none;background:var(--blue);color:#fff;font-size:13px;font-weight:600;cursor:pointer}
+    .vp-btn-edit{padding:8px 18px;border-radius:9px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);font-size:13px;font-weight:600;cursor:pointer}
+    .vp-btn-edit:hover{background:#eff6ff}
+    /* Modal Confirmación */
+    .conf-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+    .conf-overlay.open{opacity:1;pointer-events:all}
+    .conf-box{background:#fff;border-radius:20px;width:min(400px,92vw);padding:32px 28px 24px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.18);transform:translateY(16px);transition:transform .2s}
+    .conf-overlay.open .conf-box{transform:translateY(0)}
+    .conf-ico{width:64px;height:64px;border-radius:18px;background:#eff6ff;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+    .conf-ico svg{width:28px;height:28px;fill:none;stroke:var(--blue);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .conf-ico.danger{background:#fff5f5}
+    .conf-ico.danger svg{stroke:#ef4444}
+    .conf-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px}
+    .conf-desc{font-size:13.5px;color:var(--muted);line-height:1.5;margin-bottom:24px}
+    .conf-btns{display:flex;gap:10px;justify-content:center}
+    .conf-btn-cancel{flex:1;padding:10px;border-radius:10px;border:1.5px solid var(--gray2);background:#fff;color:var(--text);font-size:14px;font-weight:600;cursor:pointer}
+    .conf-btn-cancel:hover{background:var(--gray)}
+    .conf-btn-ok{flex:1;padding:10px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-size:14px;font-weight:600;cursor:pointer}
+    .conf-btn-ok:hover{background:#1d4ed8}
+    .conf-btn-ok.danger{background:#ef4444}
+    .conf-btn-ok.danger:hover{background:#dc2626}
 </style>
 
 <script>
+    const VP_DATA = @json($portafolios ?? []);
+
+    function verPortafolio(id) {
+        const p = VP_DATA.find(x => x.id == id);
+        if (!p) return;
+        document.getElementById('vpNombre').textContent = p.nombre;
+        document.getElementById('vpDesc').textContent   = p.descripcion || '';
+        const badge = document.getElementById('vpBadge');
+        badge.textContent  = p.estado === 'publicado' ? 'Publicado' : 'Borrador';
+        badge.className    = 'vp-badge ' + p.estado;
+        const repoWrap = document.getElementById('vpRepoWrap');
+        if (p.repositorio_url) {
+            document.getElementById('vpRepo').href        = p.repositorio_url;
+            document.getElementById('vpRepo').textContent = p.repositorio_url;
+            repoWrap.style.display = 'flex';
+        } else {
+            repoWrap.style.display = 'none';
+        }
+        const fecha = new Date(p.updated_at);
+        document.getElementById('vpFecha').textContent = 'Actualizado: ' + fecha.toLocaleDateString('es-BO', {day:'2-digit',month:'long',year:'numeric'});
+        const archDiv = document.getElementById('vpArchivos');
+        if (p.archivos && p.archivos.length > 0) {
+            archDiv.innerHTML = p.archivos.map(a => `
+                <div class="vp-file">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <span class="vp-file-name">${a.nombre_original}</span>
+                    <span class="vp-file-size">${(a.tamanio/1024).toFixed(0)} KB</span>
+                </div>`).join('');
+        } else {
+            archDiv.innerHTML = '<div class="vp-empty">Sin archivos adjuntos</div>';
+        }
+        document.getElementById('vpBtnEliminar').dataset.id = id;
+        document.getElementById('vpBtnEditar').dataset.id  = id;
+        document.getElementById('modalVerPortafolio').classList.add('open');
+    }
+
+    function vpCerrar() {
+        document.getElementById('modalVerPortafolio').classList.remove('open');
+    }
+
+    // ── Confirmación genérica ──
+    let _confCallback = null;
+    function vpConfirm({ ico, danger, title, desc, btnText, onConfirm }) {
+        const icoEl = document.getElementById('confIco');
+        icoEl.className = 'conf-ico' + (danger ? ' danger' : '');
+        document.getElementById('confIcoSvg').innerHTML = ico;
+        document.getElementById('confTitle').textContent = title;
+        document.getElementById('confDesc').textContent  = desc;
+        const btn = document.getElementById('confBtnOk');
+        btn.textContent = btnText;
+        btn.className   = 'conf-btn-ok' + (danger ? ' danger' : '');
+        _confCallback = onConfirm;
+        btn.onclick = () => { confCerrar(); _confCallback && _confCallback(); };
+        document.getElementById('modalConf').classList.add('open');
+    }
+    function confCerrar() {
+        document.getElementById('modalConf').classList.remove('open');
+    }
+
+    function vpConfirmarEliminar() {
+        const id = document.getElementById('vpBtnEliminar').dataset.id;
+        vpConfirm({
+            ico: '<path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>',
+            danger: true,
+            title: '¿Eliminar portafolio?',
+            desc: 'Esta acción no se puede deshacer. Se eliminarán todos los archivos adjuntos.',
+            btnText: 'Sí, eliminar',
+            onConfirm: () => vpEliminar(id),
+        });
+    }
+
+    async function vpEliminar(id) {
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        try {
+            const res  = await fetch('/mis-portafolios/' + id, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': token } });
+            const text = await res.text();
+            let json; try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
+            if (json.ok) { vpCerrar(); location.reload(); return; }
+            alert('Error al eliminar el portafolio.');
+        } catch(err) { alert(err.message); }
+    }
+
+    // ── Modal Editar ──
+    let epFiles = [];
+    function vpAbrirEditar() {
+        const id = document.getElementById('vpBtnEditar').dataset.id;
+        const p  = VP_DATA.find(x => x.id == id);
+        if (!p) return;
+
+        // Cerrar Ver modal instantáneamente (sin transición) para evitar overlays apilados
+        const verModal = document.getElementById('modalVerPortafolio');
+        verModal.style.transition = 'none';
+        verModal.classList.remove('open');
+        setTimeout(() => { verModal.style.transition = ''; }, 50);
+
+        document.getElementById('epId').value      = p.id;
+        document.getElementById('epNombre').value  = p.nombre;
+        document.getElementById('epDesc').value    = p.descripcion || '';
+        document.getElementById('epRepo').value    = p.repositorio_url || '';
+        epFiles = [];
+        document.getElementById('epFlist').innerHTML    = '';
+        document.getElementById('epFileErrs').innerHTML = '';
+        document.getElementById('epDescCount').textContent = (p.descripcion || '').length;
+        epValidarUrl();
+        epCheckBtns();
+        document.getElementById('modalEditarPortafolio').classList.add('open');
+    }
+    function epCerrar() {
+        document.getElementById('modalEditarPortafolio').classList.remove('open');
+    }
+    function epCheckBtns() {
+        const ok = document.getElementById('epNombre').value.trim() && document.getElementById('epDesc').value.trim();
+        document.getElementById('epBtnBorrador').disabled = !ok;
+        document.getElementById('epBtnPublicar').disabled = !ok;
+    }
+    function epValidarUrl() {
+        const val  = document.getElementById('epRepo').value.trim();
+        const tick = document.getElementById('epUrlTick');
+        const err  = document.getElementById('epErrRepo');
+        if (!val) { tick.style.display='none'; err.style.display='none'; document.getElementById('epRepo').classList.remove('mp-invalid','mp-ok'); return true; }
+        const ok = /^https?:\/\/.+\..+/.test(val);
+        document.getElementById('epRepo').classList.toggle('mp-invalid', !ok);
+        document.getElementById('epRepo').classList.toggle('mp-ok', ok);
+        tick.style.display = ok ? 'block' : 'none';
+        tick.innerHTML     = ok ? '<polyline points="20 6 9 17 4 12" stroke="#22c55e"/>' : '';
+        err.style.display  = ok ? 'none' : 'block';
+        return ok || !val;
+    }
+    function epHandleFiles(files) {
+        const errs = []; const maxSize = 10*1024*1024;
+        Array.from(files).forEach(f => {
+            const ext = f.name.split('.').pop().toLowerCase();
+            if (!['pdf','zip','png','jpg','jpeg'].includes(ext)) { errs.push(f.name + ': formato no permitido'); return; }
+            if (f.size > maxSize) { errs.push(f.name + ': excede 10 MB'); return; }
+            epFiles.push(f);
+        });
+        document.getElementById('epFileErrs').innerHTML = errs.map(e => `<div class="mp-ferr"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>${e}</div>`).join('');
+        epRenderFlist();
+    }
+    function epRenderFlist() {
+        document.getElementById('epFlist').innerHTML = epFiles.map((f,i) =>
+            `<div class="mp-fitem"><span class="mp-fitem-name">${f.name}</span>
+            <span><span class="mp-fitem-size">${(f.size/1024).toFixed(0)} KB</span>
+            <button class="mp-frem" onclick="epRemoveFile(${i})"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></span>
+            </div>`).join('');
+    }
+    function epRemoveFile(i) { epFiles.splice(i,1); epRenderFlist(); }
+
+    function epConfirmarGuardar(estado) {
+        const nombre = document.getElementById('epNombre').value.trim();
+        const desc   = document.getElementById('epDesc').value.trim();
+        let valid = true;
+        if (!nombre) { document.getElementById('epErrNombre').style.display='block'; document.getElementById('epNombre').classList.add('mp-invalid'); valid=false; }
+        else          { document.getElementById('epErrNombre').style.display='none';  document.getElementById('epNombre').classList.remove('mp-invalid'); }
+        if (!desc)   { document.getElementById('epErrDesc').style.display='block';   document.getElementById('epDesc').classList.add('mp-invalid');   valid=false; }
+        else          { document.getElementById('epErrDesc').style.display='none';    document.getElementById('epDesc').classList.remove('mp-invalid'); }
+        if (!epValidarUrl()) valid = false;
+        if (!valid) return;
+        vpConfirm({
+            ico: '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v14a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>',
+            danger: false,
+            title: '¿Guardar cambios?',
+            desc: 'Se actualizará la información del portafolio en el sistema.',
+            btnText: 'Sí, guardar',
+            onConfirm: () => epGuardar(estado),
+        });
+    }
+
+    async function epGuardar(estado) {
+        const id    = document.getElementById('epId').value;
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        const form  = new FormData();
+        form.append('nombre',          document.getElementById('epNombre').value.trim());
+        form.append('descripcion',     document.getElementById('epDesc').value.trim());
+        form.append('repositorio_url', document.getElementById('epRepo').value.trim());
+        form.append('estado',          estado);
+        form.append('_token',          token);
+        epFiles.forEach(f => form.append('archivos[]', f));
+        const btnB = document.getElementById('epBtnBorrador');
+        const btnP = document.getElementById('epBtnPublicar');
+        btnB.disabled = btnP.disabled = true;
+        btnP.innerHTML = 'Guardando...';
+        try {
+            const res  = await fetch('/mis-portafolios/' + id, { method: 'POST', body: form });
+            const text = await res.text();
+            let json; try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
+            if (json.ok) { epCerrar(); location.reload(); return; }
+            const msg = json.errors ? Object.values(json.errors).flat().join('\n') : 'Error al guardar.';
+            alert(msg);
+        } catch(err) { alert(err.message); }
+        btnB.disabled = btnP.disabled = false;
+        btnP.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> Guardar cambios';
+    }
+
     const MP_FORMATOS = ['pdf','zip','png','jpg','jpeg'];
     const MP_MAX     = 10 * 1024 * 1024;
     let mpFiles      = [];
