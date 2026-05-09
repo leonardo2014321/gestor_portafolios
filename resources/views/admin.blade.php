@@ -323,6 +323,10 @@
                     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                     <span>Portafolios</span>
                 </button>
+                <button class="nav-item" onclick="showAdminView('notificaciones')">
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                  <span>Notificaciones</span>
+                </button>
             </div>
         </aside>
 
@@ -474,6 +478,89 @@
                 @include('usuarios_admin')
 
                 @include('portafolios_admin')
+
+                        <!-- ═══ VISTA: NOTIFICACIONES (ADMIN) ═══ -->
+<div id="view-notificaciones" class="admin-view" style="display:none">
+    <div class="admin-hero" style="margin-bottom:1.5rem">
+        <div class="hero-content">
+            <h1 class="hero-title">Notificaciones</h1>
+            <p class="hero-sub">Envía avisos a usuarios individuales, por rol o a todos.</p>
+        </div>
+    </div>
+
+    <!-- Formulario envío -->
+    <div class="panel" style="margin-bottom:1.5rem">
+        <div class="panel-header" style="padding:1.2rem 1.5rem;border-bottom:1px solid var(--gray2)">
+            <h2 class="panel-title">Nueva Notificación</h2>
+        </div>
+        <div style="padding:1.5rem">
+            <div id="notif-success" style="display:none;background:#d1fae5;color:#065f46;padding:10px 16px;border-radius:10px;font-size:13px;margin-bottom:1rem;font-weight:600;">
+                ✓ Notificación enviada correctamente.
+            </div>
+
+            <!-- Título -->
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Título <span style="color:#ef4444">*</span></label>
+                <input id="notif-titulo" type="text" maxlength="150" placeholder="Ej: Mantenimiento programado"
+                    style="width:100%;padding:10px 14px;border:1px solid var(--gray2);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:var(--gray);color:var(--text)">
+            </div>
+
+            <!-- Mensaje -->
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Mensaje <span style="color:#ef4444">*</span></label>
+                <textarea id="notif-mensaje" maxlength="1000" rows="4" placeholder="Escribe el mensaje aquí..."
+                    style="width:100%;padding:10px 14px;border:1px solid var(--gray2);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:var(--gray);color:var(--text);resize:vertical"></textarea>
+                <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:3px">
+                    <span id="notif-msg-count">0</span>/1000
+                </div>
+            </div>
+
+            <!-- Tipo de envío -->
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Destinatario <span style="color:#ef4444">*</span></label>
+                <div style="display:flex;gap:10px;flex-wrap:wrap">
+                    <label style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:1.5px solid var(--gray2);border-radius:10px;cursor:pointer;font-size:13px;background:#fff;transition:all .2s" id="lbl-todos">
+                        <input type="radio" name="notif-tipo" value="todos" onchange="notifTipoChange(this)" style="accent-color:#7c3aed"> Todos los usuarios
+                    </label>
+                    <label style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:1.5px solid var(--gray2);border-radius:10px;cursor:pointer;font-size:13px;background:#fff;transition:all .2s" id="lbl-rol">
+                        <input type="radio" name="notif-tipo" value="rol" onchange="notifTipoChange(this)" style="accent-color:#7c3aed"> Solo administradores
+                    </label>
+                    <label style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:1.5px solid var(--gray2);border-radius:10px;cursor:pointer;font-size:13px;background:#fff;transition:all .2s" id="lbl-individual">
+                        <input type="radio" name="notif-tipo" value="individual" onchange="notifTipoChange(this)" style="accent-color:#7c3aed"> Usuario específico
+                    </label>
+                </div>
+            </div>
+
+            <!-- Selector usuario (solo si individual) -->
+            <div id="notif-selector-usuario" style="display:none;margin-bottom:1rem">
+                <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Seleccionar usuario <span style="color:#ef4444">*</span></label>
+                <select id="notif-destinatario" style="width:100%;padding:10px 14px;border:1px solid var(--gray2);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;color:var(--text);cursor:pointer">
+                    <option value="">-- Elige un usuario --</option>
+                    @foreach($todos_usuarios as $u)
+                        <option value="{{ $u->id }}">{{ $u->nombre }} {{ $u->apellido }} ({{ $u->email }})</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Botón enviar -->
+            <button onclick="notifEnviar()" style="display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:#7c3aed;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s">
+                <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                Enviar notificación
+            </button>
+        </div>
+    </div>
+
+    <!-- Historial de enviadas -->
+    <div class="panel">
+        <div class="panel-header" style="padding:1.2rem 1.5rem;border-bottom:1px solid var(--gray2);display:flex;align-items:center;justify-content:space-between">
+            <h2 class="panel-title">Historial de enviadas</h2>
+            <button onclick="notifCargarHistorial()" style="font-size:12px;color:var(--blue);background:none;border:none;cursor:pointer;font-weight:600">↻ Actualizar</button>
+        </div>
+        <div id="notif-historial" style="padding:1rem 1.5rem">
+            <p style="color:var(--muted);font-size:13px">Cargando...</p>
+        </div>
+    </div>
+</div>
 
             </div>
 
