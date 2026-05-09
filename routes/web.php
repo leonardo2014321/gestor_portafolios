@@ -124,7 +124,9 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
 Route::post('/reactivar-cuenta', [LoginController::class, 'reactivar'])->name('reactivar');
 
-Route::get('/registro', [RegistroController::class, 'show'])->name('registro');
+Route::get('/registro', function () {
+    return redirect('/?registro=1');
+})->name('registro');
 Route::post('/registro', [RegistroController::class, 'register'])->name('registro.post');
 
 // Recuperación de Contraseña
@@ -137,33 +139,9 @@ Route::post('/reset-password', [RecuperacionController::class, 'cambiarContrasen
 |--------------------------------------------------------------------------
 */
 
-Route::get('/verificar-email', function (Request $request) {
-    $token = $request->token;
+// usa el controller que ya tiene el redirect correcto
+Route::get('/verificar-email', [RegistroController::class, 'verificarEmail']);
 
-    // Obtener datos temporales almacenados en Cache
-    $datos = Cache::get('registro_temp_'.$token);
-
-    if (!$datos) {
-        return redirect('/registro')->withErrors('Token inválido o expirado.');
-    }
-
-    // Crear usuario definitivo tras validación
-    $usuario = Usuario::create([
-        'nombre' => $datos['nombre'],
-        'apellido' => $datos['apellido'] ?? null,
-        'email' => $datos['email'],
-        'contrasena' => $datos['password'],
-        'email_verificado' => true,
-    ]);
-
-    // Registrar actividad en el sistema
-    ActividadService::log($usuario->id, 'registro_usuario', ['email' => $usuario->email]);
-
-    // Limpiar caché
-    Cache::forget('registro_temp_'.$token);
-
-    return redirect('/login')->with('success', 'Correo verificado correctamente, ya puedes iniciar sesión.');
-});
 
 /*
 |--------------------------------------------------------------------------
