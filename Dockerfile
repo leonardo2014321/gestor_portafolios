@@ -1,9 +1,9 @@
 FROM php:8.3-cli
 
-# Instalar dependencias del sistema
+# Instalar dependencias del sistema y extensiones de PHP en un solo paso
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libpq-dev libpng-dev libxml2-dev libzip-dev libonig-dev \
-    && docker-php-ext-install pdo pdo_pgsql mbstring xml gd zip bcmath \
+    && docker-php-ext-install pdo pdo_pgsql pgsql mbstring xml gd zip bcmath \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Instalar Node.js
@@ -29,9 +29,7 @@ RUN chmod -R 775 storage bootstrap/cache
 
 EXPOSE 8000
 
-CMD export APP_URL=$(echo "$APP_URL" | tr -d '\r') && \
-    export ASSET_URL=$(echo "$ASSET_URL" | tr -d '\r') && \
-    export GOOGLE_REDIRECT_URI=$(echo "$GOOGLE_REDIRECT_URI" | tr -d '\r') && \
-    php artisan storage:link && \
+# Limpiamos variables de entorno y ejecutamos
+CMD php artisan storage:link && \
     php artisan migrate --force && \
     php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
