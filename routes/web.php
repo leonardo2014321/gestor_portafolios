@@ -185,3 +185,27 @@ Route::middleware('auth')->group(function () {
 
 });
 
+// ── Notificaciones ──────────────────────────────
+Route::middleware('auth')->group(function () {
+
+    // Usuario: ver sus notificaciones (campanita)
+    Route::get('/mis-notificaciones', [App\Http\Controllers\NotificacionController::class, 'misNotificaciones'])
+        ->name('notificaciones.mis');
+
+    // Usuario: marcar como leída
+    Route::post('/mis-notificaciones/{id}/leida', [App\Http\Controllers\NotificacionController::class, 'marcarLeida'])
+        ->name('notificaciones.leida');
+
+    // Admin: enviar notificación
+    Route::post('/admin/notificaciones', [App\Http\Controllers\NotificacionController::class, 'store'])
+        ->name('notificaciones.store');
+
+    // Admin: listar todas
+    Route::get('/admin/notificaciones', [App\Http\Controllers\NotificacionController::class, 'index'])
+        ->name('notificaciones.index');
+
+    // Admin: eliminar
+    Route::delete('/admin/notificaciones/{id}', [App\Http\Controllers\NotificacionController::class, 'destroy'])
+        ->name('notificaciones.destroy');
+});
+
