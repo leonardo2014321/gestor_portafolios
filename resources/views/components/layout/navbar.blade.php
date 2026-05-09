@@ -9,9 +9,15 @@
 @endphp
 @endauth
 
+@php
+    $currentLang = session('locale', config('app.locale'));
+    $flags  = ['es' => '🇪🇸', 'en' => '🇬🇧', 'fr' => '🇫🇷'];
+    $labels = ['es' => 'ES',   'en' => 'EN',   'fr' => 'FR'];
+@endphp
+
 <div class="topbar" style="background:#0f172a !important;border-color:rgba(255,255,255,0.06) !important;">
 
-    {{-- ── Logo (siempre visible) ── --}}
+    {{-- ── Logo ── --}}
     <div class="tb-left">
         <img class="logo-img" src="{{ asset('images/logo.png') }}" alt="UMSS">
         <div class="sysname">Sansi<span>Folios</span></div>
@@ -20,103 +26,120 @@
     {{-- ── Nav central ── --}}
     <nav class="tb-nav">
         @auth
-            {{-- Dashboard: cambian vistas SPA con JS --}}
             <button onclick="showView('menu')" class="tb-link"
                 style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
                        color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
                 onmouseover="this.style.color='#fff'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">Inicio</button>
+                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                {{ __('app.nav.inicio') }}
+            </button>
 
             <button onclick="showView('caracteristicas')" class="tb-link"
                 style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
                        color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
                 onmouseover="this.style.color='#fff'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">Características</button>
+                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                {{ __('app.nav.caracteristicas') }}
+            </button>
 
             <button onclick="showView('portafolios')" class="tb-link"
                 style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
                        color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
                 onmouseover="this.style.color='#fff'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">Portafolios</button>
+                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                {{ __('app.nav.portafolios') }}
+            </button>
 
             <button onclick="showView('explorador')" class="tb-link"
                 style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
                        color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
                 onmouseover="this.style.color='#fff'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">Explorador</button>
+                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                {{ __('app.nav.explorador') }}
+            </button>
         @else
-            {{-- Home público: links <a> normales --}}
             <a href="{{ url('/') }}"
                 style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
                        text-decoration:none;transition:color .2s;"
                 onmouseover="this.style.color='#fff'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">Inicio</a>
+                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                {{ __('app.nav.inicio') }}
+            </a>
 
             <a href="{{ route('portafolios.index') }}"
                 style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
                        text-decoration:none;transition:color .2s;"
                 onmouseover="this.style.color='#fff'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">Portafolios</a>
+                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                {{ __('app.nav.portafolios') }}
+            </a>
         @endauth
     </nav>
 
     {{-- ── Lado derecho ── --}}
     <div class="tb-right" style="display:flex;align-items:center;gap:12px;">
 
-    {{-- ── Selector de idioma ── --}}
-    <div style="position:relative;" id="lang-wrap">
-        <button onclick="langToggle()"
-            style="display:flex;align-items:center;gap:6px;
-                background:rgba(255,255,255,0.08);
-                border:1px solid rgba(255,255,255,0.15);border-radius:10px;
-                padding:6px 12px;cursor:pointer;transition:background .2s;
-                font-family:'DM Sans',sans-serif;font-size:13px;color:#fff;font-weight:500;"
-            onmouseover="this.style.background='rgba(255,255,255,0.14)'"
-            onmouseout="this.style.background='rgba(255,255,255,0.08)'">
-            <span id="lang-flag">🇪🇸</span>
-            <span id="lang-label">ES</span>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 9l-7 7-7-7"/></svg>
-        </button>
+        {{-- ── Selector de idioma ── --}}
+        <div style="position:relative;" id="lang-wrap">
 
-        <div id="lang-panel"
-            style="display:none;position:absolute;top:calc(100% + 10px);right:0;
-                background:#fff;border-radius:12px;width:160px;
-                box-shadow:0 8px 30px rgba(0,0,0,0.18);
-                border:1px solid #e2e8f0;overflow:hidden;z-index:9999;">
-            <div onclick="langSelect('es','🇪🇸','ES')"
-                id="lang-opt-es"
-                style="display:flex;align-items:center;gap:10px;padding:10px 14px;
-                    cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;
-                    color:#1e293b;background:#eff6ff;font-weight:600;"
-                onmouseover="this.style.background='#f1f5f9'"
-                onmouseout="this.style.background=currentLang==='es'?'#eff6ff':'#fff'">
-                <span style="font-size:18px;">🇪🇸</span> Español
-            </div>
-            <div onclick="langSelect('en','🇬🇧','EN')"
-                id="lang-opt-en"
-                style="display:flex;align-items:center;gap:10px;padding:10px 14px;
-                    cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;
-                    color:#1e293b;background:#fff;"
-                onmouseover="this.style.background='#f1f5f9'"
-                onmouseout="this.style.background=currentLang==='en'?'#eff6ff':'#fff'">
-                <span style="font-size:18px;">🇬🇧</span> English
-            </div>
-            <div onclick="langSelect('fr','🇫🇷','FR')"
-                id="lang-opt-fr"
-                style="display:flex;align-items:center;gap:10px;padding:10px 14px;
-                    cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;
-                    color:#1e293b;background:#fff;"
-                onmouseover="this.style.background='#f1f5f9'"
-                onmouseout="this.style.background=currentLang==='fr'?'#eff6ff':'#fff'">
-                <span style="font-size:18px;">🇫🇷</span> Français
+            <button onclick="langToggle()"
+                style="display:flex;align-items:center;gap:6px;
+                    background:rgba(255,255,255,0.08);
+                    border:1px solid rgba(255,255,255,0.15);border-radius:10px;
+                    padding:6px 12px;cursor:pointer;transition:background .2s;
+                    font-family:'DM Sans',sans-serif;font-size:13px;color:#fff;font-weight:500;"
+                onmouseover="this.style.background='rgba(255,255,255,0.14)'"
+                onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+                <span>{{ $flags[$currentLang] ?? '🇪🇸' }}</span>
+                <span>{{ $labels[$currentLang] ?? 'ES' }}</span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+
+            <div id="lang-panel"
+                style="display:none;position:absolute;top:calc(100% + 10px);right:0;
+                    background:#fff;border-radius:12px;width:160px;
+                    box-shadow:0 8px 30px rgba(0,0,0,0.18);
+                    border:1px solid #e2e8f0;overflow:hidden;z-index:9999;">
+
+                <a href="{{ route('lang.switch', 'es') }}"
+                    style="display:flex;align-items:center;gap:10px;padding:10px 14px;
+                        font-size:13px;font-family:'DM Sans',sans-serif;
+                        color:#1e293b;text-decoration:none;
+                        background:{{ $currentLang === 'es' ? '#eff6ff' : '#fff' }};"
+                    onmouseover="this.style.background='#f1f5f9'"
+                    onmouseout="this.style.background='{{ $currentLang === 'es' ? '#eff6ff' : '#fff' }}'">
+                    <span style="font-size:18px;">🇪🇸</span> Español
+                </a>
+
+                <a href="{{ route('lang.switch', 'en') }}"
+                    style="display:flex;align-items:center;gap:10px;padding:10px 14px;
+                        font-size:13px;font-family:'DM Sans',sans-serif;
+                        color:#1e293b;text-decoration:none;
+                        background:{{ $currentLang === 'en' ? '#eff6ff' : '#fff' }};"
+                    onmouseover="this.style.background='#f1f5f9'"
+                    onmouseout="this.style.background='{{ $currentLang === 'en' ? '#eff6ff' : '#fff' }}'">
+                    <span style="font-size:18px;">🇬🇧</span> English
+                </a>
+
+                <a href="{{ route('lang.switch', 'fr') }}"
+                    style="display:flex;align-items:center;gap:10px;padding:10px 14px;
+                        font-size:13px;font-family:'DM Sans',sans-serif;
+                        color:#1e293b;text-decoration:none;
+                        background:{{ $currentLang === 'fr' ? '#eff6ff' : '#fff' }};"
+                    onmouseover="this.style.background='#f1f5f9'"
+                    onmouseout="this.style.background='{{ $currentLang === 'fr' ? '#eff6ff' : '#fff' }}'">
+                    <span style="font-size:18px;">🇫🇷</span> Français
+                </a>
             </div>
         </div>
-    </div>
 
         @auth
             {{-- ── Campanita ── --}}
             <div style="position:relative;" id="notif-wrap">
-                <div class="tb-bell" style="cursor:pointer;position:relative;border-color:rgba(255,255,255,0.1) !important;background:rgba(255,255,255,0.08) !important;"
+                <div class="tb-bell"
+                     style="cursor:pointer;position:relative;border-color:rgba(255,255,255,0.1) !important;background:rgba(255,255,255,0.08) !important;"
                      onclick="notifToggle()" id="notif-btn">
                     <svg viewBox="0 0 24 24">
                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
@@ -137,19 +160,23 @@
                     <div style="display:flex;align-items:center;justify-content:space-between;
                                 padding:14px 18px;border-bottom:1px solid #f1f5f9;">
                         <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;
-                                     font-weight:700;color:#0f172a;">Notificaciones</span>
+                                     font-weight:700;color:#0f172a;">
+                            {{ __('app.nav.notificaciones') }}
+                        </span>
                         <button onclick="notifMarcarTodasLeidas()"
                             style="font-size:11px;color:#2563eb;background:none;border:none;
-                                   cursor:pointer;font-weight:600;">Marcar todas como leídas</button>
+                                   cursor:pointer;font-weight:600;">
+                            {{ __('app.nav.marcar_leidas') }}
+                        </button>
                     </div>
                     <div id="notif-lista" style="max-height:360px;overflow-y:auto;">
                         <div style="padding:24px;text-align:center;color:#94a3b8;font-size:13px;">
-                            Cargando...
+                            {{ __('app.nav.cargando') }}
                         </div>
                     </div>
                     <div style="padding:10px 18px;border-top:1px solid #f1f5f9;text-align:center;">
                         <span style="font-size:11px;color:#94a3b8;">
-                            Solo ves notificaciones dirigidas a ti
+                            {{ __('app.nav.solo_tus_notif') }}
                         </span>
                     </div>
                 </div>
@@ -177,7 +204,7 @@
                         <div style="font-size:13px;color:#fff;font-weight:600;white-space:nowrap;">
                             {{ auth()->user()->nombre }}
                         </div>
-                        <div style="font-size:10px;color:#8ba5c8;">Mi cuenta ▾</div>
+                        <div style="font-size:10px;color:#8ba5c8;">{{ __('app.nav.mi_cuenta') }} ▾</div>
                     </div>
                 </button>
 
@@ -226,7 +253,7 @@
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                                 <circle cx="12" cy="7" r="4"/>
                             </svg>
-                            Mi Perfil
+                            {{ __('app.nav.mi_perfil') }}
                         </button>
 
                         <button onclick="showView('reportes');cerrarNavMenu()"
@@ -240,7 +267,7 @@
                                  stroke="#64748b" stroke-width="2" stroke-linecap="round">
                                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
                             </svg>
-                            Reportes
+                            {{ __('app.nav.reportes') }}
                         </button>
                     </div>
 
@@ -260,14 +287,13 @@
                                 <polyline points="16 17 21 12 16 7"/>
                                 <line x1="21" y1="12" x2="9" y2="12"/>
                             </svg>
-                            Cerrar sesión
+                            {{ __('app.nav.cerrar_sesion') }}
                         </button>
                     </div>
                 </div>
             </div>
 
         @else
-            {{-- ── Botones Login / Registro (home público) ── --}}
             <button id="openLoginModal"
                 style="height:36px;padding:0 16px;background:rgba(255,255,255,0.1);
                        border:1px solid rgba(255,255,255,0.2);border-radius:9px;color:#fff;
@@ -275,7 +301,7 @@
                        cursor:pointer;transition:background .2s;"
                 onmouseover="this.style.background='rgba(255,255,255,0.18)'"
                 onmouseout="this.style.background='rgba(255,255,255,0.1)'">
-                Iniciar sesión
+                {{ __('app.nav.iniciar_sesion') }}
             </button>
 
             <button id="openRegisterModal"
@@ -285,56 +311,25 @@
                        cursor:pointer;transition:background .2s;"
                 onmouseover="this.style.background='#1d4ed8'"
                 onmouseout="this.style.background='#2563eb'">
-                Registrarse
+                {{ __('app.nav.registrarse') }}
             </button>
         @endauth
 
     </div>{{-- fin tb-right --}}
 
-<script>
-let currentLang = localStorage.getItem('lang') || 'es';
+    {{-- Solo JS para abrir/cerrar el panel, sin localStorage --}}
+    <script>
+        function langToggle() {
+            const panel = document.getElementById('lang-panel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
 
-// Aplicar idioma guardado al cargar
-document.addEventListener('DOMContentLoaded', function() {
-    const saved = localStorage.getItem('lang') || 'es';
-    const map = { es: ['🇪🇸','ES'], en: ['🇬🇧','EN'], fr: ['🇫🇷','FR'] };
-    if (map[saved]) {
-        document.getElementById('lang-flag').textContent = map[saved][0];
-        document.getElementById('lang-label').textContent = map[saved][1];
-        currentLang = saved;
-        langHighlight();
-    }
-});
-
-function langToggle() {
-    const panel = document.getElementById('lang-panel');
-    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-}
-
-function langSelect(code, flag, label) {
-    currentLang = code;
-    localStorage.setItem('lang', code);
-    document.getElementById('lang-flag').textContent  = flag;
-    document.getElementById('lang-label').textContent = label;
-    document.getElementById('lang-panel').style.display = 'none';
-    langHighlight();
-    // Aquí puedes agregar lógica real de traducción en el futuro
-}
-
-function langHighlight() {
-    ['es','en','fr'].forEach(c => {
-        const el = document.getElementById('lang-opt-' + c);
-        if (el) el.style.background = c === currentLang ? '#eff6ff' : '#fff';
-    });
-}
-
-// Cerrar al hacer click fuera
-document.addEventListener('click', function(e) {
-    const wrap = document.getElementById('lang-wrap');
-    if (wrap && !wrap.contains(e.target)) {
-        document.getElementById('lang-panel').style.display = 'none';
-    }
-});
-</script>
+        document.addEventListener('click', function(e) {
+            const wrap = document.getElementById('lang-wrap');
+            if (wrap && !wrap.contains(e.target)) {
+                document.getElementById('lang-panel').style.display = 'none';
+            }
+        });
+    </script>
 
 </div>{{-- fin topbar --}}

@@ -512,27 +512,27 @@
             <div class="sb-top">
                 <button class="sb-item active" id="btn-menu" onclick="showView('menu')">
                     <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-                    <span>Menú principal</span>
+                    <span>{{ __('app.menu.menu_principal') }}</span>
                 </button>
                 <div class="sb-div"></div>
 
                 <button id="btn-portafolios" class="sb-item" onclick="showView('portafolios')">
                     <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
-                    <span>Portafolios</span>
+                    <span>{{ __('app.menu.portafolios') }}</span>
                 </button>
 
 
                 <a href="{{ route('academico') }}" class="sb-item {{ request()->routeIs('academico') ? 'active' : '' }}">
                     <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                    <span>Académico</span>
+                    <span>{{ __('app.menu.academico') }}</span>
                 </a>
                 <button id="btn-reportes" class="sb-item" onclick="showView('reportes')" style="background:none;border-top:none;border-right:none;border-bottom:none;width:100%;text-align:left;">
                     <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                    <span>Reportes</span>
+                    <span>{{ __('app.menu.reportes') }}</span>
                 </button>
                 <button id="btn-perfil" class="sb-item" onclick="showView('perfil')" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:inherit;">
                     <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    <span>Mi Perfil</span>
+                    <span>{{ __('app.menu.mi_perfil') }}</span>
                 </button>
             </div>
 
@@ -543,15 +543,15 @@
                    <div style="width:52px;height:52px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                     </div>
-                    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:#0f172a;margin-bottom:8px;">¿Cerrar sesión?</div>
-                    <div style="font-size:13px;color:#64748b;margin-bottom:24px;">¿Estás seguro que deseas salir de tu cuenta?</div>
+                    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:#0f172a;margin-bottom:8px;">{{ __('app.menu.cerrar_sesion') }}</div>
+                    <div style="font-size:13px;color:#64748b;margin-bottom:24px;">{{ __('app.menu.cerrar_confirm') }}</div>
                     <div style="display:flex;gap:10px;">
-                        <button onclick="document.getElementById('modalLogout').style.display='none'" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid #e2e8f0;background:transparent;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Cancelar</button>
+                        <button onclick="document.getElementById('modalLogout').style.display='none'" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid #e2e8f0;background:transparent;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">{{ __('app.menu.cancelar') }}</button>
                         <button onclick="ejecutarLogout(this)" style="flex:1;padding:12px;border-radius:12px;border:none;background:#2563eb;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;">
                             <svg id="logoutSpinner" style="display:none;width:16px;height:16px;animation:spin .7s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                                 <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
                             </svg>
-                            <span id="logoutBtnLabel">Sí, salir</span>
+                            <span id="logoutBtnLabel">{{ __('app.menu.si_salir') }}</span>
                         </button>
                     </div>
                 </div>
@@ -567,13 +567,13 @@
                 <div class="view active" id="view-menu">
                     <div class="content-bar">
                         <div class="content-title">
-                            <h1>Sistema de Portafolios</h1>
-                            <p>Gestión institucional de activos digitales – UMSS</p>
+                            <h1>{{ __('app.menu.titulo') }}</h1>
+                            <p>{{ __('app.menu.subtitulo') }}</p>
                         </div>
                         <div style="display:flex;align-items:center;gap:10px;">
                             <button onclick="abrirModalPortafolio()" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:var(--blue);color:#fff;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;">
                                 <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                                Crear portafolio
+                                {{ __('app.menu.crear') }}
                             </button>
                         </div>
                     </div>
@@ -586,7 +586,7 @@
                             </div>
                             <div>
                                 <div class="stat-num">{{ $totalPortafolios ?? 0 }}</div>
-                                <div class="stat-lbl">Portafolios</div>
+                                <div class="stat-lbl">{{ __('app.menu.portafolios') }}</div>
                             </div>
                         </div>
                         <div class="stat s-white">
@@ -595,7 +595,7 @@
                             </div>
                             <div>
                                 <div class="stat-num">{{ $totalDocumentos ?? 0 }}</div>
-                                <div class="stat-lbl">Documentos</div>
+                                <div class="stat-lbl">{{ __('app.menu.documentos') }}</div>
                             </div>
                         </div>
                         <div class="stat s-teal">
@@ -604,14 +604,14 @@
                             </div>
                             <div>
                                 <div class="stat-num">{{ $totalAprobados ?? 0 }}</div>
-                                <div class="stat-lbl">Aprobados</div>
+                                <div class="stat-lbl">{{ __('app.menu.aprobados') }}</div>
                             </div>
                         </div>
                     </div>
 
                     <div class="sec-lbl">
                         <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-                        Documentos recientes
+                        {{ __('app.menu.recientes') }}
                     </div>
 
                     @if(isset($portafolios) && $portafolios->count() > 0)
@@ -634,9 +634,9 @@
                             <div class="pcard-bot">
                                 <div>
                                     <div class="pcard-num">{{ $nArchivos }} <small>ARCHIVOS</small></div>
-                                    <div class="pcard-st"><span class="dot dg"></span> Publicado</div>
+                                    <div class="pcard-st"><span class="dot dg"></span> {{ __('app.menu.publicado') }}</div>
                                 </div>
-                                <a href="#" class="btn-ver" onclick="verPortafolio({{ $portafolio->id }});return false;">Ver Panel</a>
+                                <a href="#" class="btn-ver" onclick="verPortafolio({{ $portafolio->id }});return false;">{{ __('app.menu.ver_panel') }}</a>
                             </div>
                         </div>
                         @else
@@ -651,9 +651,9 @@
                             <div class="pcard-bot">
                                 <div>
                                     <div class="pcard-num">{{ $nArchivos }} <small>ARCHIVOS</small></div>
-                                    <div class="pcard-st"><span class="dot dy"></span> Borrador</div>
+                                    <div class="pcard-st"><span class="dot dy"></span> {{ __('app.menu.borrador') }}</div>
                                 </div>
-                                <a href="#" class="btn-ver-dk" onclick="verPortafolio({{ $portafolio->id }});return false;">Ver Panel</a>
+                                <a href="#" class="btn-ver-dk" onclick="verPortafolio({{ $portafolio->id }});return false;">{{ __('app.menu.ver_panel') }}</a>
                             </div>
                         </div>
                         @endif
@@ -662,9 +662,9 @@
                     @else
                     <div style="text-align:center;padding:3rem 1rem;color:var(--muted)">
                         <svg viewBox="0 0 24 24" style="width:48px;height:48px;fill:none;stroke:var(--gray3);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin:0 auto 1rem;display:block"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
-                        <p style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px">Sin portafolios aún</p>
-                        <p style="font-size:13px">Crea tu primer portafolio para comenzar.</p>
-                        <button onclick="abrirModalPortafolio()" style="display:inline-block;margin-top:1rem;padding:9px 22px;background:var(--blue);color:#fff;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none;border:none;cursor:pointer">Crear portafolio</button>
+                        <p style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px">{{ __('app.menu.sin_portafolios') }}</p>
+                        <p style="font-size:13px">{{ __('app.menu.sin_desc') }}</p>
+                        <button onclick="abrirModalPortafolio()" style="display:inline-block;margin-top:1rem;padding:9px 22px;background:var(--blue);color:#fff;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none;border:none;cursor:pointer">{{ __('app.menu.crear') }}</button>
                     </div>
                     @endif
                 </div>
@@ -719,30 +719,30 @@
                 <div class="view" id="view-caracteristicas">
                     <div class="content-bar">
                         <div class="content-title">
-                            <h1>Características</h1>
-                            <p>Todo lo que SansiFolios ofrece para ti</p>
+                            <h1>{{ __('app.menu.caracteristicas') }}</h1>
+                            <p>{{ __('app.menu.caract_subtitulo') }}</p>
                         </div>
                     </div>
                     <div class="caract-grid">
                         <div style="border-left:4px solid #2563eb;padding:1rem 1.2rem;background:#fff;border-radius:0 12px 12px 0;">
-                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">Diseño Adaptable</h3>
-                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">Plantillas profesionales diseñadas para resaltar lo mejor de cada carrera.</p>
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">{{ __('app.menu.disenio') }}e</h3>
+                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">{{ __('app.menu.disenio_desc') }}</p>
                         </div>
                         <div style="border-left:4px solid #7c3aed;padding:1rem 1.2rem;background:#fff;border-radius:0 12px 12px 0;">
-                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">Editor Intuitivo</h3>
-                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">Crea y organiza tu información sin complicaciones.</p>
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">{{ __('app.menu.editor') }}</h3>
+                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">{{ __('app.menu.editor_desc') }}</p>
                         </div>
                         <div style="border-left:4px solid #ec4899;padding:1rem 1.2rem;background:#fff;border-radius:0 12px 12px 0;">
-                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">Marca Personal</h3>
-                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">Personaliza colores, tipografías y secciones de tu perfil.</p>
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">{{ __('app.menu.marca') }}</h3>
+                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">{{ __('app.menu.marca_desc') }}</p>
                         </div>
                         <div style="border-left:4px solid #f97316;padding:1rem 1.2rem;background:#fff;border-radius:0 12px 12px 0;">
-                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">Exportación Inteligente</h3>
-                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">Genera una versión en PDF optimizada con un solo clic.</p>
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">{{ __('app.menu.exportacion') }}</h3>
+                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">{{ __('app.menu.exportacion_desc') }}</p>
                         </div>
                         <div style="border-left:4px solid #10b981;padding:1rem 1.2rem;background:#fff;border-radius:0 12px 12px 0;">
-                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">Enlace Único</h3>
-                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">Obtén una URL personalizada para compartir en redes sociales.</p>
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;">{{ __('app.menu.enlace') }}</h3>
+                            <p style="font-size:13px;color:var(--muted);margin-top:6px;">{{ __('app.menu.enlace_desc') }}</p>
                         </div>
                     </div>
                 </div>
@@ -755,18 +755,18 @@
 <div class="view" id="view-portafolios">
     <div class="content-bar">
         <div class="content-title">
-            <h1>Inspírate con profesionales reales</h1>
-            <p>Explora cómo otros expertos destacan en su industria usando SansiFolios.</p>
+            <h1>{{ __('app.menu.inspira') }}</h1>
+            <p>{{ __('app.menu.inspira_desc') }}</p>
         </div>
     </div>
 
     <!-- Filtros -->
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1.4rem;">
-        <button style="padding:7px 20px;border-radius:999px;background:var(--blue);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;">Todos</button>
-        <button style="padding:7px 20px;border-radius:999px;background:#fff;border:1.5px solid var(--gray2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;">🎨 Creativos</button>
-        <button style="padding:7px 20px;border-radius:999px;background:#fff;border:1.5px solid var(--gray2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;">🩺 Salud</button>
-        <button style="padding:7px 20px;border-radius:999px;background:#fff;border:1.5px solid var(--gray2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;">💼 Negocios</button>
-        <button style="padding:7px 20px;border-radius:999px;background:#fff;border:1.5px solid var(--gray2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;">🎓 Educación</button>
+        <button style="padding:7px 20px;border-radius:999px;background:var(--blue);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;">{{ __('app.menu.todos') }}</button>
+        <button style="padding:7px 20px;border-radius:999px;background:#fff;border:1.5px solid var(--gray2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;">🎨 {{ __('app.menu.creativos') }}</button>
+        <button style="padding:7px 20px;border-radius:999px;background:#fff;border:1.5px solid var(--gray2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;">🩺 {{ __('app.menu.salud') }}</button>
+        <button style="padding:7px 20px;border-radius:999px;background:#fff;border:1.5px solid var(--gray2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;">💼 {{ __('app.menu.negocios') }}</button>
+        <button style="padding:7px 20px;border-radius:999px;background:#fff;border:1.5px solid var(--gray2);color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;">🎓 {{ __('app.menu.educacion') }}</button>
     </div>
 
     <!-- Grid -->
@@ -780,7 +780,7 @@
             <div style="padding:1rem;">
                 <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;color:#1e293b;">Arq. Roberto Méndez</div>
                 <div style="font-size:11.5px;color:var(--muted);margin-top:3px;">Diseño Sostenible • Cochabamba</div>
-                <button style="margin-top:10px;width:100%;padding:9px;background:#f8fafc;color:#1e293b;border:none;border-radius:14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='#2563eb';this.style.color='#fff'" onmouseout="this.style.background='#f8fafc';this.style.color='#1e293b'">Ver Perfil →</button>
+                <button style="margin-top:10px;width:100%;padding:9px;background:#f8fafc;color:#1e293b;border:none;border-radius:14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='#2563eb';this.style.color='#fff'" onmouseout="this.style.background='#f8fafc';this.style.color='#1e293b'">{{ __('app.menu.ver_perfil') }} →</button>
             </div>
         </div>
 
@@ -792,7 +792,7 @@
             <div style="padding:1rem;">
                 <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;color:#1e293b;">Dra. Elena Vargas</div>
                 <div style="font-size:11.5px;color:var(--muted);margin-top:3px;">Rehabilitación Deportiva • La Paz</div>
-                <button style="margin-top:10px;width:100%;padding:9px;background:#f8fafc;color:#1e293b;border:none;border-radius:14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='#2563eb';this.style.color='#fff'" onmouseout="this.style.background='#f8fafc';this.style.color='#1e293b'">Ver Perfil →</button>
+                <button style="margin-top:10px;width:100%;padding:9px;background:#f8fafc;color:#1e293b;border:none;border-radius:14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='#2563eb';this.style.color='#fff'" onmouseout="this.style.background='#f8fafc';this.style.color='#1e293b'">{{ __('app.menu.ver_perfil') }} →</button>
             </div>
         </div>
 
@@ -804,7 +804,7 @@
             <div style="padding:1rem;">
                 <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;color:#1e293b;">Lic. Carlos Duarte</div>
                 <div style="font-size:11.5px;color:var(--muted);margin-top:3px;">Estrategia Financiera • Santa Cruz</div>
-                <button style="margin-top:10px;width:100%;padding:9px;background:#f8fafc;color:#1e293b;border:none;border-radius:14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='#2563eb';this.style.color='#fff'" onmouseout="this.style.background='#f8fafc';this.style.color='#1e293b'">Ver Perfil →</button>
+                <button style="margin-top:10px;width:100%;padding:9px;background:#f8fafc;color:#1e293b;border:none;border-radius:14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='#2563eb';this.style.color='#fff'" onmouseout="this.style.background='#f8fafc';this.style.color='#1e293b'">{{ __('app.menu.ver_perfil') }} →</button>
             </div>
         </div>
 
@@ -816,7 +816,7 @@
             <div style="padding:1rem;">
                 <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;color:#1e293b;">Msc. Ana Jiménez</div>
                 <div style="font-size:11.5px;color:var(--muted);margin-top:3px;">Metodologías Activas • Sucre</div>
-                <button style="margin-top:10px;width:100%;padding:9px;background:#f8fafc;color:#1e293b;border:none;border-radius:14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='#2563eb';this.style.color='#fff'" onmouseout="this.style.background='#f8fafc';this.style.color='#1e293b'">Ver Perfil →</button>
+                <button style="margin-top:10px;width:100%;padding:9px;background:#f8fafc;color:#1e293b;border:none;border-radius:14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='#2563eb';this.style.color='#fff'" onmouseout="this.style.background='#f8fafc';this.style.color='#1e293b'">{{ __('app.menu.ver_perfil') }} →</button>
             </div>
         </div>
 
@@ -1523,10 +1523,10 @@
                 <div class="cal-hd" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
                     <div class="cal-month" id="cal-title" style="flex:1;">Abril 2026</div>
                     <select class="cal-view-selector" id="cal-view-sel" onchange="changeCalView(this.value)" style="margin:0;">
-                        <option value="dias">Días</option>
-                        <option value="semanas">Semanas</option>
-                        <option value="meses">Meses</option>
-                        <option value="anios">Años</option>
+                        <option value="dias">{{ __('app.menu.dias') }}</option>
+                        <option value="semanas">{{ __('app.menu.semanas') }}</option>
+                        <option value="meses">{{ __('app.menu.meses') }}</option>
+                        <option value="anios">{{ __('app.menu.anios') }}</option>
                     </select>
                     <div class="cal-navs">
                         <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
@@ -1543,26 +1543,26 @@
             <div class="rp-sec">
                 <div class="rp-ttl">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    Notific. actualización
+                    {{ __('app.menu.notif_actualizacion') }}
                 </div>
                 <div class="notif">
                     <div class="ni-icon green"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
-                    <div><div class="ntxt">Nueva actualización disponible</div></div>
+                    <div><div class="ntxt">{{ __('app.menu.nueva_actualizacion') }}</div></div>
                 </div>
                 <div class="notif">
                     <div class="ni-icon blue"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-                    <div><div class="ntxt">Informe mensual subido</div><div class="ntime">13:10</div></div>
+                    <div><div class="ntxt">{{ __('app.menu.informe_subido') }}</div><div class="ntime">13:10</div></div>
                 </div>
             </div>
             <div class="rp-sec">
                 <div class="rp-ttl">
                     <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 1 7.54.54l3 3a5 5 0 0 1-7.07 7.07l-1.72-1.71"/><path d="M14 11a5 5 0 0 1-7.54-.54l-3-3A5 5 0 0 1 10.54.39l1.71 1.71"/></svg>
-                    Enlaces
+                    {{ __('app.menu.enlaces') }}
                 </div>
-                <a href="#" class="enlace"><div class="en-ico yellow"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><div class="en-lbl">Repositorio</div></a>
-                <a href="#" class="enlace"><div class="en-ico gray"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 1 1 5.82 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="en-lbl">Ayuda</div></a>
-                <a href="#" class="enlace"><div class="en-ico blue"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div><div class="en-lbl">Portal UMSS</div></a>
-                <a href="#" class="enlace"><div class="en-ico blue"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="en-lbl">Aula Virtual</div></a>
+                <a href="#" class="enlace"><div class="en-ico yellow"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><div class="en-lbl">{{ __('app.menu.repositorio') }}</div></a>
+                <a href="#" class="enlace"><div class="en-ico gray"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 1 1 5.82 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="en-lbl">{{ __('app.menu.ayuda') }}</div></a>
+                <a href="#" class="enlace"><div class="en-ico blue"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div><div class="en-lbl">{{ __('app.menu.portal_umss') }}</div></a>
+                <a href="#" class="enlace"><div class="en-ico blue"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="en-lbl">{{ __('app.menu.aula_virtual') }}</div></a>
             </div>
         </div>
         </div>
@@ -2054,7 +2054,7 @@
     function ejecutarLogout(btn) {
         btn.disabled = true;
         document.getElementById('logoutSpinner').style.display = 'block';
-        document.getElementById('logoutBtnLabel').textContent = 'Cerrando sesión...';
+        document.getElementById('logoutBtnLabel').textContent = window.trans.cerrando;
         btn.style.opacity = '0.85';
         document.getElementById('formLogout').submit();
     }
@@ -2774,6 +2774,13 @@ document.addEventListener('click', function(e) {
 notifCargar();
 // Polling cada 60 segundos
 setInterval(notifCargar, 60000);
+</script>
+
+<script>
+    // Traducciones para JS
+    window.trans = {
+        cerrando: "{{ __('app.menu.cerrando') }}"
+    };
 </script>
 </body>
 </html>
