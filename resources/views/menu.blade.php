@@ -514,7 +514,135 @@
             <button onclick="showView('portafolios')" class="tb-link" style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Portafolios</button>
             <button onclick="showView('explorador')" class="tb-link" style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Explorador</button>
         </nav>
+        @php
+            $supabaseBase = rtrim(config('services.supabase.url'), '/')
+                        . '/storage/v1/object/public/'
+                        . config('services.supabase.bucket');
+            $fotoNavbar = auth()->user()->foto_perfil
+                ? $supabaseBase . '/' . ltrim(auth()->user()->foto_perfil, '/')
+                : null;
+        @endphp
+
         <div class="tb-right" style="display:flex;align-items:center;gap:12px;">
+
+            <div class="tb-bell" style="cursor:pointer;">
+                <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+
+            <div style="position:relative;">
+                <button onclick="toggleNavMenu()"
+                        style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);
+                            border:1px solid rgba(255,255,255,0.15);border-radius:10px;
+                            padding:6px 12px 6px 6px;cursor:pointer;transition:background .2s;"
+                        onmouseover="this.style.background='rgba(255,255,255,0.14)'"
+                        onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+
+                    <div class="sb-av" id="sidebarAv" style="width:32px;height:32px;font-size:12px;">
+                        @if($fotoNavbar)
+                            <img src="{{ $fotoNavbar }}" alt=""
+                                style="width:100%;height:100%;object-fit:cover;border-radius:50%"
+                                onerror="this.style.display='none'">
+                        @else
+                            {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}
+                        @endif
+                    </div>
+
+                    <div style="text-align:left;">
+                        <div style="font-size:13px;color:#fff;font-weight:600;white-space:nowrap;">
+                            {{ auth()->user()->nombre }}
+                        </div>
+                        <div style="font-size:10px;color:#8ba5c8;">Mi cuenta ▾</div>
+                    </div>
+                </button>
+
+                <!-- Minimenu -->
+                <div id="navUserMenu"
+                    style="display:none;position:absolute;top:calc(100% + 10px);right:0;
+                            background:#fff;border-radius:14px;width:240px;
+                            box-shadow:0 8px 30px rgba(0,0,0,0.18);border:1px solid #e2e8f0;
+                            overflow:hidden;z-index:9999;">
+
+                    <!-- Header -->
+                    <div style="padding:14px 16px;border-bottom:1px solid #f1f5f9;
+                                display:flex;align-items:center;gap:10px;">
+                        <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;
+                                    background:linear-gradient(135deg,#3b82f6,#0d9488);
+                                    display:flex;align-items:center;justify-content:center;
+                                    font-size:14px;font-weight:700;color:#fff;">
+                            @if($fotoNavbar)
+                                <img src="{{ $fotoNavbar }}" alt=""
+                                    style="width:100%;height:100%;object-fit:cover;"
+                                    onerror="this.style.display='none'">
+                            @else
+                                {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}
+                            @endif
+                        </div>
+                        <div style="min-width:0;">
+                            <div style="font-size:13.5px;font-weight:700;color:#0f172a;
+                                        overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                                {{ auth()->user()->nombre }} {{ auth()->user()->apellido }}
+                            </div>
+                            <div style="font-size:11px;color:#64748b;
+                                        overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                                {{ auth()->user()->email }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Opciones -->
+                    <div style="padding:6px;">
+                        <button onclick="showView('perfil');cerrarNavMenu()"
+                                style="width:100%;display:flex;align-items:center;gap:10px;
+                                    padding:9px 12px;border-radius:8px;border:none;background:none;
+                                    cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
+                                    color:#1e293b;text-align:left;transition:background .15s;"
+                                onmouseover="this.style.background='#f1f5f9'"
+                                onmouseout="this.style.background='none'">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="#64748b" stroke-width="2" stroke-linecap="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            Mi Perfil
+                        </button>
+
+                        <button onclick="showView('reportes');cerrarNavMenu()"
+                                style="width:100%;display:flex;align-items:center;gap:10px;
+                                    padding:9px 12px;border-radius:8px;border:none;background:none;
+                                    cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
+                                    color:#1e293b;text-align:left;transition:background .15s;"
+                                onmouseover="this.style.background='#f1f5f9'"
+                                onmouseout="this.style.background='none'">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="#64748b" stroke-width="2" stroke-linecap="round">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                            </svg>
+                            Reportes
+                        </button>
+                    </div>
+
+                    <!-- Divider -->
+                    <div style="height:1px;background:#f1f5f9;margin:0 6px;"></div>
+
+                    <!-- Cerrar sesión -->
+                    <div style="padding:6px;">
+                        <button onclick="confirmarLogout()"
+                                style="width:100%;display:flex;align-items:center;gap:10px;
+                                    padding:9px 12px;border-radius:8px;border:none;background:none;
+                                    cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
+                                    color:#dc2626;text-align:left;transition:background .15s;"
+                                onmouseover="this.style.background='#fef2f2'"
+                                onmouseout="this.style.background='none'">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="#dc2626" stroke-width="2" stroke-linecap="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                <polyline points="16 17 21 12 16 7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                            Cerrar sesión
+                        </button>
+                    </div>
+
             <!-- Campanita de notificaciones -->
 <div style="position:relative" id="notif-wrap">
     <div class="tb-bell" style="cursor:pointer" onclick="notifToggle()" id="notif-btn">
@@ -554,6 +682,7 @@
                 <div>
                     <div style="font-size:13px;color:#fff;font-weight:600;">{{ auth()->user()->nombre }}</div>
                     <div style="font-size:11px;color:#8ba5c8;">Conectado</div>
+
                 </div>
             </div>
         </div>
@@ -584,10 +713,10 @@
                     <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                     <span>Reportes</span>
                 </button>
-                <a href="{{ route('perfil') }}" class="sb-item {{ request()->routeIs('perfil') ? 'active' : '' }}">
+                <button id="btn-perfil" class="sb-item" onclick="showView('perfil')" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:inherit;">
                     <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     <span>Mi Perfil</span>
-                </a>
+                </button>
             </div>
 
             
@@ -609,7 +738,12 @@
                     <div style="font-size:13px;color:#64748b;margin-bottom:24px;">¿Estás seguro que deseas salir de tu cuenta?</div>
                     <div style="display:flex;gap:10px;">
                         <button onclick="document.getElementById('modalLogout').style.display='none'" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid #e2e8f0;background:transparent;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Cancelar</button>
-                        <button onclick="document.getElementById('formLogout').submit()" style="flex:1;padding:12px;border-radius:12px;border:none;background:#2563eb;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Sí, salir</button>
+                        <button onclick="ejecutarLogout(this)" style="flex:1;padding:12px;border-radius:12px;border:none;background:#2563eb;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;">
+                            <svg id="logoutSpinner" style="display:none;width:16px;height:16px;animation:spin .7s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                            </svg>
+                            <span id="logoutBtnLabel">Sí, salir</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -919,14 +1053,23 @@
                         </select>
                     </div>
 
+                    @php
+                        $supabaseBase = rtrim(config('services.supabase.url'), '/')
+                                    . '/storage/v1/object/public/'
+                                    . config('services.supabase.bucket');
+                        $fotoCV = auth()->user()->foto_perfil
+                            ? $supabaseBase . '/' . ltrim(auth()->user()->foto_perfil, '/')
+                            : null;
+                    @endphp
+
                     <div class="cv-wrapper">
                         <!-- CV TEMPLATE 1 (Moderno) -->
                         <div class="cv-container cv-template-view active-tpl" id="cv-template-1">
                             <div class="cv-left">
                                 <div class="cv-bg-pattern"></div>
                                 <div class="cv-photo-box">
-                                    @if(auth()->check() && auth()->user()->foto_perfil)
-                                        <img src="{{ asset('storage/' . auth()->user()->foto_perfil) }}" alt="Foto" class="cv-photo">
+                                    @if($fotoCV)
+                                        <img src="{{ $fotoCV }}" alt="Foto" class="cv-photo">
                                     @else
                                         <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop" alt="Foto" class="cv-photo">
                                     @endif
@@ -1557,6 +1700,11 @@
                         </div>
                 </div>
 
+            </div>{{-- ← cierra view-reportes --}}
+
+                <div class="view" id="view-perfil">
+                    @include('perfil.index')
+                </div>
             </div>
         </main>
 
@@ -2079,6 +2227,31 @@
             btn.style.background = '#e2e8f0';
             btn.style.color = '#1e293b';
         }
+    }
+
+    function toggleNavMenu() {
+        const menu = document.getElementById('navUserMenu');
+        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    }
+    function cerrarNavMenu() {
+        document.getElementById('navUserMenu').style.display = 'none';
+    }
+    // Cerrar al hacer click fuera
+    document.addEventListener('click', function(e) {
+        const menu = document.getElementById('navUserMenu');
+        const btn  = menu?.previousElementSibling;
+        if (menu && !menu.contains(e.target) && btn && !btn.contains(e.target)) {
+            cerrarNavMenu();
+        }
+    });
+
+
+    function ejecutarLogout(btn) {
+        btn.disabled = true;
+        document.getElementById('logoutSpinner').style.display = 'block';
+        document.getElementById('logoutBtnLabel').textContent = 'Cerrando sesión...';
+        btn.style.opacity = '0.85';
+        document.getElementById('formLogout').submit();
     }
 </script>
 

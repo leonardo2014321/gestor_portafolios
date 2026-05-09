@@ -40,5 +40,12 @@ return [
     'client_secret' => env('GOOGLE_CLIENT_SECRET'),
     'redirect'      => env('GOOGLE_REDIRECT_URI'),
     ],
+    
+
+    'supabase' => [
+        'url'    => env('SUPABASE_URL'),
+        'key'    => env('SUPABASE_KEY'),
+        'bucket' => env('SUPABASE_BUCKET', 'usuarios'),
+    ],
 
 ];

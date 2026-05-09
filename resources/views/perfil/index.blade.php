@@ -1,60 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Perfil - SansiFolios</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        :root{
-            --navy:#1a2340;--navy2:#1e2d50;--blue:#2563eb;--blue2:#3b82f6;
-            --teal:#0d9488;--red:#dc2626;--white:#fff;--gray:#f0f2f8;
-            --gray2:#e2e8f0;--gray3:#cbd5e1;--text:#1e293b;--muted:#64748b;
-            --sw:190px;--hh:72px;
-        }
-        html,body{height:100%;font-family:"DM Sans",sans-serif;background:var(--gray);color:var(--text);overflow:hidden}
-        .app{display:flex;flex-direction:column;height:100vh}
-
-        /* Topbar */
-        .topbar{height:var(--hh);background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0;border-bottom:3px solid #0f1729;box-shadow:0 2px 12px rgba(0,0,0,0.25)}
-        .tb-left{display:flex;align-items:center;gap:14px}
-        .logo-img{width:52px;height:52px;object-fit:contain;border-radius:6px;background:rgba(255,255,255,0.08);padding:2px}
-        .sysname{font-family:"Plus Jakarta Sans",sans-serif;font-size:26px;font-weight:800;color:#fff;letter-spacing:-0.5px}
-        .sysname span{color:#f87171}
-        .tb-nav{display:flex;align-items:center;gap:24px}
-        .tb-link{font-size:14px;font-weight:500;color:rgba(255,255,255,0.75);cursor:pointer;border:none;background:none;font-family:"DM Sans",sans-serif;transition:color .2s;padding:4px 0;text-decoration:none}
-        .tb-link:hover{color:#fff}
-
-        /* Body row */
-        .body-row{flex:1;display:flex;overflow:hidden}
-
-        /* Sidebar */
-        aside{width:var(--sw);background:var(--navy);flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,0.05)}
-        .sb-top{padding:16px 0;flex:1}
-        .sb-item{display:flex;align-items:center;gap:11px;padding:11px 20px;cursor:pointer;color:#8ba5c8;font-size:13.5px;font-weight:400;transition:all .2s;border-left:3px solid transparent;font-family:"DM Sans",sans-serif;text-decoration:none}
-        .sb-item:hover{background:rgba(255,255,255,0.06);color:#c8d8ef}
-        .sb-item.active{background:rgba(37,99,235,0.2);color:#fff;border-left-color:var(--blue2);font-weight:600}
-        .sb-item svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;flex-shrink:0;stroke-linecap:round;stroke-linejoin:round}
-        .sb-div{height:1px;background:rgba(255,255,255,0.07);margin:6px 12px}
-        .sb-user{padding:12px 16px;display:flex;align-items:center;gap:10px;border-top:1px solid rgba(255,255,255,0.07)}
-        .sb-av{width:38px;height:38px;border-radius:50%;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,#3b82f6,#0d9488);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
-        .sb-uname{font-size:13px;color:#fff;font-weight:600}
-        .sb-uid{font-size:11px;color:#5a7fa0}
-        .btn-logout{width:calc(100% - 24px);margin:0 12px 12px;background:rgba(255,255,255,0.05);color:#8ba5c8;border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:8px 10px;font-size:12.5px;font-family:"DM Sans",sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .2s;text-decoration:none}
-        .btn-logout:hover{background:rgba(220,38,38,0.15);color:#fca5a5}
-        .btn-logout svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-
-        /* Main */
-        main{flex:1;overflow-y:auto;background:var(--gray)}
-        .main-inner{padding:1.4rem 1.6rem;max-width:900px}
-
-        /* Header */
-        .content-bar{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.4rem}
-        .content-title h1{font-family:"Plus Jakarta Sans",sans-serif;font-size:24px;font-weight:800;color:var(--text)}
-        .content-title p{font-size:12.5px;color:var(--muted);margin-top:3px}
-
+<style>
+    :root{
+        --navy:#1a2340;--navy2:#1e2d50;--blue:#2563eb;--blue2:#3b82f6;
+        --teal:#0d9488;--red:#dc2626;--white:#fff;--gray:#f0f2f8;
+        --gray2:#e2e8f0;--gray3:#cbd5e1;--text:#1e293b;--muted:#64748b;
+    }
         /* Alerts */
         .alert{padding:12px 16px;border-radius:10px;font-size:13.5px;font-weight:500;margin-bottom:1.2rem;display:flex;align-items:center;gap:10px}
         .alert-success{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0}
@@ -116,7 +65,9 @@
         .btn-save.loading .spinner{display:block}
         .btn-save.loading .btn-label{opacity:.5}
         .btn-cancel{background:#fff;color:var(--text);border:1.5px solid var(--gray2);border-radius:9px;padding:10px 22px;font-size:13.5px;font-weight:500;cursor:pointer;font-family:"DM Sans",sans-serif;transition:background .2s}
-        .btn-cancel:hover{background:var(--gray)}
+        .btn-cancel:hover:not(:disabled){background:var(--gray)}
+        /* PARCHE 1: Cancelar deshabilitado */
+        .btn-cancel:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
 
         /* Modal overlay */
         .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,0.5);z-index:100;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .2s}
@@ -265,536 +216,493 @@
         ::-webkit-scrollbar-track{background:transparent}
         ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
     </style>
-</head>
-<body>
-<div class="app">
 
-    <div class="topbar">
-        <div class="tb-left">
-            <img class="logo-img" src="{{ asset('images/logo.png') }}" alt="UMSS">
-            <div class="sysname">Sansi<span>Folios</span></div>
+@php
+    $supabaseBase = rtrim(config('services.supabase.url'), '/')
+                  . '/storage/v1/object/public/'
+                  . config('services.supabase.bucket');
+
+    $fotoActual = auth()->user()->foto_perfil
+        ? $supabaseBase . '/' . ltrim(auth()->user()->foto_perfil, '/')
+        : null;
+@endphp
+
+
+<div class="content-bar">
+    <div class="content-title">
+        <h1>Mi Perfil</h1>
+        <p>Gestiona tu información personal y biografía profesional.</p>
+    </div>
+    <button type="button" class="mode-toggle" id="btnPreview" onclick="togglePreview()">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Vista Previa
+    </button>
+</div>
+
+{{-- Mensaje de éxito --}}
+@if(session('success'))
+<div class="alert alert-success">
+    <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+    {{ session('success') }}
+</div>
+@endif
+
+{{-- Errores de validación --}}
+@if($errors->any())
+<div class="alert alert-error">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    {{ $errors->first() }}
+</div>
+@endif
+
+{{-- Alerta de reintento --}}
+<div class="alert alert-retry" id="alertRetry" style="display:none">
+    <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+    Error de conexión. Tus datos no se perdieron.
+    <button onclick="retrySubmit()" style="margin-left:auto;background:none;border:none;font-weight:700;color:#92400e;cursor:pointer;font-family:inherit">Reintentar</button>
+</div>
+
+{{-- Vista previa --}}
+<div class="preview-card" id="previewCard">
+    <div class="preview-lbl">
+        <svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2;display:inline;margin-right:4px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        Así verán tu perfil terceros
+    </div>
+    <div class="preview-av" id="prevAv">
+        @if($fotoActual)
+            <img src="{{ $fotoActual }}" alt="foto" style="width:100%;height:100%;object-fit:cover">
+        @else
+            {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}
+        @endif
+    </div>
+    <div class="preview-name" id="prevName">{{ auth()->user()->nombre }} {{ auth()->user()->apellido }}</div>
+    <div class="preview-prof" id="prevProf">{{ auth()->user()->profesion ?? 'Sin profesión' }}</div>
+    <div class="preview-bio" id="prevBio">{{ auth()->user()->biografia ?? 'Sin biografía.' }}</div>
+</div>
+
+{{-- Formulario principal --}}
+<form id="perfilForm" enctype="multipart/form-data">
+    @csrf
+    <input type="hidden" name="_method" value="POST">
+
+    <div class="profile-grid">
+        {{-- Foto de perfil --}}
+        <div>
+            <div class="photo-card">
+                <div class="photo-wrap" onclick="document.getElementById('inputFoto').click()">
+                <div class="photo-initials" id="photoInitials" style="{{ $fotoActual ? 'display:none' : 'display:flex' }}">
+                    {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}
+                </div>
+                @if($fotoActual)
+                <img id="photoPreview" class="photo-avatar"
+                    src="{{ $fotoActual }}"
+                    data-original="{{ $fotoActual }}"
+                    alt=""
+                    onerror="this.style.display='none';document.getElementById('photoInitials').style.display='flex'">
+                @endif
+                    <div class="photo-overlay">
+                        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    </div>
+                </div>
+                <input type="file" id="inputFoto" name="foto_perfil" accept=".jpg,.jpeg,.png" style="display:none" onchange="handlePhoto(this)">
+                <p class="photo-hint">JPG o PNG · Máx 2 MB<br>Click en la foto para cambiar</p>
+                <p class="photo-error" id="photoError"></p>
+            </div>
         </div>
-        <nav class="tb-nav">
-            <a href="{{ route('inicio') }}" class="tb-link">Inicio</a>
-            <a href="{{ route('caracteristicas') }}" class="tb-link">Características</a>
-            <a href="{{ route('portafolios.index') }}" class="tb-link">Portafolios</a>
-        </nav>
+
+        {{-- Información personal + biografía --}}
+        <div>
+            <div class="form-card" style="margin-bottom:1.2rem">
+                <div class="card-title">Información Personal</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombre <span class="req">*</span></label>
+                        <input type="text" name="nombre" id="fNombre" class="field" value="{{ old('nombre', auth()->user()->nombre) }}" placeholder="Tu nombre" maxlength="100" oninput="charCheck(this,'errNombre');syncCancelBtn()">
+                        <span class="field-err" id="errNombre">El nombre es obligatorio.</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Apellido <span class="req">*</span></label>
+                        <input type="text" name="apellido" id="fApellido" class="field" value="{{ old('apellido', auth()->user()->apellido) }}" placeholder="Tu apellido" maxlength="100" oninput="charCheck(this,'errApellido');syncCancelBtn()">
+                        <span class="field-err" id="errApellido">El apellido es obligatorio.</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Profesión <span class="req">*</span></label>
+                    <input type="text" name="profesion" id="fProfesion" class="field" value="{{ old('profesion', auth()->user()->profesion) }}" placeholder="Ej: Ingeniero de Software" maxlength="150" oninput="charCheck(this,'errProfesion');syncCancelBtn()">
+                    <span class="field-err" id="errProfesion">La profesión es obligatoria.</span>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <div class="card-title">Biografía Profesional</div>
+
+                <div class="form-group">
+                    <label>Biografía</label>
+                    <textarea name="biografia" id="fBiografia" class="field" placeholder="Cuéntanos sobre ti, tu experiencia y objetivos profesionales..." maxlength="1100" oninput="updateCounter();charCheck(this,'errBiografia');syncCancelBtn()">{{ old('biografia', auth()->user()->biografia) }}</textarea>
+                    <div class="bio-footer">
+                        <span class="field-err" id="errBiografia" style="margin-top:0"></span>
+                        <span class="bio-counter" id="bioCounter">0 / 1000</span>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-save" id="btnSave" onclick="abrirModalGuardar()">
+                        <div class="spinner"></div>
+                        <span class="btn-label">Guardar</span>
+                    </button>
+                    {{-- PARCHE 1: id="btnCancel" + disabled por defecto --}}
+                    <button type="button" class="btn-cancel" id="btnCancel" onclick="cancelarEdicion()" disabled>Cancelar</button>
+                </div>
+            </div>
+
+            {{-- Botones extra --}}
+            <div class="extra-actions">
+                <button type="button" class="btn-tray" onclick="abrirTrayectoria()">
+                    <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    Mi Trayectoria
+                </button>
+                <button type="button" class="btn-deactivate" onclick="abrirModalDesactivar()">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                    Desactivar cuenta
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+{{-- Modal: Confirmar guardar --}}
+<div class="modal-overlay" id="modalGuardar">
+<div class="modal">
+<div class="modal-ico blue">
+    <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+</div>
+<h3>¿Guardar cambios?</h3>
+<p>Se actualizará tu información personal, profesión y biografía en el sistema.</p>
+<div class="modal-actions">
+    <button class="btn-cancel" onclick="pCerrarModal('modalGuardar')">Cancelar</button>
+    <button class="btn-save" onclick="pCerrarModal('modalGuardar');submitPerfil()">
+        <div class="spinner"></div>
+        <span class="btn-label">Sí, guardar</span>
+    </button>
+</div>
+</div>
+</div>
+
+{{-- Modal: Confirmar desactivar cuenta --}}
+<div class="modal-overlay" id="modalDesactivar">
+<div class="modal">
+<div class="modal-ico red">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+</div>
+<h3>¿Desactivar tu cuenta?</h3>
+<p>Tu cuenta quedará inactiva. No podrás iniciar sesión hasta que un administrador la reactive. Esta acción no elimina tus datos.</p>
+<div class="modal-actions">
+    <button class="btn-cancel" onclick="pCerrarModal('modalDesactivar')">Cancelar</button>
+    <button class="btn-danger" onclick="desactivarCuenta()">Sí, desactivar</button>
+</div>
+</div>
+</div>
+
+{{-- Modal: Mi Trayectoria --}}
+<div class="modal-overlay" id="modalTrayectoria" style="align-items:flex-start;padding:3vh 1rem">
+<div class="tray-modal">
+<div class="tray-modal-head">
+    <h2>Mi Trayectoria</h2>
+    <button class="tray-close" onclick="pCerrarModal('modalTrayectoria')">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+</div>
+
+<div class="tray-tabs">
+    <button class="tray-tab active" onclick="switchTab('habilidades')">Habilidades</button>
+    <button class="tray-tab" onclick="switchTab('experiencia')">Experiencia</button>
+    <button class="tray-tab" onclick="switchTab('formacion')">Formación</button>
+    <button class="tray-tab" onclick="switchTab('certificacion')">Certificaciones</button>
+    <button class="tray-tab" onclick="switchTab('redes')">Redes</button>
+</div>
+
+<div class="tray-body">
+
+    {{-- Alerta de error de red --}}
+    <div class="tray-alert" id="trayAlert">
+        <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;flex-shrink:0"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Tuvimos un fallo momentáneo, vuelve a presionar.
+        <button onclick="retryTray()">Reintentar</button>
     </div>
 
-    <div class="body-row">
-        <aside>
-            <div class="sb-top">
-                <a href="{{ route('menu') }}" class="sb-item">
-                    <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-                    <span>Menú principal</span>
-                </a>
-                <div class="sb-div"></div>
-                <a href="{{ route('portafolios.index') }}" class="sb-item">
-                    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
-                    <span>Portafolios</span>
-                </a>
-                <a href="{{ route('academico') }}" class="sb-item">
-                    <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                    <span>Académico</span>
-                </a>
-                <a href="{{ route('reportes') }}" class="sb-item">
-                    <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                    <span>Reportes</span>
-                </a>
-                <a href="{{ route('perfil') }}" class="sb-item active">
-                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    <span>Mi Perfil</span>
-                </a>
+    {{-- Tab: Habilidades --}}
+    <div class="tray-pane active" id="pane-habilidades">
+        <div class="tray-form" id="formHab">
+            <div class="tray-form-title" id="titleHab">Agregar habilidad</div>
+            <div class="tray-fg ac-wrap">
+                <label>Nombre <span class="req">*</span></label>
+                <input type="text" id="habNombre" placeholder="Ej: JavaScript, Python, Diseño UX..." autocomplete="off"
+                       oninput="acFilter(this.value);charCheck(this,'errHabNombre')" onblur="setTimeout(()=>closeAc(),200)">
+                <div class="ac-drop" id="acDrop"></div>
+                <span class="tray-err" id="errHabNombre">El nombre es obligatorio.</span>
+                <span class="tray-err" id="errHabDup">Ya tienes registrada esta habilidad.</span>
             </div>
-
-            <div class="sb-user">
-                <div class="sb-av" id="sidebarAv">
-                    @if($usuario->foto_perfil)
-                        <img src="{{ asset('storage/' . $usuario->foto_perfil) }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%"
-                             onerror="this.parentElement.innerHTML='{{ strtoupper(substr($usuario->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr($usuario->apellido ?? '', 0, 1)) }}'">
-                    @else
-                        {{ strtoupper(substr($usuario->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr($usuario->apellido ?? '', 0, 1)) }}
-                    @endif
+            <div class="tray-row">
+                <div class="tray-fg">
+                    <label>Nivel de dominio <span class="req">*</span></label>
+                    <div class="stars" id="starsWrap">
+                        <span class="star" data-v="1" onclick="setStar(1)">★</span>
+                        <span class="star" data-v="2" onclick="setStar(2)">★</span>
+                        <span class="star" data-v="3" onclick="setStar(3)">★</span>
+                        <span class="star" data-v="4" onclick="setStar(4)">★</span>
+                        <span class="star" data-v="5" onclick="setStar(5)">★</span>
+                    </div>
+                    <span style="font-size:11px;color:var(--muted);margin-top:3px" id="nivelLabel">1-2 ★ Principiante · 3 ★ Intermedio · 4-5 ★ Avanzado</span>
+                    <span class="tray-err" id="errHabNivel">Selecciona un nivel.</span>
                 </div>
-                <div>
-                    <div class="sb-uname">{{ $usuario->nombre }} {{ $usuario->apellido }}</div>
-                    <div class="sb-uid">#{{ $usuario->id }}</div>
+                <div class="tray-fg">
+                    <label>Tipo <span class="req">*</span></label>
+                    <div class="tipo-toggle">
+                        <button type="button" class="tipo-btn active-fuerte" id="btnTipoFuerte" onclick="setTipo('fuerte')">💪 Fuerte</button>
+                        <button type="button" class="tipo-btn" id="btnTipoBlanda" onclick="setTipo('blanda')">🤝 Blanda</button>
+                    </div>
+                    <span style="font-size:11px;color:var(--muted);margin-top:4px">Ej: fuerte → programación · blanda → comunicación</span>
+                    <span class="tray-err" id="errHabTipo">Selecciona un tipo.</span>
                 </div>
             </div>
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="btn-logout">
-                    <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                    <span>Cerrar Sesión</span>
+            <div class="tray-form-actions">
+                <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addHabilidad()">
+                    <div class="spinner"></div>
+                    <span class="btn-label">Agregar</span>
                 </button>
-            </form>
-        </aside>
-
-        <main>
-            <div class="main-inner">
-                <div class="content-bar">
-                    <div class="content-title">
-                        <h1>Mi Perfil</h1>
-                        <p>Gestiona tu información personal y biografía profesional.</p>
-                    </div>
-                    <button type="button" class="mode-toggle" id="btnPreview" onclick="togglePreview()">
-                        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        Vista Previa
-                    </button>
-                </div>
-
-                {{-- Mensaje de éxito --}}
-                @if(session('success'))
-                <div class="alert alert-success">
-                    <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-                    {{ session('success') }}
-                </div>
-                @endif
-
-                {{-- Errores de validación --}}
-                @if($errors->any())
-                <div class="alert alert-error">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    {{ $errors->first() }}
-                </div>
-                @endif
-
-                {{-- Alerta de reintento --}}
-                <div class="alert alert-retry" id="alertRetry" style="display:none">
-                    <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-                    Error de conexión. Tus datos no se perdieron.
-                    <button onclick="retrySubmit()" style="margin-left:auto;background:none;border:none;font-weight:700;color:#92400e;cursor:pointer;font-family:inherit">Reintentar</button>
-                </div>
-
-                {{-- Vista previa --}}
-                <div class="preview-card" id="previewCard">
-                    <div class="preview-lbl">
-                        <svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2;display:inline;margin-right:4px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        Así verán tu perfil terceros
-                    </div>
-                    <div class="preview-av" id="prevAv">
-                        @if($usuario->foto_perfil)
-                            <img src="{{ asset('storage/' . $usuario->foto_perfil) }}" alt="foto">
-                        @else
-                            {{ strtoupper(substr($usuario->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr($usuario->apellido ?? '', 0, 1)) }}
-                        @endif
-                    </div>
-                    <div class="preview-name" id="prevName">{{ $usuario->nombre }} {{ $usuario->apellido }}</div>
-                    <div class="preview-prof" id="prevProf">{{ $usuario->profesion ?? 'Sin profesión' }}</div>
-                    <div class="preview-bio" id="prevBio">{{ $usuario->biografia ?? 'Sin biografía.' }}</div>
-                </div>
-
-                {{-- Formulario principal --}}
-                <form id="perfilForm" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="_method" value="POST">
-
-                    <div class="profile-grid">
-                        {{-- Foto de perfil --}}
-                        <div>
-                            <div class="photo-card">
-                                <div class="photo-wrap" onclick="document.getElementById('inputFoto').click()">
-                                    <div class="photo-initials" id="photoInitials" style="{{ $usuario->foto_perfil ? 'display:none' : 'display:flex' }}">
-                                        {{ strtoupper(substr($usuario->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr($usuario->apellido ?? '', 0, 1)) }}
-                                    </div>
-                                    @if($usuario->foto_perfil)
-                                    <img id="photoPreview" class="photo-avatar" src="{{ asset('storage/' . $usuario->foto_perfil) }}" alt=""
-                                         onerror="this.style.display='none';document.getElementById('photoInitials').style.display='flex'">
-                                    @endif
-                                    <div class="photo-overlay">
-                                        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                                    </div>
-                                </div>
-                                <input type="file" id="inputFoto" name="foto_perfil" accept=".jpg,.jpeg,.png" style="display:none" onchange="handlePhoto(this)">
-                                <p class="photo-hint">JPG o PNG · Máx 2 MB<br>Click en la foto para cambiar</p>
-                                <p class="photo-error" id="photoError"></p>
-                            </div>
-                        </div>
-
-                        {{-- Información personal + biografía --}}
-                        <div>
-                            <div class="form-card" style="margin-bottom:1.2rem">
-                                <div class="card-title">Información Personal</div>
-
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label>Nombre <span class="req">*</span></label>
-                                        <input type="text" name="nombre" id="fNombre" class="field" value="{{ old('nombre', $usuario->nombre) }}" placeholder="Tu nombre" maxlength="100" oninput="charCheck(this,'errNombre')">
-                                        <span class="field-err" id="errNombre">El nombre es obligatorio.</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Apellido <span class="req">*</span></label>
-                                        <input type="text" name="apellido" id="fApellido" class="field" value="{{ old('apellido', $usuario->apellido) }}" placeholder="Tu apellido" maxlength="100" oninput="charCheck(this,'errApellido')">
-                                        <span class="field-err" id="errApellido">El apellido es obligatorio.</span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Profesión <span class="req">*</span></label>
-                                    <input type="text" name="profesion" id="fProfesion" class="field" value="{{ old('profesion', $usuario->profesion) }}" placeholder="Ej: Ingeniero de Software" maxlength="150" oninput="charCheck(this,'errProfesion')">
-                                    <span class="field-err" id="errProfesion">La profesión es obligatoria.</span>
-                                </div>
-                            </div>
-
-                            <div class="form-card">
-                                <div class="card-title">Biografía Profesional</div>
-
-                                <div class="form-group">
-                                    <label>Biografía</label>
-                                    <textarea name="biografia" id="fBiografia" class="field" placeholder="Cuéntanos sobre ti, tu experiencia y objetivos profesionales..." maxlength="1100" oninput="updateCounter();charCheck(this,'errBiografia')">{{ old('biografia', $usuario->biografia) }}</textarea>
-                                    <div class="bio-footer">
-                                        <span class="field-err" id="errBiografia" style="margin-top:0"></span>
-                                        <span class="bio-counter" id="bioCounter">0 / 1000</span>
-                                    </div>
-                                </div>
-
-                                <div class="form-actions">
-                                    <button type="button" class="btn-save" id="btnSave" onclick="abrirModalGuardar()">
-                                        <div class="spinner"></div>
-                                        <span class="btn-label">Guardar</span>
-                                    </button>
-                                    <button type="button" class="btn-cancel" onclick="cancelarEdicion()">Cancelar</button>
-                                </div>
-                            </div>
-
-                            {{-- Botones extra --}}
-                            <div class="extra-actions">
-                                <button type="button" class="btn-tray" onclick="abrirTrayectoria()">
-                                    <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                                    Mi Trayectoria
-                                </button>
-                                <button type="button" class="btn-deactivate" onclick="abrirModalDesactivar()">
-                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
-                                    Desactivar cuenta
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </main>
-
-        {{-- Modal: Confirmar guardar --}}
-        <div class="modal-overlay" id="modalGuardar">
-            <div class="modal">
-                <div class="modal-ico blue">
-                    <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                </div>
-                <h3>¿Guardar cambios?</h3>
-                <p>Se actualizará tu información personal, profesión y biografía en el sistema.</p>
-                <div class="modal-actions">
-                    <button class="btn-cancel" onclick="cerrarModal('modalGuardar')">Cancelar</button>
-                    <button class="btn-save" onclick="cerrarModal('modalGuardar');submitPerfil()">
-                        <div class="spinner"></div>
-                        <span class="btn-label">Sí, guardar</span>
-                    </button>
-                </div>
+                <button type="button" class="btn-cancel-edit" id="cancelEditHab" onclick="cancelEditHabilidad()">
+                    <svg viewBox="0 0 24 24" style="width:12px;height:12px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    Cancelar edición
+                </button>
             </div>
         </div>
+        <div class="item-list" id="listHabilidades">
+            <div class="empty-state">Cargando...</div>
+        </div>
+    </div>
 
-        {{-- Modal: Confirmar desactivar cuenta --}}
-        <div class="modal-overlay" id="modalDesactivar">
-            <div class="modal">
-                <div class="modal-ico red">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+    {{-- Tab: Experiencia --}}
+    <div class="tray-pane" id="pane-experiencia">
+        <div class="tray-form" id="formExp">
+            <div class="tray-form-title" id="titleExp">Agregar experiencia laboral</div>
+            <div class="tray-row">
+                <div class="tray-fg">
+                    <label>Empresa <span class="req">*</span></label>
+                    <input type="text" id="expEmpresa" placeholder="Nombre de la empresa" maxlength="150" oninput="charCheck(this,'errExpEmpresa')">
+                    <span class="tray-err" id="errExpEmpresa">La empresa es obligatoria.</span>
                 </div>
-                <h3>¿Desactivar tu cuenta?</h3>
-                <p>Tu cuenta quedará inactiva. No podrás iniciar sesión hasta que un administrador la reactive. Esta acción no elimina tus datos.</p>
-                <div class="modal-actions">
-                    <button class="btn-cancel" onclick="cerrarModal('modalDesactivar')">Cancelar</button>
-                    <button class="btn-danger" onclick="desactivarCuenta()">Sí, desactivar</button>
+                <div class="tray-fg">
+                    <label>Cargo <span class="req">*</span></label>
+                    <input type="text" id="expCargo" placeholder="Tu cargo o rol" maxlength="150" oninput="charCheck(this,'errExpCargo')">
+                    <span class="tray-err" id="errExpCargo">El cargo es obligatorio.</span>
                 </div>
             </div>
+            <div class="tray-row">
+                <div class="tray-fg">
+                    <label>Fecha inicio <span class="req">*</span></label>
+                    <input type="date" id="expInicio" onchange="checkFechaCoherencia()">
+                    <span class="tray-err" id="errExpInicio">La fecha de inicio es obligatoria.</span>
+                </div>
+                <div class="tray-fg" id="fgExpFin">
+                    <label>Fecha fin</label>
+                    <input type="date" id="expFin" onchange="checkFechaCoherencia()">
+                    <span class="tray-err" id="errExpFin">La fecha fin no puede ser anterior al inicio.</span>
+                </div>
+            </div>
+            <div class="tray-fg">
+                <label class="tray-check">
+                    <input type="checkbox" id="expActual" onchange="toggleActual()">
+                    Actualmente trabajo aquí
+                </label>
+            </div>
+            <div class="tray-fg">
+                <label>Descripción</label>
+                <textarea id="expDesc" placeholder="Describe tus actividades y logros..." maxlength="2000" oninput="charCheck(this,'errExpDesc')"></textarea>
+                <span class="tray-err" id="errExpDesc"></span>
+            </div>
+            <div class="tray-form-actions">
+                <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addExperiencia()">
+                    <div class="spinner"></div>
+                    <span class="btn-label">Agregar</span>
+                </button>
+                <button type="button" class="btn-cancel-edit" id="cancelEditExp" onclick="cancelEditExperiencia()">
+                    <svg viewBox="0 0 24 24" style="width:12px;height:12px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    Cancelar edición
+                </button>
+            </div>
         </div>
+        <div class="item-list" id="listExperiencias">
+            <div class="empty-state">Cargando...</div>
+        </div>
+    </div>
 
-        {{-- Modal: Mi Trayectoria --}}
-        <div class="modal-overlay" id="modalTrayectoria" style="align-items:flex-start;padding:3vh 1rem">
-            <div class="tray-modal">
-                <div class="tray-modal-head">
-                    <h2>Mi Trayectoria</h2>
-                    <button class="tray-close" onclick="cerrarModal('modalTrayectoria')">
-                        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                    </button>
-                </div>
-
-                <div class="tray-tabs">
-                    <button class="tray-tab active" onclick="switchTab('habilidades')">Habilidades</button>
-                    <button class="tray-tab" onclick="switchTab('experiencia')">Experiencia</button>
-                    <button class="tray-tab" onclick="switchTab('formacion')">Formación</button>
-                    <button class="tray-tab" onclick="switchTab('certificacion')">Certificaciones</button>
-                    <button class="tray-tab" onclick="switchTab('redes')">Redes</button>
-                </div>
-
-                <div class="tray-body">
-
-                    {{-- Alerta de error de red --}}
-                    <div class="tray-alert" id="trayAlert">
-                        <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;flex-shrink:0"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-                        Tuvimos un fallo momentáneo, vuelve a presionar.
-                        <button onclick="retryTray()">Reintentar</button>
-                    </div>
-
-                    {{-- Tab: Habilidades --}}
-                    <div class="tray-pane active" id="pane-habilidades">
-                        <div class="tray-form" id="formHab">
-                            <div class="tray-form-title" id="titleHab">Agregar habilidad</div>
-                            <div class="tray-fg ac-wrap">
-                                <label>Nombre <span class="req">*</span></label>
-                                <input type="text" id="habNombre" placeholder="Ej: JavaScript, Python, Diseño UX..." autocomplete="off"
-                                       oninput="acFilter(this.value);charCheck(this,'errHabNombre')" onblur="setTimeout(()=>closeAc(),200)">
-                                <div class="ac-drop" id="acDrop"></div>
-                                <span class="tray-err" id="errHabNombre">El nombre es obligatorio.</span>
-                                <span class="tray-err" id="errHabDup">Ya tienes registrada esta habilidad.</span>
-                            </div>
-                            <div class="tray-row">
-                                <div class="tray-fg">
-                                    <label>Nivel de dominio <span class="req">*</span></label>
-                                    <div class="stars" id="starsWrap">
-                                        <span class="star" data-v="1" onclick="setStar(1)">★</span>
-                                        <span class="star" data-v="2" onclick="setStar(2)">★</span>
-                                        <span class="star" data-v="3" onclick="setStar(3)">★</span>
-                                        <span class="star" data-v="4" onclick="setStar(4)">★</span>
-                                        <span class="star" data-v="5" onclick="setStar(5)">★</span>
-                                    </div>
-                                    <span style="font-size:11px;color:var(--muted);margin-top:3px" id="nivelLabel">1-2 ★ Principiante · 3 ★ Intermedio · 4-5 ★ Avanzado</span>
-                                    <span class="tray-err" id="errHabNivel">Selecciona un nivel.</span>
-                                </div>
-                                <div class="tray-fg">
-                                    <label>Tipo <span class="req">*</span></label>
-                                    <div class="tipo-toggle">
-                                        <button type="button" class="tipo-btn active-fuerte" id="btnTipoFuerte" onclick="setTipo('fuerte')">💪 Fuerte</button>
-                                        <button type="button" class="tipo-btn" id="btnTipoBlanda" onclick="setTipo('blanda')">🤝 Blanda</button>
-                                    </div>
-                                    <span style="font-size:11px;color:var(--muted);margin-top:4px">Ej: fuerte → programación · blanda → comunicación</span>
-                                    <span class="tray-err" id="errHabTipo">Selecciona un tipo.</span>
-                                </div>
-                            </div>
-                            <div class="tray-form-actions">
-                                <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addHabilidad()">
-                                    <div class="spinner"></div>
-                                    <span class="btn-label">Agregar</span>
-                                </button>
-                                <button type="button" class="btn-cancel-edit" id="cancelEditHab" onclick="cancelEditHabilidad()">
-                                    <svg viewBox="0 0 24 24" style="width:12px;height:12px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                    Cancelar edición
-                                </button>
-                            </div>
-                        </div>
-                        <div class="item-list" id="listHabilidades">
-                            <div class="empty-state">Cargando...</div>
-                        </div>
-                    </div>
-
-                    {{-- Tab: Experiencia --}}
-                    <div class="tray-pane" id="pane-experiencia">
-                        <div class="tray-form" id="formExp">
-                            <div class="tray-form-title" id="titleExp">Agregar experiencia laboral</div>
-                            <div class="tray-row">
-                                <div class="tray-fg">
-                                    <label>Empresa <span class="req">*</span></label>
-                                    <input type="text" id="expEmpresa" placeholder="Nombre de la empresa" maxlength="150" oninput="charCheck(this,'errExpEmpresa')">
-                                    <span class="tray-err" id="errExpEmpresa">La empresa es obligatoria.</span>
-                                </div>
-                                <div class="tray-fg">
-                                    <label>Cargo <span class="req">*</span></label>
-                                    <input type="text" id="expCargo" placeholder="Tu cargo o rol" maxlength="150" oninput="charCheck(this,'errExpCargo')">
-                                    <span class="tray-err" id="errExpCargo">El cargo es obligatorio.</span>
-                                </div>
-                            </div>
-                            <div class="tray-row">
-                                <div class="tray-fg">
-                                    <label>Fecha inicio <span class="req">*</span></label>
-                                    <input type="date" id="expInicio" onchange="checkFechaCoherencia()">
-                                    <span class="tray-err" id="errExpInicio">La fecha de inicio es obligatoria.</span>
-                                </div>
-                                <div class="tray-fg" id="fgExpFin">
-                                    <label>Fecha fin</label>
-                                    <input type="date" id="expFin" onchange="checkFechaCoherencia()">
-                                    <span class="tray-err" id="errExpFin">La fecha fin no puede ser anterior al inicio.</span>
-                                </div>
-                            </div>
-                            <div class="tray-fg">
-                                <label class="tray-check">
-                                    <input type="checkbox" id="expActual" onchange="toggleActual()">
-                                    Actualmente trabajo aquí
-                                </label>
-                            </div>
-                            <div class="tray-fg">
-                                <label>Descripción</label>
-                                <textarea id="expDesc" placeholder="Describe tus actividades y logros..." maxlength="2000" oninput="charCheck(this,'errExpDesc')"></textarea>
-                                <span class="tray-err" id="errExpDesc"></span>
-                            </div>
-                            <div class="tray-form-actions">
-                                <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addExperiencia()">
-                                    <div class="spinner"></div>
-                                    <span class="btn-label">Agregar</span>
-                                </button>
-                                <button type="button" class="btn-cancel-edit" id="cancelEditExp" onclick="cancelEditExperiencia()">
-                                    <svg viewBox="0 0 24 24" style="width:12px;height:12px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                    Cancelar edición
-                                </button>
-                            </div>
-                        </div>
-                        <div class="item-list" id="listExperiencias">
-                            <div class="empty-state">Cargando...</div>
-                        </div>
-                    </div>
-
-                    {{-- Tab: Formación --}}
-                    <div class="tray-pane" id="pane-formacion">
-                        <div class="tray-form" id="formFor">
-                            <div class="tray-form-title" id="titleFor">Agregar formación académica</div>
-                            <div class="tray-fg">
-                                <label>Institución <span class="req">*</span></label>
-                                <input type="text" id="forInstitucion" placeholder="Universidad / Instituto / Colegio..." maxlength="200" oninput="charCheck(this,'errForInstitucion')">
-                                <span class="tray-err" id="errForInstitucion">La institución es obligatoria.</span>
-                            </div>
-                            <div class="tray-fg">
-    <label>Nivel de grado <span class="req">*</span></label>
-    <select id="forNivel" onchange="updateForTitulo()">
-        <option value="">Selecciona un nivel...</option>
-        <option value="Primaria / Secundaria">Primaria / Secundaria</option>
-        <option value="Técnico / Técnico Superior">Técnico / Técnico Superior</option>
-        <option value="Pregrado">Pregrado (Licenciatura, Ingeniería)</option>
-        <option value="Postgrado">Postgrado (Especialización, Maestría, Doctorado)</option>
-        <option value="Curso / Diplomado">Curso / Diplomado</option>
-    </select>
-    <span class="tray-err" id="errForNivel">El nivel es obligatorio.</span>
+    {{-- Tab: Formación --}}
+    <div class="tray-pane" id="pane-formacion">
+        <div class="tray-form" id="formFor">
+            <div class="tray-form-title" id="titleFor">Agregar formación académica</div>
+            <div class="tray-fg">
+                <label>Institución <span class="req">*</span></label>
+                <input type="text" id="forInstitucion" placeholder="Universidad / Instituto / Colegio..." maxlength="200" oninput="charCheck(this,'errForInstitucion')">
+                <span class="tray-err" id="errForInstitucion">La institución es obligatoria.</span>
+            </div>
+            <div class="tray-fg">
+<label>Nivel de grado <span class="req">*</span></label>
+<select id="forNivel" onchange="updateForTitulo()">
+<option value="">Selecciona un nivel...</option>
+<option value="Primaria / Secundaria">Primaria / Secundaria</option>
+<option value="Técnico / Técnico Superior">Técnico / Técnico Superior</option>
+<option value="Pregrado">Pregrado (Licenciatura, Ingeniería)</option>
+<option value="Postgrado">Postgrado (Especialización, Maestría, Doctorado)</option>
+<option value="Curso / Diplomado">Curso / Diplomado</option>
+</select>
+<span class="tray-err" id="errForNivel">El nivel es obligatorio.</span>
 </div>
 <div class="tray-fg" id="fgForTitulo" style="display:none">
-    <label>Título / Especialidad</label>
-    <input type="text" id="forTitulo" placeholder="" maxlength="200" oninput="charCheck(this,'errForTitulo')">
-    <span class="hint" id="forTituloHint" style="font-size:11px;color:var(--muted);margin-top:2px"></span>
-    <span class="tray-err" id="errForTitulo"></span>
+<label>Título / Especialidad</label>
+<input type="text" id="forTitulo" placeholder="" maxlength="200" oninput="charCheck(this,'errForTitulo')">
+<span class="hint" id="forTituloHint" style="font-size:11px;color:var(--muted);margin-top:2px"></span>
+<span class="tray-err" id="errForTitulo"></span>
 </div>
-                            <div class="tray-row">
-                                <div class="tray-fg">
-                                    <label>Fecha inicio <span class="req">*</span></label>
-                                    <input type="date" id="forInicio" onchange="checkFormFecha()">
-                                    <span class="tray-err" id="errForInicio">La fecha de inicio es obligatoria.</span>
-                                </div>
-                                <div class="tray-fg">
-                                    <label>Fecha fin</label>
-                                    <input type="date" id="forFin" onchange="checkFormFecha()">
-                                    <span class="tray-err" id="errForFin">La fecha fin no puede ser anterior al inicio.</span>
-                                </div>
-                            </div>
-                            <div class="tray-form-actions">
-                                <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addFormacion()">
-                                    <div class="spinner"></div>
-                                    <span class="btn-label">Agregar</span>
-                                </button>
-                                <button type="button" class="btn-cancel-edit" id="cancelEditFor" onclick="cancelEditFormacion()">
-                                    <svg viewBox="0 0 24 24" style="width:12px;height:12px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                    Cancelar edición
-                                </button>
-                            </div>
-                        </div>
-                        <div class="item-list" id="listFormaciones">
-                            <div class="empty-state">Cargando...</div>
-                        </div>
-                    </div>
-
-                    {{-- Tab: Certificaciones --}}
-                    <div class="tray-pane" id="pane-certificacion">
-                        <div class="tray-form" id="formCert">
-                            <div class="tray-form-title" id="titleCert">Agregar certificación</div>
-                            <div class="tray-fg">
-                                <label>Nombre del certificado <span class="req">*</span></label>
-                                <input type="text" id="certNombre" placeholder="Ej: AWS Certified Developer, Scrum Master..." maxlength="200" oninput="charCheck(this,'errCertNombre')">
-                                <span class="tray-err" id="errCertNombre">El nombre es obligatorio.</span>
-                            </div>
-                            <div class="tray-row">
-                                <div class="tray-fg">
-                                    <label>Organización emisora</label>
-                                    <input type="text" id="certOrg" placeholder="Ej: Amazon, Coursera, UMSS..." maxlength="200" oninput="charCheck(this,'errCertOrg')">
-                                    <span class="tray-err" id="errCertOrg"></span>
-                                </div>
-                                <div class="tray-fg">
-                                    <label>Fecha de obtención</label>
-                                    <input type="date" id="certFecha">
-                                </div>
-                            </div>
-                            <div class="tray-fg">
-                                <label>Descripción</label>
-                                <textarea id="certDesc" placeholder="Describe brevemente el certificado, habilidades validadas, etc." maxlength="1000" oninput="charCheck(this,'errCertDesc')"></textarea>
-                                <span class="tray-err" id="errCertDesc"></span>
-                            </div>
-                            <div class="tray-form-actions">
-                                <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addCertificacion()">
-                                    <div class="spinner"></div>
-                                    <span class="btn-label">Agregar</span>
-                                </button>
-                                <button type="button" class="btn-cancel-edit" id="cancelEditCert" onclick="cancelEditCertificacion()">
-                                    <svg viewBox="0 0 24 24" style="width:12px;height:12px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                    Cancelar edición
-                                </button>
-                            </div>
-                        </div>
-                        <div class="item-list" id="listCertificaciones">
-                            <div class="empty-state">Cargando...</div>
-                        </div>
-                    </div>
-
-                </div>{{-- end tray-body --}}
-                 {{-- Tab: Redes --}}
-                 @include('perfil._tab_redes')
+            <div class="tray-row">
+                <div class="tray-fg">
+                    <label>Fecha inicio <span class="req">*</span></label>
+                    <input type="date" id="forInicio" onchange="checkFormFecha()">
+                    <span class="tray-err" id="errForInicio">La fecha de inicio es obligatoria.</span>
+                </div>
+                <div class="tray-fg">
+                    <label>Fecha fin</label>
+                    <input type="date" id="forFin" onchange="checkFormFecha()">
+                    <span class="tray-err" id="errForFin">La fecha fin no puede ser anterior al inicio.</span>
+                </div>
+            </div>
+            <div class="tray-form-actions">
+                <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addFormacion()">
+                    <div class="spinner"></div>
+                    <span class="btn-label">Agregar</span>
+                </button>
+                <button type="button" class="btn-cancel-edit" id="cancelEditFor" onclick="cancelEditFormacion()">
+                    <svg viewBox="0 0 24 24" style="width:12px;height:12px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    Cancelar edición
+                </button>
             </div>
         </div>
-
-        {{-- Mini-modal confirmación borrar --}}
-        <div class="del-overlay" id="delOverlay">
-            <div class="modal" style="max-width:360px">
-                <div class="modal-ico red">
-                    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-                </div>
-                <h3>¿Eliminar este registro?</h3>
-                <p>Esta acción no se puede deshacer.</p>
-                <div class="modal-actions">
-                    <button class="btn-cancel" onclick="cerrarDelOverlay()">Cancelar</button>
-                    <button class="btn-danger" id="btnConfirmDel" onclick="confirmarDel()">Sí, eliminar</button>
-                </div>
-            </div>
-        </div>
-
-        {{-- Mini-modal confirmación agregar / editar --}}
-        <div class="del-overlay" id="confirmOverlay">
-            <div class="modal" style="max-width:380px">
-                <div class="modal-ico blue">
-                    <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                </div>
-                <h3 id="confirmTitle">¿Confirmar acción?</h3>
-                <p id="confirmMsg"></p>
-                <div class="modal-actions">
-                    <button class="btn-cancel" onclick="cerrarConfirmOverlay()">Cancelar</button>
-                    <button class="btn-save" onclick="ejecutarConfirm()">
-                        <div class="spinner"></div>
-                        <span class="btn-label" id="confirmBtnLabel">Confirmar</span>
-                    </button>
-                </div>
-            </div>
+        <div class="item-list" id="listFormaciones">
+            <div class="empty-state">Cargando...</div>
         </div>
     </div>
 
-    <footer>
-        <div class="footer-content">
-            <img src="{{ asset('images/InfinityCode.jpeg') }}" alt="Logo Footer" class="footer-logo">
-            <p><b>Infinity Code</b> © 2026 Infinity Code. Todos los derechos reservados.</p>
+    {{-- Tab: Certificaciones --}}
+    <div class="tray-pane" id="pane-certificacion">
+        <div class="tray-form" id="formCert">
+            <div class="tray-form-title" id="titleCert">Agregar certificación</div>
+            <div class="tray-fg">
+                <label>Nombre del certificado <span class="req">*</span></label>
+                <input type="text" id="certNombre" placeholder="Ej: AWS Certified Developer, Scrum Master..." maxlength="200" oninput="charCheck(this,'errCertNombre')">
+                <span class="tray-err" id="errCertNombre">El nombre es obligatorio.</span>
+            </div>
+            <div class="tray-row">
+                <div class="tray-fg">
+                    <label>Organización emisora</label>
+                    <input type="text" id="certOrg" placeholder="Ej: Amazon, Coursera, UMSS..." maxlength="200" oninput="charCheck(this,'errCertOrg')">
+                    <span class="tray-err" id="errCertOrg"></span>
+                </div>
+                <div class="tray-fg">
+                    <label>Fecha de obtención</label>
+                    <input type="date" id="certFecha">
+                </div>
+            </div>
+            <div class="tray-fg">
+                <label>Descripción</label>
+                <textarea id="certDesc" placeholder="Describe brevemente el certificado, habilidades validadas, etc." maxlength="1000" oninput="charCheck(this,'errCertDesc')"></textarea>
+                <span class="tray-err" id="errCertDesc"></span>
+            </div>
+            <div class="tray-form-actions">
+                <button type="button" class="btn-save" style="padding:8px 18px;font-size:13px" onclick="addCertificacion()">
+                    <div class="spinner"></div>
+                    <span class="btn-label">Agregar</span>
+                </button>
+                <button type="button" class="btn-cancel-edit" id="cancelEditCert" onclick="cancelEditCertificacion()">
+                    <svg viewBox="0 0 24 24" style="width:12px;height:12px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    Cancelar edición
+                </button>
+            </div>
         </div>
-    </footer>
+        <div class="item-list" id="listCertificaciones">
+            <div class="empty-state">Cargando...</div>
+        </div>
+    </div>
+
+</div>{{-- end tray-body --}}
+ {{-- Tab: Redes --}}
+ @include('perfil._tab_redes')
+</div>
 </div>
 
+{{-- Mini-modal confirmación borrar --}}
+<div class="del-overlay" id="delOverlay">
+<div class="modal" style="max-width:360px">
+<div class="modal-ico red">
+    <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+</div>
+<h3>¿Eliminar este registro?</h3>
+<p>Esta acción no se puede deshacer.</p>
+<div class="modal-actions">
+    <button class="btn-cancel" onclick="cerrarDelOverlay()">Cancelar</button>
+    <button class="btn-danger" id="btnConfirmDel" onclick="confirmarDel()">Sí, eliminar</button>
+</div>
+</div>
+</div>
+
+{{-- Mini-modal confirmación agregar / editar --}}
+<div class="del-overlay" id="confirmOverlay">
+<div class="modal" style="max-width:380px">
+<div class="modal-ico blue">
+    <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+</div>
+<h3 id="confirmTitle">¿Confirmar acción?</h3>
+<p id="confirmMsg"></p>
+<div class="modal-actions">
+    <button class="btn-cancel" onclick="cerrarConfirmOverlay()">Cancelar</button>
+    <button class="btn-save" onclick="ejecutarConfirm()">
+        <div class="spinner"></div>
+        <span class="btn-label" id="confirmBtnLabel">Confirmar</span>
+    </button>
+</div>
+</div>
+</div>
+
+
 <script>
-    // Valores originales para cancelar
+    // Valores originales para comparar y cancelar
     const original = {
-        nombre:    '{{ addslashes($usuario->nombre ?? '') }}',
-        apellido:  '{{ addslashes($usuario->apellido ?? '') }}',
-        profesion: '{{ addslashes($usuario->profesion ?? '') }}',
-        biografia: `{{ addslashes($usuario->biografia ?? '') }}`,
+        nombre:    '{{ addslashes(auth()->user()->nombre ?? '') }}',
+        apellido:  '{{ addslashes(auth()->user()->apellido ?? '') }}',
+        profesion: '{{ addslashes(auth()->user()->profesion ?? '') }}',
+        biografia: `{{ addslashes(auth()->user()->biografia ?? '') }}`,
     };
 
     let pendingFormData = null;
+
+    // ===================== PARCHE 1: Botón Cancelar inteligente =====================
+
+    function hasChanges() {
+        return document.getElementById('fNombre').value    !== original.nombre    ||
+               document.getElementById('fApellido').value  !== original.apellido  ||
+               document.getElementById('fProfesion').value !== original.profesion ||
+               document.getElementById('fBiografia').value !== original.biografia ||
+               document.getElementById('inputFoto').files.length > 0;
+    }
+
+    function syncCancelBtn() {
+        document.getElementById('btnCancel').disabled = !hasChanges();
+    }
+
+    // Escuchar el input de foto también
+    document.getElementById('inputFoto').addEventListener('change', syncCancelBtn);
+
+    // ===================== FIN PARCHE 1 =====================
 
     // --- Contador de biografía ---
     function updateCounter() {
@@ -852,7 +760,6 @@
     function handlePhoto(input) {
         const file     = input.files[0];
         const errEl    = document.getElementById('photoError');
-        const preview  = document.getElementById('photoPreview');
         const initials = document.getElementById('photoInitials');
 
         errEl.style.display = 'none';
@@ -877,13 +784,12 @@
             return;
         }
 
-        // Previsualizar
+        // Previsualizar (solo temporal, la URL real llega tras guardar)
         const reader = new FileReader();
         reader.onload = e => {
             const src  = e.target.result;
             const wrap = document.querySelector('.photo-wrap');
 
-            // Foto en el card
             let img = document.getElementById('photoPreview');
             if (!img) {
                 img = document.createElement('img');
@@ -949,7 +855,8 @@
         return valid;
     }
 
-    // --- Envío con fetch (permite reintento) ---
+    // ===================== PARCHE 2: fetch con respuesta JSON y foto persistente =====================
+
     function submitPerfil() {
         if (!validateForm()) return;
 
@@ -967,15 +874,93 @@
     function sendRequest(formData, btn) {
         fetch('{{ route("perfil.update") }}', {
             method: 'POST',
-            headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'X-Requested-With': 'XMLHttpRequest',  // esto hace que $request->ajax() sea true
+                // NO pongas 'Content-Type' aquí: FormData lo establece solo con el boundary correcto
+            },
             body: formData,
         })
         .then(res => {
+            // Si el servidor devuelve 422 (validación), leer el JSON de error
+            if (res.status === 422) {
+                return res.json().then(errData => {
+                    btn.classList.remove('loading');
+                    btn.disabled = false;
+                    // Mostrar el primer error de validación del servidor
+                    const msgs = errData.errors ? Object.values(errData.errors).flat() : [];
+                    const msg  = msgs.length ? msgs[0] : 'Error de validación.';
+                    let alertEl = document.getElementById('perfilAlertError');
+                    if (!alertEl) {
+                        alertEl = document.createElement('div');
+                        alertEl.id = 'perfilAlertError';
+                        alertEl.className = 'alert alert-error';
+                        alertEl.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> <span id="perfilAlertErrorMsg"></span>';
+                        document.getElementById('perfilForm').before(alertEl);
+                    }
+                    document.getElementById('perfilAlertErrorMsg').textContent = msg;
+                    alertEl.style.display = 'flex';
+                    setTimeout(() => { alertEl.style.display = 'none'; }, 5000);
+                });
+            }
+
             if (!res.ok) throw new Error('Server error ' + res.status);
-            return res.text();
+            return res.json();
         })
-        .then(() => {
-            window.location.href = '{{ route("perfil") }}?updated=1';
+        .then(data => {
+            if (!data) return; // ya manejado arriba (422)
+            btn.classList.remove('loading');
+            btn.disabled = false;
+
+            // Actualizar foto con la URL real que devuelve el servidor
+            if (data.foto_url) {
+                const initials = document.getElementById('photoInitials');
+                const wrap     = document.querySelector('.photo-wrap');
+                let img        = document.getElementById('photoPreview');
+                if (!img) {
+                    img = document.createElement('img');
+                    img.id        = 'photoPreview';
+                    img.className = 'photo-avatar';
+                    img.alt       = '';
+                    wrap.insertBefore(img, wrap.firstChild);
+                }
+                // Añadir timestamp para evitar caché del navegador
+                img.src              = data.foto_url + '?t=' + Date.now();
+                img.dataset.original = data.foto_url;
+                img.style.display    = 'block';
+                if (initials) initials.style.display = 'none';
+
+                // Actualizar vista previa
+                document.getElementById('prevAv').innerHTML =
+                    `<img src="${data.foto_url}?t=${Date.now()}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+
+                // Actualizar avatar del sidebar
+                const sidebarAv = document.getElementById('sidebarAv');
+                if (sidebarAv) sidebarAv.innerHTML =
+                    `<img src="${data.foto_url}?t=${Date.now()}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+            }
+
+            // Actualizar "original" para que Cancelar funcione correctamente
+            original.nombre    = document.getElementById('fNombre').value;
+            original.apellido  = document.getElementById('fApellido').value;
+            original.profesion = document.getElementById('fProfesion').value;
+            original.biografia = document.getElementById('fBiografia').value;
+            syncCancelBtn();
+
+            // Limpiar el input de archivo (sin esto el navegador re-envía la misma foto)
+            document.getElementById('inputFoto').value = '';
+
+            // Mostrar alerta de éxito
+            let alertEl = document.getElementById('perfilAlertSuccess');
+            if (!alertEl) {
+                alertEl = document.createElement('div');
+                alertEl.id = 'perfilAlertSuccess';
+                alertEl.className = 'alert alert-success';
+                alertEl.innerHTML = '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Perfil actualizado correctamente.';
+                document.getElementById('perfilForm').before(alertEl);
+            }
+            alertEl.style.display = 'flex';
+            setTimeout(() => { alertEl.style.display = 'none'; }, 4000);
         })
         .catch(() => {
             btn.classList.remove('loading');
@@ -993,12 +978,30 @@
         sendRequest(pendingFormData, btn);
     }
 
-    // --- Cancelar edición ---
+    // ===================== FIN PARCHE 2 =====================
+
+    // --- Cancelar edición (PARCHE 1c: sincroniza botón al finalizar) ---
     function cancelarEdicion() {
         document.getElementById('fNombre').value    = original.nombre;
         document.getElementById('fApellido').value  = original.apellido;
         document.getElementById('fProfesion').value = original.profesion;
         document.getElementById('fBiografia').value = original.biografia;
+
+        // Limpiar selección de foto y revertir preview
+        document.getElementById('inputFoto').value = '';
+        const initials = document.getElementById('photoInitials');
+        const img      = document.getElementById('photoPreview');
+        if (img) {
+            const originalSrc = img.dataset.original || '';
+            if (originalSrc) {
+                img.src           = originalSrc;
+                img.style.display = 'block';
+                if (initials) initials.style.display = 'none';
+            } else {
+                img.style.display = 'none';
+                if (initials) initials.style.display = 'flex';
+            }
+        }
 
         // Limpiar errores
         ['fNombre','fApellido','fProfesion','fBiografia'].forEach(id => {
@@ -1010,19 +1013,12 @@
 
         updateCounter();
         updatePreview();
+        syncCancelBtn(); // deshabilitar de nuevo
     }
 
-    // Mostrar éxito desde URL param
-    if (new URLSearchParams(location.search).get('updated') === '1') {
-        const a = document.createElement('div');
-        a.className = 'alert alert-success';
-        a.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:#15803d;stroke-width:2"><path d="M20 6L9 17l-5-5"/></svg> Perfil actualizado correctamente.';
-        document.querySelector('.main-inner').prepend(a);
-        history.replaceState({}, '', '{{ route("perfil") }}');
-    }
-
-    // Inicializar contador
+    // Inicializar contador y estado del botón Cancelar
     updateCounter();
+    syncCancelBtn();
 
     // --- Modales ---
     function abrirModalGuardar() {
@@ -1034,20 +1030,20 @@
         document.getElementById('modalDesactivar').classList.add('show');
     }
 
-    function cerrarModal(id) {
+    function pCerrarModal(id) {
         document.getElementById(id).classList.remove('show');
     }
 
     // Cerrar modal al click fuera
     document.querySelectorAll('.modal-overlay').forEach(el => {
         el.addEventListener('click', function(e) {
-            if (e.target === this) this.classList.remove('show');
+            if (e.target === this) pCerrarModal(this.id);
         });
     });
 
     // --- Desactivar cuenta ---
     function desactivarCuenta() {
-        cerrarModal('modalDesactivar');
+        pCerrarModal('modalDesactivar');
         fetch('{{ route("perfil.desactivar") }}', {
             method: 'POST',
             headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
@@ -1065,7 +1061,6 @@
             if (errEl) { errEl.textContent = MSG_CHARS; errEl.classList.add('show'); }
             return false;
         }
-        // Solo limpia si el mensaje actual era el de caracteres (no sobreescribir errores de requerido)
         if (errEl && errEl.textContent === MSG_CHARS) {
             errEl.textContent = '';
             errEl.classList.remove('show');
@@ -1075,7 +1070,6 @@
     }
 
     function camposConCaracteresInvalidos(ids) {
-        // Recibe array de {inputId, errId} y retorna true si alguno tiene chars prohibidos
         return ids.some(({ inputId, errId }) => {
             const el = document.getElementById(inputId);
             return el ? !charCheck(el, errId) : false;
@@ -1777,6 +1771,7 @@
         if (!str) return '';
         return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
+
     const FOR_TITULO_HINTS = {
     'Primaria / Secundaria':        ['Ej: Bachillerato, 6to de Secundaria...', 'Nivel o año completado (opcional)'],
     'Técnico / Técnico Superior':   ['Ej: Técnico en Electricidad Industrial...', 'Nombre de la carrera técnica'],
@@ -1799,5 +1794,3 @@ function updateForTitulo() {
 }
 </script>
 @include('perfil._script_redes')
-</body>
-</html>
