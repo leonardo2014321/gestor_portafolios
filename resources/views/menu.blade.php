@@ -515,9 +515,34 @@
             <button onclick="showView('explorador')" class="tb-link" style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Explorador</button>
         </nav>
         <div class="tb-right" style="display:flex;align-items:center;gap:12px;">
-            <div class="tb-bell" style="cursor:pointer;">
-                <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            </div>
+            <!-- Campanita de notificaciones -->
+<div style="position:relative" id="notif-wrap">
+    <div class="tb-bell" style="cursor:pointer" onclick="notifToggle()" id="notif-btn">
+        <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:rgba(255,255,255,0.7);stroke-width:2;stroke-linecap:round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <!-- Badge contador -->
+        <span id="notif-badge" style="display:none;position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;font-weight:700;border-radius:999px;padding:1px 5px;min-width:16px;text-align:center;border:2px solid #0f172a"></span>
+    </div>
+
+    <!-- Panel desplegable -->
+    <div id="notif-panel" style="display:none;position:absolute;top:calc(100% + 10px);right:0;width:340px;background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.18);border:1px solid #e2e8f0;z-index:9999;overflow:hidden">
+        <!-- Header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #f1f5f9">
+            <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:#0f172a">Notificaciones</span>
+            <button onclick="notifMarcarTodasLeidas()" style="font-size:11px;color:#2563eb;background:none;border:none;cursor:pointer;font-weight:600">Marcar todas como leídas</button>
+        </div>
+        <!-- Lista -->
+        <div id="notif-lista" style="max-height:360px;overflow-y:auto">
+            <div style="padding:24px;text-align:center;color:#94a3b8;font-size:13px">Cargando...</div>
+        </div>
+        <!-- Footer -->
+        <div style="padding:10px 18px;border-top:1px solid #f1f5f9;text-align:center">
+            <span style="font-size:11px;color:#94a3b8">Solo ves notificaciones dirigidas a ti</span>
+        </div>
+    </div>
+</div>
             <div style="display:flex;align-items:center;gap:8px;">
                 <div class="sb-av">
                     @if(auth()->user()->foto_perfil)
@@ -2671,6 +2696,106 @@
         btnB.disabled = btnP.disabled = false;
         btnP.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> Publicar Proyecto';
     }
+
+    // ── Campanita notificaciones ─────────────────────
+let notifPanelAbierto = false;
+let notifDatos = [];
+
+async function notifCargar() {
+    try {
+        const res  = await fetch('/mis-notificaciones', {
+            headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
+        });
+        const data = await res.json();
+        notifDatos = data.notificaciones || [];
+        const noLeidas = data.no_leidas || 0;
+
+        // Badge
+        const badge = document.getElementById('notif-badge');
+        if (noLeidas > 0) {
+            badge.textContent = noLeidas > 9 ? '9+' : noLeidas;
+            badge.style.display = 'block';
+        } else {
+            badge.style.display = 'none';
+        }
+
+        notifRenderLista();
+    } catch(e) {
+        console.error('Error cargando notificaciones', e);
+    }
+}
+
+function notifRenderLista() {
+    const lista = document.getElementById('notif-lista');
+    if (!notifDatos.length) {
+        lista.innerHTML = `<div style="padding:32px;text-align:center">
+            <svg viewBox="0 0 24 24" style="width:36px;height:36px;fill:none;stroke:#cbd5e1;stroke-width:1.5;margin:0 auto 8px;display:block"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <p style="color:#94a3b8;font-size:13px;margin:0">Sin notificaciones</p>
+        </div>`;
+        return;
+    }
+
+    lista.innerHTML = notifDatos.map(n => `
+        <div onclick="notifMarcarLeida(${n.id}, this)"
+             style="display:flex;gap:12px;padding:14px 18px;border-bottom:1px solid #f8fafc;cursor:pointer;transition:background .15s;background:${n.leida ? '#fff' : '#f0f6ff'}"
+             onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='${n.leida ? '#fff' : '#f0f6ff'}'">
+            <div style="width:8px;height:8px;border-radius:50%;background:${n.leida ? 'transparent' : '#2563eb'};flex-shrink:0;margin-top:5px"></div>
+            <div style="flex:1;min-width:0">
+                <div style="font-size:13px;font-weight:${n.leida ? '400' : '600'};color:#0f172a;margin-bottom:2px">${n.titulo}</div>
+                <div style="font-size:12px;color:#64748b;line-height:1.4;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${n.mensaje}</div>
+                <div style="font-size:10px;color:#94a3b8;margin-top:4px">${new Date(n.created_at).toLocaleDateString('es-BO',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</div>
+            </div>
+        </div>`).join('');
+}
+
+function notifToggle() {
+    const panel = document.getElementById('notif-panel');
+    notifPanelAbierto = !notifPanelAbierto;
+    panel.style.display = notifPanelAbierto ? 'block' : 'none';
+    if (notifPanelAbierto) notifCargar();
+}
+
+async function notifMarcarLeida(id, el) {
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    await fetch(`/mis-notificaciones/${id}/leida`, {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': token }
+    });
+    // Actualizar visual
+    el.style.background = '#fff';
+    el.querySelector('div[style*="border-radius:50%"]').style.background = 'transparent';
+    el.querySelector('div > div:first-child').style.fontWeight = '400';
+    // Restar del badge
+    const badge = document.getElementById('notif-badge');
+    let count = parseInt(badge.textContent) || 0;
+    count = Math.max(0, count - 1);
+    badge.textContent = count > 9 ? '9+' : count;
+    if (count === 0) badge.style.display = 'none';
+}
+
+async function notifMarcarTodasLeidas() {
+    for (const n of notifDatos.filter(x => !x.leida)) {
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        await fetch(`/mis-notificaciones/${n.id}/leida`, {
+            method: 'POST', headers: { 'X-CSRF-TOKEN': token }
+        });
+    }
+    notifCargar();
+}
+
+// Cerrar panel al hacer click fuera
+document.addEventListener('click', function(e) {
+    const wrap = document.getElementById('notif-wrap');
+    if (wrap && !wrap.contains(e.target)) {
+        document.getElementById('notif-panel').style.display = 'none';
+        notifPanelAbierto = false;
+    }
+});
+
+// Cargar badge al iniciar
+notifCargar();
+// Polling cada 60 segundos
+setInterval(notifCargar, 60000);
 </script>
 </body>
 </html>

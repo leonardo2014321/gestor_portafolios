@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notificacion extends Model
 {
+    protected $table = 'notificaciones';
+
     protected $fillable = [
         'titulo',
         'mensaje',
@@ -15,15 +17,13 @@ class Notificacion extends Model
         'leida',
     ];
 
-    // Quién la creó (admin)
     public function creadoPor()
     {
-        return $this->belongsTo(User::class, 'creado_por');
+        return $this->belongsTo(Usuario::class, 'creado_por', 'id');
     }
 
-    // Destinatario individual (nullable)
     public function destinatario()
     {
-        return $this->belongsTo(User::class, 'destinatario_id');
+        return $this->belongsTo(Usuario::class, 'destinatario_id', 'id');
     }
 }

@@ -12,19 +12,21 @@ return new class extends Migration
             $table->id();
             $table->string('titulo');
             $table->text('mensaje');
-            // individual = un usuario, todos = todos, rol = solo admins
             $table->enum('tipo_envio', ['individual', 'todos', 'rol']);
-            // solo se llena si tipo_envio = 'individual'
-            $table->foreignId('destinatario_id')
-                  ->nullable()
-                  ->constrained('users')
-                  ->onDelete('cascade');
-            // quien creó la notificación (siempre un admin)
-            $table->foreignId('creado_por')
-                  ->constrained('users')
-                  ->onDelete('cascade');
+            $table->unsignedBigInteger('destinatario_id')->nullable();
+            $table->unsignedBigInteger('creado_por');
             $table->boolean('leida')->default(false);
             $table->timestamps();
+
+            $table->foreign('destinatario_id')
+                  ->references('id')
+                  ->on('usuarios')
+                  ->onDelete('cascade');
+
+            $table->foreign('creado_por')
+                  ->references('id')
+                  ->on('usuarios')
+                  ->onDelete('cascade');
         });
     }
 

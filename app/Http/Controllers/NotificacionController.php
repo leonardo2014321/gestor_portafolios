@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notificacion;
-use App\Models\User;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class NotificacionController extends Controller
 {
-    // Admin: enviar notificación
     public function store(Request $request)
     {
         if (!Auth::user()->es_admin) abort(403);
@@ -18,12 +17,11 @@ class NotificacionController extends Controller
             'titulo'          => 'required|string|max:150',
             'mensaje'         => 'required|string|max:1000',
             'tipo_envio'      => 'required|in:individual,todos,rol',
-            'destinatario_id' => 'nullable|exists:users,id',
+            'destinatario_id' => 'nullable|exists:usuarios,id',
         ]);
 
-        // Si es individual, debe tener destinatario
         if ($request->tipo_envio === 'individual' && !$request->destinatario_id) {
-            return back()->withErrors(['destinatario_id' => 'Selecciona un usuario.']);
+            return response()->json(['error' => 'Selecciona un usuario.'], 422);
         }
 
         Notificacion::create([
@@ -37,26 +35,23 @@ class NotificacionController extends Controller
             'leida'           => false,
         ]);
 
-        return back()->with('success', 'Notificación enviada.');
+        return response()->json(['ok' => true]);
     }
 
-    // Usuario: obtener sus notificaciones (para la campanita)
     public function misNotificaciones()
     {
         $user = Auth::user();
 
         $notificaciones = Notificacion::where(function ($q) use ($user) {
-                // Para él específicamente
                 $q->where('tipo_envio', 'individual')
                   ->where('destinatario_id', $user->id);
             })
             ->orWhere('tipo_envio', 'todos')
             ->orWhere(function ($q) use ($user) {
-                // Solo si es admin
                 $q->where('tipo_envio', 'rol')
                   ->where(function($q2) use ($user) {
                       if ($user->es_admin) $q2->whereNotNull('id');
-                      else $q2->whereNull('id'); // no le llega si no es admin
+                      else $q2->whereNull('id');
                   });
             })
             ->orderByDesc('created_at')
@@ -70,13 +65,11 @@ class NotificacionController extends Controller
         ]);
     }
 
-    // Usuario: marcar como leída
     public function marcarLeida($id)
     {
-        $user = Auth::user();
+        $user  = Auth::user();
         $notif = Notificacion::findOrFail($id);
 
-        // Verificar que le pertenece
         if (
             $notif->tipo_envio === 'individual' &&
             $notif->destinatario_id !== $user->id
@@ -88,7 +81,6 @@ class NotificacionController extends Controller
         return response()->json(['ok' => true]);
     }
 
-    // Admin: ver todas las enviadas
     public function index()
     {
         if (!Auth::user()->es_admin) abort(403);
@@ -100,7 +92,6 @@ class NotificacionController extends Controller
         return response()->json($notificaciones);
     }
 
-    // Admin: eliminar notificación
     public function destroy($id)
     {
         if (!Auth::user()->es_admin) abort(403);
