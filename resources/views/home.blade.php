@@ -6,6 +6,10 @@
     <title>SansiFolios - UMSS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        {{-- Necesario para el modal de registro --}}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
     <style>
         :root {
             --navy: #0f172a;
@@ -222,9 +226,60 @@
 </script>
 @endif
 
-@if(session('email_verificado') === true)
-<script>localStorage.setItem('email_verificado', 'true');</script>
-@endif
+{{-- ✅ Detectar verificación de email y apertura de modales --}}
+@guest
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const params = new URLSearchParams(window.location.search);
+
+        if (params.get('verificado') === '1') {
+            window.history.replaceState({}, '', '/');
+            const loginModal = document.getElementById('loginModal');
+            if (loginModal) {
+                loginModal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            }
+            const msg = document.getElementById('loginMensaje');
+            if (msg) {
+                msg.innerHTML = '✔ Cuenta verificada. Ya puedes iniciar sesión.';
+                msg.className = 'mt-3 text-sm text-green-600';
+            }
+        }
+
+        if (params.get('registro') === '1') {
+            window.history.replaceState({}, '', '/');
+            const registerModal = document.getElementById('registerModal');
+            if (registerModal) {
+                registerModal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            }
+        }
+    });
+
+    // ✅ Escuchar cuando la pestaña de verificación avisa
+    window.addEventListener('storage', function(event) {
+        if (event.key === 'email_verificado') {
+            localStorage.removeItem('email_verificado');
+
+            const registerModal = document.getElementById('registerModal');
+            if (registerModal) registerModal.classList.add('hidden');
+
+            const loginModal = document.getElementById('loginModal');
+            if (loginModal) {
+                loginModal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            }
+
+            const msg = document.getElementById('loginMensaje');
+            if (msg) {
+                msg.innerHTML = '✔ Cuenta verificada. Ya puedes iniciar sesión.';
+                msg.className = 'mt-3 text-sm text-green-600';
+            }
+        }
+    });
+</script>
+@endguest
 
 </body>
 </html>
