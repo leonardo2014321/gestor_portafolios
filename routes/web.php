@@ -15,7 +15,7 @@ use App\Http\Controllers\Perfil\PerfilController;
 use App\Http\Controllers\Perfil\TrayectoriaController;
 use App\Http\Controllers\Portafolio\PortafolioController;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\LanguageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -208,4 +208,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/admin/notificaciones/{id}', [App\Http\Controllers\NotificacionController::class, 'destroy'])
         ->name('notificaciones.destroy');
 });
-
+// lenguaje 
+Route::get('/lang/{lang}', [LanguageController::class, 'switch'])
+     ->name('lang.switch');
