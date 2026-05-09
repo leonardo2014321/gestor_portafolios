@@ -1,63 +1,340 @@
-{{-- 
-    🧩 COMPONENTE: NAVBAR PRO
-    Características:
-    - Responsive con menú móvil desplegable
-    - Alpine interno para toggle del menú
---}}
+@auth
+@php
+    $supabaseBase = rtrim(config('services.supabase.url'), '/')
+                . '/storage/v1/object/public/'
+                . config('services.supabase.bucket');
+    $fotoNavbar = auth()->user()->foto_perfil
+        ? $supabaseBase . '/' . ltrim(auth()->user()->foto_perfil, '/')
+        : null;
+@endphp
+@endauth
 
-<nav 
-    x-data="{ abierto: false }"
-    class="bg-[#050B36] text-white px-6 py-4 w-full"
->
+<div class="topbar" style="background:#0f172a !important;border-color:rgba(255,255,255,0.06) !important;">
 
-    <div class="max-w-full mx-auto flex items-center justify-between w-full">
+    {{-- ── Logo (siempre visible) ── --}}
+    <div class="tb-left">
+        <img class="logo-img" src="{{ asset('images/logo.png') }}" alt="UMSS">
+        <div class="sysname">Sansi<span>Folios</span></div>
+    </div>
 
-        {{-- Logo con imagen a la izquierda --}}
-        <a href="{{ route('inicio') }}" class="flex items-center space-x-4 no-underline">
-            <img src="/images/umss-logo.png" alt="Logo" class="h-10">
-            <h1 class="text-xl font-bold text-white">
-                Sansi<span class="text-red-500">Folios</span>
-            </h1>
-        </a>
+    {{-- ── Nav central ── --}}
+    <nav class="tb-nav">
+        @auth
+            {{-- Dashboard: cambian vistas SPA con JS --}}
+            <button onclick="showView('menu')" class="tb-link"
+                style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
+                       color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
+                onmouseover="this.style.color='#fff'"
+                onmouseout="this.style.color='rgba(255,255,255,0.65)'">Inicio</button>
 
-        {{-- Menú de escritorio --}}
-        <div class="hidden sm:flex space-x-6 items-center text-sm sm:text-base">
-            <a href="{{ route('inicio') }}" class="text-[#35FFE6] hover:underline">Inicio</a>
-            <a href="{{ route('caracteristicas') }}" class="hover:underline">Caracteristicas</a>
-           
-            
-            {{-- Acciones (Modales) --}}
-            <button id="openLoginModal" class="hover:underline">Iniciar Sesión</button>
-            <button id="openRegisterModal" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-500 transition-colors">
+            <button onclick="showView('caracteristicas')" class="tb-link"
+                style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
+                       color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
+                onmouseover="this.style.color='#fff'"
+                onmouseout="this.style.color='rgba(255,255,255,0.65)'">Características</button>
+
+            <button onclick="showView('portafolios')" class="tb-link"
+                style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
+                       color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
+                onmouseover="this.style.color='#fff'"
+                onmouseout="this.style.color='rgba(255,255,255,0.65)'">Portafolios</button>
+
+            <button onclick="showView('explorador')" class="tb-link"
+                style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
+                       color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
+                onmouseover="this.style.color='#fff'"
+                onmouseout="this.style.color='rgba(255,255,255,0.65)'">Explorador</button>
+        @else
+            {{-- Home público: links <a> normales --}}
+            <a href="{{ url('/') }}"
+                style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
+                       text-decoration:none;transition:color .2s;"
+                onmouseover="this.style.color='#fff'"
+                onmouseout="this.style.color='rgba(255,255,255,0.65)'">Inicio</a>
+
+            <a href="{{ route('portafolios.index') }}"
+                style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
+                       text-decoration:none;transition:color .2s;"
+                onmouseover="this.style.color='#fff'"
+                onmouseout="this.style.color='rgba(255,255,255,0.65)'">Portafolios</a>
+        @endauth
+    </nav>
+
+    {{-- ── Lado derecho ── --}}
+    <div class="tb-right" style="display:flex;align-items:center;gap:12px;">
+
+    {{-- ── Selector de idioma ── --}}
+    <div style="position:relative;" id="lang-wrap">
+        <button onclick="langToggle()"
+            style="display:flex;align-items:center;gap:6px;
+                background:rgba(255,255,255,0.08);
+                border:1px solid rgba(255,255,255,0.15);border-radius:10px;
+                padding:6px 12px;cursor:pointer;transition:background .2s;
+                font-family:'DM Sans',sans-serif;font-size:13px;color:#fff;font-weight:500;"
+            onmouseover="this.style.background='rgba(255,255,255,0.14)'"
+            onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+            <span id="lang-flag">🇪🇸</span>
+            <span id="lang-label">ES</span>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 9l-7 7-7-7"/></svg>
+        </button>
+
+        <div id="lang-panel"
+            style="display:none;position:absolute;top:calc(100% + 10px);right:0;
+                background:#fff;border-radius:12px;width:160px;
+                box-shadow:0 8px 30px rgba(0,0,0,0.18);
+                border:1px solid #e2e8f0;overflow:hidden;z-index:9999;">
+            <div onclick="langSelect('es','🇪🇸','ES')"
+                id="lang-opt-es"
+                style="display:flex;align-items:center;gap:10px;padding:10px 14px;
+                    cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;
+                    color:#1e293b;background:#eff6ff;font-weight:600;"
+                onmouseover="this.style.background='#f1f5f9'"
+                onmouseout="this.style.background=currentLang==='es'?'#eff6ff':'#fff'">
+                <span style="font-size:18px;">🇪🇸</span> Español
+            </div>
+            <div onclick="langSelect('en','🇬🇧','EN')"
+                id="lang-opt-en"
+                style="display:flex;align-items:center;gap:10px;padding:10px 14px;
+                    cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;
+                    color:#1e293b;background:#fff;"
+                onmouseover="this.style.background='#f1f5f9'"
+                onmouseout="this.style.background=currentLang==='en'?'#eff6ff':'#fff'">
+                <span style="font-size:18px;">🇬🇧</span> English
+            </div>
+            <div onclick="langSelect('fr','🇫🇷','FR')"
+                id="lang-opt-fr"
+                style="display:flex;align-items:center;gap:10px;padding:10px 14px;
+                    cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;
+                    color:#1e293b;background:#fff;"
+                onmouseover="this.style.background='#f1f5f9'"
+                onmouseout="this.style.background=currentLang==='fr'?'#eff6ff':'#fff'">
+                <span style="font-size:18px;">🇫🇷</span> Français
+            </div>
+        </div>
+    </div>
+
+        @auth
+            {{-- ── Campanita ── --}}
+            <div style="position:relative;" id="notif-wrap">
+                <div class="tb-bell" style="cursor:pointer;position:relative;border-color:rgba(255,255,255,0.1) !important;background:rgba(255,255,255,0.08) !important;"
+                     onclick="notifToggle()" id="notif-btn">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                    </svg>
+                    <span id="notif-badge"
+                        style="display:none;position:absolute;top:-4px;right:-4px;
+                               background:#ef4444;color:#fff;font-size:9px;font-weight:700;
+                               border-radius:999px;padding:1px 5px;min-width:16px;
+                               text-align:center;border:2px solid #0f172a;"></span>
+                </div>
+
+                <div id="notif-panel"
+                    style="display:none;position:absolute;top:calc(100% + 10px);right:0;
+                           width:340px;background:#fff;border-radius:14px;
+                           box-shadow:0 8px 32px rgba(0,0,0,0.18);
+                           border:1px solid #e2e8f0;z-index:9999;overflow:hidden;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;
+                                padding:14px 18px;border-bottom:1px solid #f1f5f9;">
+                        <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;
+                                     font-weight:700;color:#0f172a;">Notificaciones</span>
+                        <button onclick="notifMarcarTodasLeidas()"
+                            style="font-size:11px;color:#2563eb;background:none;border:none;
+                                   cursor:pointer;font-weight:600;">Marcar todas como leídas</button>
+                    </div>
+                    <div id="notif-lista" style="max-height:360px;overflow-y:auto;">
+                        <div style="padding:24px;text-align:center;color:#94a3b8;font-size:13px;">
+                            Cargando...
+                        </div>
+                    </div>
+                    <div style="padding:10px 18px;border-top:1px solid #f1f5f9;text-align:center;">
+                        <span style="font-size:11px;color:#94a3b8;">
+                            Solo ves notificaciones dirigidas a ti
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            {{-- ── Menú de usuario ── --}}
+            <div style="position:relative;">
+                <button onclick="toggleNavMenu()"
+                    style="display:flex;align-items:center;gap:8px;
+                           background:rgba(255,255,255,0.08);
+                           border:1px solid rgba(255,255,255,0.15);border-radius:10px;
+                           padding:6px 12px 6px 6px;cursor:pointer;transition:background .2s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.14)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+                    <div class="sb-av" style="width:32px;height:32px;font-size:12px;">
+                        @if($fotoNavbar)
+                            <img src="{{ $fotoNavbar }}" alt=""
+                                style="width:100%;height:100%;object-fit:cover;border-radius:50%"
+                                onerror="this.style.display='none'">
+                        @else
+                            {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}
+                        @endif
+                    </div>
+                    <div style="text-align:left;">
+                        <div style="font-size:13px;color:#fff;font-weight:600;white-space:nowrap;">
+                            {{ auth()->user()->nombre }}
+                        </div>
+                        <div style="font-size:10px;color:#8ba5c8;">Mi cuenta ▾</div>
+                    </div>
+                </button>
+
+                <div id="navUserMenu"
+                    style="display:none;position:absolute;top:calc(100% + 10px);right:0;
+                           background:#fff;border-radius:14px;width:240px;
+                           box-shadow:0 8px 30px rgba(0,0,0,0.18);
+                           border:1px solid #e2e8f0;overflow:hidden;z-index:9999;">
+
+                    <div style="padding:14px 16px;border-bottom:1px solid #f1f5f9;
+                                display:flex;align-items:center;gap:10px;">
+                        <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;
+                                    flex-shrink:0;background:linear-gradient(135deg,#3b82f6,#0d9488);
+                                    display:flex;align-items:center;justify-content:center;
+                                    font-size:14px;font-weight:700;color:#fff;">
+                            @if($fotoNavbar)
+                                <img src="{{ $fotoNavbar }}" alt=""
+                                    style="width:100%;height:100%;object-fit:cover;"
+                                    onerror="this.style.display='none'">
+                            @else
+                                {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}
+                            @endif
+                        </div>
+                        <div style="min-width:0;">
+                            <div style="font-size:13.5px;font-weight:700;color:#0f172a;
+                                        overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                                {{ auth()->user()->nombre }} {{ auth()->user()->apellido }}
+                            </div>
+                            <div style="font-size:11px;color:#64748b;
+                                        overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                                {{ auth()->user()->email }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding:6px;">
+                        <button onclick="showView('perfil');cerrarNavMenu()"
+                            style="width:100%;display:flex;align-items:center;gap:10px;
+                                   padding:9px 12px;border-radius:8px;border:none;background:none;
+                                   cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
+                                   color:#1e293b;text-align:left;"
+                            onmouseover="this.style.background='#f1f5f9'"
+                            onmouseout="this.style.background='none'">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                 stroke="#64748b" stroke-width="2" stroke-linecap="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                            Mi Perfil
+                        </button>
+
+                        <button onclick="showView('reportes');cerrarNavMenu()"
+                            style="width:100%;display:flex;align-items:center;gap:10px;
+                                   padding:9px 12px;border-radius:8px;border:none;background:none;
+                                   cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
+                                   color:#1e293b;text-align:left;"
+                            onmouseover="this.style.background='#f1f5f9'"
+                            onmouseout="this.style.background='none'">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                 stroke="#64748b" stroke-width="2" stroke-linecap="round">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                            </svg>
+                            Reportes
+                        </button>
+                    </div>
+
+                    <div style="height:1px;background:#f1f5f9;margin:0 6px;"></div>
+
+                    <div style="padding:6px;">
+                        <button onclick="confirmarLogout()"
+                            style="width:100%;display:flex;align-items:center;gap:10px;
+                                   padding:9px 12px;border-radius:8px;border:none;background:none;
+                                   cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
+                                   color:#dc2626;text-align:left;"
+                            onmouseover="this.style.background='#fef2f2'"
+                            onmouseout="this.style.background='none'">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                 stroke="#dc2626" stroke-width="2" stroke-linecap="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                <polyline points="16 17 21 12 16 7"/>
+                                <line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                            Cerrar sesión
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        @else
+            {{-- ── Botones Login / Registro (home público) ── --}}
+            <button id="openLoginModal"
+                style="height:36px;padding:0 16px;background:rgba(255,255,255,0.1);
+                       border:1px solid rgba(255,255,255,0.2);border-radius:9px;color:#fff;
+                       font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+                       cursor:pointer;transition:background .2s;"
+                onmouseover="this.style.background='rgba(255,255,255,0.18)'"
+                onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                Iniciar sesión
+            </button>
+
+            <button id="openRegisterModal"
+                style="height:36px;padding:0 16px;background:#2563eb;
+                       border:1px solid #2563eb;border-radius:9px;color:#fff;
+                       font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+                       cursor:pointer;transition:background .2s;"
+                onmouseover="this.style.background='#1d4ed8'"
+                onmouseout="this.style.background='#2563eb'">
                 Registrarse
             </button>
-        </div>
+        @endauth
 
-        {{-- Botón menú móvil --}}
-        <button 
-            @click="abierto = !abierto"
-            class="sm:hidden text-2xl"
-            aria-label="Abrir menú"
-        >
-            ☰
-        </button>
+    </div>{{-- fin tb-right --}}
 
-    </div>
+<script>
+let currentLang = localStorage.getItem('lang') || 'es';
 
-    {{-- Menú móvil --}}
-    <div 
-        x-show="abierto"
-        x-transition
-        class="sm:hidden mt-4 space-y-3 text-center"
-    >
-        <a href="{{ route('inicio') }}" class="block hover:underline">Inicio</a>
-        <a href="{{ route('portafolios.index') }}" class="block hover:underline">Portafolios</a>
-        <a href="{{ route('caracteristicas') }}" class="block hover:underline">Caracteristicas</a>
-        <hr class="border-gray-700 mx-4">
-        <button id="openLoginModalMobile" class="block w-full hover:underline">Iniciar Sesión</button>
-        <button id="openRegisterModalMobile" class="block w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-500">
-            Registrarse
-        </button>
-    </div>
+// Aplicar idioma guardado al cargar
+document.addEventListener('DOMContentLoaded', function() {
+    const saved = localStorage.getItem('lang') || 'es';
+    const map = { es: ['🇪🇸','ES'], en: ['🇬🇧','EN'], fr: ['🇫🇷','FR'] };
+    if (map[saved]) {
+        document.getElementById('lang-flag').textContent = map[saved][0];
+        document.getElementById('lang-label').textContent = map[saved][1];
+        currentLang = saved;
+        langHighlight();
+    }
+});
 
-</nav>
+function langToggle() {
+    const panel = document.getElementById('lang-panel');
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+function langSelect(code, flag, label) {
+    currentLang = code;
+    localStorage.setItem('lang', code);
+    document.getElementById('lang-flag').textContent  = flag;
+    document.getElementById('lang-label').textContent = label;
+    document.getElementById('lang-panel').style.display = 'none';
+    langHighlight();
+    // Aquí puedes agregar lógica real de traducción en el futuro
+}
+
+function langHighlight() {
+    ['es','en','fr'].forEach(c => {
+        const el = document.getElementById('lang-opt-' + c);
+        if (el) el.style.background = c === currentLang ? '#eff6ff' : '#fff';
+    });
+}
+
+// Cerrar al hacer click fuera
+document.addEventListener('click', function(e) {
+    const wrap = document.getElementById('lang-wrap');
+    if (wrap && !wrap.contains(e.target)) {
+        document.getElementById('lang-panel').style.display = 'none';
+    }
+});
+</script>
+
+</div>{{-- fin topbar --}}

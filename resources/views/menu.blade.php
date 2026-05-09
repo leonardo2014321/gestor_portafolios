@@ -49,8 +49,8 @@
         .body-row{flex:1;display:flex;overflow:hidden}
 
         /* ── Sidebar ── */
-        aside{width:var(--sw);background:var(--navy);flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,0.06)}
-        .sb-top{padding:14px 0;flex:1}
+        /* Después */
+        aside{width:var(--sw);background:#0f172a !important;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,0.06) !important;}
         .sb-item{display:flex;align-items:center;gap:11px;padding:10px 20px;cursor:pointer;color:#8ba5c8;font-size:13px;font-weight:400;transition:all .18s;border-left:3px solid transparent;font-family:"DM Sans",sans-serif;text-decoration:none;background:none;border-top:none;border-right:none;border-bottom:none;width:100%}
         .sb-item:hover{background:rgba(255,255,255,0.05);color:#c8d8ef;transform:translateX(4px)}
         .sb-item{transition:all .18s;}
@@ -503,134 +503,7 @@
 <div class="app">
 
     <!-- Topbar -->
-    <div class="topbar">
-        <div class="tb-left">
-            <img class="logo-img" src="{{ asset('images/logo.png') }}" alt="UMSS">
-            <div class="sysname">Sansi<span>Folios</span></div>
-        </div>
-        <nav class="tb-nav">
-            <button onclick="showView('menu')" class="tb-link" style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Inicio</button>
-            <button onclick="showView('caracteristicas')" class="tb-link" style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Características</button>
-            <button onclick="showView('portafolios')" class="tb-link" style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Portafolios</button>
-            <button onclick="showView('explorador')" class="tb-link" style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.65)'">Explorador</button>
-        </nav>
-        @php
-            $supabaseBase = rtrim(config('services.supabase.url'), '/')
-                        . '/storage/v1/object/public/'
-                        . config('services.supabase.bucket');
-            $fotoNavbar = auth()->user()->foto_perfil
-                ? $supabaseBase . '/' . ltrim(auth()->user()->foto_perfil, '/')
-                : null;
-        @endphp
-
-        <div class="tb-right" style="display:flex;align-items:center;gap:12px;">
-
-            <!-- Campanita -->
-            <div style="position:relative;" id="notif-wrap">
-                <div class="tb-bell" style="cursor:pointer;position:relative;" onclick="notifToggle()" id="notif-btn">
-                    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                    <span id="notif-badge" style="display:none;position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;font-weight:700;border-radius:999px;padding:1px 5px;min-width:16px;text-align:center;border:2px solid #0f172a;"></span>
-                </div>
-                <div id="notif-panel" style="display:none;position:absolute;top:calc(100% + 10px);right:0;width:340px;background:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.18);border:1px solid #e2e8f0;z-index:9999;overflow:hidden;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #f1f5f9;">
-                        <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:#0f172a;">Notificaciones</span>
-                        <button onclick="notifMarcarTodasLeidas()" style="font-size:11px;color:#2563eb;background:none;border:none;cursor:pointer;font-weight:600;">Marcar todas como leídas</button>
-                    </div>
-                    <div id="notif-lista" style="max-height:360px;overflow-y:auto;">
-                        <div style="padding:24px;text-align:center;color:#94a3b8;font-size:13px;">Cargando...</div>
-                    </div>
-                    <div style="padding:10px 18px;border-top:1px solid #f1f5f9;text-align:center;">
-                        <span style="font-size:11px;color:#94a3b8;">Solo ves notificaciones dirigidas a ti</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Botón perfil con minimenu -->
-            <div style="position:relative;">
-                <button onclick="toggleNavMenu()"
-                        style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);
-                            border:1px solid rgba(255,255,255,0.15);border-radius:10px;
-                            padding:6px 12px 6px 6px;cursor:pointer;transition:background .2s;"
-                        onmouseover="this.style.background='rgba(255,255,255,0.14)'"
-                        onmouseout="this.style.background='rgba(255,255,255,0.08)'">
-                    <div class="sb-av" id="sidebarAv" style="width:32px;height:32px;font-size:12px;">
-                        @if($fotoNavbar)
-                            <img src="{{ $fotoNavbar }}" alt=""
-                                style="width:100%;height:100%;object-fit:cover;border-radius:50%"
-                                onerror="this.style.display='none'">
-                        @else
-                            {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}
-                        @endif
-                    </div>
-                    <div style="text-align:left;">
-                        <div style="font-size:13px;color:#fff;font-weight:600;white-space:nowrap;">
-                            {{ auth()->user()->nombre }}
-                        </div>
-                        <div style="font-size:10px;color:#8ba5c8;">Mi cuenta ▾</div>
-                    </div>
-                </button>
-
-                <div id="navUserMenu"
-                    style="display:none;position:absolute;top:calc(100% + 10px);right:0;
-                            background:#fff;border-radius:14px;width:240px;
-                            box-shadow:0 8px 30px rgba(0,0,0,0.18);border:1px solid #e2e8f0;
-                            overflow:hidden;z-index:9999;">
-                    <div style="padding:14px 16px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:10px;">
-                        <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;
-                                    background:linear-gradient(135deg,#3b82f6,#0d9488);
-                                    display:flex;align-items:center;justify-content:center;
-                                    font-size:14px;font-weight:700;color:#fff;">
-                            @if($fotoNavbar)
-                                <img src="{{ $fotoNavbar }}" alt="" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
-                            @else
-                                {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}
-                            @endif
-                        </div>
-                        <div style="min-width:0;">
-                            <div style="font-size:13.5px;font-weight:700;color:#0f172a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-                                {{ auth()->user()->nombre }} {{ auth()->user()->apellido }}
-                            </div>
-                            <div style="font-size:11px;color:#64748b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-                                {{ auth()->user()->email }}
-                            </div>
-                        </div>
-                    </div>
-                    <div style="padding:6px;">
-                        <button onclick="showView('perfil');cerrarNavMenu()"
-                                style="width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;border:none;background:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;color:#1e293b;text-align:left;"
-                                onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-                            </svg>
-                            Mi Perfil
-                        </button>
-                        <button onclick="showView('reportes');cerrarNavMenu()"
-                                style="width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;border:none;background:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;color:#1e293b;text-align:left;"
-                                onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='none'">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round">
-                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                            </svg>
-                            Reportes
-                        </button>
-                    </div>
-                    <div style="height:1px;background:#f1f5f9;margin:0 6px;"></div>
-                    <div style="padding:6px;">
-                        <button onclick="confirmarLogout()"
-                                style="width:100%;display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;border:none;background:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;color:#dc2626;text-align:left;"
-                                onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='none'">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round">
-                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                                <polyline points="16 17 21 12 16 7"/>
-                                <line x1="21" y1="12" x2="9" y2="12"/>
-                            </svg>
-                            Cerrar sesión
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-        </div>{{-- fin tb-right --}}
-        </div>{{-- fin topbar --}}
+    @include('components.layout.navbar')
 
     <div class="body-row">
 
@@ -650,9 +523,9 @@
 
 
                 <a href="{{ route('academico') }}" class="sb-item {{ request()->routeIs('academico') ? 'active' : '' }}">
-    <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-    <span>Académico</span>
-</a>
+                    <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                    <span>Académico</span>
+                </a>
                 <button id="btn-reportes" class="sb-item" onclick="showView('reportes')" style="background:none;border-top:none;border-right:none;border-bottom:none;width:100%;text-align:left;">
                     <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                     <span>Reportes</span>
@@ -663,14 +536,6 @@
                 </button>
             </div>
 
-            
-            <form method="POST" action="{{ route('logout') }}" id="formLogout">
-                @csrf
-                <button type="button" onclick="confirmarLogout()" class="btn-logout">
-                    <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                    <span>Cerrar Sesión</span>
-                </button>
-            </form>
 
             <!-- Modal confirmación logout -->
             <div id="modalLogout" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;">
@@ -706,10 +571,6 @@
                             <p>Gestión institucional de activos digitales – UMSS</p>
                         </div>
                         <div style="display:flex;align-items:center;gap:10px;">
-                            <div class="tb-search" style="background:#fff;border:1.5px solid var(--gray2);">
-                                <svg viewBox="0 0 24 24" style="stroke:var(--muted)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                                <input type="text" placeholder="Search" style="color:var(--text);width:140px;">
-                            </div>
                             <button onclick="abrirModalPortafolio()" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:var(--blue);color:#fff;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;">
                                 <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                                 Crear portafolio
@@ -885,6 +746,10 @@
                         </div>
                     </div>
                 </div>
+
+                <form method="POST" action="{{ route('logout') }}" id="formLogout" style="display:none;">
+                    @csrf
+                </form>
 
               <!-- ══ VISTA PORTAFOLIOS ══ -->
 <div class="view" id="view-portafolios">
@@ -1703,12 +1568,8 @@
         </div>
     </div>
 
-    <footer>
-        <div class="footer-content">
-            <img src="{{ asset('images/InfinityCode.jpeg') }}" alt="Logo Footer" class="footer-logo">
-            <p><b>Infinity Code</b> © 2026 Infinity Code. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+    @include('components.layout.footer')
+
 </div>
 
 <!-- Modal detalle del día -->
