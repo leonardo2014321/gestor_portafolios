@@ -760,8 +760,7 @@
             let json;
             try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
             if (json.ok) { mpCerrar(); location.reload(); return; }
-            const msg = json.errors ? Object.values(json.errors).flat().join('
-') : 'Error al guardar.';
+            const msg = json.errors ? Object.values(json.errors).flat().join('\n') : 'Error al guardar.';
             alert(msg);
         } catch(err) { alert(err.message); }
         btnB.disabled = btnP.disabled = false;
