@@ -72,12 +72,12 @@ return [
         'enlace_desc'       => 'Get a personalized URL to share on social media.',
         'inspira'           => 'Get inspired by real professionals',
         'inspira_desc'      => 'Explore how other experts stand out in their industry using SansiFolios.',
-        'ver_perfil'        => 'View Profile →',
+        'ver_perfil'        => 'View Profile',
         'todos'             => 'All',
-        'creativos'         => '🎨 Creative',
-        'salud'             => '🩺 Health',
-        'negocios'          => '💼 Business',
-        'educacion'         => '🎓 Education',
+        'creativos'         => 'Creative',
+        'salud'             => 'Health',
+        'negocios'          => 'Business',
+        'educacion'         => 'Education',
         'cerrar_sesion'     => 'Sign out?',
         'cerrar_confirm'    => 'Are you sure you want to sign out of your account?',
         'cancelar'          => 'Cancel',
@@ -332,5 +332,152 @@ return [
         'desactivada_desc'    => 'Your account was deactivated by you. Do you want to reactivate it and log back in?',
         'reactivar'           => 'Yes, reactivate my account',
         'cancelar'            => 'Cancel',
+    ],
+    'reportes' => [
+ 
+        // ── Header & controls ─────────────────────────────────────────────────
+        'titulo'                    => 'My Reports / CV',
+        'subtitulo'                 => 'Generate and export your curriculum vitae.',
+        'editar_pantalla'           => 'Edit',
+        'exportar_pdf'              => 'Export PDF',
+        'seleccionar_plantilla'     => 'Select template:',
+        'plantilla_moderna'         => 'Modern (Blue)',
+        'plantilla_clasica'         => 'Classic (Formal)',
+        'plantilla_minimalista'     => 'Minimalist',
+        'plantilla_elegante'        => 'Elegant (Grey)',
+        'plantilla_creativa'        => 'Creative (Green/Pink)',
+        'plantilla_malva'           => 'Modern (Mauve)',
+ 
+        // ── CV sections ───────────────────────────────────────────────────────
+        'aptitudes'                 => 'Aptitudes',
+        'resumen_profesional'       => 'Professional summary',
+        'habilidades_informaticas'  => 'IT skills',
+        'cursos_certificados'       => 'Courses & certificates',
+        'historial_laboral'         => 'Work history',
+        'formacion'                 => 'Education',
+        'exp_laboral'               => 'Work experience',
+        'educacion'                 => 'Education',
+        'habilidades_conocimientos' => 'Skills & knowledge',
+        'habilidades'               => 'Skills',
+        'hab_tecnicas'              => 'Technical skills',
+        'contacto'                  => 'Contact',
+        'perfil'                    => 'Profile',
+        'idiomas'                   => 'Languages',
+        'intereses'                 => 'Interests',
+        'experiencia_profesional'   => 'Professional experience',
+        'lenguaje'                  => 'Language',
+        'certificados'              => 'Certificates',
+        'actualidad'                => 'Present',
+        'presente'                  => 'Present',
+ 
+        // ── Legacy keys ───────────────────────────────────────────────────────
+        'competencias'              => 'Competencies:',
+        'informatica'               => 'IT:',
+        'idioma_ingles'             => 'English',
+        'idioma_frances'            => 'French',
+        'idioma_espanol_nativo'     => 'Spanish: Native',
+        'idioma_ingles_basico'      => 'English: Basic',
+        'idioma_ingles_avanzado'    => 'Advanced English',
+        'nivel_oral_bilingue'       => 'Oral level: Bilingual',
+        'nivel'                     => 'Level',
+        'nivel_basico'              => 'Basic',
+        'certificado_de'            => 'Certificate of',
+        'celular'                   => 'Phone',
+        'en'                        => 'At',
+ 
+        // ── Empty/placeholder texts ───────────────────────────────────────────
+        'empty_biografia'           => 'Web developer with over 5 years of experience in eCommerce.',
+        'empty_biografia_larga'     => 'Write your professional experience and most important skills here.',
+        'empty_profesion'           => 'Profession',
+        'empty_profesion_upper'     => 'STUDENT',
+        'empty_puesto'              => 'Position held',
+        'empty_empresa'             => 'COMPANY NAME',
+        'empty_institucion'         => 'Institution name',
+        'empty_universidad'         => 'Borcelle University',
+        'empty_formacion'           => 'Bachelor\'s Degree in Web Application Development',
+        'empty_exp_fecha'           => 'June 2017 - March 2020',
+        'empty_exp_titulo'          => 'eCommerce Web Developer · Hays Response',
+        'empty_exp_meta'            => 'At Casa Colombia, March 2021 - present',
+        'empty_exp_simple'          => 'INVENTORY & SALES SYSTEM · Developer',
+        'empty_hab_info'            => 'JavaScript, CSS, HTML, C#, SQL',
+        'empty_hab_tec'             => 'Basic Python course: basic language usage.',
+        'empty_hab_ofice'           => 'Word processor, spreadsheets and presentations.',
+        'empty_cert'                => 'Advanced JavaScript Programming (200 hours) - Edx',
+        'empty_cert_simple'         => 'Census agent participation certificate',
+        'empty_trabajo_equipo'      => 'Teamwork',
+        'empty_iniciativa'          => 'Initiative',
+        'empty_resolucion'          => 'Problem solving',
+        'empty_aprendizaje'         => 'Fast learning',
+        'empty_comunicacion'        => 'Effective communication',
+        'empty_adaptacion'          => 'Adaptability',
+        'empty_creatividad'         => 'Creativity',
+        'empty_liderazgo'           => 'Leadership',
+        'interes_lectura'           => 'Reading',
+        'interes_arte'              => 'Art',
+        'interes_deportes'          => 'Sports',
+    ],
+    'explorador' => [
+ 
+        // Hero
+        'hero_titulo'           => 'Portfolio System',
+        'hero_subtitulo'        => 'Institutional Management of Digital Assets · UMSS',
+ 
+        // Search
+        'buscar_placeholder'    => 'Search... (Ctrl + K)',
+        'btn_buscar'            => 'Search',
+ 
+        // Filters
+        'filtro_todos'          => 'All',
+        'filtro_proyectos'      => 'Projects',
+        'filtro_perfiles'       => 'Profiles',
+        'filtro_documentos'     => 'Documents',
+        'filtro_habilidades'    => 'Skills',
+ 
+        // Results bar
+        'resultados'            => 'Results',
+        'resultado'             => 'Result',
+        'encontrados'           => 'Found',
+        'encontrado'            => 'Found',
+        'difusion_activa'       => 'BROADCAST: DATABASE ACTIVE',
+ 
+        // Sort
+        'ordenar_relevancia'    => 'Sort by relevance',
+        'ordenar_az'            => 'Sort: A - Z',
+        'ordenar_za'            => 'Sort: Z - A',
+        'orden_relevancia'      => 'Relevance',
+        'orden_az'              => 'A - Z',
+        'orden_za'              => 'Z - A',
+ 
+        // No results
+        'sin_resultados_titulo' => 'No results found',
+        'sin_resultados_desc'   => 'Try different keywords or filters.',
+ 
+        // History
+        'busquedas_recientes'   => 'Recent searches',
+        'limpiar'               => 'Clear',
+ 
+        // Card tooltips
+        'tooltip_guardar'       => 'Save',
+        'tooltip_descargar'     => 'Download',
+ 
+        // Card types
+        'tipo_proyecto'         => 'PROJECT',
+        'tipo_habilidad'        => 'SKILL',
+        'tipo_documento'        => 'DOCUMENT',
+        'tipo_sin_tipo'         => 'N/A',
+ 
+        // JS fallbacks
+        'sin_titulo'            => 'No title',
+        'sin_descripcion'       => 'No description',
+ 
+        // Example cards (fallback)
+        'empty_proyecto1_titulo' => 'Tax Optimization Program 2024',
+        'empty_proyecto1_desc'   => 'Strategic initiative to improve institutional cash flows.',
+        'empty_proyecto2_titulo' => 'Environmental Development Program 2020',
+        'empty_proyecto2_desc'   => 'Strategic initiative to improve environmental development.',
+        'empty_habilidad_titulo' => 'PHP / Symfony Programming',
+        'empty_habilidad_desc'   => 'Functional capability in framework development for design and systems.',
+        'empty_documento_titulo' => 'Internal Security Protocols V2',
+        'empty_documento_desc'   => 'Technical documentation on best practices in encryption.',
     ],
 ];

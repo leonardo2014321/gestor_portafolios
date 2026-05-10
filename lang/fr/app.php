@@ -72,12 +72,12 @@ return [
         'enlace_desc'       => 'Obtenez une URL personnalisée à partager sur les réseaux sociaux.',
         'inspira'           => 'Inspirez-vous de vrais professionnels',
         'inspira_desc'      => 'Découvrez comment d\'autres experts se démarquent dans leur secteur avec SansiFolios.',
-        'ver_perfil'        => 'Voir le profil →',
+        'ver_perfil'        => 'Voir le profil',
         'todos'             => 'Tous',
-        'creativos'         => '🎨 Créatifs',
-        'salud'             => '🩺 Santé',
-        'negocios'          => '💼 Affaires',
-        'educacion'         => '🎓 Éducation',
+        'creativos'         => 'Créatifs',
+        'salud'             => 'Santé',
+        'negocios'          => 'Affaires',
+        'educacion'         => 'Éducation',
         'cerrar_sesion'     => 'Se déconnecter ?',
         'cerrar_confirm'    => 'Êtes-vous sûr de vouloir vous déconnecter ?',
         'cancelar'          => 'Annuler',
@@ -332,5 +332,152 @@ return [
         'desactivada_desc'    => 'Votre compte a été désactivé par vous-même. Voulez-vous le réactiver et vous reconnecter ?',
         'reactivar'           => 'Oui, réactiver mon compte',
         'cancelar'            => 'Annuler',
+    ],
+    'reportes' => [
+ 
+        // ── En-tête et contrôles ──────────────────────────────────────────────
+        'titulo'                    => 'Mes rapports / CV',
+        'subtitulo'                 => 'Générez et exportez votre curriculum vitæ.',
+        'editar_pantalla'           => 'Modifier',
+        'exportar_pdf'              => 'Exporter en PDF',
+        'seleccionar_plantilla'     => 'Choisir un modèle :',
+        'plantilla_moderna'         => 'Moderne (Bleu)',
+        'plantilla_clasica'         => 'Classique (Formel)',
+        'plantilla_minimalista'     => 'Minimaliste',
+        'plantilla_elegante'        => 'Élégant (Gris)',
+        'plantilla_creativa'        => 'Créatif (Vert/Rose)',
+        'plantilla_malva'           => 'Moderne (Mauve)',
+ 
+        // ── Sections du CV ────────────────────────────────────────────────────
+        'aptitudes'                 => 'Aptitudes',
+        'resumen_profesional'       => 'Résumé professionnel',
+        'habilidades_informaticas'  => 'Compétences informatiques',
+        'cursos_certificados'       => 'Cours et certificats',
+        'historial_laboral'         => 'Historique professionnel',
+        'formacion'                 => 'Formation',
+        'exp_laboral'               => 'Expérience professionnelle',
+        'educacion'                 => 'Formation',
+        'habilidades_conocimientos' => 'Compétences et connaissances',
+        'habilidades'               => 'Compétences',
+        'hab_tecnicas'              => 'Compétences techniques',
+        'contacto'                  => 'Contact',
+        'perfil'                    => 'Profil',
+        'idiomas'                   => 'Langues',
+        'intereses'                 => 'Intérêts',
+        'experiencia_profesional'   => 'Expérience professionnelle',
+        'lenguaje'                  => 'Langue',
+        'certificados'              => 'Certificats',
+        'actualidad'                => 'Aujourd\'hui',
+        'presente'                  => 'Présent',
+ 
+        // ── Clés héritées ─────────────────────────────────────────────────────
+        'competencias'              => 'Compétences :',
+        'informatica'               => 'Informatique :',
+        'idioma_ingles'             => 'Anglais',
+        'idioma_frances'            => 'Français',
+        'idioma_espanol_nativo'     => 'Espagnol : Natif',
+        'idioma_ingles_basico'      => 'Anglais : Débutant',
+        'idioma_ingles_avanzado'    => 'Anglais avancé',
+        'nivel_oral_bilingue'       => 'Niveau oral : Bilingue',
+        'nivel'                     => 'Niveau',
+        'nivel_basico'              => 'Débutant',
+        'certificado_de'            => 'Certificat de',
+        'celular'                   => 'Téléphone',
+        'en'                        => 'Chez',
+ 
+        // ── Textes exemples (placeholders vides) ──────────────────────────────
+        'empty_biografia'           => 'Développeuse web avec plus de 5 ans d\'expérience dans l\'eCommerce.',
+        'empty_biografia_larga'     => 'Rédigez ici votre expérience professionnelle et vos compétences clés.',
+        'empty_profesion'           => 'Profession',
+        'empty_profesion_upper'     => 'ÉTUDIANT(E)',
+        'empty_puesto'              => 'Poste occupé',
+        'empty_empresa'             => 'NOM DE L\'ENTREPRISE',
+        'empty_institucion'         => 'Nom de l\'établissement',
+        'empty_universidad'         => 'Université Borcelle',
+        'empty_formacion'           => 'BTS Développement d\'Applications Web',
+        'empty_exp_fecha'           => 'Juin 2017 - Mars 2020',
+        'empty_exp_titulo'          => 'Développeuse web eCommerce · Hays Response',
+        'empty_exp_meta'            => 'Chez Casa Colombia, mars 2021 - présent',
+        'empty_exp_simple'          => 'SYSTÈME DE STOCK ET VENTES · Développeur',
+        'empty_hab_info'            => 'JavaScript, CSS, HTML, C#, SQL',
+        'empty_hab_tec'             => 'Cours Python débutant : utilisation de base du langage.',
+        'empty_hab_ofice'           => 'Traitement de texte, tableur et présentations.',
+        'empty_cert'                => 'Programmation JavaScript avancée (200 h) - Edx',
+        'empty_cert_simple'         => 'Certificat de participation d\'agent de recensement',
+        'empty_trabajo_equipo'      => 'Travail en équipe',
+        'empty_iniciativa'          => 'Initiative',
+        'empty_resolucion'          => 'Résolution de problèmes',
+        'empty_aprendizaje'         => 'Apprentissage rapide',
+        'empty_comunicacion'        => 'Communication efficace',
+        'empty_adaptacion'          => 'Capacité d\'adaptation',
+        'empty_creatividad'         => 'Créativité',
+        'empty_liderazgo'           => 'Leadership',
+        'interes_lectura'           => 'Lecture',
+        'interes_arte'              => 'Art',
+        'interes_deportes'          => 'Sport',
+    ],
+    'explorador' => [
+ 
+        // Hero
+        'hero_titulo'           => 'Système de Portfolios',
+        'hero_subtitulo'        => 'Gestion institutionnelle des actifs numériques · UMSS',
+ 
+        // Recherche
+        'buscar_placeholder'    => 'Rechercher... (Ctrl + K)',
+        'btn_buscar'            => 'Rechercher',
+ 
+        // Filtres
+        'filtro_todos'          => 'Tous',
+        'filtro_proyectos'      => 'Projets',
+        'filtro_perfiles'       => 'Profils',
+        'filtro_documentos'     => 'Documents',
+        'filtro_habilidades'    => 'Compétences',
+ 
+        // Barre de résultats
+        'resultados'            => 'Résultats',
+        'resultado'             => 'Résultat',
+        'encontrados'           => 'Trouvés',
+        'encontrado'            => 'Trouvé',
+        'difusion_activa'       => 'DIFFUSION : BASE DE DONNÉES ACTIVE',
+ 
+        // Trier
+        'ordenar_relevancia'    => 'Trier par pertinence',
+        'ordenar_az'            => 'Trier : A - Z',
+        'ordenar_za'            => 'Trier : Z - A',
+        'orden_relevancia'      => 'Pertinence',
+        'orden_az'              => 'A - Z',
+        'orden_za'              => 'Z - A',
+ 
+        // Aucun résultat
+        'sin_resultados_titulo' => 'Aucun résultat trouvé',
+        'sin_resultados_desc'   => 'Essayez d\'autres termes ou filtres.',
+ 
+        // Historique
+        'busquedas_recientes'   => 'Recherches récentes',
+        'limpiar'               => 'Effacer',
+ 
+        // Infobulles de carte
+        'tooltip_guardar'       => 'Enregistrer',
+        'tooltip_descargar'     => 'Télécharger',
+ 
+        // Types de carte
+        'tipo_proyecto'         => 'PROJET',
+        'tipo_habilidad'        => 'COMPÉTENCE',
+        'tipo_documento'        => 'DOCUMENT',
+        'tipo_sin_tipo'         => 'S/T',
+ 
+        // Fallbacks JS
+        'sin_titulo'            => 'Sans titre',
+        'sin_descripcion'       => 'Sans description',
+ 
+        // Cartes d\'exemple (fallback)
+        'empty_proyecto1_titulo' => 'Programme d\'optimisation fiscale 2024',
+        'empty_proyecto1_desc'   => 'Initiative stratégique pour l\'amélioration des flux de trésorerie institutionnels.',
+        'empty_proyecto2_titulo' => 'Programme de développement environnemental 2020',
+        'empty_proyecto2_desc'   => 'Initiative stratégique pour l\'amélioration du développement environnemental.',
+        'empty_habilidad_titulo' => 'Programmation PHP / Symfony',
+        'empty_habilidad_desc'   => 'Capacité fonctionnelle dans le développement de frameworks pour la conception et les systèmes.',
+        'empty_documento_titulo' => 'Protocoles de sécurité interne V2',
+        'empty_documento_desc'   => 'Documentation technique sur les bonnes pratiques en matière de chiffrement.',
     ],
 ];
