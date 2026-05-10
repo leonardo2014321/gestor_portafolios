@@ -183,25 +183,6 @@
                     <div class="mp-err" id="mpErrRepo">Ingresa una URL válida (ej. https://github.com/...).</div>
                 </div>
             </div>
-            <div class="mp-section">
-                <div class="mp-section-label">
-                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    Cargar Archivos
-                </div>
-                <input type="file" id="mpFileInput" multiple accept=".pdf,.zip,.png,.jpg,.jpeg"
-                       style="display:none" onchange="mpHandleFiles(this.files)">
-                <div class="mp-drop" id="mpDrop"
-                     onclick="document.getElementById('mpFileInput').click()"
-                     ondragover="event.preventDefault();this.classList.add('dragover')"
-                     ondragleave="this.classList.remove('dragover')"
-                     ondrop="event.preventDefault();this.classList.remove('dragover');mpHandleFiles(event.dataTransfer.files)">
-                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    <p>Arrastra tus archivos aquí</p>
-                    <span>o haz clic para explorar · .pdf .zip .png .jpg (máx. 10MB)</span>
-                </div>
-                <div class="mp-file-errs" id="mpFileErrs"></div>
-                <div class="mp-flist" id="mpFlist"></div>
-            </div>
         </div>
         <div class="mp-footer">
             <button class="mp-btn-ghost" id="mpBtnBorrador" onclick="mpGuardar('borrador')" disabled>
@@ -237,8 +218,6 @@
                 <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 <span id="vpFecha"></span>
             </div>
-            <div class="vp-sec">Archivos adjuntos</div>
-            <div id="vpArchivos"></div>
         </div>
         <div class="vp-foot">
             <button class="vp-btn-del" id="vpBtnEliminar" onclick="vpConfirmarEliminar()">Eliminar portafolio</button>
@@ -314,25 +293,6 @@
                     </div>
                     <div class="mp-err" id="epErrRepo">Ingresa una URL válida.</div>
                 </div>
-            </div>
-            <div class="mp-section">
-                <div class="mp-section-label">
-                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    Agregar Archivos
-                </div>
-                <input type="file" id="epFileInput" multiple accept=".pdf,.zip,.png,.jpg,.jpeg"
-                       style="display:none" onchange="epHandleFiles(this.files)">
-                <div class="mp-drop" id="epDrop"
-                     onclick="document.getElementById('epFileInput').click()"
-                     ondragover="event.preventDefault();this.classList.add('dragover')"
-                     ondragleave="this.classList.remove('dragover')"
-                     ondrop="event.preventDefault();this.classList.remove('dragover');epHandleFiles(event.dataTransfer.files)">
-                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    <p>Arrastra archivos nuevos aquí</p>
-                    <span>o haz clic para explorar · .pdf .zip .png .jpg (máx. 10MB)</span>
-                </div>
-                <div class="mp-file-errs" id="epFileErrs"></div>
-                <div class="mp-flist"     id="epFlist"></div>
             </div>
         </div>
         <div class="mp-footer">
@@ -470,17 +430,6 @@
         }
         const fecha = new Date(p.updated_at);
         document.getElementById('vpFecha').textContent = 'Actualizado: ' + fecha.toLocaleDateString('es-BO', {day:'2-digit',month:'long',year:'numeric'});
-        const archDiv = document.getElementById('vpArchivos');
-        if (p.archivos && p.archivos.length > 0) {
-            archDiv.innerHTML = p.archivos.map(a => `
-                <div class="vp-file">
-                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    <span class="vp-file-name">${a.nombre_original}</span>
-                    <span class="vp-file-size">${(a.tamanio/1024).toFixed(0)} KB</span>
-                </div>`).join('');
-        } else {
-            archDiv.innerHTML = '<div class="vp-empty">Sin archivos adjuntos</div>';
-        }
         document.getElementById('vpBtnEliminar').dataset.id = id;
         document.getElementById('vpBtnEditar').dataset.id  = id;
         document.getElementById('modalVerPortafolio').classList.add('open');
@@ -531,7 +480,6 @@
     }
 
     /* ══ MODAL 4 · Editar ══ */
-    let epFiles = [];
     function vpAbrirEditar() {
         const id = document.getElementById('vpBtnEditar').dataset.id;
         const p  = VP_DATA.find(x => x.id == id);
@@ -544,9 +492,6 @@
         document.getElementById('epNombre').value = p.nombre;
         document.getElementById('epDesc').value   = p.descripcion || '';
         document.getElementById('epRepo').value   = p.repositorio_url || '';
-        epFiles = [];
-        document.getElementById('epFlist').innerHTML    = '';
-        document.getElementById('epFileErrs').innerHTML = '';
         document.getElementById('epDescCount').textContent = (p.descripcion || '').length;
         epValidarUrl();
         epCheckBtns();
@@ -573,27 +518,6 @@
         err.style.display  = ok ? 'none' : 'block';
         return ok || !val;
     }
-    function epHandleFiles(files) {
-        const errs = []; const maxSize = 10*1024*1024;
-        Array.from(files).forEach(f => {
-            const ext = f.name.split('.').pop().toLowerCase();
-            if (!['pdf','zip','png','jpg','jpeg'].includes(ext)) { errs.push(f.name + ': formato no permitido'); return; }
-            if (f.size > maxSize) { errs.push(f.name + ': excede 10 MB'); return; }
-            epFiles.push(f);
-        });
-        document.getElementById('epFileErrs').innerHTML = errs.map(e =>
-            `<div class="mp-ferr"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>${e}</div>`
-        ).join('');
-        epRenderFlist();
-    }
-    function epRenderFlist() {
-        document.getElementById('epFlist').innerHTML = epFiles.map((f,i) =>
-            `<div class="mp-fitem"><span class="mp-fitem-name">${f.name}</span>
-            <span><span class="mp-fitem-size">${(f.size/1024).toFixed(0)} KB</span>
-            <button class="mp-frem" onclick="epRemoveFile(${i})"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></span>
-            </div>`).join('');
-    }
-    function epRemoveFile(i) { epFiles.splice(i,1); epRenderFlist(); }
     function epConfirmarGuardar(estado) {
         const nombre = document.getElementById('epNombre').value.trim();
         const desc   = document.getElementById('epDesc').value.trim();
@@ -620,7 +544,6 @@
         form.append('repositorio_url', document.getElementById('epRepo').value.trim());
         form.append('estado', estado);
         form.append('_token', token);
-        epFiles.forEach(f => form.append('archivos[]', f));
         const btnB = document.getElementById('epBtnBorrador');
         const btnP = document.getElementById('epBtnPublicar');
         btnB.disabled = btnP.disabled = true;
@@ -638,9 +561,6 @@
     }
 
     /* ══ MODAL 1 · Crear ══ */
-    const MP_FORMATOS = ['pdf','zip','png','jpg','jpeg'];
-    const MP_MAX      = 10 * 1024 * 1024;
-    let mpFiles       = [];
 
     function abrirModalPortafolio() {
         mpReset();
@@ -662,9 +582,6 @@
         });
         const tick = document.getElementById('mpUrlTick');
         if (tick) tick.style.display = 'none';
-        document.getElementById('mpFileErrs').innerHTML = '';
-        document.getElementById('mpFlist').innerHTML    = '';
-        mpFiles = [];
         mpCheckBtns();
     }
     function mpCheckBtns() {
@@ -688,33 +605,6 @@
         document.getElementById('mpRepo').classList.toggle('mp-ok', valid);
         return valid;
     }
-    function mpHandleFiles(files) {
-        const errBox = document.getElementById('mpFileErrs');
-        errBox.innerHTML = '';
-        Array.from(files).forEach(f => {
-            const ext = f.name.split('.').pop().toLowerCase();
-            if (!MP_FORMATOS.includes(ext)) {
-                errBox.innerHTML += `<div class="mp-ferr"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Formato no válido — "${f.name}". Aceptados: .pdf .zip .png .jpg</div>`;
-                return;
-            }
-            if (f.size > MP_MAX) {
-                errBox.innerHTML += `<div class="mp-ferr"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Tamaño excedido — "${f.name}" (${(f.size/1024/1024).toFixed(1)}MB). Máx. 10MB.</div>`;
-                return;
-            }
-            mpFiles.push(f);
-        });
-        mpRenderFlist();
-    }
-    function mpRenderFlist() {
-        document.getElementById('mpFlist').innerHTML = mpFiles.map((f,i) =>
-            `<div class="mp-fitem">
-                <span class="mp-fitem-name">${f.name}</span>
-                <span><span class="mp-fitem-size">${(f.size/1024).toFixed(0)} KB</span>
-                <button class="mp-frem" onclick="mpRemoveFile(${i})"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></span>
-            </div>`
-        ).join('');
-    }
-    function mpRemoveFile(i) { mpFiles.splice(i,1); mpRenderFlist(); }
 
     /* ══ MODAL 5 · Crear Portafolio ══ */
     let pfBannerFile = null, pfLogoFile = null;
@@ -856,7 +746,6 @@
         form.append('repositorio_url', document.getElementById('mpRepo').value.trim());
         form.append('estado',          estado);
         form.append('_token',          document.querySelector('meta[name="csrf-token"]').content);
-        mpFiles.forEach(f => form.append('archivos[]', f));
         const btnB = document.getElementById('mpBtnBorrador');
         const btnP = document.getElementById('mpBtnPublicar');
         btnB.disabled = btnP.disabled = true;

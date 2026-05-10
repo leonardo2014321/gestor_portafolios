@@ -91,10 +91,9 @@
     <div class="pgrid">
         @foreach($portafolios as $portafolio)
             @php
-                $publicado   = $portafolio->estado === 'publicado';
-                $nArchivos   = $portafolio->archivos->count();
-                $hasBanner   = !empty($portafolio->banner_ruta);
-                $hasLogo     = !empty($portafolio->logo_ruta);
+                $publicado = $portafolio->estado === 'publicado';
+                $hasBanner = !empty($portafolio->banner_ruta);
+                $hasLogo   = !empty($portafolio->logo_ruta);
             @endphp
 
             @if($hasBanner)
@@ -154,12 +153,9 @@
                         </div>
                     </div>
                     <div class="pcard-bot">
-                        <div>
-                            <div class="pcard-num">{{ $nArchivos }} <small>ARCHIVOS</small></div>
-                            <div class="pcard-st">
-                                <span class="dot dg"></span>
-                                {{ __('app.menu.publicado') }}
-                            </div>
+                        <div class="pcard-st">
+                            <span class="dot dg"></span>
+                            {{ __('app.menu.publicado') }}
                         </div>
                         <a href="#" class="btn-ver"
                            onclick="verPortafolio({{ $portafolio->id }});return false;">
@@ -182,12 +178,9 @@
                         </div>
                     </div>
                     <div class="pcard-bot">
-                        <div>
-                            <div class="pcard-num">{{ $nArchivos }} <small>ARCHIVOS</small></div>
-                            <div class="pcard-st">
-                                <span class="dot dy"></span>
-                                {{ __('app.menu.borrador') }}
-                            </div>
+                        <div class="pcard-st">
+                            <span class="dot dy"></span>
+                            {{ __('app.menu.borrador') }}
                         </div>
                         <a href="#" class="btn-ver-dk"
                            onclick="verPortafolio({{ $portafolio->id }});return false;">

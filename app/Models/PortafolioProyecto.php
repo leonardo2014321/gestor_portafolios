@@ -26,4 +26,9 @@ class PortafolioProyecto extends Model
     {
         return $this->belongsTo(Usuario::class, 'usuario_id');
     }
+
+    public function archivos()
+    {
+        return $this->hasMany(PortafolioArchivo::class, 'proyecto_id');
+    }
 }

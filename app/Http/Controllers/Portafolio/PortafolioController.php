@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Portafolio;
 
 use App\Http\Controllers\Controller;
 use App\Models\Portafolio;
-use App\Models\PortafolioArchivo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -16,20 +15,19 @@ class PortafolioController extends Controller
     {
         return response()->json(
             Portafolio::where('usuario_id', Auth::id())
-                ->with('archivos')
                 ->orderByDesc('updated_at')
                 ->get()
         );
     }
 
+    // Crea un proyecto (sin archivos; los archivos van en portafolio_proyecto)
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nombre'          => 'required|string|max:255',
-            'descripcion'     => 'required|string',
+            'nombre'          => 'required|string|max:100',
+            'descripcion'     => 'required|string|max:500',
             'repositorio_url' => 'nullable|url|max:500',
             'estado'          => ['required', Rule::in(['borrador', 'publicado'])],
-            'archivos.*'      => 'nullable|file|max:10240|mimes:pdf,zip,png,jpg,jpeg',
         ]);
 
         $portafolio = Portafolio::create([
@@ -40,57 +38,10 @@ class PortafolioController extends Controller
             'usuario_id'      => Auth::id(),
         ]);
 
-        if ($request->hasFile('archivos')) {
-            foreach ($request->file('archivos') as $archivo) {
-                $ruta = $archivo->store('portafolios/' . $portafolio->id, 'public');
-                PortafolioArchivo::create([
-                    'portafolio_id'   => $portafolio->id,
-                    'nombre_original' => $archivo->getClientOriginalName(),
-                    'ruta'            => $ruta,
-                    'tamanio'         => $archivo->getSize(),
-                ]);
-            }
-        }
-
-        return response()->json(['ok' => true, 'portafolio' => $portafolio->load('archivos')]);
+        return response()->json(['ok' => true, 'portafolio' => $portafolio]);
     }
 
-    public function update(Request $request, $id)
-    {
-        $portafolio = Portafolio::where('id', $id)
-            ->where('usuario_id', Auth::id())
-            ->firstOrFail();
-
-        $data = $request->validate([
-            'nombre'          => 'required|string|max:255',
-            'descripcion'     => 'required|string',
-            'repositorio_url' => 'nullable|url|max:500',
-            'estado'          => ['required', Rule::in(['borrador', 'publicado'])],
-            'archivos.*'      => 'nullable|file|max:10240|mimes:pdf,zip,png,jpg,jpeg',
-        ]);
-
-        $portafolio->update([
-            'nombre'          => $data['nombre'],
-            'descripcion'     => $data['descripcion'],
-            'repositorio_url' => $data['repositorio_url'] ?? null,
-            'estado'          => $data['estado'],
-        ]);
-
-        if ($request->hasFile('archivos')) {
-            foreach ($request->file('archivos') as $archivo) {
-                $ruta = $archivo->store('portafolios/' . $portafolio->id, 'public');
-                PortafolioArchivo::create([
-                    'portafolio_id'   => $portafolio->id,
-                    'nombre_original' => $archivo->getClientOriginalName(),
-                    'ruta'            => $ruta,
-                    'tamanio'         => $archivo->getSize(),
-                ]);
-            }
-        }
-
-        return response()->json(['ok' => true, 'portafolio' => $portafolio->load('archivos')]);
-    }
-
+    // Crea un portafolio contenedor con banner y logo
     public function storePortafolio(Request $request)
     {
         $data = $request->validate([
@@ -120,7 +71,30 @@ class PortafolioController extends Controller
             $portafolio->save();
         }
 
-        return response()->json(['ok' => true, 'portafolio' => $portafolio->load('archivos')]);
+        return response()->json(['ok' => true, 'portafolio' => $portafolio]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $portafolio = Portafolio::where('id', $id)
+            ->where('usuario_id', Auth::id())
+            ->firstOrFail();
+
+        $data = $request->validate([
+            'nombre'          => 'required|string|max:100',
+            'descripcion'     => 'required|string|max:500',
+            'repositorio_url' => 'nullable|url|max:500',
+            'estado'          => ['required', Rule::in(['borrador', 'publicado'])],
+        ]);
+
+        $portafolio->update([
+            'nombre'          => $data['nombre'],
+            'descripcion'     => $data['descripcion'],
+            'repositorio_url' => $data['repositorio_url'] ?? null,
+            'estado'          => $data['estado'],
+        ]);
+
+        return response()->json(['ok' => true, 'portafolio' => $portafolio]);
     }
 
     public function destroy($id)
@@ -129,8 +103,12 @@ class PortafolioController extends Controller
             ->where('usuario_id', Auth::id())
             ->firstOrFail();
 
-        foreach ($portafolio->archivos as $archivo) {
-            Storage::disk('public')->delete($archivo->ruta);
+        // Eliminar banner y logo del storage si existen
+        if ($portafolio->banner_ruta) {
+            Storage::disk('public')->delete($portafolio->banner_ruta);
+        }
+        if ($portafolio->logo_ruta) {
+            Storage::disk('public')->delete($portafolio->logo_ruta);
         }
 
         $portafolio->delete();
