@@ -24,21 +24,34 @@ use App\Http\Controllers\LanguageController;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return response()->view('home')->withHeaders([
+        'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+        'Pragma'        => 'no-cache',
+        'Expires'       => '0',
+    ]);
 })->name('inicio');
 
 Route::get('/home', function () {
-    return view('home');
+    return response()->view('home')->withHeaders([
+        'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+        'Pragma'        => 'no-cache',
+        'Expires'       => '0',
+    ]);
 })->name('home');
 
 Route::get('/caracteristicas', function () {
     return view('Auth.caracteristicas');
 })->name('caracteristicas');
 
-// ✅ RUTA CORREGIDA: Ahora está en la zona pública y no pedirá login
+Route::get('/explorador', function () {
+    return view('Auth.explorador');
+})->name('explorador');
+
+// RUTA CORREGIDA: Ahora está en la zona pública y no pedirá login
 Route::get('/portafolios', function () {
     return view('Auth.portafolios');
 })->name('portafolios.index');
+
 
 /*
 |--------------------------------------------------------------------------

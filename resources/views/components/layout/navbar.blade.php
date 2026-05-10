@@ -19,59 +19,70 @@
 
     {{-- ── Logo ── --}}
     <div class="tb-left">
-        <img class="logo-img" src="{{ asset('images/logo.png') }}" alt="UMSS">
-        <div class="sysname">Sansi<span>Folios</span></div>
+        <a href="{{ url('/') }}" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+            <img class="logo-img" src="{{ asset('images/logo.png') }}" alt="UMSS">
+            <div class="sysname">Sansi<span>Folios</span></div>
+        </a>
     </div>
 
     {{-- ── Nav central ── --}}
     <nav class="tb-nav">
-        @auth
-            <button onclick="showView('menu')" class="tb-link"
-                style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
-                       color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
-                onmouseover="this.style.color='#fff'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
-                {{ __('app.nav.inicio') }}
-            </button>
+        {{-- Inicio: siempre lleva al home --}}
+        <a href="{{ url('/') }}"
+            style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
+                text-decoration:none;transition:color .2s;"
+            onmouseover="this.style.color='#fff'"
+            onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+            {{ __('app.nav.inicio') }}
+        </a>
 
-            <button onclick="showView('caracteristicas')" class="tb-link"
+        @auth
+            <button onclick="typeof showView === 'function' ? showView('caracteristicas') : window.location.href='{{ route('caracteristicas') }}'" class="tb-link"
                 style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
-                       color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
+                    color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
                 onmouseover="this.style.color='#fff'"
                 onmouseout="this.style.color='rgba(255,255,255,0.65)'">
                 {{ __('app.nav.caracteristicas') }}
             </button>
 
-            <button onclick="showView('portafolios')" class="tb-link"
+            <button onclick="typeof showView === 'function' ? showView('portafolios') : window.location.href='{{ route('portafolios.index') }}'" class="tb-link"
                 style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
-                       color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
+                    color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
                 onmouseover="this.style.color='#fff'"
                 onmouseout="this.style.color='rgba(255,255,255,0.65)'">
                 {{ __('app.nav.portafolios') }}
             </button>
 
-            <button onclick="showView('explorador')" class="tb-link"
+            <button onclick="typeof showView === 'function' ? showView('explorador') : window.location.href='{{ route('explorador') }}'" class="tb-link"
                 style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
-                       color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
+                    color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
                 onmouseover="this.style.color='#fff'"
                 onmouseout="this.style.color='rgba(255,255,255,0.65)'">
                 {{ __('app.nav.explorador') }}
             </button>
         @else
-            <a href="{{ url('/') }}"
-                style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
-                       text-decoration:none;transition:color .2s;"
-                onmouseover="this.style.color='#fff'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
-                {{ __('app.nav.inicio') }}
-            </a>
-
             <a href="{{ route('portafolios.index') }}"
                 style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
-                       text-decoration:none;transition:color .2s;"
+                    text-decoration:none;transition:color .2s;"
                 onmouseover="this.style.color='#fff'"
                 onmouseout="this.style.color='rgba(255,255,255,0.65)'">
                 {{ __('app.nav.portafolios') }}
+            </a>
+
+            <a href="{{ route('caracteristicas') }}"
+                style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
+                    text-decoration:none;transition:color .2s;"
+                onmouseover="this.style.color='#fff'"
+                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                {{ __('app.nav.caracteristicas') }}
+            </a>
+
+            <a href="{{ route('explorador') }}"
+                style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
+                    text-decoration:none;transition:color .2s;"
+                onmouseover="this.style.color='#fff'"
+                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                {{ __('app.nav.explorador') }}
             </a>
         @endauth
     </nav>
@@ -183,12 +194,12 @@
             </div>
 
             {{-- ── Menú de usuario ── --}}
-            <div style="position:relative;">
-                <button onclick="toggleNavMenu()"
+            <div style="position:relative;" id="nav-user-wrap">
+                <button onclick="navUserToggle()"
                     style="display:flex;align-items:center;gap:8px;
-                           background:rgba(255,255,255,0.08);
-                           border:1px solid rgba(255,255,255,0.15);border-radius:10px;
-                           padding:6px 12px 6px 6px;cursor:pointer;transition:background .2s;"
+                        background:rgba(255,255,255,0.08);
+                        border:1px solid rgba(255,255,255,0.15);border-radius:10px;
+                        padding:6px 12px 6px 6px;cursor:pointer;transition:background .2s;"
                     onmouseover="this.style.background='rgba(255,255,255,0.14)'"
                     onmouseout="this.style.background='rgba(255,255,255,0.08)'">
                     <div class="sb-av" style="width:32px;height:32px;font-size:12px;">
@@ -241,7 +252,7 @@
                     </div>
 
                     <div style="padding:6px;">
-                        <button onclick="showView('perfil');cerrarNavMenu()"
+                        <button onclick="if(typeof showView === 'function'){showView('perfil');cerrarNavMenu();}else{window.location.href='{{ url('/menu') }}'}"
                             style="width:100%;display:flex;align-items:center;gap:10px;
                                    padding:9px 12px;border-radius:8px;border:none;background:none;
                                    cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
@@ -256,7 +267,7 @@
                             {{ __('app.nav.mi_perfil') }}
                         </button>
 
-                        <button onclick="showView('reportes');cerrarNavMenu()"
+                        <button onclick="if(typeof showView === 'function'){showView('reportes');cerrarNavMenu();}else{window.location.href='{{ url('/menu') }}'}"
                             style="width:100%;display:flex;align-items:center;gap:10px;
                                    padding:9px 12px;border-radius:8px;border:none;background:none;
                                    cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
@@ -324,12 +335,85 @@
             panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
         }
 
+        function navUserToggle() {
+            const menu = document.getElementById('navUserMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function cerrarNavMenu() {
+            const menu = document.getElementById('navUserMenu');
+            if (menu) menu.style.display = 'none';
+        }
+
+
+        function confirmarLogout() {
+            document.getElementById('modalLogout').style.display = 'flex';
+            cerrarNavMenu();
+        }
+
+        function ejecutarLogoutGlobal(btn) {
+            btn.disabled = true;
+            document.getElementById('logoutSpinnerGlobal').style.display = 'block';
+            document.getElementById('logoutBtnLabelGlobal').textContent = '{{ __("app.menu.cerrando") }}';
+            btn.style.opacity = '0.85';
+            document.getElementById('formLogoutGlobal').submit();
+        }
+
+        // Cierra dropdowns al click fuera (solo UN listener)
         document.addEventListener('click', function(e) {
-            const wrap = document.getElementById('lang-wrap');
-            if (wrap && !wrap.contains(e.target)) {
+            const userWrap = document.getElementById('nav-user-wrap');
+            if (userWrap && !userWrap.contains(e.target)) cerrarNavMenu();
+
+            const langWrap = document.getElementById('lang-wrap');
+            if (langWrap && !langWrap.contains(e.target)) {
                 document.getElementById('lang-panel').style.display = 'none';
             }
         });
     </script>
+
+{{-- ── Modal Logout Global ── --}}
+    @auth
+    <div id="modalLogout" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99999;align-items:center;justify-content:center;">
+        <div style="background:#fff;border-radius:20px;padding:32px;width:90%;max-width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+            <div style="width:52px;height:52px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+            </div>
+            <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:#0f172a;margin-bottom:8px;">
+                {{ __('app.menu.cerrar_sesion') }}
+            </div>
+            <div style="font-size:13px;color:#64748b;margin-bottom:24px;">
+                {{ __('app.menu.cerrar_confirm') }}
+            </div>
+            <div style="display:flex;gap:10px;">
+                <button onclick="document.getElementById('modalLogout').style.display='none'"
+                    style="flex:1;padding:12px;border-radius:12px;border:1.5px solid #e2e8f0;
+                           background:transparent;font-size:14px;font-weight:600;
+                           cursor:pointer;font-family:'DM Sans',sans-serif;">
+                    {{ __('app.menu.cancelar') }}
+                </button>
+                <button onclick="ejecutarLogoutGlobal(this)"
+                    style="flex:1;padding:12px;border-radius:12px;border:none;background:#2563eb;
+                           color:#fff;font-size:14px;font-weight:600;cursor:pointer;
+                           font-family:'DM Sans',sans-serif;display:flex;align-items:center;
+                           justify-content:center;gap:8px;">
+                    <svg id="logoutSpinnerGlobal"
+                        style="display:none;width:16px;height:16px;animation:spin .7s linear infinite;"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                    </svg>
+                    <span id="logoutBtnLabelGlobal">{{ __('app.menu.si_salir') }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <form id="formLogoutGlobal" action="{{ route('logout') }}" method="POST" style="display:none;">
+        @csrf
+    </form>
+    @endauth
 
 </div>{{-- fin topbar --}}
