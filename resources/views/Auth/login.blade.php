@@ -17,7 +17,11 @@
                 </div>
                 <h2 class="text-2xl font-bold tracking-tight text-slate-900">Cuenta desactivada</h2>
                 <p class="mt-3 text-sm text-slate-500 leading-relaxed">
-                    Tu cuenta fue desactivada por ti mismo.<br>¿Deseas reactivarla y volver a entrar?
+                    @if(session('motivo_desactivacion') === 'normas_inactividad')
+                        Tu cuenta fue desactivada por no cumplir con las normas de la plataforma o por inactividad prolongada.<br>Si crees que esto es un error, contacta con soporte.
+                    @else
+                        Tu cuenta fue desactivada por ti mismo.<br>¿Deseas reactivarla y volver a entrar?
+                    @endif
                 </p>
 
                 <form method="POST" action="{{ route('reactivar') }}" class="mt-7 w-full space-y-3">

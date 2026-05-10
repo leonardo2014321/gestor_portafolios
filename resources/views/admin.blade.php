@@ -140,6 +140,31 @@
         .slider:before {position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
         input:checked + .slider {background-color: var(--admin-purple);}
         input:checked + .slider:before {transform: translateX(14px);}
+
+        /* Botones de acción directos */
+        .btn-action-admin {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'DM Sans', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-status-off { background: #fee2e2; color: #b91c1c; }
+        .btn-status-off:hover { background: #fecaca; }
+        .btn-status-on { background: #dcfce7; color: #15803d; }
+        .btn-status-on:hover { background: #bbf7d0; }
+        .btn-role-admin { background: #e0e7ff; color: #4338ca; }
+        .btn-role-admin:hover { background: #c7d2fe; }
+        .btn-role-user { background: #f1f5f9; color: #475569; }
+        .btn-role-user:hover { background: #e2e8f0; }
         
         .action-dropdown-container {position: relative; display: inline-block;}
         .action-menu {display: none; position: absolute; right: 0; top: 100%; margin-top: 5px; background: #fff; border: 1px solid var(--gray2); border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 200px; z-index: 100; padding: 12px; flex-direction: column; gap: 12px;}
@@ -245,6 +270,11 @@
         .u-email{font-size:11.5px;color:var(--muted)}
         .icon-rose{background:linear-gradient(135deg,#fce7f3,#fbcfe8);color:#be185d}
         .st-pending{background:#fef9c3;color:#854d0e;border:1px solid #fde68a}
+        
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -259,8 +289,8 @@
             <img class="logo-img" src="{{ asset('images/logo.png') }}" alt="UMSS" style="height: 32px; width: auto; object-fit: contain;">
             <div class="sysname">Sansi<span>Folios</span></div>
         </div>
-        <div class="tb-right">
 
+        <div class="tb-right">
             <div class="tb-bell">
                 <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             </div>
@@ -285,23 +315,62 @@
                     </form>
                 </div>
 
-                <!-- Modal confirmación logout -->
+                <!-- Modales de Confirmación (Logout y Desactivación) -->
                 <div id="modal-logout-confirm" onclick="if(event.target===this)cerrarLogoutAdmin()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
                     <div style="background:#fff;border-radius:24px;padding:2.2rem 2rem 1.8rem;width:370px;max-width:92vw;box-shadow:0 24px 64px rgba(0,0,0,0.22);text-align:center;animation:fadeInScale .2s ease;">
-                        <style>@keyframes fadeInScale{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}</style>
                         <div style="width:60px;height:60px;border-radius:18px;background:#eff2ff;display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem;">
                             <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#1428c6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
                         </div>
                         <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:800;color:#0f172a;margin-bottom:8px;">¿Cerrar sesión?</h3>
                         <p style="font-size:13.5px;color:#64748b;line-height:1.65;margin-bottom:1.8rem;">Serás redirigido a la página de inicio.<br>Podrás volver a ingresar cuando quieras.</p>
                         <div style="display:flex;gap:10px;">
-                            <button onclick="cerrarLogoutAdmin()" style="flex:1;padding:12px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;font-size:13.5px;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='#fff'">Cancelar</button>
-                            <button onclick="document.getElementById('formLogoutAdmin').submit()" style="flex:1;padding:12px;border-radius:14px;border:none;background:linear-gradient(135deg,#1428c6,#1e3adb);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 14px rgba(20,40,198,0.4);transition:all 0.2s;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">Sí, salir</button>
+                            <button onclick="cerrarLogoutAdmin()" style="flex:1;padding:12px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;font-size:13.5px;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;">Cancelar</button>
+                            <button onclick="document.getElementById('formLogoutAdmin').submit()" style="flex:1;padding:12px;border-radius:14px;border:none;background:linear-gradient(135deg,#1428c6,#1e3adb);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">Sí, salir</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modal-user-deactivate" onclick="if(event.target===this)cerrarModalDeactivate()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+                    <div style="background:#fff;border-radius:24px;padding:2.2rem 2rem 1.8rem;width:400px;max-width:92vw;box-shadow:0 24px 64px rgba(0,0,0,0.22);text-align:center;animation:fadeInScale .2s ease;">
+                        <div style="width:60px;height:60px;border-radius:18px;background:#fff1f2;display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem;">
+                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#e11d48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        </div>
+                        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:800;color:#0f172a;margin-bottom:8px;">¿Desactivar cuenta?</h3>
+                        <p style="font-size:13.5px;color:#64748b;line-height:1.65;margin-bottom:1.5rem;">El usuario no podrá acceder al sistema hasta que su cuenta sea reactivada por un administrador.</p>
+                        
+                        <div style="text-align:left;margin-bottom:1.5rem">
+                            <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Confirma tu contraseña</label>
+                            <input type="password" id="admin-confirm-pass" placeholder="Ingresa tu contraseña" style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid var(--gray2);outline:none;font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--admin-purple)'" onblur="this.style.borderColor='var(--gray2)'">
+                        </div>
+
+                        <div style="display:flex;gap:10px;">
+                            <button onclick="cerrarModalDeactivate()" style="flex:1;padding:12px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;font-size:13.5px;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;">Cancelar</button>
+                            <button id="btn-confirm-deactivate" style="flex:1;padding:12px;border-radius:14px;border:none;background:linear-gradient(135deg,#1428c6,#1e3adb);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 14px rgba(20,40,198,0.3);">Desactivar ahora</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal confirmación cambio de rol -->
+                <div id="modal-user-role" onclick="if(event.target===this)cerrarModalRole()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+                    <div style="background:#fff;border-radius:24px;padding:2.2rem 2rem 1.8rem;width:400px;max-width:92vw;box-shadow:0 24px 64px rgba(0,0,0,0.22);text-align:center;animation:fadeInScale .2s ease;">
+                        <div style="width:60px;height:60px;border-radius:18px;background:#eef2ff;display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem;">
+                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+                        </div>
+                        <h3 id="modal-role-title" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:800;color:#0f172a;margin-bottom:8px;">¿Cambiar permisos?</h3>
+                        <p id="modal-role-text" style="font-size:13.5px;color:#64748b;line-height:1.65;margin-bottom:1.5rem;">Esta acción modificará el nivel de acceso del usuario al sistema administrativo.</p>
+                        
+                        <div style="text-align:left;margin-bottom:1.5rem">
+                            <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Confirma tu contraseña</label>
+                            <input type="password" id="admin-role-pass" placeholder="Ingresa tu contraseña" style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid var(--gray2);outline:none;font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--admin-purple)'" onblur="this.style.borderColor='var(--gray2)'">
+                        </div>
+
+                        <div style="display:flex;gap:10px;">
+                            <button onclick="cerrarModalRole()" style="flex:1;padding:12px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;font-size:13.5px;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;">Cancelar</button>
+                            <button id="btn-confirm-role" style="flex:1;padding:12px;border-radius:14px;border:none;background:linear-gradient(135deg,#1428c6,#1e3adb);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 14px rgba(20,40,198,0.3);">Confirmar cambio</button>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -447,21 +516,14 @@
                                             <div class="action-dropdown-container">
                                                 <button class="action-btn" onclick="toggleActionMenu(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
                                                 <div class="action-menu">
-                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <span style="font-size: 13px; font-weight: 600; color: var(--text);">Estado</span>
-                                                        <label class="switch">
-                                                            <input type="checkbox" {{ $usuario->activo ? 'checked' : '' }} onchange="toggleStatus(this, 'status-{{ $usuario->id }}')">
-                                                            <span class="slider"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div style="height: 1px; background: var(--gray2);"></div>
-                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                        <span style="font-size: 13px; font-weight: 600; color: var(--text);">Rol Admin</span>
-                                                        <label class="switch">
-                                                            <input type="checkbox" {{ $usuario->es_admin ? 'checked' : '' }} onchange="toggleRole(this, 'role-{{ $usuario->id }}')">
-                                                            <span class="slider"></span>
-                                                        </label>
-                                                    </div>
+                                                    <button class="btn-action-admin {{ $usuario->activo ? 'btn-status-off' : 'btn-status-on' }}" 
+                                                            onclick="adminToggleStatus({{ $usuario->id }}, 'status-{{ $usuario->id }}', this)">
+                                                        {{ $usuario->activo ? 'Desactivar cuenta' : 'Activar cuenta' }}
+                                                    </button>
+                                                    <button class="btn-action-admin {{ $usuario->es_admin ? 'btn-role-user' : 'btn-role-admin' }}" 
+                                                            onclick="adminToggleRole({{ $usuario->id }}, 'role-{{ $usuario->id }}', this)">
+                                                        {{ $usuario->es_admin ? 'Quitar administrador' : 'Volver administrador' }}
+                                                    </button>
                                                 </div>
                                             </div>
                                         </td>
@@ -773,24 +835,151 @@
         }
     }
 
-    function toggleStatus(checkbox, statusId) {
-        const badge = document.getElementById(statusId);
-        if (checkbox.checked) {
-            badge.className = 'status-badge st-active';
-            badge.innerText = 'Activo';
+    async function adminToggleStatus(userId, badgeId, btn) {
+        const badge = document.getElementById(badgeId);
+        const isCurrentlyActive = badge.classList.contains('st-active');
+
+        if (isCurrentlyActive) {
+            // MOSTRAR MODAL DE CONFIRMACIÓN
+            document.getElementById('modal-user-deactivate').style.display = 'flex';
+            document.getElementById('admin-confirm-pass').value = '';
+            document.getElementById('admin-confirm-pass').focus();
+
+            // Configurar el botón de confirmación del modal
+            document.getElementById('btn-confirm-deactivate').onclick = async function() {
+                const password = document.getElementById('admin-confirm-pass').value;
+                if (!password) {
+                    alert('Debes ingresar tu contraseña para continuar.');
+                    return;
+                }
+                
+                const originalBtnText = this.innerText;
+                this.innerText = 'Procesando...';
+                this.disabled = true;
+
+                const success = await executeStatusUpdate(userId, badgeId, btn, password);
+                
+                this.innerText = originalBtnText;
+                this.disabled = false;
+
+                if (success) cerrarModalDeactivate();
+            };
         } else {
-            badge.className = 'status-badge st-inactive';
-            badge.innerText = 'Inactivo';
+            // ACTIVAR DIRECTAMENTE
+            executeStatusUpdate(userId, badgeId, btn);
         }
     }
 
-    function toggleRole(checkbox, roleId, originalRole = 'Usuario') {
-        const roleCell = document.getElementById(roleId);
-        if (checkbox.checked) {
-            roleCell.innerText = 'Administrador';
-        } else {
-            roleCell.innerText = originalRole;
+    async function executeStatusUpdate(userId, badgeId, btn, password = null) {
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        const formData = new FormData();
+        if (password) formData.append('password', password);
+
+        try {
+            const res = await fetch(`/admin/usuarios/${userId}/toggle-status`, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': token, 'Accept': 'application/json' },
+                body: formData
+            });
+            
+            const data = await res.json();
+            
+            if (data.success) {
+                const badge = document.getElementById(badgeId);
+                if (data.activo) {
+                    badge.className = 'status-badge st-active';
+                    badge.innerText = 'Activo';
+                    btn.innerText = 'Desactivar cuenta';
+                    btn.className = 'btn-action-admin btn-status-off';
+                } else {
+                    badge.className = 'status-badge st-inactive';
+                    badge.innerText = 'Inactivo';
+                    btn.innerText = 'Activar cuenta';
+                    btn.className = 'btn-action-admin btn-status-on';
+                }
+                const row = btn.closest('tr');
+                if(row) row.setAttribute('data-estado', data.activo ? 'activo' : 'inactivo');
+                return true;
+            } else {
+                alert(data.mensaje || 'Error al actualizar el estado.');
+                return false;
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Ocurrió un error en la conexión.');
+            return false;
         }
+    }
+
+    function cerrarModalDeactivate() {
+        document.getElementById('modal-user-deactivate').style.display = 'none';
+    }
+
+    async function adminToggleRole(userId, roleCellId, btn) {
+        const roleCell = document.getElementById(roleCellId);
+        const currentRole = roleCell.innerText.trim().toLowerCase();
+        const willBeAdmin = currentRole === 'usuario';
+
+        document.getElementById('modal-role-title').innerText = willBeAdmin ? '¿Hacer administrador?' : '¿Quitar administrador?';
+        document.getElementById('modal-role-text').innerText = willBeAdmin 
+            ? 'El usuario tendrá permisos totales para gestionar la plataforma.' 
+            : 'El usuario perderá sus privilegios administrativos.';
+
+        document.getElementById('modal-user-role').style.display = 'flex';
+        document.getElementById('admin-role-pass').value = '';
+        document.getElementById('admin-role-pass').focus();
+
+        document.getElementById('btn-confirm-role').onclick = async function() {
+            const password = document.getElementById('admin-role-pass').value;
+            if (!password) { alert('Debes ingresar tu contraseña para continuar.'); return; }
+            const originalBtnText = this.innerText;
+            this.innerText = 'Procesando...';
+            this.disabled = true;
+            const success = await executeRoleUpdate(userId, roleCellId, btn, password);
+            this.innerText = originalBtnText;
+            this.disabled = false;
+            if (success) cerrarModalRole();
+        };
+    }
+
+    async function executeRoleUpdate(userId, roleCellId, btn, password) {
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        const formData = new FormData();
+        formData.append('password', password);
+        try {
+            const res = await fetch(`/admin/usuarios/${userId}/toggle-role`, {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': token, 'Accept': 'application/json' },
+                body: formData
+            });
+            const data = await res.json();
+            if (data.success) {
+                const roleCell = document.getElementById(roleCellId);
+                if (data.es_admin) {
+                    roleCell.innerText = 'Administrador';
+                    btn.innerText = 'Quitar administrador';
+                    btn.className = 'btn-action-admin btn-role-user';
+                } else {
+                    roleCell.innerText = 'Usuario';
+                    btn.innerText = 'Volver administrador';
+                    btn.className = 'btn-action-admin btn-role-admin';
+                }
+                const row = btn.closest('tr');
+                if(row) row.setAttribute('data-rol', data.es_admin ? 'admin' : 'usuario');
+                return true;
+            } else {
+                alert(data.mensaje || 'Error al actualizar el rol.');
+                return false;
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Ocurrió un error en la conexión.');
+            return false;
+        }
+    }
+
+    function cerrarModalRole() {
+        document.getElementById('modal-user-role').style.display = 'none';
     }
 
     /* ══ Calendario ══ */

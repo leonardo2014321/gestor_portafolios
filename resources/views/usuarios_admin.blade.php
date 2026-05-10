@@ -71,21 +71,14 @@
                             <div class="action-dropdown-container">
                                 <button class="action-btn" onclick="toggleActionMenu(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
                                 <div class="action-menu">
-                                    <div style="display:flex;justify-content:space-between;align-items:center">
-                                        <span style="font-size:13px;font-weight:600">Estado</span>
-                                        <label class="switch">
-                                            <input type="checkbox" {{ $usuario->activo ? 'checked' : '' }} onchange="toggleStatus(this,'us-{{ $usuario->id }}')">
-                                            <span class="slider"></span>
-                                        </label>
-                                    </div>
-                                    <div style="height:1px;background:var(--gray2)"></div>
-                                    <div style="display:flex;justify-content:space-between;align-items:center">
-                                        <span style="font-size:13px;font-weight:600">Admin</span>
-                                        <label class="switch">
-                                            <input type="checkbox" {{ $usuario->es_admin ? 'checked' : '' }} onchange="toggleRole(this,'ur-{{ $usuario->id }}')">
-                                            <span class="slider"></span>
-                                        </label>
-                                    </div>
+                                    <button class="btn-action-admin {{ $usuario->activo ? 'btn-status-off' : 'btn-status-on' }}" 
+                                            onclick="adminToggleStatus({{ $usuario->id }}, 'us-{{ $usuario->id }}', this)">
+                                        {{ $usuario->activo ? 'Desactivar cuenta' : 'Activar cuenta' }}
+                                    </button>
+                                    <button class="btn-action-admin {{ $usuario->es_admin ? 'btn-role-user' : 'btn-role-admin' }}" 
+                                            onclick="adminToggleRole({{ $usuario->id }}, 'ur-{{ $usuario->id }}', this)">
+                                        {{ $usuario->es_admin ? 'Quitar administrador' : 'Volver administrador' }}
+                                    </button>
                                 </div>
                             </div>
                         </td>

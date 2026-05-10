@@ -50,4 +50,76 @@ class AdminController extends Controller
             'actividades_recientes'
         ));
     }
+
+    /**
+     * Alterna el estado (activo/inactivo) de un usuario con validación de seguridad.
+     */
+    public function toggleStatus(Request $request, $id)
+    {
+        $usuario = Usuario::findOrFail($id);
+        
+        // Si se va a desactivar, validamos la contraseña del admin
+        if ($usuario->activo) {
+            $request->validate([
+                'password' => 'required'
+            ]);
+
+            if (!password_verify($request->password, auth()->user()->contrasena)) {
+                return response()->json([
+                    'success' => false,
+                    'mensaje' => 'La contraseña de administrador es incorrecta.'
+                ], 422);
+            }
+
+            $usuario->activo = false;
+            $usuario->motivo_desactivacion = 'normas_inactividad';
+        } else {
+            // Si se va a activar
+            $usuario->activo = true;
+            $usuario->motivo_desactivacion = null;
+        }
+
+        $usuario->save();
+
+        $accion = $usuario->activo ? 'reactivacion_cuenta' : 'CUENTA_DESACTIVADA';
+        \App\Services\ActividadService::log(auth()->id(), $accion, [
+            'usuario_afectado' => $usuario->nombre . ' ' . $usuario->apellido,
+            'email' => $usuario->email
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'activo' => $usuario->activo,
+            'mensaje' => 'Estado del usuario actualizado correctamente.'
+        ]);
+    }
+
+    /**
+     * Alterna el rol (admin/usuario) de un usuario.
+     */
+    public function toggleRole(Request $request, $id)
+    {
+        // Validar contraseña del admin actual
+        if (!Hash::check($request->password, auth()->user()->password)) {
+            return response()->json([
+                'success' => false,
+                'mensaje' => 'La contraseña de administrador es incorrecta.'
+            ], 403);
+        }
+
+        $usuario = Usuario::findOrFail($id);
+        $usuario->es_admin = !$usuario->es_admin;
+        $usuario->save();
+
+        \App\Services\ActividadService::log(auth()->id(), 'CAMBIO_ROL', [
+            'usuario_afectado' => $usuario->nombre . ' ' . $usuario->apellido,
+            'nuevo_rol' => $usuario->es_admin ? 'Administrador' : 'Usuario'
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'es_admin' => $usuario->es_admin,
+            'mensaje' => 'Rol del usuario actualizado correctamente.'
+        ]);
+    }
 }

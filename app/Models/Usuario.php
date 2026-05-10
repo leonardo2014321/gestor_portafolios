@@ -32,6 +32,7 @@ class Usuario extends Authenticatable
         'profesion',
         'biografia',
         'foto_perfil',
+        'motivo_desactivacion',
     ];
 
     protected $casts = [
