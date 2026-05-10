@@ -14,6 +14,7 @@ use App\Http\Controllers\Perfil\RedPerfilController;
 use App\Http\Controllers\Perfil\PerfilController;
 use App\Http\Controllers\Perfil\TrayectoriaController;
 use App\Http\Controllers\Portafolio\PortafolioController;
+use App\Http\Controllers\Portafolio\PortafolioProyectoController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LanguageController;
 
@@ -104,11 +105,15 @@ Route::middleware('auth')->group(function () {
     // Portafolios (contenedores con banner/logo)
     Route::post('/portafolios', [PortafolioController::class, 'storePortafolio']);
 
-    // Proyectos dentro de portafolios (tabla portafolio_proyecto)
+    // Portafolios (CRUD)
     Route::get('/mis-portafolios', [PortafolioController::class, 'index']);
-    Route::post('/mis-portafolios', [PortafolioController::class, 'store']);
     Route::post('/mis-portafolios/{id}', [PortafolioController::class, 'update']);
     Route::delete('/mis-portafolios/{id}', [PortafolioController::class, 'destroy']);
+
+    // Proyectos dentro de portafolios (tabla portafolio_proyecto)
+    Route::post('/portafolio-proyecto', [PortafolioProyectoController::class, 'store']);
+    Route::post('/portafolio-proyecto/{id}', [PortafolioProyectoController::class, 'update']);
+    Route::delete('/portafolio-proyecto/{id}', [PortafolioProyectoController::class, 'destroy']);
 
     // Trayectoria y Habilidades
     Route::get('/trayectoria', [TrayectoriaController::class, 'index']);

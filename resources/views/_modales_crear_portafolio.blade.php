@@ -132,57 +132,59 @@
     .conf-btn-ok.danger:hover{background:#dc2626}
 </style>
 
-{{-- ══ MODAL 1 · Crear Portafolio ══ --}}
+{{-- ══ MODAL 1 · Añadir Proyecto ══ --}}
 <div class="mp-overlay" id="modalPortafolio" onclick="cerrarModalPortafolio(event)">
     <div class="mp-modal">
         <div class="mp-header-wrap">
             <div class="mp-header">
-                <h2>Crear Nuevo Portafolio</h2>
-                <p>Configure su proyecto para la red SansiFolios.</p>
+                <h2>Añadir Proyecto</h2>
+                <p>El proyecto quedará guardado dentro del portafolio que selecciones.</p>
             </div>
             <button class="mp-close" onclick="mpCerrar()">
                 <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
         </div>
         <div class="mp-body">
+
+            {{-- Portafolio destino --}}
             <div class="mp-section">
                 <div class="mp-section-label">
                     <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
-                    Información del Proyecto
+                    Portafolio destino
                 </div>
                 <div class="mp-field">
-                    <label class="mp-label">Título del Proyecto <span>*</span></label>
+                    <label class="mp-label">Selecciona el portafolio <span>*</span></label>
+                    <select class="mp-input" id="mpPortafolioId" onchange="mpCheckBtns()">
+                        <option value="">— Elige un portafolio —</option>
+                    </select>
+                    <div class="mp-err" id="mpErrPortafolio">Debes seleccionar un portafolio.</div>
+                </div>
+            </div>
+
+            {{-- Información del proyecto --}}
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    Información del proyecto
+                </div>
+                <div class="mp-field">
+                    <label class="mp-label">Nombre del proyecto <span>*</span></label>
                     <input class="mp-input" id="mpNombre" type="text" maxlength="100"
-                           placeholder="p.ej. Neural Engine v2" oninput="mpCheckBtns()">
-                    <div class="mp-err" id="mpErrNombre">Este campo es obligatorio para continuar.</div>
+                           placeholder="p.ej. Sistema de inventario" oninput="mpCheckBtns()">
+                    <div class="mp-err" id="mpErrNombre">El nombre es obligatorio.</div>
                 </div>
                 <div class="mp-field">
-                    <label class="mp-label">Descripción Técnica <span>*</span></label>
-                    <textarea class="mp-textarea" id="mpDesc" maxlength="500"
-                              placeholder="Describa la arquitectura, lenguajes y stacks utilizados..."
+                    <label class="mp-label">Descripción <span>*</span></label>
+                    <textarea class="mp-textarea" id="mpDesc" maxlength="500" rows="3"
+                              placeholder="Describe brevemente tu proyecto..."
                               oninput="mpCheckBtns();document.getElementById('mpDescCount').textContent=this.value.length"></textarea>
                     <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:3px">
                         <span id="mpDescCount">0</span>/500
                     </div>
-                    <div class="mp-err" id="mpErrDesc">Se requiere una descripción detallada del proyecto.</div>
+                    <div class="mp-err" id="mpErrDesc">La descripción es obligatoria.</div>
                 </div>
             </div>
-            <div class="mp-section">
-                <div class="mp-section-label">
-                    <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                    Vinculación de Repositorio
-                </div>
-                <div class="mp-field">
-                    <label class="mp-label">Enlace de GitHub</label>
-                    <div class="mp-url-wrap">
-                        <input class="mp-input" id="mpRepo" type="text" maxlength="500"
-                               placeholder="https://github.com/usuario/repositorio"
-                               oninput="mpValidarUrl()" style="padding-right:36px">
-                        <svg class="mp-url-tick" id="mpUrlTick" viewBox="0 0 24 24"></svg>
-                    </div>
-                    <div class="mp-err" id="mpErrRepo">Ingresa una URL válida (ej. https://github.com/...).</div>
-                </div>
-            </div>
+
         </div>
         <div class="mp-footer">
             <button class="mp-btn-ghost" id="mpBtnBorrador" onclick="mpGuardar('borrador')" disabled>
@@ -190,7 +192,7 @@
             </button>
             <button class="mp-btn-primary" id="mpBtnPublicar" onclick="mpGuardar('publicado')" disabled>
                 <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                Publicar Proyecto
+                Añadir proyecto
             </button>
         </div>
     </div>
@@ -560,7 +562,7 @@
         btnP.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> Guardar cambios';
     }
 
-    /* ══ MODAL 1 · Crear ══ */
+    /* ══ MODAL 1 · Añadir Proyecto ══ */
 
     function abrirModalPortafolio() {
         mpReset();
@@ -573,37 +575,31 @@
         document.getElementById('modalPortafolio').classList.remove('open');
     }
     function mpReset() {
-        ['mpNombre','mpDesc','mpRepo'].forEach(id => {
+        ['mpNombre','mpDesc'].forEach(id => {
             const el = document.getElementById(id);
             if (el) { el.value = ''; el.classList.remove('mp-invalid','mp-ok'); }
         });
-        ['mpErrNombre','mpErrDesc','mpErrRepo'].forEach(id => {
+        ['mpErrNombre','mpErrDesc','mpErrPortafolio'].forEach(id => {
             const el = document.getElementById(id); if (el) el.style.display = 'none';
         });
-        const tick = document.getElementById('mpUrlTick');
-        if (tick) tick.style.display = 'none';
+        document.getElementById('mpDescCount').textContent = '0';
+        // Poblar selector de portafolios desde VP_DATA
+        const sel = document.getElementById('mpPortafolioId');
+        sel.innerHTML = '<option value="">— Elige un portafolio —</option>';
+        VP_DATA.forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p.id;
+            opt.textContent = p.nombre + (p.estado === 'publicado' ? '' : ' (borrador)');
+            sel.appendChild(opt);
+        });
         mpCheckBtns();
     }
     function mpCheckBtns() {
-        const ok = document.getElementById('mpNombre').value.trim() !== '' &&
+        const ok = document.getElementById('mpPortafolioId').value !== '' &&
+                   document.getElementById('mpNombre').value.trim() !== '' &&
                    document.getElementById('mpDesc').value.trim()   !== '';
         document.getElementById('mpBtnBorrador').disabled = !ok;
         document.getElementById('mpBtnPublicar').disabled = !ok;
-    }
-    function mpValidarUrl() {
-        const val  = document.getElementById('mpRepo').value.trim();
-        const tick = document.getElementById('mpUrlTick');
-        const err  = document.getElementById('mpErrRepo');
-        if (!val) { tick.style.display='none'; err.style.display='none'; document.getElementById('mpRepo').classList.remove('mp-invalid','mp-ok'); return true; }
-        let valid = false;
-        try { new URL(val); valid = true; } catch(_) {}
-        tick.style.display = 'block';
-        tick.style.stroke  = valid ? '#22c55e' : '#ef4444';
-        tick.innerHTML     = valid ? '<polyline points="20 6 9 17 4 12"/>' : '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
-        err.style.display  = valid ? 'none' : 'block';
-        document.getElementById('mpRepo').classList.toggle('mp-invalid', !valid);
-        document.getElementById('mpRepo').classList.toggle('mp-ok', valid);
-        return valid;
     }
 
     /* ══ MODAL 5 · Crear Portafolio ══ */
@@ -731,36 +727,45 @@
     }
 
     async function mpGuardar(estado) {
-        const nombre = document.getElementById('mpNombre').value.trim();
-        const desc   = document.getElementById('mpDesc').value.trim();
+        const portafolioId = document.getElementById('mpPortafolioId').value;
+        const nombre       = document.getElementById('mpNombre').value.trim();
+        const desc         = document.getElementById('mpDesc').value.trim();
         let valid = true;
+        if (!portafolioId) {
+            document.getElementById('mpErrPortafolio').style.display = 'block';
+            document.getElementById('mpPortafolioId').classList.add('mp-invalid');
+            valid = false;
+        } else {
+            document.getElementById('mpErrPortafolio').style.display = 'none';
+            document.getElementById('mpPortafolioId').classList.remove('mp-invalid');
+        }
         if (!nombre) { document.getElementById('mpErrNombre').style.display='block'; document.getElementById('mpNombre').classList.add('mp-invalid'); valid=false; }
         else          { document.getElementById('mpErrNombre').style.display='none';  document.getElementById('mpNombre').classList.remove('mp-invalid'); }
         if (!desc)    { document.getElementById('mpErrDesc').style.display='block';   document.getElementById('mpDesc').classList.add('mp-invalid');   valid=false; }
         else          { document.getElementById('mpErrDesc').style.display='none';    document.getElementById('mpDesc').classList.remove('mp-invalid'); }
-        if (!mpValidarUrl()) valid = false;
         if (!valid) return;
         const form = new FormData();
-        form.append('nombre',          nombre);
-        form.append('descripcion',     desc);
-        form.append('repositorio_url', document.getElementById('mpRepo').value.trim());
-        form.append('estado',          estado);
-        form.append('_token',          document.querySelector('meta[name="csrf-token"]').content);
+        form.append('portafolio_id', portafolioId);
+        form.append('nombre',        nombre);
+        form.append('descripcion',   desc);
+        form.append('estado',        estado);
+        form.append('_token',        document.querySelector('meta[name="csrf-token"]').content);
         const btnB = document.getElementById('mpBtnBorrador');
         const btnP = document.getElementById('mpBtnPublicar');
         btnB.disabled = btnP.disabled = true;
         btnP.innerHTML = 'Guardando...';
         try {
-            const res  = await fetch('/mis-portafolios', { method: 'POST', body: form });
+            const res  = await fetch('/portafolio-proyecto', { method: 'POST', body: form });
             const text = await res.text();
             let json;
             try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
             if (json.ok) { mpCerrar(); location.reload(); return; }
-            const msg = json.errors ? Object.values(json.errors).flat().join('\n') : 'Error al guardar.';
+            const msg = json.errors ? Object.values(json.errors).flat().join('
+') : 'Error al guardar.';
             alert(msg);
         } catch(err) { alert(err.message); }
         btnB.disabled = btnP.disabled = false;
-        btnP.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> Publicar Proyecto';
+        btnP.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> Añadir proyecto';
     }
 </script>
 
