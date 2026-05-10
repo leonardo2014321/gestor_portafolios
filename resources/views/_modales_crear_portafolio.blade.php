@@ -54,6 +54,33 @@
     .mp-frem:hover{color:#ef4444}
     .mp-frem svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
     .mp-drop.dragover{border-color:var(--blue)!important;background:#eff6ff!important}
+    /* Card portafolio con banner */
+    .pcard-pf{border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--gray2);box-shadow:0 2px 8px rgba(0,0,0,.07);display:flex;flex-direction:column;cursor:pointer;transition:transform .15s,box-shadow .15s}
+    .pcard-pf:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.13)}
+    .pcard-pf-top{position:relative;height:90px;overflow:hidden;flex-shrink:0}
+    .pcard-pf-banner-img{width:100%;height:100%;object-fit:cover;display:block}
+    .pcard-pf-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.08) 0%,rgba(0,0,0,.38) 100%)}
+    .pcard-pf-logo{position:absolute;bottom:10px;left:14px;width:36px;height:36px;border-radius:8px;border:2px solid rgba(255,255,255,.85);overflow:hidden;background:rgba(255,255,255,.15);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center}
+    .pcard-pf-logo img{width:100%;height:100%;object-fit:cover}
+    .pcard-pf-logo-ico{background:rgba(255,255,255,.18)}
+    .pcard-pf-body{padding:10px 14px 12px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
+    .pcard-pf-name{font-size:13.5px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .pcard-pf-desc{font-size:11.5px;color:var(--muted);overflow:hidden;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;margin-top:3px}
+    .pcard-pf-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+    /* Modal Crear Portafolio (Modal 5) */
+    .pf-img-zone{border:2px dashed var(--gray3);border-radius:12px;cursor:pointer;transition:border-color .2s,background .2s;overflow:hidden;position:relative;background:var(--gray)}
+    .pf-img-zone:hover{border-color:var(--blue)}
+    .pf-img-zone.has-img{border-color:var(--blue);background:#eff6ff}
+    .pf-banner-zone{width:100%;height:130px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px}
+    .pf-banner-zone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px}
+    .pf-logo-zone{width:96px;height:96px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;flex-shrink:0}
+    .pf-logo-zone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px}
+    .pf-img-placeholder{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--muted);pointer-events:none}
+    .pf-img-placeholder svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+    .pf-img-placeholder p{font-size:12px;font-weight:500;color:var(--text);margin:0}
+    .pf-img-placeholder span{font-size:10.5px}
+    .pf-remove{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:6px;width:24px;height:24px;display:none;align-items:center;justify-content:center;cursor:pointer;font-size:14px;line-height:1}
+    .pf-img-zone.has-img .pf-remove{display:flex}
     /* Modal Ver */
     .vp-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
     .vp-overlay.open{opacity:1;pointer-events:all}
@@ -315,6 +342,107 @@
             <button class="mp-btn-primary" id="epBtnPublicar" onclick="epConfirmarGuardar('publicado')" disabled>
                 <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
                 Guardar cambios
+            </button>
+        </div>
+    </div>
+</div>
+
+{{-- ══ MODAL 5 · Crear Portafolio (contenedor con banner/logo) ══ --}}
+<div class="mp-overlay" id="modalCrearPf" onclick="if(event.target===this)pfCerrar()">
+    <div class="mp-modal">
+        <div class="mp-header-wrap">
+            <div class="mp-header">
+                <h2>Crear portafolio</h2>
+                <p>Define el nombre, descripción e imagen de tu portafolio.</p>
+            </div>
+            <button class="mp-close" onclick="pfCerrar()">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="mp-body">
+
+            {{-- Información --}}
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
+                    Información del portafolio
+                </div>
+                <div class="mp-field">
+                    <label class="mp-label">Nombre del portafolio <span>*</span></label>
+                    <input class="mp-input" id="pfNombre" type="text" maxlength="100"
+                           placeholder="p.ej. Portafolio de Diseño UI" oninput="pfCheckBtns()">
+                    <div class="mp-err" id="pfErrNombre">Este campo es obligatorio.</div>
+                </div>
+                <div class="mp-field">
+                    <label class="mp-label">Descripción <span>*</span></label>
+                    <textarea class="mp-textarea" id="pfDesc" maxlength="500" rows="3"
+                              placeholder="Describe brevemente tu portafolio..."
+                              oninput="pfCheckBtns();document.getElementById('pfDescCount').textContent=this.value.length"></textarea>
+                    <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:3px">
+                        <span id="pfDescCount">0</span>/500
+                    </div>
+                    <div class="mp-err" id="pfErrDesc">La descripción es obligatoria.</div>
+                </div>
+            </div>
+
+            {{-- Banner --}}
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    Banner / Portada
+                </div>
+                <input type="file" id="pfBannerInput" accept="image/png,image/jpeg,image/jpg"
+                       style="display:none" onchange="pfHandleImg('banner',this.files[0])">
+                <div class="pf-img-zone pf-banner-zone" id="pfBannerZone"
+                     onclick="document.getElementById('pfBannerInput').click()"
+                     ondragover="event.preventDefault();this.classList.add('has-img')"
+                     ondragleave="pfDragLeave('banner',event)"
+                     ondrop="event.preventDefault();pfHandleImg('banner',event.dataTransfer.files[0])">
+                    <img id="pfBannerPreview" src="" alt="" style="display:none">
+                    <div class="pf-img-placeholder" id="pfBannerPlaceholder">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        <p>Arrastra o haz clic para subir</p>
+                        <span>PNG, JPG · máx. 5 MB · recomendado 1200×400 px</span>
+                    </div>
+                    <button class="pf-remove" onclick="event.stopPropagation();pfQuitarImg('banner')">&times;</button>
+                </div>
+            </div>
+
+            {{-- Logo --}}
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                    Logo / Imagen
+                </div>
+                <input type="file" id="pfLogoInput" accept="image/png,image/jpeg,image/jpg"
+                       style="display:none" onchange="pfHandleImg('logo',this.files[0])">
+                <div style="display:flex;align-items:flex-start;gap:16px">
+                    <div class="pf-img-zone pf-logo-zone" id="pfLogoZone"
+                         onclick="document.getElementById('pfLogoInput').click()"
+                         ondragover="event.preventDefault();this.classList.add('has-img')"
+                         ondragleave="pfDragLeave('logo',event)"
+                         ondrop="event.preventDefault();pfHandleImg('logo',event.dataTransfer.files[0])">
+                        <img id="pfLogoPreview" src="" alt="" style="display:none">
+                        <div class="pf-img-placeholder" id="pfLogoPlaceholder">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                        </div>
+                        <button class="pf-remove" onclick="event.stopPropagation();pfQuitarImg('logo')">&times;</button>
+                    </div>
+                    <div style="padding-top:6px">
+                        <p style="font-size:13px;font-weight:600;color:var(--text);margin:0 0 4px">Logo del portafolio</p>
+                        <p style="font-size:12px;color:var(--muted);margin:0">PNG, JPG · máx. 2 MB<br>Recomendado 200×200 px</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="mp-footer">
+            <button class="mp-btn-ghost" id="pfBtnBorrador" onclick="pfGuardar('borrador')" disabled>
+                Guardar como borrador
+            </button>
+            <button class="mp-btn-primary" id="pfBtnPublicar" onclick="pfGuardar('publicado')" disabled>
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Publicar portafolio
             </button>
         </div>
     </div>
@@ -587,6 +715,130 @@
         ).join('');
     }
     function mpRemoveFile(i) { mpFiles.splice(i,1); mpRenderFlist(); }
+
+    /* ══ MODAL 5 · Crear Portafolio ══ */
+    let pfBannerFile = null, pfLogoFile = null;
+
+    function abrirModalCrearPf() {
+        pfReset();
+        document.getElementById('modalCrearPf').classList.add('open');
+    }
+    function pfCerrar() {
+        document.getElementById('modalCrearPf').classList.remove('open');
+    }
+    function pfReset() {
+        ['pfNombre','pfDesc'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.value = ''; el.classList.remove('mp-invalid','mp-ok'); }
+        });
+        ['pfErrNombre','pfErrDesc'].forEach(id => {
+            const el = document.getElementById(id); if (el) el.style.display = 'none';
+        });
+        document.getElementById('pfDescCount').textContent = '0';
+        pfQuitarImg('banner');
+        pfQuitarImg('logo');
+        pfBannerFile = null;
+        pfLogoFile   = null;
+        pfCheckBtns();
+    }
+    function pfCheckBtns() {
+        const ok = document.getElementById('pfNombre').value.trim() !== '' &&
+                   document.getElementById('pfDesc').value.trim()   !== '';
+        document.getElementById('pfBtnBorrador').disabled = !ok;
+        document.getElementById('pfBtnPublicar').disabled = !ok;
+    }
+    function pfHandleImg(tipo, file) {
+        if (!file) return;
+        if (!file.type.match(/image\/(png|jpe?g)/)) {
+            alert('Solo se aceptan imágenes PNG o JPG.');
+            return;
+        }
+        const maxBytes = tipo === 'banner' ? 5 * 1024 * 1024 : 2 * 1024 * 1024;
+        if (file.size > maxBytes) {
+            alert('La imagen supera el límite de ' + (tipo === 'banner' ? '5' : '2') + ' MB.');
+            return;
+        }
+        if (tipo === 'banner') pfBannerFile = file;
+        else                   pfLogoFile   = file;
+
+        const reader   = new FileReader();
+        const preview  = document.getElementById(tipo === 'banner' ? 'pfBannerPreview' : 'pfLogoPreview');
+        const placeholder = document.getElementById(tipo === 'banner' ? 'pfBannerPlaceholder' : 'pfLogoPlaceholder');
+        const zone     = document.getElementById(tipo === 'banner' ? 'pfBannerZone' : 'pfLogoZone');
+
+        reader.onload = e => {
+            preview.src          = e.target.result;
+            preview.style.display = 'block';
+            placeholder.style.display = 'none';
+            zone.classList.add('has-img');
+        };
+        reader.readAsDataURL(file);
+    }
+    function pfQuitarImg(tipo) {
+        const preview     = document.getElementById(tipo === 'banner' ? 'pfBannerPreview' : 'pfLogoPreview');
+        const placeholder = document.getElementById(tipo === 'banner' ? 'pfBannerPlaceholder' : 'pfLogoPlaceholder');
+        const zone        = document.getElementById(tipo === 'banner' ? 'pfBannerZone' : 'pfLogoZone');
+        const input       = document.getElementById(tipo === 'banner' ? 'pfBannerInput' : 'pfLogoInput');
+        preview.src = '';
+        preview.style.display     = 'none';
+        placeholder.style.display = '';
+        zone.classList.remove('has-img');
+        input.value = '';
+        if (tipo === 'banner') pfBannerFile = null;
+        else                   pfLogoFile   = null;
+    }
+    function pfDragLeave(tipo, event) {
+        const zone = document.getElementById(tipo === 'banner' ? 'pfBannerZone' : 'pfLogoZone');
+        if (!zone.querySelector('img[src]')?.src) zone.classList.remove('has-img');
+    }
+    async function pfGuardar(estado) {
+        const nombre = document.getElementById('pfNombre').value.trim();
+        const desc   = document.getElementById('pfDesc').value.trim();
+        let valid = true;
+        if (!nombre) {
+            document.getElementById('pfErrNombre').style.display = 'block';
+            document.getElementById('pfNombre').classList.add('mp-invalid');
+            valid = false;
+        } else {
+            document.getElementById('pfErrNombre').style.display = 'none';
+            document.getElementById('pfNombre').classList.remove('mp-invalid');
+        }
+        if (!desc) {
+            document.getElementById('pfErrDesc').style.display = 'block';
+            document.getElementById('pfDesc').classList.add('mp-invalid');
+            valid = false;
+        } else {
+            document.getElementById('pfErrDesc').style.display = 'none';
+            document.getElementById('pfDesc').classList.remove('mp-invalid');
+        }
+        if (!valid) return;
+
+        const form = new FormData();
+        form.append('nombre',      nombre);
+        form.append('descripcion', desc);
+        form.append('estado',      estado);
+        form.append('_token',      document.querySelector('meta[name="csrf-token"]').content);
+        if (pfBannerFile) form.append('banner', pfBannerFile);
+        if (pfLogoFile)   form.append('logo',   pfLogoFile);
+
+        const btnB = document.getElementById('pfBtnBorrador');
+        const btnP = document.getElementById('pfBtnPublicar');
+        btnB.disabled = btnP.disabled = true;
+        btnP.innerHTML = 'Guardando...';
+
+        try {
+            const res  = await fetch('/portafolios', { method: 'POST', body: form });
+            const text = await res.text();
+            let json;
+            try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
+            if (json.ok) { pfCerrar(); location.reload(); return; }
+            const msg = json.errors ? Object.values(json.errors).flat().join('\n') : 'Error al guardar.';
+            alert(msg);
+        } catch(err) { alert(err.message); }
+
+        btnB.disabled = btnP.disabled = false;
+        btnP.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> Publicar portafolio';
+    }
 
     async function mpGuardar(estado) {
         const nombre = document.getElementById('mpNombre').value.trim();

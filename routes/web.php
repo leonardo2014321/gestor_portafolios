@@ -102,7 +102,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/perfil/redes', [RedPerfilController::class, 'guardarRedes']);
     Route::get('/perfil/redes', [RedPerfilController::class, 'obtenerRedes']);
 
-    // Portafolios y sus proyectos
+    // Portafolios (contenedores con banner/logo)
+    Route::post('/portafolios', [PortafolioController::class, 'storePortafolio']);
+
+    // Proyectos dentro de portafolios (tabla portafolio_proyecto)
     Route::get('/mis-portafolios', [PortafolioController::class, 'index']);
     Route::post('/mis-portafolios', [PortafolioController::class, 'store']);
     Route::post('/mis-portafolios/{id}', [PortafolioController::class, 'update']);
