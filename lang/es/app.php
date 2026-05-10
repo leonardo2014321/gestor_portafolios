@@ -335,4 +335,152 @@ return [
         'reactivar'           => 'Sí, reactivar mi cuenta',
         'cancelar'            => 'Cancelar',
     ],
+    // ───reportes ────────────────────────────────────────────────────────────────
+    'reportes' => [
+ 
+        // ── Cabecera y controles ──────────────────────────────────────────────
+        'titulo'                    => 'Mis Reportes / CV',
+        'subtitulo'                 => 'Genera y exporta tu currículum vitae.',
+        'editar_pantalla'           => 'Editar',
+        'exportar_pdf'              => 'Exportar PDF',
+        'seleccionar_plantilla'     => 'Seleccionar plantilla:',
+        'plantilla_moderna'         => 'Moderna (Azul)',
+        'plantilla_clasica'         => 'Clásica (Formal)',
+        'plantilla_minimalista'     => 'Minimalista',
+        'plantilla_elegante'        => 'Elegante (Gris)',
+        'plantilla_creativa'        => 'Creativa (Verde/Rosa)',
+        'plantilla_malva'           => 'Moderna (Malva)',
+ 
+        // ── Secciones del CV ─────────────────────────────────────────────────
+        'aptitudes'                 => 'Aptitudes',
+        'resumen_profesional'       => 'Resumen profesional',
+        'habilidades_informaticas'  => 'Habilidades informáticas',
+        'cursos_certificados'       => 'Cursos y certificados',
+        'historial_laboral'         => 'Historial laboral',
+        'formacion'                 => 'Formación',
+        'exp_laboral'               => 'Experiencia laboral',
+        'educacion'                 => 'Educación',
+        'habilidades_conocimientos' => 'Habilidades y conocimientos',
+        'habilidades'               => 'Habilidades',
+        'hab_tecnicas'              => 'Habilidades técnicas',
+        'contacto'                  => 'Contacto',
+        'perfil'                    => 'Perfil',
+        'idiomas'                   => 'Idiomas',
+        'intereses'                 => 'Intereses',
+        'experiencia_profesional'   => 'Experiencia profesional',
+        'lenguaje'                  => 'Lenguaje',
+        'certificados'              => 'Certificados',
+        'actualidad'                => 'Actualidad',
+        'presente'                  => 'Presente',
+ 
+        // ── Claves que ya existían ────────────────────────────────────────────
+        'competencias'              => 'Competencias:',
+        'informatica'               => 'Informática:',
+        'idioma_ingles'             => 'Inglés',
+        'idioma_frances'            => 'Francés',
+        'idioma_espanol_nativo'     => 'Español: Nativo',
+        'idioma_ingles_basico'      => 'Inglés: Básico',
+        'idioma_ingles_avanzado'    => 'Idioma Inglés Avanzado',
+        'nivel_oral_bilingue'       => 'Nivel Oral: Bilingüe',
+        'nivel'                     => 'Nivel',
+        'nivel_basico'              => 'Básico',
+        'certificado_de'            => 'Certificado de',
+        'celular'                   => 'Celular',
+        'en'                        => 'En',
+ 
+        // ── Textos de ejemplo (placeholders vacíos) ───────────────────────────
+        'empty_biografia'           => 'Programadora web con más de 5 años de trayectoria en el eCommerce.',
+        'empty_biografia_larga'     => 'Escribe aquí tu experiencia profesional y habilidades más importantes.',
+        'empty_profesion'           => 'Profesión',
+        'empty_profesion_upper'     => 'ESTUDIANTE',
+        'empty_puesto'              => 'Puesto ocupado',
+        'empty_empresa'             => 'NOMBRE DE LA EMPRESA',
+        'empty_institucion'         => 'Nombre de la institución',
+        'empty_universidad'         => 'Universidad Borcelle',
+        'empty_formacion'           => 'Grado Superior en Desarrollo de Aplicaciones Web',
+        'empty_exp_fecha'           => 'Junio 2017 - Marzo 2020',
+        'empty_exp_titulo'          => 'Desarrolladora web eCommerce · Hays Response',
+        'empty_exp_meta'            => 'En Casa Colombia, marzo 2021 - presente',
+        'empty_exp_simple'          => 'SISTEMA DE INVENTARIO Y VENTAS · Desarrollador',
+        'empty_hab_info'            => 'JavaScript, CSS, HTML, C#, SQL',
+        'empty_hab_tec'             => 'Curso de Python básico: manejo básico de lenguaje.',
+        'empty_hab_ofice'           => 'Procesador de texto, hoja de cálculos y presentaciones.',
+        'empty_cert'                => 'Programación avanzada en JavaScript (200 horas) - Edx',
+        'empty_cert_simple'         => 'Certificado de participación de agente censal',
+        'empty_trabajo_equipo'      => 'Trabajo en equipo',
+        'empty_iniciativa'          => 'Iniciativa',
+        'empty_resolucion'          => 'Resolución de problemas',
+        'empty_aprendizaje'         => 'Aprendizaje fluido',
+        'empty_comunicacion'        => 'Comunicación efectiva',
+        'empty_adaptacion'          => 'Capacidad de adaptación',
+        'empty_creatividad'         => 'Creatividad',
+        'empty_liderazgo'           => 'Liderazgo',
+        'interes_lectura'           => 'Lectura',
+        'interes_arte'              => 'Arte',
+        'interes_deportes'          => 'Deportes',
+    ],
+    'explorador' => [
+ 
+        // Hero
+        'hero_titulo'           => 'Sistema de Portafolios',
+        'hero_subtitulo'        => 'Gestión Institucional de Activos Digitales · UMSS',
+ 
+        // Buscador
+        'buscar_placeholder'    => 'Buscar... (Ctrl + K)',
+        'btn_buscar'            => 'Buscar',
+ 
+        // Filtros
+        'filtro_todos'          => 'Todos',
+        'filtro_proyectos'      => 'Proyectos',
+        'filtro_perfiles'       => 'Perfiles',
+        'filtro_documentos'     => 'Documentos',
+        'filtro_habilidades'    => 'Habilidades',
+ 
+        // Barra de resultados
+        'resultados'            => 'Resultados',
+        'resultado'             => 'Resultado',
+        'encontrados'           => 'Encontrados',
+        'encontrado'            => 'Encontrado',
+        'difusion_activa'       => 'DIFUSIÓN: BASE DE DATOS ACTIVA',
+ 
+        // Ordenar
+        'ordenar_relevancia'    => 'Ordenar por relevancia',
+        'ordenar_az'            => 'Ordenar: A - Z',
+        'ordenar_za'            => 'Ordenar: Z - A',
+        'orden_relevancia'      => 'Relevancia',
+        'orden_az'              => 'A - Z',
+        'orden_za'              => 'Z - A',
+ 
+        // Sin resultados
+        'sin_resultados_titulo' => 'No se encontraron resultados',
+        'sin_resultados_desc'   => 'Intenta con otros términos o filtros.',
+ 
+        // Historial
+        'busquedas_recientes'   => 'Búsquedas recientes',
+        'limpiar'               => 'Limpiar',
+ 
+        // Tooltips de tarjeta
+        'tooltip_guardar'       => 'Guardar',
+        'tooltip_descargar'     => 'Descargar',
+ 
+        // Tipos de tarjeta
+        'tipo_proyecto'         => 'PROYECTO',
+        'tipo_habilidad'        => 'HABILIDAD',
+        'tipo_documento'        => 'DOCUMENTO',
+        'tipo_sin_tipo'         => 'S/T',
+ 
+        // Fallbacks JS
+        'sin_titulo'            => 'Sin título',
+        'sin_descripcion'       => 'Sin descripción',
+ 
+        // Tarjetas de ejemplo (fallback)
+        'empty_proyecto1_titulo' => 'Programa de Optimización Fiscal 2024',
+        'empty_proyecto1_desc'   => 'Iniciativa estratégica para la mejora de flujos de caja institucionales.',
+        'empty_proyecto2_titulo' => 'Programa de Desarrollo Ambiental 2020',
+        'empty_proyecto2_desc'   => 'Iniciativa estratégica para la mejora del desarrollo ambiental.',
+        'empty_habilidad_titulo' => 'Programación en PHP / Symfony',
+        'empty_habilidad_desc'   => 'Capacidad funcional en el desarrollo de frameworks para diseño y sistemas.',
+        'empty_documento_titulo' => 'Protocolos de Seguridad Interna V2',
+        'empty_documento_desc'   => 'Documentación técnica sobre buenas prácticas en encriptación.',
+    ],
 ];
