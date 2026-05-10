@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('habilidades', function (Blueprint $table) {
-            $table->string('tipo', 20)->default('fuerte')->after('nivel');
+            if (!Schema::hasColumn('habilidades', 'tipo'))
+                $table->string('tipo', 20)->default('fuerte')->after('nivel');
         });
     }
 

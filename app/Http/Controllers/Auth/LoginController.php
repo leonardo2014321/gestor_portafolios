@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\ActividadService;
 
 
 class LoginController extends Controller
@@ -47,6 +48,14 @@ class LoginController extends Controller
 
     Auth::login($usuario, $request->boolean('remember'));
     $request->session()->regenerate();
+
+    ActividadService::log($usuario->id, 'login', ['email' => $usuario->email]);
+
+    // Redirigir al panel de administrador si corresponde
+    if ($usuario->es_admin) {
+        return redirect('/admin');
+    }
+
     return redirect()->intended('/menu');
 }
 
@@ -63,14 +72,23 @@ class LoginController extends Controller
 
         Auth::login($usuario);
         $request->session()->regenerate();
+
+        ActividadService::log($usuario->id, 'reactivacion_cuenta');
+
         return redirect('/menu');
     }
 
     public function destroy(Request $request)
     {
+        $usuarioId = Auth::id();
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        if ($usuarioId) {
+            ActividadService::log($usuarioId, 'logout');
+        }
+
         return redirect('/home');
     }
 }

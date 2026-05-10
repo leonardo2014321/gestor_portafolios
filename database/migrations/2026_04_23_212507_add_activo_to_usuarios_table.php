@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('usuarios', function (Blueprint $table) {
-            $table->boolean('activo')->default(true)->after('email_verificado');
+            if (!Schema::hasColumn('usuarios', 'activo'))
+                $table->boolean('activo')->default(true)->after('email_verificado');
         });
     }
 

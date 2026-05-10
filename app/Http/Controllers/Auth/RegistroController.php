@@ -8,6 +8,7 @@ use App\Services\Auth\RegistroService;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Usuario;
+use App\Services\ActividadService;
 
 class RegistroController extends Controller
 {
@@ -72,6 +73,8 @@ class RegistroController extends Controller
                 ], 422);
             }
 
+            ActividadService::log(null, 'SOLICITUD_REGISTRO', ['email' => $request->email]);
+
             // 👇 RESPUESTA PARA FETCH
             if ($request->expectsJson()) {
                 return response()->json([
@@ -93,33 +96,28 @@ class RegistroController extends Controller
             throw $e;
         }
     }
+    public function verificarEmail(Request $request)
+    {
+        $token = $request->token;
+        $data = Cache::get('registro_temp_'.$token);
 
-        public function verificarEmail(Request $request)
-        {
-            $token = $request->token;
-
-            $data = Cache::get('registro_temp_'.$token);
-
-            if (!$data) {
-                return view('auth.verificacion_error');
-            }
-
-            if (Usuario::where('email', $data['email'])->exists()) {
-                Cache::forget('registro_temp_'.$token);
-                return view('auth.verificacion_exitosa');
-            }
-
-            Usuario::create([
-                'nombre' => $data['nombre'],
-                'apellido' => $data['apellido'],
-                'email' => $data['email'],
-                'contrasena' => $data['password'],
-                'email_verificado' => true
-            ]);
-
-            Cache::forget('registro_temp_'.$token);
-
-            return view('auth.verificacion_ok');
+        if (!$data) {
+            return view('auth.verificacion_error');
         }
 
+        if (!Usuario::where('email', $data['email'])->exists()) {
+            Usuario::create([
+                'nombre'           => $data['nombre'],
+                'apellido'         => $data['apellido'],
+                'email'            => $data['email'],
+                'contrasena'       => $data['password'],
+                'email_verificado' => true
+            ]);
+        }
+
+        Cache::forget('registro_temp_'.$token);
+
+        // Retorna vista que cierra la pestaña
+        return view('auth.verificacion_ok');
+    }
 }
