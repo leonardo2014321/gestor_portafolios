@@ -536,26 +536,6 @@
                 </button>
             </div>
 
-
-            <!-- Modal confirmación logout -->
-            <div id="modalLogout" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;">
-                <div style="background:#fff;border-radius:20px;padding:32px;width:90%;max-width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
-                   <div style="width:52px;height:52px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                    </div>
-                    <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:#0f172a;margin-bottom:8px;">{{ __('app.menu.cerrar_sesion') }}</div>
-                    <div style="font-size:13px;color:#64748b;margin-bottom:24px;">{{ __('app.menu.cerrar_confirm') }}</div>
-                    <div style="display:flex;gap:10px;">
-                        <button onclick="document.getElementById('modalLogout').style.display='none'" style="flex:1;padding:12px;border-radius:12px;border:1.5px solid #e2e8f0;background:transparent;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">{{ __('app.menu.cancelar') }}</button>
-                        <button onclick="ejecutarLogout(this)" style="flex:1;padding:12px;border-radius:12px;border:none;background:#2563eb;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;">
-                            <svg id="logoutSpinner" style="display:none;width:16px;height:16px;animation:spin .7s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-                            </svg>
-                            <span id="logoutBtnLabel">{{ __('app.menu.si_salir') }}</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
         </aside>
 
         <div class="content-wrapper">
@@ -2056,7 +2036,7 @@
         document.getElementById('logoutSpinner').style.display = 'block';
         document.getElementById('logoutBtnLabel').textContent = window.trans.cerrando;
         btn.style.opacity = '0.85';
-        document.getElementById('formLogout').submit();
+        document.getElementById('formLogoutGlobal').submit();
     }
 </script>
 
