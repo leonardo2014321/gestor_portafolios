@@ -27,8 +27,9 @@
 
     {{-- ── Nav central ── --}}
     <nav class="tb-nav">
-        {{-- Inicio: siempre lleva al home --}}
-        <a href="{{ url('/') }}"
+
+        <a href="#"
+            onclick="spaNav('inicio'); return false;"
             style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
                 text-decoration:none;transition:color .2s;"
             onmouseover="this.style.color='#fff'"
@@ -36,55 +37,33 @@
             {{ __('app.nav.inicio') }}
         </a>
 
-        @auth
-            <button onclick="typeof showView === 'function' ? showView('caracteristicas') : window.location.href='{{ route('caracteristicas') }}'" class="tb-link"
-                style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
-                    color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
-                onmouseover="this.style.color='#fff'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
-                {{ __('app.nav.caracteristicas') }}
-            </button>
+        <a href="#"
+            onclick="spaNav('caracteristicas'); return false;"
+            style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
+                text-decoration:none;transition:color .2s;"
+            onmouseover="this.style.color='#fff'"
+            onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+            {{ __('app.nav.caracteristicas') }}
+        </a>
 
-            <button onclick="typeof showView === 'function' ? showView('portafolios') : window.location.href='{{ route('portafolios.index') }}'" class="tb-link"
-                style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
-                    color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
-                onmouseover="this.style.color='#fff'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
-                {{ __('app.nav.portafolios') }}
-            </button>
+        <a href="#"
+            onclick="spaNav('portafolios'); return false;"
+            style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
+                text-decoration:none;transition:color .2s;"
+            onmouseover="this.style.color='#fff'"
+            onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+            {{ __('app.nav.portafolios') }}
+        </a>
 
-            <button onclick="typeof showView === 'function' ? showView('explorador') : window.location.href='{{ route('explorador') }}'" class="tb-link"
-                style="background:none;border:none;cursor:pointer;font-size:13.5px;font-weight:500;
-                    color:rgba(255,255,255,0.65);font-family:'DM Sans',sans-serif;padding:0;transition:color .2s;"
-                onmouseover="this.style.color='#fff'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
-                {{ __('app.nav.explorador') }}
-            </button>
-        @else
-            <a href="{{ route('portafolios.index') }}"
-                style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
-                    text-decoration:none;transition:color .2s;"
-                onmouseover="this.style.color='#fff'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
-                {{ __('app.nav.portafolios') }}
-            </a>
+        <a href="#"
+            onclick="spaNav('explorador'); return false;"
+            style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
+                text-decoration:none;transition:color .2s;"
+            onmouseover="this.style.color='#fff'"
+            onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+            {{ __('app.nav.explorador') }}
+        </a>
 
-            <a href="{{ route('caracteristicas') }}"
-                style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
-                    text-decoration:none;transition:color .2s;"
-                onmouseover="this.style.color='#fff'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
-                {{ __('app.nav.caracteristicas') }}
-            </a>
-
-            <a href="{{ route('explorador') }}"
-                style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
-                    text-decoration:none;transition:color .2s;"
-                onmouseover="this.style.color='#fff'"
-                onmouseout="this.style.color='rgba(255,255,255,0.65)'">
-                {{ __('app.nav.explorador') }}
-            </a>
-        @endauth
     </nav>
 
     {{-- ── Lado derecho ── --}}
@@ -367,6 +346,46 @@
             const langWrap = document.getElementById('lang-wrap');
             if (langWrap && !langWrap.contains(e.target)) {
                 document.getElementById('lang-panel').style.display = 'none';
+            }
+        });
+
+        function spaNav(view) {
+            // Si existe showView (contexto menú autenticado), úsalo
+            if (typeof showView === 'function') {
+                showView(view);
+                return;
+            }
+
+            // Contexto home: mostrar/ocultar secciones SPA
+            const allViews = document.querySelectorAll('.spa-view');
+            allViews.forEach(v => v.style.display = 'none');
+
+            const target = document.getElementById('view-' + view);
+            if (target) {
+                target.style.display = 'block';
+            } else {
+                // Si la vista no existe en esta página, redirigir
+                const routes = {
+                    'inicio':         '{{ url("/") }}',
+                    'portafolios':    '{{ route("portafolios.index") }}',
+                    'explorador':     '{{ route("explorador") }}',
+                    'caracteristicas':'{{ route("caracteristicas") }}',
+                };
+                if (routes[view]) window.location.href = routes[view];
+            }
+
+            // Actualizar estado activo en nav
+            document.querySelectorAll('.tb-nav a, .tb-nav button').forEach(el => {
+                el.style.color = 'rgba(255,255,255,0.65)';
+            });
+            event.currentTarget.style.color = '#fff';
+        }
+
+        // Leer URL hash al cargar (deep linking)
+        document.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && document.getElementById('view-' + hash)) {
+                spaNav(hash);
             }
         });
     </script>
