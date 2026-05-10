@@ -64,11 +64,11 @@ Route::middleware('auth')->group(function () {
     
     // Panel Principal
     Route::get('/menu', function () {
-        $busquedas = \App\Models\Busqueda::where('titulo', '!=', 'Administrador')->get();
+        $busquedas        = \App\Models\Busqueda::where('titulo', '!=', 'Administrador')->get();
         $portafolios      = \App\Models\Portafolio::where('usuario_id', auth()->id())
-                                ->with('archivos')
-                                ->orderByDesc('updated_at')
-                                ->get();
+                               ->with('archivos')
+                               ->orderByDesc('updated_at')
+                               ->get();
         $totalPortafolios = $portafolios->count();
         $totalDocumentos  = \App\Models\PortafolioArchivo::whereIn('portafolio_id', $portafolios->pluck('id'))->count();
         $totalAprobados   = $portafolios->where('estado', 'publicado')->count();
@@ -102,7 +102,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/perfil/redes', [RedPerfilController::class, 'guardarRedes']);
     Route::get('/perfil/redes', [RedPerfilController::class, 'obtenerRedes']);
 
-    // Portafolios
+    // Portafolios y sus proyectos
     Route::get('/mis-portafolios', [PortafolioController::class, 'index']);
     Route::post('/mis-portafolios', [PortafolioController::class, 'store']);
     Route::post('/mis-portafolios/{id}', [PortafolioController::class, 'update']);
