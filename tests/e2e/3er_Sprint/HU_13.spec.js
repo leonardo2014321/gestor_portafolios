@@ -9,12 +9,13 @@ const BASE = 'http://localhost:8000';
 
 async function loginYMenu(page) {
     await page.goto(BASE);
-    await page.locator('#openLoginModal').click();
-    await expect(page.locator('#loginModal')).toBeVisible({ timeout: 5000 });
+    await page.getByRole('button', { name: 'Iniciar sesión' }).click();
+    await expect(page.locator('#loginModal')).toBeVisible({ timeout: 10000 });
     await page.fill('input[name="email"]', 'serpientinon@gmail.com');
     await page.fill('input[name="password"]', '12tres45');
     await page.click('button:has-text("Entrar al sistema")');
-    await expect(page).toHaveURL(/.*\/menu/, { timeout: 15000 });
+    await expect(page).toHaveURL(/.*\/menu/, { timeout: 30000 });
+    await page.waitForTimeout(1000);
 }
 
 test.describe('HU-13: Creación de Portafolios (Evidencias)', () => {

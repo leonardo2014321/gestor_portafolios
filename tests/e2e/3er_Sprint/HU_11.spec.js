@@ -10,23 +10,25 @@ const BASE = 'http://localhost:8000';
 // ─── HELPER: Login como admin ───
 async function loginAdmin(page) {
     await page.goto(BASE);
-    await page.locator('#openLoginModal').click();
-    await expect(page.locator('#loginModal')).toBeVisible({ timeout: 5000 });
-    await page.fill('input[name="email"]', 'admin@umss.edu.bo');
-    await page.fill('input[name="password"]', 'admin123');
+    await page.getByRole('button', { name: 'Iniciar sesión' }).click();
+    await expect(page.locator('#loginModal')).toBeVisible({ timeout: 10000 });
+    await page.fill('input[name="email"]', 'admin@gmail.com');
+    await page.fill('input[name="password"]', 'infinitycode1');
     await page.click('button:has-text("Entrar al sistema")');
-    await expect(page).toHaveURL(/.*\/admin/, { timeout: 15000 });
+    await expect(page).toHaveURL(/.*\/admin/, { timeout: 30000 });
+    await page.waitForTimeout(1000);
 }
 
 // ─── HELPER: Login como usuario normal ───
 async function loginUsuario(page) {
     await page.goto(BASE);
-    await page.locator('#openLoginModal').click();
-    await expect(page.locator('#loginModal')).toBeVisible({ timeout: 5000 });
+    await page.getByRole('button', { name: 'Iniciar sesión' }).click();
+    await expect(page.locator('#loginModal')).toBeVisible({ timeout: 10000 });
     await page.fill('input[name="email"]', 'serpientinon@gmail.com');
     await page.fill('input[name="password"]', '12tres45');
     await page.click('button:has-text("Entrar al sistema")');
-    await expect(page).toHaveURL(/.*\/menu/, { timeout: 15000 });
+    await expect(page).toHaveURL(/.*\/menu/, { timeout: 30000 });
+    await page.waitForTimeout(1000);
 }
 
 test.describe('HU-11: Vista de Administrador (Admin Dashboard)', () => {
@@ -86,13 +88,12 @@ test.describe('HU-11: Vista de Administrador (Admin Dashboard)', () => {
         // 1. Verificar panel header
         await expect(page.getByText('Usuarios Recientes')).toBeVisible();
 
-        // 2. Verificar encabezados de columnas
+        // 2. Verificar encabezados de columnas (dashboard tiene 3 columnas)
         const headers = page.locator('#view-dashboard table thead th');
+        await expect(headers).toHaveCount(3);
         await expect(headers.nth(0)).toContainText('Usuario');
-        await expect(headers.nth(1)).toContainText('Rol');
-        await expect(headers.nth(2)).toContainText('Fecha Registro');
-        await expect(headers.nth(3)).toContainText('Estado');
-        await expect(headers.nth(4)).toContainText('Acción');
+        await expect(headers.nth(1)).toContainText('Registro');
+        await expect(headers.nth(2)).toContainText('Estado');
 
         // 3. Verificar que hay filas de datos
         const rows = page.locator('#view-dashboard table tbody tr');
@@ -238,8 +239,11 @@ test.describe('HU-11: Vista de Administrador (Admin Dashboard)', () => {
     test('TC-98: Menú acciones — Se cierra al clic fuera', async ({ page }) => {
         await loginAdmin(page);
 
-        // 1. Abrir menú de primer usuario
-        const actionBtns = page.locator('#view-dashboard .action-btn');
+        // 1. Navegar a vista Usuarios (los action-btn están ahí, no en dashboard)
+        await page.locator('#btn-usuarios').click();
+        await expect(page.locator('#view-usuarios')).toBeVisible();
+
+        const actionBtns = page.locator('#view-usuarios .action-btn');
         const count = await actionBtns.count();
         if (count === 0) {
             test.skip();
@@ -247,7 +251,7 @@ test.describe('HU-11: Vista de Administrador (Admin Dashboard)', () => {
         }
 
         await actionBtns.first().click();
-        const menu = page.locator('#view-dashboard .action-menu').first();
+        const menu = page.locator('#view-usuarios .action-menu').first();
         await expect(menu).toBeVisible();
 
         // 2. Clic fuera → se cierra
@@ -374,13 +378,17 @@ test.describe('HU-11: Vista de Administrador (Admin Dashboard)', () => {
     test('TC-88A: Toggle Estado — Cambio visual badge', async ({ page }) => {
         await loginAdmin(page);
 
-        const actionBtns = page.locator('#view-dashboard .action-btn');
+        // Navegar a vista Usuarios (los action-btn están ahí, no en dashboard)
+        await page.locator('#btn-usuarios').click();
+        await expect(page.locator('#view-usuarios')).toBeVisible();
+
+        const actionBtns = page.locator('#view-usuarios .action-btn');
         const count = await actionBtns.count();
         if (count === 0) { test.skip(); return; }
 
         // Abrir menú del primer usuario
         await actionBtns.first().click();
-        const menu = page.locator('#view-dashboard .action-menu').first();
+        const menu = page.locator('#view-usuarios .action-menu').first();
         await expect(menu).toBeVisible();
 
         // Obtener estado actual del primer toggle (Estado)

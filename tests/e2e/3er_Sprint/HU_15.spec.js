@@ -9,22 +9,24 @@ const BASE = 'http://localhost:8000';
 
 async function loginAdmin(page) {
     await page.goto(BASE);
-    await page.locator('#openLoginModal').click();
-    await expect(page.locator('#loginModal')).toBeVisible({ timeout: 5000 });
-    await page.fill('input[name="email"]', 'admin@umss.edu.bo');
-    await page.fill('input[name="password"]', 'admin123');
+    await page.getByRole('button', { name: 'Iniciar sesión' }).click();
+    await expect(page.locator('#loginModal')).toBeVisible({ timeout: 10000 });
+    await page.fill('input[name="email"]', 'admin@gmail.com');
+    await page.fill('input[name="password"]', 'infinitycode1');
     await page.click('button:has-text("Entrar al sistema")');
-    await expect(page).toHaveURL(/.*\/admin/, { timeout: 15000 });
+    await expect(page).toHaveURL(/.*\/admin/, { timeout: 30000 });
+    await page.waitForTimeout(1000);
 }
 
 async function loginUsuario(page) {
     await page.goto(BASE);
-    await page.locator('#openLoginModal').click();
-    await expect(page.locator('#loginModal')).toBeVisible({ timeout: 5000 });
+    await page.getByRole('button', { name: 'Iniciar sesión' }).click();
+    await expect(page.locator('#loginModal')).toBeVisible({ timeout: 10000 });
     await page.fill('input[name="email"]', 'serpientinon@gmail.com');
     await page.fill('input[name="password"]', '12tres45');
     await page.click('button:has-text("Entrar al sistema")');
-    await expect(page).toHaveURL(/.*\/menu/, { timeout: 15000 });
+    await expect(page).toHaveURL(/.*\/menu/, { timeout: 30000 });
+    await page.waitForTimeout(1000);
 }
 
 test.describe('HU-15: Alertas de Notificaciones', () => {
@@ -44,10 +46,10 @@ test.describe('HU-15: Alertas de Notificaciones', () => {
         // Llenar formulario
         await page.fill('#notif-titulo', 'Test E2E Masiva ' + Date.now());
         await page.fill('#notif-mensaje', 'Esta es una notificación de prueba enviada a todos los usuarios.');
-        await page.selectOption('#notif-tipo', 'todos');
+        await page.locator('input[name="notif-tipo"][value="todos"]').check();
 
-        // Enviar
-        await page.click('#btn-enviar-notif');
+        // Enviar (botón no tiene ID, usar texto)
+        await page.locator('button:has-text("Enviar notificación")').click();
         await page.waitForTimeout(1000);
 
         // Verificar mensaje de éxito
@@ -64,8 +66,8 @@ test.describe('HU-15: Alertas de Notificaciones', () => {
         await page.locator('#btn-notificaciones').click();
         await expect(page.locator('#view-notificaciones')).toBeVisible();
 
-        // Seleccionar tipo individual
-        await page.selectOption('#notif-tipo', 'individual');
+        // Seleccionar tipo individual (radio button)
+        await page.locator('input[name="notif-tipo"][value="individual"]').check();
         await page.waitForTimeout(300);
 
         // Verificar que aparece el selector de usuario
@@ -82,7 +84,7 @@ test.describe('HU-15: Alertas de Notificaciones', () => {
         // Llenar y enviar
         await page.fill('#notif-titulo', 'Test Individual ' + Date.now());
         await page.fill('#notif-mensaje', 'Notificación individual de prueba');
-        await page.click('#btn-enviar-notif');
+        await page.locator('button:has-text("Enviar notificación")').click();
         await page.waitForTimeout(1000);
 
         await expect(page.getByText('Notificación enviada correctamente')).toBeVisible({ timeout: 5000 });
@@ -328,7 +330,7 @@ test.describe('HU-15: Alertas de Notificaciones', () => {
     // ═══════════════════════════════════════════════════════════
     test('TC-154: Notificaciones — Verificar presencia de campana de notificaciones', async ({ page }) => {
         await loginUsuario(page);
-        const bell = page.locator('.tb-right .sb-bell');
+        const bell = page.locator('.tb-right .tb-bell');
         await expect(bell).toBeVisible();
     });
 });

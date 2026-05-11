@@ -9,12 +9,13 @@ const BASE = 'http://localhost:8000';
 
 async function loginYMenu(page) {
     await page.goto(BASE);
-    await page.locator('#openLoginModal').click();
-    await expect(page.locator('#loginModal')).toBeVisible({ timeout: 5000 });
+    await page.getByRole('button', { name: 'Iniciar sesión' }).click();
+    await expect(page.locator('#loginModal')).toBeVisible({ timeout: 10000 });
     await page.fill('input[name="email"]', 'serpientinon@gmail.com');
     await page.fill('input[name="password"]', '12tres45');
     await page.click('button:has-text("Entrar al sistema")');
-    await expect(page).toHaveURL(/.*\/menu/, { timeout: 15000 });
+    await expect(page).toHaveURL(/.*\/menu/, { timeout: 30000 });
+    await page.waitForTimeout(1000);
 }
 
 test.describe('Regresión Sprint 1 y 2', () => {
@@ -29,7 +30,7 @@ test.describe('Regresión Sprint 1 y 2', () => {
         await expect(page).toHaveURL(/.*\/(home)?$/);
 
         // 2. Abrir modal login
-        await page.locator('#openLoginModal').click();
+        await page.getByRole('button', { name: 'Iniciar sesión' }).click();
         await expect(page.locator('#loginModal')).toBeVisible();
 
         // 3. Llenar credenciales
@@ -40,7 +41,7 @@ test.describe('Regresión Sprint 1 y 2', () => {
         await page.click('button:has-text("Entrar al sistema")');
 
         // 5. Verificar redirección a /menu
-        await expect(page).toHaveURL(/.*\/menu/, { timeout: 15000 });
+        await expect(page).toHaveURL(/.*\/menu/, { timeout: 30000 });
 
         // 6. Verificar elementos del dashboard
         await expect(page.locator('.topbar')).toBeVisible();
@@ -58,18 +59,18 @@ test.describe('Regresión Sprint 1 y 2', () => {
         await page.goto(`${BASE}/perfil`);
         await expect(page.getByText('Mi Perfil')).toBeVisible({ timeout: 10000 });
 
-        // 2. Verificar campos editables
-        const inputNombre = page.locator('#nombre');
+        // 2. Verificar campos editables (IDs reales del perfil)
+        const inputNombre = page.locator('#fNombre');
         await expect(inputNombre).toBeVisible();
         const valorOriginal = await inputNombre.inputValue();
         expect(valorOriginal.length).toBeGreaterThan(0);
 
         // 3. Verificar que el botón guardar existe
-        const btnGuardar = page.locator('#btn-guardar');
+        const btnGuardar = page.locator('#btnSave');
         await expect(btnGuardar).toBeVisible();
 
         // 4. Verificar que la biografía es editable
-        const textBio = page.locator('#biografia');
+        const textBio = page.locator('#fBiografia');
         await expect(textBio).toBeVisible();
     });
 
@@ -107,21 +108,27 @@ test.describe('Regresión Sprint 1 y 2', () => {
     test('TC-146B: Logout con modal de confirmación', async ({ page }) => {
         await loginYMenu(page);
 
-        // 1. Clic en cerrar sesión
-        await page.locator('.btn-logout').click();
+        // 1. Abrir dropdown de usuario en el navbar
+        await page.locator('#nav-user-wrap button').first().click();
+        await expect(page.locator('#navUserMenu')).toBeVisible();
 
-        // 2. Modal de confirmación
-        await expect(page.getByText('¿Cerrar sesión?')).toBeVisible();
+        // 2. Clic en "Cerrar sesión" dentro del dropdown
+        await page.locator('#navUserMenu button:has-text("Cerrar sesión")').click();
 
-        // 3. Cancelar
-        await page.getByText('Cancelar').click();
-        await expect(page.getByText('¿Cerrar sesión?')).toBeHidden();
+        // 3. Modal de confirmación debe aparecer
+        await expect(page.locator('#modalLogout')).toBeVisible();
 
-        // 4. Confirmar logout
-        await page.locator('.btn-logout').click();
-        await page.getByText('Sí, salir').click();
+        // 4. Cancelar
+        await page.locator('#modalLogout button:has-text("Cancelar")').click();
+        await expect(page.locator('#modalLogout')).toBeHidden();
 
-        // 5. Redirige a home
+        // 5. Repetir y confirmar logout
+        await page.locator('#nav-user-wrap button').first().click();
+        await page.locator('#navUserMenu button:has-text("Cerrar sesión")').click();
+        await expect(page.locator('#modalLogout')).toBeVisible();
+        await page.locator('#modalLogout #logoutBtnLabelGlobal').click();
+
+        // 6. Redirige a home
         await expect(page).toHaveURL(/.*\/(home)?$/, { timeout: 10000 });
     });
 
