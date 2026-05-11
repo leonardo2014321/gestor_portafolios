@@ -6,7 +6,25 @@
             </svg>
         </button>
 
-        @if(session('cuenta_desactivada'))
+        @if(session('success_reactivacion'))
+            {{-- ===== PANTALLA DE ÉXITO REACTIVACIÓN ===== --}}
+            <div class="flex flex-col items-center text-center">
+                <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-[28px] bg-emerald-50">
+                    <svg width="40" height="40" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold tracking-tight text-slate-900">Solicitud Enviada</h2>
+                <p class="mt-3 text-sm text-slate-500 leading-relaxed">
+                    Hemos notificado al administrador. Se evaluará tu caso y, de ser aprobado, tu cuenta será reactivada a la brevedad.
+                </p>
+
+                <button type="button" onclick="toggleModal()" class="mt-7 w-full rounded-[28px] bg-gradient-to-r from-sky-600 to-blue-500 px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 transition hover:opacity-95">
+                    Entendido
+                </button>
+            </div>
+
+        @elseif(session('cuenta_desactivada'))
 
             {{-- ===== PANTALLA DE REACTIVACIÓN ===== --}}
             <div class="flex flex-col items-center text-center">
@@ -17,13 +35,17 @@
                 </div>
                 <h2 class="text-2xl font-bold tracking-tight text-slate-900">{{ __('app.login.cuenta_desactivada') }}</h2>
                 <p class="mt-3 text-sm text-slate-500 leading-relaxed">
-                    {{ __('app.login.desactivada_desc') }}
+                    @if(session('motivo_desactivacion') === 'normas_inactividad')
+                        {!! __('app.login.desactivada_normas') !!}
+                    @else
+                        {!! __('app.login.desactivada_desc') !!}
+                    @endif
                 </p>
 
                 <form method="POST" action="{{ route('reactivar') }}" class="mt-7 w-full space-y-3">
                     @csrf
                     <button type="submit" class="w-full rounded-[28px] bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:opacity-95">
-                        {{ __('app.login.reactivar') }}
+                        Solicitar reactivación al administrador
                     </button>
                 </form>
 

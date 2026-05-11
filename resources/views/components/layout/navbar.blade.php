@@ -352,6 +352,7 @@
         function spaNav(view) {
             // Si existe showView (contexto menú autenticado), úsalo
             if (typeof showView === 'function') {
+                if (view === 'inicio') view = 'menu';
                 showView(view);
                 return;
             }
