@@ -126,6 +126,11 @@
     .vp-file-del{background:none;border:none;cursor:pointer;color:var(--muted);padding:0 0 0 4px;flex-shrink:0}
     .vp-file-del:hover{color:#ef4444}
     .vp-file-del svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    /* Previews de imágenes en proyectos */
+    .vp-img-preview{display:flex;align-items:center;gap:10px;background:var(--gray);border-radius:8px;padding:8px;margin-bottom:4px}
+    .vp-img-thumb{width:52px;height:52px;object-fit:cover;border-radius:6px;border:1px solid var(--gray2);flex-shrink:0;cursor:pointer;transition:opacity .15s}
+    .vp-img-thumb:hover{opacity:.85}
+    .vp-img-meta{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
     /* Modal Confirmación */
     .conf-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
     .conf-overlay.open{opacity:1;pointer-events:all}
@@ -861,16 +866,28 @@
         }
         container.innerHTML = proyectos.map(proj => {
             const archivosHtml = proj.archivos && proj.archivos.length
-                ? '<div class="vp-proj-files">' + proj.archivos.map(a =>
-                    '<div class="vp-file" id="vf-' + a.id + '">' +
-                    '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
-                    '<span class="vp-file-name">' + escHtml(a.nombre_original) + '</span>' +
-                    '<span class="vp-file-size">' + fmtSize(a.tamanio) + '</span>' +
-                    '<a class="vp-file-dl" href="' + a.url + '" target="_blank" download>Descargar</a>' +
-                    '<button class="vp-file-del" onclick="vpEliminarArchivo(' + a.id + ')" title="Eliminar">' +
-                    '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
-                    '</button></div>'
-                ).join('') + '</div>'
+                ? '<div class="vp-proj-files">' + proj.archivos.map(a => {
+                    const delBtn = '<button class="vp-file-del" onclick="vpEliminarArchivo(' + a.id + ')" title="Eliminar">' +
+                        '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
+                    if (esImagen(a.nombre_original)) {
+                        return '<div class="vp-img-preview" id="vf-' + a.id + '">' +
+                            '<a href="' + a.url + '" target="_blank">' +
+                            '<img src="' + a.url + '" alt="' + escHtml(a.nombre_original) + '" class="vp-img-thumb">' +
+                            '</a>' +
+                            '<div class="vp-img-meta">' +
+                            '<span class="vp-file-name">' + escHtml(a.nombre_original) + '</span>' +
+                            '<span class="vp-file-size">' + fmtSize(a.tamanio) + '</span>' +
+                            '</div>' +
+                            '<a class="vp-file-dl" href="' + a.url + '" target="_blank" download>Descargar</a>' +
+                            delBtn + '</div>';
+                    }
+                    return '<div class="vp-file" id="vf-' + a.id + '">' +
+                        '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
+                        '<span class="vp-file-name">' + escHtml(a.nombre_original) + '</span>' +
+                        '<span class="vp-file-size">' + fmtSize(a.tamanio) + '</span>' +
+                        '<a class="vp-file-dl" href="' + a.url + '" target="_blank" download>Descargar</a>' +
+                        delBtn + '</div>';
+                }).join('') + '</div>'
                 : '<div class="vp-proj-no-files">Sin archivos adjuntos</div>';
             return '<div class="vp-proj-card">' +
                 '<div class="vp-proj-head">' +
@@ -936,6 +953,9 @@
         if (bytes < 1024) return bytes + ' B';
         if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
         return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+    function esImagen(nombre) {
+        return /\.(png|jpe?g|gif|webp|svg)$/i.test(nombre);
     }
 </script>
 
