@@ -24,6 +24,9 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 # Instalar dependencias Node y compilar assets
 RUN npm ci && npm run build
 
+# Configuración PHP para uploads
+COPY uploads.ini /usr/local/etc/php/conf.d/uploads.ini
+
 # Permisos
 RUN chmod -R 775 storage bootstrap/cache
 

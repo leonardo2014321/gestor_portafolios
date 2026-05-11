@@ -43,7 +43,7 @@ return [
     'menu' => [
         'titulo'            => 'Portfolio System',
         'subtitulo'         => 'Institutional Digital Asset Management – UMSS',
-        'crear'             => 'Create portfolio',
+        'crear'             => 'Add project',
         'portafolios'       => 'Portfolios',
         'documentos'        => 'Documents',
         'aprobados'         => 'Approved',

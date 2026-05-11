@@ -8,10 +8,10 @@ class PortafolioArchivo extends Model
 {
     protected $table = 'portafolio_archivos';
 
-    protected $fillable = ['portafolio_id', 'nombre_original', 'ruta', 'tamanio'];
+    protected $fillable = ['proyecto_id', 'nombre_original', 'ruta', 'tamanio'];
 
-    public function portafolio()
+    public function proyecto()
     {
-        return $this->belongsTo(Portafolio::class, 'portafolio_id');
+        return $this->belongsTo(PortafolioProyecto::class, 'proyecto_id');
     }
 }
