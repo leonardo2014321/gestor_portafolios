@@ -73,9 +73,11 @@ class PortafolioProyectoController extends Controller
             ->firstOrFail();
 
         $data = $request->validate([
-            'nombre'      => 'required|string|max:100',
-            'descripcion' => 'required|string|max:500',
-            'estado'      => ['required', Rule::in(['borrador', 'publicado'])],
+            'nombre'          => 'required|string|max:100',
+            'descripcion'     => 'required|string|max:500',
+            'estado'          => ['required', Rule::in(['borrador', 'publicado'])],
+            'repositorio_url' => 'nullable|url|max:500',
+            'deploy_url'      => 'nullable|url|max:500',
         ]);
 
         $proyecto->update($data);
