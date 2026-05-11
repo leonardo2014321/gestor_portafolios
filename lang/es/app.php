@@ -339,8 +339,8 @@ return [
     'reportes' => [
  
         // ── Cabecera y controles ──────────────────────────────────────────────
-        'titulo'                    => 'Mis Reportes / CV',
-        'subtitulo'                 => 'Genera y exporta tu currículum vitae.',
+        'titulo'                    => 'Mis Reportes',
+        'subtitulo'                 => 'Genera y exporta tu portafolio o currículum vitae.',
         'editar_pantalla'           => 'Editar',
         'exportar_pdf'              => 'Exportar PDF',
         'seleccionar_plantilla'     => 'Seleccionar plantilla:',
