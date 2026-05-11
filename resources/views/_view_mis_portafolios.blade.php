@@ -12,14 +12,25 @@
     <div style="display:flex;align-items:center;gap:10px;">
         <button onclick="abrirModalPortafolio()"
                 style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;
-                       background:var(--blue);color:#fff;border-radius:10px;font-size:13px;
-                       font-weight:600;border:none;cursor:pointer;">
+                       background:#fff;color:var(--blue);border-radius:10px;font-size:13px;
+                       font-weight:600;border:1.5px solid var(--blue);cursor:pointer;">
             <svg viewBox="0 0 24 24"
                  style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round">
                 <line x1="12" y1="5" x2="12" y2="19"/>
                 <line x1="5" y1="12" x2="19" y2="12"/>
             </svg>
             {{ __('app.menu.crear') }}
+        </button>
+        <button onclick="abrirModalCrearPf()"
+                style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;
+                       background:var(--blue);color:#fff;border-radius:10px;font-size:13px;
+                       font-weight:600;border:none;cursor:pointer;">
+            <svg viewBox="0 0 24 24"
+                 style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round">
+                <rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/>
+                <rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/>
+            </svg>
+            Crear portafolio
         </button>
     </div>
 </div>
@@ -80,11 +91,52 @@
     <div class="pgrid">
         @foreach($portafolios as $portafolio)
             @php
-                $nArchivos = $portafolio->archivos->count();
                 $publicado = $portafolio->estado === 'publicado';
+                $hasBanner = !empty($portafolio->banner_ruta);
+                $hasLogo   = !empty($portafolio->logo_ruta);
             @endphp
 
-            @if($publicado)
+            @if($hasBanner)
+                {{-- Portafolio con banner/logo --}}
+                <div class="pcard-pf {{ $publicado ? 'pcard-pf-pub' : 'pcard-pf-bor' }}"
+                     onclick="verPortafolio({{ $portafolio->id }})">
+                    <div class="pcard-pf-top">
+                        <img src="{{ asset('storage/' . $portafolio->banner_ruta) }}"
+                             class="pcard-pf-banner-img" alt="">
+                        <div class="pcard-pf-overlay"></div>
+                        @if($hasLogo)
+                            <div class="pcard-pf-logo">
+                                <img src="{{ asset('storage/' . $portafolio->logo_ruta) }}" alt="">
+                            </div>
+                        @else
+                            <div class="pcard-pf-logo pcard-pf-logo-ico">
+                                <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2">
+                                    <rect x="3" y="3" width="7" height="7"/>
+                                    <rect x="14" y="3" width="7" height="7"/>
+                                    <rect x="14" y="14" width="7" height="7"/>
+                                    <rect x="3" y="14" width="7" height="7"/>
+                                </svg>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="pcard-pf-body">
+                        <div>
+                            <div class="pcard-pf-name">{{ $portafolio->nombre }}</div>
+                            <div class="pcard-pf-desc">{{ $portafolio->descripcion }}</div>
+                        </div>
+                        <div class="pcard-pf-footer">
+                            <div class="pcard-st">
+                                <span class="dot {{ $publicado ? 'dg' : 'dy' }}"></span>
+                                {{ $publicado ? __('app.menu.publicado') : __('app.menu.borrador') }}
+                            </div>
+                            <a href="#" class="{{ $publicado ? 'btn-ver' : 'btn-ver-dk' }}"
+                               onclick="event.stopPropagation();verPortafolio({{ $portafolio->id }});return false;">
+                                {{ __('app.menu.ver_panel') }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @elseif($publicado)
                 <div class="pcard-teal">
                     <div class="pcard-top">
                         <div class="pcard-ico">
@@ -101,12 +153,9 @@
                         </div>
                     </div>
                     <div class="pcard-bot">
-                        <div>
-                            <div class="pcard-num">{{ $nArchivos }} <small>ARCHIVOS</small></div>
-                            <div class="pcard-st">
-                                <span class="dot dg"></span>
-                                {{ __('app.menu.publicado') }}
-                            </div>
+                        <div class="pcard-st">
+                            <span class="dot dg"></span>
+                            {{ __('app.menu.publicado') }}
                         </div>
                         <a href="#" class="btn-ver"
                            onclick="verPortafolio({{ $portafolio->id }});return false;">
@@ -129,12 +178,9 @@
                         </div>
                     </div>
                     <div class="pcard-bot">
-                        <div>
-                            <div class="pcard-num">{{ $nArchivos }} <small>ARCHIVOS</small></div>
-                            <div class="pcard-st">
-                                <span class="dot dy"></span>
-                                {{ __('app.menu.borrador') }}
-                            </div>
+                        <div class="pcard-st">
+                            <span class="dot dy"></span>
+                            {{ __('app.menu.borrador') }}
                         </div>
                         <a href="#" class="btn-ver-dk"
                            onclick="verPortafolio({{ $portafolio->id }});return false;">
@@ -159,11 +205,11 @@
             {{ __('app.menu.sin_portafolios') }}
         </p>
         <p style="font-size:13px">{{ __('app.menu.sin_desc') }}</p>
-        <button onclick="abrirModalPortafolio()"
+        <button onclick="abrirModalCrearPf()"
                 style="display:inline-block;margin-top:1rem;padding:9px 22px;background:var(--blue);
                        color:#fff;border-radius:10px;font-size:13px;font-weight:600;
                        text-decoration:none;border:none;cursor:pointer">
-            {{ __('app.menu.crear') }}
+            Crear portafolio
         </button>
     </div>
 @endif

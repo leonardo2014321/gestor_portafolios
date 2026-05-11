@@ -14,6 +14,8 @@ use App\Http\Controllers\Perfil\RedPerfilController;
 use App\Http\Controllers\Perfil\PerfilController;
 use App\Http\Controllers\Perfil\TrayectoriaController;
 use App\Http\Controllers\Portafolio\PortafolioController;
+use App\Http\Controllers\Portafolio\PortafolioProyectoController;
+use App\Http\Controllers\Portafolio\PortafolioArchivoController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LanguageController;
 
@@ -64,13 +66,12 @@ Route::middleware('auth')->group(function () {
     
     // Panel Principal
     Route::get('/menu', function () {
-        $busquedas = \App\Models\Busqueda::where('titulo', '!=', 'Administrador')->get();
+        $busquedas        = \App\Models\Busqueda::where('titulo', '!=', 'Administrador')->get();
         $portafolios      = \App\Models\Portafolio::where('usuario_id', auth()->id())
-                                ->with('archivos')
-                                ->orderByDesc('updated_at')
-                                ->get();
+                               ->orderByDesc('updated_at')
+                               ->get();
         $totalPortafolios = $portafolios->count();
-        $totalDocumentos  = \App\Models\PortafolioArchivo::whereIn('portafolio_id', $portafolios->pluck('id'))->count();
+        $totalDocumentos  = \App\Models\PortafolioProyecto::whereIn('portafolio_id', $portafolios->pluck('id'))->count();
         $totalAprobados   = $portafolios->where('estado', 'publicado')->count();
         return view('menu', compact('busquedas', 'portafolios', 'totalPortafolios', 'totalDocumentos', 'totalAprobados'));
     })->name('menu');
@@ -102,11 +103,23 @@ Route::middleware('auth')->group(function () {
     Route::post('/perfil/redes', [RedPerfilController::class, 'guardarRedes']);
     Route::get('/perfil/redes', [RedPerfilController::class, 'obtenerRedes']);
 
-    // Portafolios
+    // Portafolios (contenedores con banner/logo)
+    Route::post('/portafolios', [PortafolioController::class, 'storePortafolio']);
+
+    // Portafolios (CRUD)
     Route::get('/mis-portafolios', [PortafolioController::class, 'index']);
-    Route::post('/mis-portafolios', [PortafolioController::class, 'store']);
     Route::post('/mis-portafolios/{id}', [PortafolioController::class, 'update']);
     Route::delete('/mis-portafolios/{id}', [PortafolioController::class, 'destroy']);
+
+    // Proyectos dentro de portafolios (tabla portafolio_proyecto)
+    Route::get('/portafolio-proyecto/portafolio/{id}', [PortafolioProyectoController::class, 'byPortafolio']);
+    Route::post('/portafolio-proyecto', [PortafolioProyectoController::class, 'store']);
+    Route::post('/portafolio-proyecto/{id}', [PortafolioProyectoController::class, 'update']);
+    Route::delete('/portafolio-proyecto/{id}', [PortafolioProyectoController::class, 'destroy']);
+
+    // Archivos de proyectos (tabla portafolio_archivos)
+    Route::post('/portafolio-archivos', [PortafolioArchivoController::class, 'store']);
+    Route::delete('/portafolio-archivos/{id}', [PortafolioArchivoController::class, 'destroy']);
 
     // Trayectoria y Habilidades
     Route::get('/trayectoria', [TrayectoriaController::class, 'index']);

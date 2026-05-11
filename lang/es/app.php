@@ -43,7 +43,7 @@ return [
     'menu' => [
         'titulo'            => 'Sistema de Portafolios',
         'subtitulo'         => 'Gestión institucional de activos digitales – UMSS',
-        'crear'             => 'Crear portafolio',
+        'crear'             => 'Añadir proyecto',
         'portafolios'       => 'Portafolios',
         'documentos'        => 'Documentos',
         'aprobados'         => 'Aprobados',
