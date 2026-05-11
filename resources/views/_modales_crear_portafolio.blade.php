@@ -327,8 +327,8 @@
     <div class="mp-modal">
         <div class="mp-header-wrap">
             <div class="mp-header">
-                <h2>Editar Portafolio</h2>
-                <p>Modifica la información de tu proyecto.</p>
+                <h2>Editar portafolio</h2>
+                <p>Actualiza la información de tu portafolio.</p>
             </div>
             <button class="mp-close" onclick="epCerrar()">
                 <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -336,21 +336,23 @@
         </div>
         <div class="mp-body">
             <input type="hidden" id="epId">
+
+            {{-- Información --}}
             <div class="mp-section">
                 <div class="mp-section-label">
-                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    Información del Proyecto
+                    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
+                    Información del portafolio
                 </div>
                 <div class="mp-field">
-                    <label class="mp-label">Nombre del proyecto <span>*</span></label>
+                    <label class="mp-label">Nombre <span>*</span></label>
                     <input class="mp-input" id="epNombre" type="text" maxlength="100"
-                           placeholder="Ej. Sistema de inventario" oninput="epCheckBtns()">
+                           placeholder="Nombre del portafolio" oninput="epCheckBtns()">
                     <div class="mp-err" id="epErrNombre">El nombre es obligatorio.</div>
                 </div>
                 <div class="mp-field">
                     <label class="mp-label">Descripción <span>*</span></label>
                     <textarea class="mp-textarea" id="epDesc" maxlength="500" rows="3"
-                              placeholder="Describe brevemente tu proyecto..."
+                              placeholder="Describe brevemente tu portafolio..."
                               oninput="epCheckBtns();document.getElementById('epDescCount').textContent=this.value.length"></textarea>
                     <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:3px">
                         <span id="epDescCount">0</span>/500
@@ -358,25 +360,60 @@
                     <div class="mp-err" id="epErrDesc">La descripción es obligatoria.</div>
                 </div>
             </div>
+
+            {{-- Banner --}}
             <div class="mp-section">
                 <div class="mp-section-label">
-                    <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                    Vinculación de Repositorio
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    Banner / Portada
                 </div>
-                <div class="mp-field">
-                    <label class="mp-label">Enlace de GitHub</label>
-                    <div class="mp-url-wrap">
-                        <input class="mp-input" id="epRepo" type="text" maxlength="500"
-                               placeholder="https://github.com/usuario/repositorio"
-                               oninput="epValidarUrl()" style="padding-right:36px">
-                        <svg class="mp-url-tick" id="epUrlTick" viewBox="0 0 24 24"></svg>
+                <input type="file" id="epBannerInput" accept="image/png,image/jpeg,image/jpg"
+                       style="display:none" onchange="epHandleImg('banner',this.files[0])">
+                <div class="pf-img-zone pf-banner-zone" id="epBannerZone"
+                     onclick="document.getElementById('epBannerInput').click()"
+                     ondragover="event.preventDefault();this.classList.add('has-img')"
+                     ondragleave="epDragLeave('banner',event)"
+                     ondrop="event.preventDefault();epHandleImg('banner',event.dataTransfer.files[0])">
+                    <img id="epBannerPreview" src="" alt="" style="display:none">
+                    <div class="pf-img-placeholder" id="epBannerPlaceholder">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        <p>Arrastra o haz clic para cambiar</p>
+                        <span>PNG, JPG · máx. 5 MB</span>
                     </div>
-                    <div class="mp-err" id="epErrRepo">Ingresa una URL válida.</div>
+                    <button class="pf-remove" onclick="event.stopPropagation();epQuitarImg('banner')">&times;</button>
                 </div>
             </div>
+
+            {{-- Logo --}}
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                    Logo / Imagen
+                </div>
+                <input type="file" id="epLogoInput" accept="image/png,image/jpeg,image/jpg"
+                       style="display:none" onchange="epHandleImg('logo',this.files[0])">
+                <div style="display:flex;align-items:flex-start;gap:16px">
+                    <div class="pf-img-zone pf-logo-zone" id="epLogoZone"
+                         onclick="document.getElementById('epLogoInput').click()"
+                         ondragover="event.preventDefault();this.classList.add('has-img')"
+                         ondragleave="epDragLeave('logo',event)"
+                         ondrop="event.preventDefault();epHandleImg('logo',event.dataTransfer.files[0])">
+                        <img id="epLogoPreview" src="" alt="" style="display:none">
+                        <div class="pf-img-placeholder" id="epLogoPlaceholder">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                        </div>
+                        <button class="pf-remove" onclick="event.stopPropagation();epQuitarImg('logo')">&times;</button>
+                    </div>
+                    <div style="padding-top:6px">
+                        <p style="font-size:13px;font-weight:600;color:var(--text);margin:0 0 4px">Logo del portafolio</p>
+                        <p style="font-size:12px;color:var(--muted);margin:0">PNG, JPG · máx. 2 MB<br>Recomendado 200×200 px</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="mp-footer">
-            <button class="mp-btn-ghost"   id="epBtnBorrador" onclick="epConfirmarGuardar('borrador')" disabled>
+            <button class="mp-btn-ghost" id="epBtnBorrador" onclick="epConfirmarGuardar('borrador')" disabled>
                 Guardar como borrador
             </button>
             <button class="mp-btn-primary" id="epBtnPublicar" onclick="epConfirmarGuardar('publicado')" disabled>
@@ -570,6 +607,8 @@
     }
 
     /* ══ MODAL 4 · Editar ══ */
+    let epBannerFile = null, epLogoFile = null;
+
     function vpAbrirEditar() {
         const id = document.getElementById('vpBtnEditar').dataset.id;
         const p  = VP_DATA.find(x => x.id == id);
@@ -581,9 +620,21 @@
         document.getElementById('epId').value     = p.id;
         document.getElementById('epNombre').value = p.nombre;
         document.getElementById('epDesc').value   = p.descripcion || '';
-        document.getElementById('epRepo').value   = p.repositorio_url || '';
         document.getElementById('epDescCount').textContent = (p.descripcion || '').length;
-        epValidarUrl();
+        epBannerFile = null;
+        epLogoFile   = null;
+        if (p.banner_ruta) {
+            document.getElementById('epBannerPreview').src = '/storage/' + p.banner_ruta;
+            document.getElementById('epBannerPreview').style.display = 'block';
+            document.getElementById('epBannerPlaceholder').style.display = 'none';
+            document.getElementById('epBannerZone').classList.add('has-img');
+        } else { epQuitarImg('banner'); }
+        if (p.logo_ruta) {
+            document.getElementById('epLogoPreview').src = '/storage/' + p.logo_ruta;
+            document.getElementById('epLogoPreview').style.display = 'block';
+            document.getElementById('epLogoPlaceholder').style.display = 'none';
+            document.getElementById('epLogoZone').classList.add('has-img');
+        } else { epQuitarImg('logo'); }
         epCheckBtns();
         document.getElementById('modalEditarPortafolio').classList.add('open');
     }
@@ -595,18 +646,38 @@
         document.getElementById('epBtnBorrador').disabled = !ok;
         document.getElementById('epBtnPublicar').disabled = !ok;
     }
-    function epValidarUrl() {
-        const val  = document.getElementById('epRepo').value.trim();
-        const tick = document.getElementById('epUrlTick');
-        const err  = document.getElementById('epErrRepo');
-        if (!val) { tick.style.display='none'; err.style.display='none'; document.getElementById('epRepo').classList.remove('mp-invalid','mp-ok'); return true; }
-        const ok = /^https?:\/\/.+\..+/.test(val);
-        document.getElementById('epRepo').classList.toggle('mp-invalid', !ok);
-        document.getElementById('epRepo').classList.toggle('mp-ok', ok);
-        tick.style.display = ok ? 'block' : 'none';
-        tick.innerHTML     = ok ? '<polyline points="20 6 9 17 4 12" stroke="#22c55e"/>' : '';
-        err.style.display  = ok ? 'none' : 'block';
-        return ok || !val;
+    function epHandleImg(tipo, file) {
+        if (!file) return;
+        if (!file.type.match(/image\/(png|jpe?g)/)) { alert('Solo se aceptan imágenes PNG o JPG.'); return; }
+        const maxBytes = tipo === 'banner' ? 5 * 1024 * 1024 : 2 * 1024 * 1024;
+        if (file.size > maxBytes) { alert('La imagen supera el límite de ' + (tipo === 'banner' ? '5' : '2') + ' MB.'); return; }
+        if (tipo === 'banner') epBannerFile = file; else epLogoFile = file;
+        const preview     = document.getElementById(tipo === 'banner' ? 'epBannerPreview' : 'epLogoPreview');
+        const placeholder = document.getElementById(tipo === 'banner' ? 'epBannerPlaceholder' : 'epLogoPlaceholder');
+        const zone        = document.getElementById(tipo === 'banner' ? 'epBannerZone' : 'epLogoZone');
+        const reader = new FileReader();
+        reader.onload = e => {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+            placeholder.style.display = 'none';
+            zone.classList.add('has-img');
+        };
+        reader.readAsDataURL(file);
+    }
+    function epQuitarImg(tipo) {
+        const preview     = document.getElementById(tipo === 'banner' ? 'epBannerPreview' : 'epLogoPreview');
+        const placeholder = document.getElementById(tipo === 'banner' ? 'epBannerPlaceholder' : 'epLogoPlaceholder');
+        const zone        = document.getElementById(tipo === 'banner' ? 'epBannerZone' : 'epLogoZone');
+        const input       = document.getElementById(tipo === 'banner' ? 'epBannerInput' : 'epLogoInput');
+        preview.src = ''; preview.style.display = 'none';
+        placeholder.style.display = '';
+        zone.classList.remove('has-img');
+        if (input) input.value = '';
+        if (tipo === 'banner') epBannerFile = null; else epLogoFile = null;
+    }
+    function epDragLeave(tipo, event) {
+        const zone = document.getElementById(tipo === 'banner' ? 'epBannerZone' : 'epLogoZone');
+        if (!zone.querySelector('img')?.src) zone.classList.remove('has-img');
     }
     function epConfirmarGuardar(estado) {
         const nombre = document.getElementById('epNombre').value.trim();
@@ -616,12 +687,11 @@
         else          { document.getElementById('epErrNombre').style.display='none';  document.getElementById('epNombre').classList.remove('mp-invalid'); }
         if (!desc)    { document.getElementById('epErrDesc').style.display='block';   document.getElementById('epDesc').classList.add('mp-invalid');   valid=false; }
         else          { document.getElementById('epErrDesc').style.display='none';    document.getElementById('epDesc').classList.remove('mp-invalid'); }
-        if (!epValidarUrl()) valid = false;
         if (!valid) return;
         vpConfirm({
             ico: '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v14a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>',
             danger: false, title: '¿Guardar cambios?',
-            desc: 'Se actualizará la información del portafolio en el sistema.',
+            desc: 'Se actualizará la información del portafolio.',
             btnText: 'Sí, guardar', onConfirm: () => epGuardar(estado),
         });
     }
@@ -629,11 +699,12 @@
         const id    = document.getElementById('epId').value;
         const token = document.querySelector('meta[name="csrf-token"]').content;
         const form  = new FormData();
-        form.append('nombre',          document.getElementById('epNombre').value.trim());
-        form.append('descripcion',     document.getElementById('epDesc').value.trim());
-        form.append('repositorio_url', document.getElementById('epRepo').value.trim());
-        form.append('estado', estado);
-        form.append('_token', token);
+        form.append('nombre',      document.getElementById('epNombre').value.trim());
+        form.append('descripcion', document.getElementById('epDesc').value.trim());
+        form.append('estado',      estado);
+        form.append('_token',      token);
+        if (epBannerFile) form.append('banner', epBannerFile);
+        if (epLogoFile)   form.append('logo',   epLogoFile);
         const btnB = document.getElementById('epBtnBorrador');
         const btnP = document.getElementById('epBtnPublicar');
         btnB.disabled = btnP.disabled = true;

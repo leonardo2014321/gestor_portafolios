@@ -81,18 +81,34 @@ class PortafolioController extends Controller
             ->firstOrFail();
 
         $data = $request->validate([
-            'nombre'          => 'required|string|max:100',
-            'descripcion'     => 'required|string|max:500',
-            'repositorio_url' => 'nullable|url|max:500',
-            'estado'          => ['required', Rule::in(['borrador', 'publicado'])],
+            'nombre'      => 'required|string|max:100',
+            'descripcion' => 'required|string|max:500',
+            'estado'      => ['required', Rule::in(['borrador', 'publicado'])],
+            'banner'      => 'nullable|image|max:5120|mimes:png,jpg,jpeg',
+            'logo'        => 'nullable|image|max:2048|mimes:png,jpg,jpeg',
         ]);
 
-        $portafolio->update([
-            'nombre'          => $data['nombre'],
-            'descripcion'     => $data['descripcion'],
-            'repositorio_url' => $data['repositorio_url'] ?? null,
-            'estado'          => $data['estado'],
-        ]);
+        $portafolio->nombre      = $data['nombre'];
+        $portafolio->descripcion = $data['descripcion'];
+        $portafolio->estado      = $data['estado'];
+
+        if ($request->hasFile('banner')) {
+            if ($portafolio->banner_ruta) {
+                Storage::disk('public')->delete($portafolio->banner_ruta);
+            }
+            $portafolio->banner_ruta = $request->file('banner')
+                ->store('portafolios/' . $portafolio->id . '/banner', 'public');
+        }
+
+        if ($request->hasFile('logo')) {
+            if ($portafolio->logo_ruta) {
+                Storage::disk('public')->delete($portafolio->logo_ruta);
+            }
+            $portafolio->logo_ruta = $request->file('logo')
+                ->store('portafolios/' . $portafolio->id . '/logo', 'public');
+        }
+
+        $portafolio->save();
 
         return response()->json(['ok' => true, 'portafolio' => $portafolio]);
     }
