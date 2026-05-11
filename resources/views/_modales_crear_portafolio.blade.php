@@ -878,14 +878,12 @@
                             '<span class="vp-file-name">' + escHtml(a.nombre_original) + '</span>' +
                             '<span class="vp-file-size">' + fmtSize(a.tamanio) + '</span>' +
                             '</div>' +
-                            '<a class="vp-file-dl" href="' + a.url + '" target="_blank" download>Descargar</a>' +
                             delBtn + '</div>';
                     }
                     return '<div class="vp-file" id="vf-' + a.id + '">' +
                         '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
                         '<span class="vp-file-name">' + escHtml(a.nombre_original) + '</span>' +
                         '<span class="vp-file-size">' + fmtSize(a.tamanio) + '</span>' +
-                        '<a class="vp-file-dl" href="' + a.url + '" target="_blank" download>Descargar</a>' +
                         delBtn + '</div>';
                 }).join('') + '</div>'
                 : '<div class="vp-proj-no-files">Sin archivos adjuntos</div>';
