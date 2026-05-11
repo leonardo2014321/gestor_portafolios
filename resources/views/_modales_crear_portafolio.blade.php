@@ -899,6 +899,14 @@
 
     async function vpAgregarArchivos(proyectoId, portafolioId, input) {
         if (!input.files.length) return;
+        const MAX = 20 * 1024 * 1024;
+        for (const f of input.files) {
+            if (f.size > MAX) {
+                alert('"' + f.name + '" supera el límite de 20 MB.');
+                input.value = '';
+                return;
+            }
+        }
         const token = document.querySelector('meta[name="csrf-token"]').content;
         const form  = new FormData();
         form.append('proyecto_id', proyectoId);
@@ -906,13 +914,18 @@
         for (const f of input.files) form.append('archivos[]', f);
         try {
             const res  = await fetch('/portafolio-archivos', { method: 'POST', body: form });
-            const json = await res.json();
+            const text = await res.text();
+            let json;
+            try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
             if (json.ok) {
                 const r2 = await fetch('/portafolio-proyecto/portafolio/' + portafolioId);
                 const j2 = await r2.json();
                 if (j2.ok) vpRenderProyectos(j2.proyectos, portafolioId);
-            } else { alert('Error al subir archivos.'); }
-        } catch(e) { alert('Error al subir archivos.'); }
+            } else {
+                const msg = json.errors ? Object.values(json.errors).flat().join('\n') : (json.message || 'Error al subir archivos.');
+                alert(msg);
+            }
+        } catch(e) { alert(e.message); }
         input.value = '';
     }
 
