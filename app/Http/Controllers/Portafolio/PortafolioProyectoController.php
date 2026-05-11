@@ -40,10 +40,12 @@ class PortafolioProyectoController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'portafolio_id' => 'required|integer',
-            'nombre'        => 'required|string|max:100',
-            'descripcion'   => 'required|string|max:500',
-            'estado'        => ['required', Rule::in(['borrador', 'publicado'])],
+            'portafolio_id'   => 'required|integer',
+            'nombre'          => 'required|string|max:100',
+            'descripcion'     => 'required|string|max:500',
+            'estado'          => ['required', Rule::in(['borrador', 'publicado'])],
+            'repositorio_url' => 'nullable|url|max:500',
+            'deploy_url'      => 'nullable|url|max:500',
         ]);
 
         // Verificar que el portafolio pertenece al usuario
@@ -52,11 +54,13 @@ class PortafolioProyectoController extends Controller
             ->firstOrFail();
 
         $proyecto = PortafolioProyecto::create([
-            'portafolio_id' => $portafolio->id,
-            'usuario_id'    => Auth::id(),
-            'nombre'        => $data['nombre'],
-            'descripcion'   => $data['descripcion'],
-            'estado'        => $data['estado'],
+            'portafolio_id'   => $portafolio->id,
+            'usuario_id'      => Auth::id(),
+            'nombre'          => $data['nombre'],
+            'descripcion'     => $data['descripcion'],
+            'estado'          => $data['estado'],
+            'repositorio_url' => $data['repositorio_url'] ?? null,
+            'deploy_url'      => $data['deploy_url'] ?? null,
         ]);
 
         return response()->json(['ok' => true, 'proyecto' => $proyecto]);

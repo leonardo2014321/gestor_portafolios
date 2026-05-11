@@ -14,6 +14,7 @@ class PortafolioProyecto extends Model
         'nombre',
         'descripcion',
         'repositorio_url',
+        'deploy_url',
         'estado',
     ];
 

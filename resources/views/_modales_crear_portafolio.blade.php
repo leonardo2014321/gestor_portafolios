@@ -119,6 +119,12 @@
     .vp-proj-desc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.4;word-break:break-word}
     .vp-proj-files{display:flex;flex-direction:column;gap:4px;margin-top:8px}
     .vp-proj-no-files{font-size:11.5px;color:var(--muted);padding:4px 0}
+    .vp-proj-links{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+    .vp-proj-link{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:11.5px;font-weight:600;text-decoration:none;transition:opacity .15s}
+    .vp-proj-link:hover{opacity:.8}
+    .vp-proj-link-gh{background:#24292e;color:#fff}
+    .vp-proj-link-deploy{background:#10b981;color:#fff}
+    .vp-proj-link svg{width:12px;height:12px;fill:currentColor;flex-shrink:0}
     .vp-proj-add-file{display:inline-flex;align-items:center;gap:4px;margin-top:8px;cursor:pointer;color:var(--blue);font-size:12px;font-weight:600;user-select:none}
     .vp-proj-add-file:hover span{text-decoration:underline}
     .vp-file-dl{color:var(--blue);font-size:11px;font-weight:600;text-decoration:none;padding:2px 6px;border-radius:4px;white-space:nowrap;flex-shrink:0}
@@ -201,6 +207,36 @@
                         <span id="mpDescCount">0</span>/500
                     </div>
                     <div class="mp-err" id="mpErrDesc">La descripción es obligatoria.</div>
+                </div>
+            </div>
+
+            {{-- Vínculos --}}
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    Vínculos <span style="font-weight:400;text-transform:none;letter-spacing:0">(opcional)</span>
+                </div>
+                <div class="mp-field">
+                    <label class="mp-label">Repositorio GitHub</label>
+                    <div class="mp-url-wrap">
+                        <input class="mp-input" id="mpRepo" type="text" maxlength="500"
+                               placeholder="https://github.com/usuario/repositorio"
+                               oninput="mpValidarUrl('mpRepo','mpRepoTick','mpErrRepo')"
+                               style="padding-right:36px">
+                        <svg class="mp-url-tick" id="mpRepoTick" viewBox="0 0 24 24"></svg>
+                    </div>
+                    <div class="mp-err" id="mpErrRepo">Ingresa una URL válida.</div>
+                </div>
+                <div class="mp-field">
+                    <label class="mp-label">URL de Deploy</label>
+                    <div class="mp-url-wrap">
+                        <input class="mp-input" id="mpDeploy" type="text" maxlength="500"
+                               placeholder="https://mi-proyecto.vercel.app"
+                               oninput="mpValidarUrl('mpDeploy','mpDeployTick','mpErrDeploy')"
+                               style="padding-right:36px">
+                        <svg class="mp-url-tick" id="mpDeployTick" viewBox="0 0 24 24"></svg>
+                    </div>
+                    <div class="mp-err" id="mpErrDeploy">Ingresa una URL válida.</div>
                 </div>
             </div>
 
@@ -626,12 +662,30 @@
     function mpCerrar() {
         document.getElementById('modalPortafolio').classList.remove('open');
     }
+    function mpValidarUrl(inputId, tickId, errId) {
+        const val = document.getElementById(inputId).value.trim();
+        const inp = document.getElementById(inputId);
+        const tick = document.getElementById(tickId);
+        const err  = document.getElementById(errId);
+        if (!val) { tick.style.display='none'; err.style.display='none'; inp.classList.remove('mp-invalid','mp-ok'); return true; }
+        const ok = /^https?:\/\/.+\..+/.test(val);
+        inp.classList.toggle('mp-invalid', !ok);
+        inp.classList.toggle('mp-ok', ok);
+        tick.style.display = ok ? 'block' : 'none';
+        tick.innerHTML     = ok ? '<polyline points="20 6 9 17 4 12" stroke="#22c55e"/>' : '';
+        err.style.display  = ok ? 'none' : 'block';
+        return ok || !val;
+    }
+
     function mpReset() {
-        ['mpNombre','mpDesc'].forEach(id => {
+        ['mpNombre','mpDesc','mpRepo','mpDeploy'].forEach(id => {
             const el = document.getElementById(id);
             if (el) { el.value = ''; el.classList.remove('mp-invalid','mp-ok'); }
         });
-        ['mpErrNombre','mpErrDesc','mpErrPortafolio'].forEach(id => {
+        ['mpErrNombre','mpErrDesc','mpErrPortafolio','mpErrRepo','mpErrDeploy'].forEach(id => {
+            const el = document.getElementById(id); if (el) el.style.display = 'none';
+        });
+        ['mpRepoTick','mpDeployTick'].forEach(id => {
             const el = document.getElementById(id); if (el) el.style.display = 'none';
         });
         document.getElementById('mpDescCount').textContent = '0';
@@ -799,13 +853,17 @@
         else          { document.getElementById('mpErrNombre').style.display='none';  document.getElementById('mpNombre').classList.remove('mp-invalid'); }
         if (!desc)    { document.getElementById('mpErrDesc').style.display='block';   document.getElementById('mpDesc').classList.add('mp-invalid');   valid=false; }
         else          { document.getElementById('mpErrDesc').style.display='none';    document.getElementById('mpDesc').classList.remove('mp-invalid'); }
+        if (!mpValidarUrl('mpRepo',   'mpRepoTick',   'mpErrRepo'))   valid = false;
+        if (!mpValidarUrl('mpDeploy', 'mpDeployTick', 'mpErrDeploy')) valid = false;
         if (!valid) return;
         const form = new FormData();
-        form.append('portafolio_id', portafolioId);
-        form.append('nombre',        nombre);
-        form.append('descripcion',   desc);
-        form.append('estado',        estado);
-        form.append('_token',        document.querySelector('meta[name="csrf-token"]').content);
+        form.append('portafolio_id',   portafolioId);
+        form.append('nombre',          nombre);
+        form.append('descripcion',     desc);
+        form.append('estado',          estado);
+        form.append('repositorio_url', document.getElementById('mpRepo').value.trim());
+        form.append('deploy_url',      document.getElementById('mpDeploy').value.trim());
+        form.append('_token',          document.querySelector('meta[name="csrf-token"]').content);
         const btnB = document.getElementById('mpBtnBorrador');
         const btnP = document.getElementById('mpBtnPublicar');
         btnB.disabled = btnP.disabled = true;
@@ -887,12 +945,22 @@
                         delBtn + '</div>';
                 }).join('') + '</div>'
                 : '<div class="vp-proj-no-files">Sin archivos adjuntos</div>';
+            const vinculosHtml = (proj.repositorio_url || proj.deploy_url)
+                ? '<div class="vp-proj-links">' +
+                  (proj.repositorio_url ? '<a href="' + proj.repositorio_url + '" target="_blank" rel="noopener" class="vp-proj-link vp-proj-link-gh">' +
+                  '<svg viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>' +
+                  'GitHub</a>' : '') +
+                  (proj.deploy_url ? '<a href="' + proj.deploy_url + '" target="_blank" rel="noopener" class="vp-proj-link vp-proj-link-deploy">' +
+                  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="fill:none"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>' +
+                  'Deploy</a>' : '') +
+                  '</div>'
+                : '';
             return '<div class="vp-proj-card">' +
                 '<div class="vp-proj-head">' +
                 '<div><div class="vp-proj-name">' + escHtml(proj.nombre) + '</div>' +
                 '<div class="vp-proj-desc">' + escHtml(proj.descripcion || '') + '</div></div>' +
                 '<span class="vp-badge ' + proj.estado + '">' + (proj.estado === 'publicado' ? 'Publicado' : 'Borrador') + '</span>' +
-                '</div>' + archivosHtml +
+                '</div>' + vinculosHtml + archivosHtml +
                 '<label class="vp-proj-add-file">' +
                 '<input type="file" multiple accept="image/*,.zip,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" style="display:none" ' +
                 'onchange="vpAgregarArchivos(' + proj.id + ',' + portafolioId + ',this)">' +
