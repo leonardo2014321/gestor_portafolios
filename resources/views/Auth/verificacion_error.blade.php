@@ -18,8 +18,8 @@
             El enlace de verificación no es válido o ya expiró.
         </p>
 
-        <a href="/registro"
-           class="mt-5 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg">
+        <a href="/?registro=1"
+        class="mt-5 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg">
             Volver a registrarse
         </a>
 

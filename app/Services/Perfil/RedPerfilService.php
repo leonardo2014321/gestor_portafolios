@@ -8,21 +8,31 @@ class RedPerfilService
 {
     public function guardar($usuarioId, array $redes)
     {
-        // eliminar anteriores
-        RedPerfil::where('usuario_id', $usuarioId)->delete();
-
         $guardadas = [];
 
         foreach ($redes as $red) {
+            $tipo = $red['tipo'];
+            $url  = $red['url'] ?? null;
 
-            if (empty($red['url'])) continue;
+            if (empty($url)) {
+                // Si no tiene URL, eliminar esa red si existía
+                RedPerfil::where('usuario_id', $usuarioId)
+                         ->where('tipo', $tipo)
+                         ->delete();
+                continue;
+            }
 
-            $guardadas[] = RedPerfil::create([
-                'usuario_id' => $usuarioId,
-                'tipo' => $red['tipo'],
-                'url' => $red['url'],
-                'visible' => $red['visible'] ?? false
-            ]);
+            // Busca por usuario+tipo y actualiza, o crea si no existe
+            $guardadas[] = RedPerfil::updateOrCreate(
+                [
+                    'usuario_id' => $usuarioId,
+                    'tipo'       => $tipo,
+                ],
+                [
+                    'url'     => $url,
+                    'visible' => $red['visible'] ?? false,
+                ]
+            );
         }
 
         return $guardadas;

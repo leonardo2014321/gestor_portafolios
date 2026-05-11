@@ -15,24 +15,24 @@
                         <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
                     </svg>
                 </div>
-                <h2 class="text-2xl font-bold tracking-tight text-slate-900">Cuenta desactivada</h2>
+                <h2 class="text-2xl font-bold tracking-tight text-slate-900">{{ __('app.login.cuenta_desactivada') }}</h2>
                 <p class="mt-3 text-sm text-slate-500 leading-relaxed">
                     @if(session('motivo_desactivacion') === 'normas_inactividad')
-                        Tu cuenta fue desactivada por no cumplir con las normas de la plataforma o por inactividad prolongada.<br>Si crees que esto es un error, contacta con soporte.
+                        {!! __('app.login.desactivada_normas') !!}
                     @else
-                        Tu cuenta fue desactivada por ti mismo.<br>¿Deseas reactivarla y volver a entrar?
+                        {!! __('app.login.desactivada_desc') !!}
                     @endif
                 </p>
 
                 <form method="POST" action="{{ route('reactivar') }}" class="mt-7 w-full space-y-3">
                     @csrf
                     <button type="submit" class="w-full rounded-[28px] bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:opacity-95">
-                        Sí, reactivar mi cuenta
+                        {{ __('app.login.reactivar') }}
                     </button>
                 </form>
 
                 <button type="button" onclick="toggleModal()" class="mt-3 text-sm text-slate-400 hover:text-slate-600 transition">
-                    Cancelar
+                    {{ __('app.login.cancelar') }}
                 </button>
             </div>
 
@@ -44,8 +44,8 @@
             </div>
 
             <div class="text-center">
-                <h2 class="text-3xl font-bold tracking-tight text-slate-900">Bienvenido de nuevo</h2>
-                <p class="mt-3 text-sm text-slate-500">Inicia sesión para gestionar tu portafolio profesional digital.</p>
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900">{{ __('app.login.bienvenido') }}</h2>
+                <p class="mt-3 text-sm text-slate-500">{{ __('app.login.subtitulo') }}</p>
             </div>
 
             @php
@@ -66,7 +66,7 @@
                 @csrf
 
                 <div>
-                    <label class="mb-3 block text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">Correo electrónico</label>
+                    <label class="mb-3 block text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">{{ __('app.login.correo') }}</label>
                     <div class="{{ $emailInputClasses }}">
                         <input
                             id="input-email"
@@ -85,7 +85,7 @@
                 </div>
 
                 <div>
-                    <label class="mb-3 block text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">Contraseña</label>
+                    <label class="mb-3 block text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">{{ __('app.login.password') }}</label>
                     <div class="{{ $passwordInputClasses }}">
                         <input
                             id="input-password"
@@ -105,12 +105,16 @@
                 <div class="flex items-center justify-between text-sm text-slate-500">
                     <label class="flex items-center gap-2">
                         <input type="checkbox" name="remember" class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500" />
-                        Recordar sesión
+                        {{ __('app.login.recordar') }}
                     </label>
-                    <a href="javascript:void(0)" onclick="abrirModalRecuperar()">¿Olvidaste tu contraseña?</a>
+                    <a href="javascript:void(0)" onclick="abrirModalRecuperar()">{{ __('app.login.olvidaste') }}</a>
                 </div>
 
-                <button type="submit" class="w-full rounded-[28px] bg-gradient-to-r from-sky-600 to-blue-500 px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 transition hover:opacity-95">Entrar al sistema</button>
+                <div id="loginMensaje"></div>
+
+                <button type="submit" class="w-full rounded-[28px] bg-gradient-to-r from-sky-600 to-blue-500 px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-sky-500/20 transition hover:opacity-95">
+                    {{ __('app.login.btn_entrar') }}
+                </button>
 
                 <div class="flex items-center gap-3 text-xs text-slate-400">
                     <span class="h-px flex-1 bg-slate-200"></span>
@@ -125,12 +129,12 @@
                         <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" />
                         <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                     </svg>
-                    Continuar con Google
+                    {{ __('app.login.google') }}
                 </a>
 
-                <p class="text-center text-sm text-slate-500">¿No tienes cuenta?
+                <p class="text-center text-sm text-slate-500">{{ __('app.login.sin_cuenta') }}
                     <button type="button" onclick="toggleModal(); toggleRegister();" class="font-semibold text-slate-900 hover:text-sky-600 cursor-pointer">
-                        Regístrate
+                        {{ __('app.login.registrate') }}
                     </button>
                 </p>
             </form>
@@ -152,7 +156,6 @@
         if (p) p.value = '';
     }
 
-    // Limpiar cada vez que el modal se hace visible (se quita la clase 'hidden')
     new MutationObserver(function (muts) {
         muts.forEach(function (m) {
             if (m.attributeName === 'class' && !modal.classList.contains('hidden')) {

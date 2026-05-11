@@ -15,7 +15,7 @@ use App\Http\Controllers\Perfil\PerfilController;
 use App\Http\Controllers\Perfil\TrayectoriaController;
 use App\Http\Controllers\Portafolio\PortafolioController;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\LanguageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,21 +24,34 @@ use App\Http\Controllers\AdminController;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return response()->view('home')->withHeaders([
+        'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+        'Pragma'        => 'no-cache',
+        'Expires'       => '0',
+    ]);
 })->name('inicio');
 
 Route::get('/home', function () {
-    return view('home');
+    return response()->view('home')->withHeaders([
+        'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+        'Pragma'        => 'no-cache',
+        'Expires'       => '0',
+    ]);
 })->name('home');
 
 Route::get('/caracteristicas', function () {
     return view('Auth.caracteristicas');
 })->name('caracteristicas');
 
-// ✅ RUTA CORREGIDA: Ahora está en la zona pública y no pedirá login
+Route::get('/explorador', function () {
+    return view('Auth.explorador');
+})->name('explorador');
+
+// RUTA CORREGIDA: Ahora está en la zona pública y no pedirá login
 Route::get('/portafolios', function () {
     return view('Auth.portafolios');
 })->name('portafolios.index');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -124,7 +137,9 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
 Route::post('/reactivar-cuenta', [LoginController::class, 'reactivar'])->name('reactivar');
 
-Route::get('/registro', [RegistroController::class, 'show'])->name('registro');
+Route::get('/registro', function () {
+    return redirect('/?registro=1');
+})->name('registro');
 Route::post('/registro', [RegistroController::class, 'register'])->name('registro.post');
 
 // Recuperación de Contraseña
@@ -137,33 +152,9 @@ Route::post('/reset-password', [RecuperacionController::class, 'cambiarContrasen
 |--------------------------------------------------------------------------
 */
 
-Route::get('/verificar-email', function (Request $request) {
-    $token = $request->token;
+// usa el controller que ya tiene el redirect correcto
+Route::get('/verificar-email', [RegistroController::class, 'verificarEmail']);
 
-    // Obtener datos temporales almacenados en Cache
-    $datos = Cache::get('registro_temp_'.$token);
-
-    if (!$datos) {
-        return redirect('/registro')->withErrors('Token inválido o expirado.');
-    }
-
-    // Crear usuario definitivo tras validación
-    $usuario = Usuario::create([
-        'nombre' => $datos['nombre'],
-        'apellido' => $datos['apellido'] ?? null,
-        'email' => $datos['email'],
-        'contrasena' => $datos['password'],
-        'email_verificado' => true,
-    ]);
-
-    // Registrar actividad en el sistema
-    ActividadService::log($usuario->id, 'registro_usuario', ['email' => $usuario->email]);
-
-    // Limpiar caché
-    Cache::forget('registro_temp_'.$token);
-
-    return redirect('/login')->with('success', 'Correo verificado correctamente, ya puedes iniciar sesión.');
-});
 
 /*
 |--------------------------------------------------------------------------
@@ -212,4 +203,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/usuarios/{id}/toggle-status', [AdminController::class, 'toggleStatus'])->name('admin.usuarios.toggle-status')->middleware('es_admin');
     Route::post('/admin/usuarios/{id}/toggle-role', [AdminController::class, 'toggleRole'])->name('admin.usuarios.toggle-role')->middleware('es_admin');
 });
-
+// lenguaje 
+Route::get('/lang/{lang}', [LanguageController::class, 'switch'])
+     ->name('lang.switch');

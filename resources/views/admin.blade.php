@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - SansiFolios</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -392,10 +393,10 @@
                     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                     <span>Portafolios</span>
                 </button>
-                <button class="nav-item" onclick="showAdminView('notificaciones')">
-                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                  <span>Notificaciones</span>
-                </button>
+                <button id="btn-notificaciones" class="sb-item" onclick="mostrarVista('notificaciones')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    <span>Notificaciones</span>
+</button>
             </div>
         </aside>
 
@@ -1093,6 +1094,94 @@
         renderCal();
     }
     renderCal();
+
+    // ── Notificaciones Admin ─────────────────────────
+document.getElementById('notif-mensaje')?.addEventListener('input', function(){
+    document.getElementById('notif-msg-count').textContent = this.value.length;
+});
+
+function notifTipoChange(radio) {
+    document.getElementById('notif-selector-usuario').style.display =
+        radio.value === 'individual' ? 'block' : 'none';
+}
+
+async function notifEnviar() {
+    const titulo     = document.getElementById('notif-titulo').value.trim();
+    const mensaje    = document.getElementById('notif-mensaje').value.trim();
+    const tipoEl     = document.querySelector('input[name="notif-tipo"]:checked');
+    const tipo       = tipoEl ? tipoEl.value : '';
+    const destId     = document.getElementById('notif-destinatario')?.value;
+
+    if (!titulo || !mensaje || !tipo) {
+        alert('Completa todos los campos obligatorios.'); return;
+    }
+    if (tipo === 'individual' && !destId) {
+        alert('Selecciona un usuario destinatario.'); return;
+    }
+
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const body  = new FormData();
+    body.append('titulo',          titulo);
+    body.append('mensaje',         mensaje);
+    body.append('tipo_envio',      tipo);
+    if (tipo === 'individual') body.append('destinatario_id', destId);
+
+    const res  = await fetch('/admin/notificaciones', { method:'POST', headers:{'X-CSRF-TOKEN':token}, body });
+    const json = await res.json().catch(() => ({}));
+
+    if (res.ok) {
+        document.getElementById('notif-titulo').value  = '';
+        document.getElementById('notif-mensaje').value = '';
+        document.getElementById('notif-msg-count').textContent = '0';
+        document.querySelectorAll('input[name="notif-tipo"]').forEach(r => r.checked = false);
+        document.getElementById('notif-selector-usuario').style.display = 'none';
+        const ok = document.getElementById('notif-success');
+        ok.style.display = 'block';
+        setTimeout(() => ok.style.display = 'none', 3000);
+        notifCargarHistorial();
+    } else {
+        alert('Error al enviar. Revisa los campos.');
+    }
+}
+
+async function notifCargarHistorial() {
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const res   = await fetch('/admin/notificaciones', { headers:{'X-CSRF-TOKEN':token,'Accept':'application/json'} });
+    const lista = await res.json().catch(() => []);
+    const box   = document.getElementById('notif-historial');
+
+    if (!lista.length) {
+        box.innerHTML = '<p style="color:var(--muted);font-size:13px">Sin notificaciones enviadas aún.</p>';
+        return;
+    }
+
+    box.innerHTML = lista.map(n => `
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--gray2)">
+            <div>
+                <div style="font-size:13px;font-weight:600;color:var(--text)">${n.titulo}</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:2px">${n.mensaje}</div>
+                <div style="display:flex;gap:8px;margin-top:6px">
+                    <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:${n.tipo_envio==='todos'?'#dbeafe':n.tipo_envio==='rol'?'#ede9fe':'#d1fae5'};color:${n.tipo_envio==='todos'?'#1e40af':n.tipo_envio==='rol'?'#5b21b6':'#065f46'}">
+                        ${n.tipo_envio==='todos'?'Todos':n.tipo_envio==='rol'?'Admins':'Individual'}
+                    </span>
+                    <span style="font-size:11px;color:var(--muted)">${new Date(n.created_at).toLocaleDateString('es-BO',{day:'2-digit',month:'short',year:'numeric'})}</span>
+                </div>
+            </div>
+            <button onclick="notifEliminar(${n.id},this)" style="background:none;border:none;cursor:pointer;color:#ef4444;font-size:11px;font-weight:600;white-space:nowrap;margin-left:12px">Eliminar</button>
+        </div>`).join('');
+}
+
+async function notifEliminar(id, btn) {
+    if (!confirm('¿Eliminar esta notificación?')) return;
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const res   = await fetch(`/admin/notificaciones/${id}`, { method:'DELETE', headers:{'X-CSRF-TOKEN':token} });
+    if (res.ok) btn.closest('div[style]').remove();
+}
+
+// Cargar historial al entrar a la vista
+if (document.getElementById('view-notificaciones')) {
+    notifCargarHistorial();
+}
 </script>
 
 </body>
