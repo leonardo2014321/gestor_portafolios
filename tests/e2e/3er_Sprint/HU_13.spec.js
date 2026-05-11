@@ -9,6 +9,7 @@ const BASE = 'http://localhost:8000';
 
 async function loginYMenu(page) {
     await page.goto(BASE);
+    await page.waitForLoadState('networkidle');
     await page.getByRole('button', { name: 'Iniciar sesión' }).click();
     await expect(page.locator('#loginModal')).toBeVisible({ timeout: 10000 });
     await page.fill('input[name="email"]', 'serpientinon@gmail.com');

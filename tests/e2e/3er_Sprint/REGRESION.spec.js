@@ -9,6 +9,7 @@ const BASE = 'http://localhost:8000';
 
 async function loginYMenu(page) {
     await page.goto(BASE);
+    await page.waitForLoadState('networkidle');
     await page.getByRole('button', { name: 'Iniciar sesión' }).click();
     await expect(page.locator('#loginModal')).toBeVisible({ timeout: 10000 });
     await page.fill('input[name="email"]', 'serpientinon@gmail.com');
@@ -27,6 +28,7 @@ test.describe('Regresión Sprint 1 y 2', () => {
     test('TC-143: Login funcional tras cambios Sprint 3', async ({ page }) => {
         // 1. Ir a home
         await page.goto(BASE);
+        await page.waitForLoadState('networkidle');
         await expect(page).toHaveURL(/.*\/(home)?$/);
 
         // 2. Abrir modal login

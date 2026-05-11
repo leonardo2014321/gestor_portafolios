@@ -14,6 +14,7 @@ const userPass  = '12tres45';
 // ─── HELPER: Login como usuario ───
 async function loginUsuario(page) {
     await page.goto(BASE);
+    await page.waitForLoadState('networkidle');
     await page.getByRole('button', { name: 'Iniciar sesión' }).click();
     await expect(page.locator('#loginModal')).toBeVisible({ timeout: 10000 });
     await page.fill('input[name="email"]', userEmail);

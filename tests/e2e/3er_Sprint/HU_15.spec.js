@@ -9,6 +9,7 @@ const BASE = 'http://localhost:8000';
 
 async function loginAdmin(page) {
     await page.goto(BASE);
+    await page.waitForLoadState('networkidle');
     await page.getByRole('button', { name: 'Iniciar sesión' }).click();
     await expect(page.locator('#loginModal')).toBeVisible({ timeout: 10000 });
     await page.fill('input[name="email"]', 'admin@gmail.com');
@@ -20,6 +21,7 @@ async function loginAdmin(page) {
 
 async function loginUsuario(page) {
     await page.goto(BASE);
+    await page.waitForLoadState('networkidle');
     await page.getByRole('button', { name: 'Iniciar sesión' }).click();
     await expect(page.locator('#loginModal')).toBeVisible({ timeout: 10000 });
     await page.fill('input[name="email"]', 'serpientinon@gmail.com');
