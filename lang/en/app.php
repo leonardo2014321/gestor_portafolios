@@ -43,7 +43,7 @@ return [
     'menu' => [
         'titulo'            => 'Portfolio System',
         'subtitulo'         => 'Institutional Digital Asset Management – UMSS',
-        'crear'             => 'Create portfolio',
+        'crear'             => 'Add project',
         'portafolios'       => 'Portfolios',
         'documentos'        => 'Documents',
         'aprobados'         => 'Approved',
@@ -329,7 +329,8 @@ return [
         'sin_cuenta'          => "Don't have an account?",
         'registrate'          => 'Sign up',
         'cuenta_desactivada'  => 'Account deactivated',
-        'desactivada_desc'    => 'Your account was deactivated by you. Do you want to reactivate it and log back in?',
+        'desactivada_desc'    => 'Your account was deactivated by yourself.<br>Do you want to reactivate it and log back in?',
+        'desactivada_normas'  => 'Your account was deactivated for not complying with the platform rules or for prolonged inactivity.<br>If you believe this is an error, please contact support.',
         'reactivar'           => 'Yes, reactivate my account',
         'cancelar'            => 'Cancel',
     ],

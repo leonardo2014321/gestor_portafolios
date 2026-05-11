@@ -43,7 +43,10 @@ class LoginController extends Controller
 
     if (! $usuario->activo) {
         session(['reactivar_uid' => $usuario->id]);
-        return back()->with('cuenta_desactivada', true);
+        return back()->with([
+            'cuenta_desactivada' => true,
+            'motivo_desactivacion' => $usuario->motivo_desactivacion
+        ]);
     }
 
     Auth::login($usuario, $request->boolean('remember'));
@@ -67,15 +70,12 @@ class LoginController extends Controller
         $usuario = \App\Models\Usuario::find($uid);
         if (! $usuario) return redirect('/home');
 
-        $usuario->update(['activo' => true]);
+        // Solo notificar al administrador mediante el registro de actividad
+        ActividadService::log($usuario->id, 'SOLICITUD_REACTIVACION', ['email' => $usuario->email]);
+
         session()->forget('reactivar_uid');
 
-        Auth::login($usuario);
-        $request->session()->regenerate();
-
-        ActividadService::log($usuario->id, 'reactivacion_cuenta');
-
-        return redirect('/menu');
+        return redirect('/login')->with('success_reactivacion', true);
     }
 
     public function destroy(Request $request)

@@ -43,7 +43,7 @@ return [
     'menu' => [
         'titulo'            => 'Sistema de Portafolios',
         'subtitulo'         => 'Gestión institucional de activos digitales – UMSS',
-        'crear'             => 'Crear portafolio',
+        'crear'             => 'Añadir proyecto',
         'portafolios'       => 'Portafolios',
         'documentos'        => 'Documentos',
         'aprobados'         => 'Aprobados',
@@ -331,7 +331,8 @@ return [
         'sin_cuenta'          => '¿No tienes cuenta?',
         'registrate'          => 'Regístrate',
         'cuenta_desactivada'  => 'Cuenta desactivada',
-        'desactivada_desc'    => 'Tu cuenta fue desactivada por ti mismo. ¿Deseas reactivarla y volver a entrar?',
+        'desactivada_desc'    => 'Tu cuenta fue desactivada por ti mismo.<br>¿Deseas reactivarla y volver a entrar?',
+        'desactivada_normas'  => 'Tu cuenta fue desactivada por no cumplir con las normas de la plataforma o por inactividad prolongada.<br>Si crees que esto es un error, contacta con soporte.',
         'reactivar'           => 'Sí, reactivar mi cuenta',
         'cancelar'            => 'Cancelar',
     ],
@@ -339,8 +340,8 @@ return [
     'reportes' => [
  
         // ── Cabecera y controles ──────────────────────────────────────────────
-        'titulo'                    => 'Mis Reportes / CV',
-        'subtitulo'                 => 'Genera y exporta tu currículum vitae.',
+        'titulo'                    => 'Mis Reportes',
+        'subtitulo'                 => 'Genera y exporta tu portafolio o currículum vitae.',
         'editar_pantalla'           => 'Editar',
         'exportar_pdf'              => 'Exportar PDF',
         'seleccionar_plantilla'     => 'Seleccionar plantilla:',
