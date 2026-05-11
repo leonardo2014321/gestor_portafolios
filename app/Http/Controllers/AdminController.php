@@ -31,6 +31,9 @@ class AdminController extends Controller
             'sin_usuarios' => Portafolio::whereNull('usuario_id')->count(),
         ];
 
+        // Total de documentos/archivos subidos
+        $total_documentos = \App\Models\PortafolioArchivo::count();
+
         // Listados
         $usuarios_recientes = Usuario::orderBy('created_at', 'desc')->limit(5)->get();
         $todos_usuarios = Usuario::orderBy('created_at', 'desc')->get();
@@ -45,6 +48,7 @@ class AdminController extends Controller
         return view('admin', compact(
             'stats', 
             'portafolios_stats', 
+            'total_documentos',
             'usuarios_recientes', 
             'todos_usuarios', 
             'todos_portafolios',

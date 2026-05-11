@@ -414,7 +414,7 @@
                 </div>
 
                 <!-- Stats Grid -->
-                <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
                     <div class="stat-card">
                         <div class="stat-info">
                             <div class="stat-label">Usuarios Totales</div>
@@ -440,6 +440,20 @@
                         </div>
                         <div class="stat-icon icon-blue">
                             <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <div class="stat-label">Documentos Subidos</div>
+                            <div class="stat-val">{{ number_format($total_documentos) }}</div>
+                            <div class="stat-trend trend-up">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                                Archivos en proyectos
+                            </div>
+                        </div>
+                        <div class="stat-icon icon-teal">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                         </div>
                     </div>
 
