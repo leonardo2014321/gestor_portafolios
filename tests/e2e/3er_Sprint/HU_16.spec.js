@@ -228,4 +228,13 @@ test.describe('HU-16: Soporte Multi-idioma', () => {
         // Debe contener textos en español (hero, nav, etc.)
         expect(content).toContain('Iniciar sesión');
     });
+    // ═══════════════════════════════════════════════════════════
+    // TC-155: Multi-idioma — Menú desplegable existe
+    // Tipo Prueba: FUNCIONAL
+    // ═══════════════════════════════════════════════════════════
+    test('TC-155: Idioma — Dropdown visible en el navbar', async ({ page }) => {
+        await loginYMenu(page);
+        const langBtn = page.locator('#btn-lang');
+        await expect(langBtn).toBeVisible();
+    });
 });

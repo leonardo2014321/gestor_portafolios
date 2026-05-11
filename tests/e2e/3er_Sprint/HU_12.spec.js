@@ -181,4 +181,14 @@ test.describe('HU-12: Reportes de Portafolios', () => {
         expect(src).toBeTruthy();
         expect(src.length).toBeGreaterThan(5);
     });
+    // ═══════════════════════════════════════════════════════════
+    // TC-152: Reportes — Título de la vista correcto
+    // Tipo Prueba: FUNCIONAL
+    // ═══════════════════════════════════════════════════════════
+    test('TC-152: Reportes — Título de la vista correcto', async ({ page }) => {
+        await loginYMenu(page);
+        await page.locator('#btn-reportes').click();
+        const header = page.locator('#view-reportes h2');
+        await expect(header).toHaveText('Reportes y Documentos');
+    });
 });

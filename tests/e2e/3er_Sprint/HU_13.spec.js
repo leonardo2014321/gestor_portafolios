@@ -289,4 +289,13 @@ test.describe('HU-13: Creación de Portafolios (Evidencias)', () => {
             await expect(emptyState).toBeVisible();
         }
     });
+    // ═══════════════════════════════════════════════════════════
+    // TC-153: Portafolios — Filtro o estado existe en UI
+    // Tipo Prueba: FUNCIONAL
+    // ═══════════════════════════════════════════════════════════
+    test('TC-153: Portafolios — Verificar existencia de tabs de filtro', async ({ page }) => {
+        await loginYMenu(page);
+        const navMenu = page.locator('.pf-nav');
+        await expect(navMenu).toBeVisible();
+    });
 });

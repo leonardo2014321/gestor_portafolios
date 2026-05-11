@@ -399,4 +399,13 @@ test.describe('HU-11: Vista de Administrador (Admin Dashboard)', () => {
             await expect(statusBadge).toContainText('Activo');
         }
     });
+    // ═══════════════════════════════════════════════════════════
+    // TC-151: Admin — Verificar presencia de Avatar en Header
+    // Tipo Prueba: FUNCIONAL
+    // ═══════════════════════════════════════════════════════════
+    test('TC-151: Admin — Avatar en Header visible', async ({ page }) => {
+        await loginAdmin(page);
+        const avatar = page.locator('.tb-right .sb-av');
+        await expect(avatar).toBeVisible();
+    });
 });

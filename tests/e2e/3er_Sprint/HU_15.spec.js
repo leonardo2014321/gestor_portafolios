@@ -322,4 +322,13 @@ test.describe('HU-15: Alertas de Notificaciones', () => {
 
         expect(delResponse.status).toBe(200);
     });
+    // ═══════════════════════════════════════════════════════════
+    // TC-154: Notificaciones — Botón de limpiar todo
+    // Tipo Prueba: FUNCIONAL
+    // ═══════════════════════════════════════════════════════════
+    test('TC-154: Notificaciones — Verificar presencia de campana de notificaciones', async ({ page }) => {
+        await loginUsuario(page);
+        const bell = page.locator('.tb-right .sb-bell');
+        await expect(bell).toBeVisible();
+    });
 });

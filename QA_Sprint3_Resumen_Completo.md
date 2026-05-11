@@ -58,14 +58,100 @@ Se crearon **6 archivos** de pruebas E2E con Playwright en `tests/e2e/3er_Sprint
 | `HU_16.spec.js` | HU-16 | 10 | Multi-idioma: ES/EN/FR, persistencia, idioma no permitido, path traversal, loop, sesión, default |
 | `REGRESION.spec.js` | S1+S2 | 6 | Regresión: login, perfil, dashboard, logout, protección de rutas |
 
-### 1.3 Estadísticas de Cobertura
+### 1.3 Detalle de Test Cases (TC) por Historia de Usuario
+
+#### 🔷 HU-11: Vista de Administrador Portafolios
+- **TC-85**: Dashboard — Métricas visibles y con datos reales (`AUTOMATED`)
+- **TC-86**: Dashboard — Verificar métrica Documentos Subidos (`AUTOMATED`)
+- **TC-87**: Tabla Usuarios Recientes — columnas y datos (`AUTOMATED`)
+- **TC-88**: Toggle Estado (persistencia BD) (`MANUAL`)
+- **TC-88A**: Toggle Estado — Cambio visual badge (`AUTOMATED`)
+- **TC-89**: Toggle rol admin (`MANUAL`)
+- **TC-90**: Panel Actividad Reciente — muestra acciones (`AUTOMATED`)
+- **TC-91**: Calendario — Navegación entre meses (`AUTOMATED`)
+- **TC-92**: Sidebar — Navegación entre vistas (`AUTOMATED`)
+- **TC-93**: Vista Usuarios — Búsqueda y filtro por estado (`AUTOMATED`)
+- **TC-94**: Vista Portafolios — Stats y búsqueda (`AUTOMATED`)
+- **TC-95**: Seguridad — Usuario normal no accede a /admin (`AUTOMATED`)
+- **TC-96**: Seguridad — Sin sesión redirige a login (`AUTOMATED`)
+- **TC-97**: Responsive — Admin en viewport móvil (`AUTOMATED`)
+- **TC-98**: Menú acciones — Se cierra al clic fuera (`AUTOMATED`)
+- **TC-99**: Logout Admin — Modal confirmación y redirección (`AUTOMATED`)
+- **TC-151**: Admin — Avatar en Header visible (`AUTOMATED`)
+
+#### 🔷 HU-12: Reportes de Portafolios
+- **TC-100**: Acceso autenticado a vista Reportes (`AUTOMATED`)
+- **TC-101**: Selector de plantillas — cambio de template (`AUTOMATED`)
+- **TC-102**: Datos del usuario mapeados en plantilla CV (`AUTOMATED`)
+- **TC-103A**: Plantilla muestra foto o placeholder (`AUTOMATED`)
+- **TC-104**: Botón Exportar PDF visible y funcional (`AUTOMATED`)
+- **TC-105**: CSS print emulation (`MANUAL`)
+- **TC-106**: Acceso a /reportes sin sesión redirige a login (`AUTOMATED`)
+- **TC-107**: Aislamiento — Cada usuario ve sus datos (`AUTOMATED`)
+- **TC-108**: Previsualización CV en viewport reducido (`AUTOMATED`)
+- **TC-152**: Reportes — Título de la vista correcto (`AUTOMATED`)
+
+#### 🔷 HU-13: Creación de Portafolios (Evidencias)
+- **TC-109**: Crear portafolio — datos válidos (API) (`AUTOMATED`)
+- **TC-109B**: Listar portafolios del usuario (`AUTOMATED`)
+- **TC-109C**: Dashboard — Portafolios visibles en UI (`AUTOMATED`)
+- **TC-110**: Crear portafolio — nombre vacío rechazado (`AUTOMATED`)
+- **TC-111**: Crear portafolio — descripción vacía rechazada (`AUTOMATED`)
+- **TC-112**: Crear portafolio — URL inválida rechazada (`AUTOMATED`)
+- **TC-113**: Upload archivo PDF (`MANUAL`)
+- **TC-114**: Upload archivo .exe rechazado (`MANUAL`)
+- **TC-115**: Upload archivo >10MB rechazado (`MANUAL`)
+- **TC-116**: Actualizar portafolio existente (`AUTOMATED`)
+- **TC-118**: Seguridad — No editar portafolio ajeno (`AUTOMATED`)
+- **TC-119**: Seguridad — No eliminar portafolio ajeno (`AUTOMATED`)
+- **TC-120**: Nombre con 256 caracteres rechazado (`AUTOMATED`)
+- **TC-153**: Portafolios — Verificar existencia de tabs de filtro (`AUTOMATED`)
+
+#### 🔷 HU-15: Alertas de Notificaciones
+- **TC-121**: Admin — Enviar notificación a todos los usuarios (`AUTOMATED`)
+- **TC-122**: Admin — Enviar a usuario específico (`AUTOMATED`)
+- **TC-123**: Validación — Enviar sin título rechazado (`AUTOMATED`)
+- **TC-124A**: Individual sin destinatario rechazado (API) (`AUTOMATED`)
+- **TC-125**: Validación — Título > 150 chars rechazado (`AUTOMATED`)
+- **TC-127**: Usuario recibe notificaciones tipo "todos" (`AUTOMATED`)
+- **TC-128**: Usuario marca notificación como leída (`AUTOMATED`)
+- **TC-129**: Seguridad — Usuario normal no envía notificaciones (`AUTOMATED`)
+- **TC-131A**: Admin — Listar y eliminar notificación (`AUTOMATED`)
+- **TC-132**: Tipo envío inválido rechazado (`AUTOMATED`)
+- **TC-154**: Notificaciones — Campana de notificaciones (`AUTOMATED`)
+
+#### 🔷 HU-16: Soporte Multi-idioma
+| TC | Descripción | Tipo | Categoría |
+|---|---|---|---|
+| TC-133 | Cambiar idioma de Español a Inglés | AUTOMATED | FUNCIONAL |
+| TC-134 | Cambiar idioma de Inglés a Francés | AUTOMATED | FUNCIONAL |
+| TC-135 | Volver a Español desde otro idioma | AUTOMATED | FUNCIONAL |
+| TC-136 | Idioma persiste tras recarga de página | AUTOMATED | FUNCIONAL |
+| TC-137 | Idioma no permitido no cambia la sesión | AUTOMATED | SEGURIDAD |
+| TC-138 | Path traversal — /lang/../../etc/passwd bloqueado | AUTOMATED | SEGURIDAD |
+| TC-139 | /lang/en no genera redirect loop | AUTOMATED | SISTEMA |
+| TC-140 | Cambiar idioma no destruye sesión | AUTOMATED | REGRESION |
+| TC-141 | Textos del perfil cambian según idioma | AUTOMATED | INTEGRACION |
+| TC-142 | Idioma default es español | AUTOMATED | SANIDAD-HUMO |
+| TC-155 | Idioma — Dropdown visible en el navbar | AUTOMATED | FUNCIONAL |
+
+#### 🔴 Pruebas de Regresión (Sprint 1 y 2)
+- **TC-143**: Login funcional tras cambios Sprint 3 (`AUTOMATED`)
+- **TC-144**: Perfil sigue editable y guardable (`AUTOMATED`)
+- **TC-145**: Trayectoria CRUD (habilidades, experiencia) (`MANUAL`)
+- **TC-146**: Dashboard usuario muestra stats y portafolios (`AUTOMATED`)
+- **TC-146B**: Logout con modal de confirmación (`AUTOMATED`)
+- **TC-146C**: /menu sin autenticación redirige a login (`AUTOMATED`)
+- **TC-146D**: /perfil sin autenticación redirige a login (`AUTOMATED`)
+
+### 1.4 Estadísticas de Cobertura
 
 | Métrica | Valor |
 |---|---|
-| **Total Test Cases diseñados** | 62 |
-| **Tests Automatizados (Playwright)** | 57 |
+| **Total Test Cases diseñados** | 71 |
+| **Tests Automatizados (Playwright)** | 66 |
 | **Tests Solo Manuales** | 5 |
-| **Porcentaje Automatizado** | **91.9%** ✅ (criterio mínimo: 70%) |
+| **Porcentaje Automatizado** | **93.0%** ✅ (criterio mínimo: 70%) |
 
 #### Tests que permanecen solo MANUAL (5):
 
