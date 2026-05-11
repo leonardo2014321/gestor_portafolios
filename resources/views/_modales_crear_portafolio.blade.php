@@ -876,8 +876,8 @@
                             '</a>' +
                             '<div class="vp-img-meta">' +
                             '<span class="vp-file-name">' + escHtml(a.nombre_original) + '</span>' +
-                            '<span class="vp-file-size">' + fmtSize(a.tamanio) + '</span>' +
                             '</div>' +
+                            '<span class="vp-file-size">' + fmtSize(a.tamanio) + '</span>' +
                             delBtn + '</div>';
                     }
                     return '<div class="vp-file" id="vf-' + a.id + '">' +
