@@ -14,8 +14,8 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests/e2e',
-  /* Timeout global por test (60 segundos para DB lenta) */
-  timeout: 60000,
+  /* Timeout global por test (90 segundos para artisan + supabase) */
+  timeout: 90000,
   /* Timeout para cada expect() */
   expect: { timeout: 10000 },
   /* Run tests in files in parallel */

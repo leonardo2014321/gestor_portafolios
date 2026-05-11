@@ -15,8 +15,8 @@ async function loginYMenu(page) {
     await page.fill('input[name="email"]', 'serpientinon@gmail.com');
     await page.fill('input[name="password"]', '12tres45');
     await page.click('button:has-text("Entrar al sistema")');
-    await expect(page).toHaveURL(/.*\/menu/, { timeout: 30000 });
-    await page.waitForTimeout(1000);
+    await expect(page).toHaveURL(/.*\/menu/, { timeout: 45000 });
+    await page.waitForLoadState('networkidle');
 }
 
 test.describe('HU-13: Creación de Portafolios (Evidencias)', () => {

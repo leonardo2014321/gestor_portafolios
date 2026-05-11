@@ -16,8 +16,8 @@ async function loginAdmin(page) {
     await page.fill('input[name="email"]', 'admin@gmail.com');
     await page.fill('input[name="password"]', 'infinitycode1');
     await page.click('button:has-text("Entrar al sistema")');
-    await expect(page).toHaveURL(/.*\/admin/, { timeout: 30000 });
-    await page.waitForTimeout(1000);
+    await expect(page).toHaveURL(/.*\/admin/, { timeout: 45000 });
+    await page.waitForLoadState('networkidle');
 }
 
 // ─── HELPER: Login como usuario normal ───
@@ -29,8 +29,8 @@ async function loginUsuario(page) {
     await page.fill('input[name="email"]', 'serpientinon@gmail.com');
     await page.fill('input[name="password"]', '12tres45');
     await page.click('button:has-text("Entrar al sistema")');
-    await expect(page).toHaveURL(/.*\/menu/, { timeout: 30000 });
-    await page.waitForTimeout(1000);
+    await expect(page).toHaveURL(/.*\/menu/, { timeout: 45000 });
+    await page.waitForLoadState('networkidle');
 }
 
 test.describe('HU-11: Vista de Administrador (Admin Dashboard)', () => {

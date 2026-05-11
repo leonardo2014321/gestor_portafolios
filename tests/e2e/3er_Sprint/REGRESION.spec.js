@@ -15,8 +15,8 @@ async function loginYMenu(page) {
     await page.fill('input[name="email"]', 'serpientinon@gmail.com');
     await page.fill('input[name="password"]', '12tres45');
     await page.click('button:has-text("Entrar al sistema")');
-    await expect(page).toHaveURL(/.*\/menu/, { timeout: 30000 });
-    await page.waitForTimeout(1000);
+    await expect(page).toHaveURL(/.*\/menu/, { timeout: 45000 });
+    await page.waitForLoadState('networkidle');
 }
 
 test.describe('Regresión Sprint 1 y 2', () => {
@@ -43,7 +43,7 @@ test.describe('Regresión Sprint 1 y 2', () => {
         await page.click('button:has-text("Entrar al sistema")');
 
         // 5. Verificar redirección a /menu
-        await expect(page).toHaveURL(/.*\/menu/, { timeout: 30000 });
+        await expect(page).toHaveURL(/.*\/menu/, { timeout: 45000 });
 
         // 6. Verificar elementos del dashboard
         await expect(page.locator('.topbar')).toBeVisible();
