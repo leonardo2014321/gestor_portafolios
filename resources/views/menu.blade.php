@@ -139,6 +139,20 @@
 <script>
     /* ── Navegación entre vistas ── */
     function showView(name) {
+        if (name === 'reportes') {
+            const activeTpl = document.querySelector('.cv-template-view.active-tpl');
+            const activeId = activeTpl ? activeTpl.id : 'cv-template-1';
+            fetch('{{ route("reportes") }}')
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('view-reportes').innerHTML = html;
+                    if (typeof selectTemplate === 'function') {
+                        selectTemplate(activeId);
+                        const select = document.getElementById('cv-template-select');
+                        if (select) select.value = activeId;
+                    }
+                });
+        }
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.getElementById('view-' + name).classList.add('active');
         document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
@@ -189,23 +203,43 @@
     ── */
     function selectTemplate(tplId) {
         document.querySelectorAll('.cv-template-view').forEach(el => el.classList.remove('active-tpl'));
-        document.getElementById(tplId).classList.add('active-tpl');
+        const tpl = document.getElementById(tplId);
+        if (tpl) {
+            tpl.classList.add('active-tpl');
+            let styleEl = document.getElementById('print-page-style');
+            if (!styleEl) {
+                styleEl = document.createElement('style');
+                styleEl.id = 'print-page-style';
+                document.head.appendChild(styleEl);
+            }
+            if (tpl.classList.contains('landscape-layout')) {
+                document.body.classList.add('print-landscape');
+                styleEl.innerHTML = '@media print { @page { size: landscape; margin: 0; } }';
+            } else {
+                document.body.classList.remove('print-landscape');
+                styleEl.innerHTML = '@media print { @page { size: portrait; margin: 0; } }';
+            }
+        }
     }
-    let isEditingCV = false;
-    function toggleEditCV() {
-        isEditingCV = !isEditingCV;
-        const btn = document.getElementById('btn-edit-cv');
-        document.querySelectorAll('.cv-template-view').forEach(tpl => {
-            tpl.setAttribute('contenteditable', isEditingCV ? 'true' : 'false');
-            tpl.style.outline = isEditingCV ? '2px dashed #3b82f6' : 'none';
-            tpl.style.outlineOffset = isEditingCV ? '4px' : '';
-        });
-        btn.innerHTML = isEditingCV
-            ? '<svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Finalizar Edición'
-            : '<svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Editar en pantalla';
-        btn.style.background = isEditingCV ? '#3b82f6' : '#e2e8f0';
-        btn.style.color      = isEditingCV ? '#fff'    : '#1e293b';
+
+    /* ── Pestañas Reportes ── */
+    function switchRepTab(tab) {
+        document.querySelectorAll('.rep-tab').forEach(b => b.classList.remove('active'));
+        if (tab === 'cv') {
+            document.querySelector('.rep-tab[onclick*="cv"]').classList.add('active');
+            document.getElementById('selector-cv').style.display = 'flex';
+            document.getElementById('selector-portafolio').style.display = 'none';
+            const select = document.querySelector('#selector-cv select');
+            if(select) selectTemplate(select.value);
+        } else {
+            document.querySelector('.rep-tab[onclick*="portafolio"]').classList.add('active');
+            document.getElementById('selector-cv').style.display = 'none';
+            document.getElementById('selector-portafolio').style.display = 'flex';
+            const select = document.querySelector('#selector-portafolio select');
+            if(select) selectTemplate(select.value);
+        }
     }
+
 
     /* ── Menú de usuario (navbar) ── */
     function toggleNavMenu() {

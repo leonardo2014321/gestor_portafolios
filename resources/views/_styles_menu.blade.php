@@ -296,6 +296,9 @@
         .ts-btn{padding:8px 16px;border-radius:8px;border:1px solid var(--gray2);background:#fff;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:"DM Sans",sans-serif;}
         .ts-btn:hover{border-color:var(--blue);color:var(--blue);}
         .ts-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+        .rep-tab{padding:10px 20px;background:none;border:none;border-bottom:3px solid transparent;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;font-family:"DM Sans",sans-serif;}
+        .rep-tab:hover{color:var(--blue);background:#f8fafc;}
+        .rep-tab.active{color:var(--blue);border-bottom-color:var(--blue);background:#f1f5f9;}
         .cv-template-view:not(.active-tpl){display:none !important;}
         /* Plantilla 2 - Clásico */
         #cv-template-2{flex-direction:column;padding:50px;font-family:'Times New Roman',Times,serif;}
@@ -377,6 +380,94 @@
         #cv-template-6 .cv6-list{list-style-type:none;padding:0;margin:0;font-size:13px;color:#475569;}
         #cv-template-6 .cv6-list li{margin-bottom:8px;position:relative;padding-left:14px;line-height:1.5;}
         #cv-template-6 .cv6-list li::before{content:'•';position:absolute;left:0;top:0;color:#ab8589;font-weight:bold;font-size:16px;}
+        /* Plantilla 7 - Portafolio Hexágonos */
+        #cv-template-7{width:297mm;min-height:210mm;display:flex;font-family:'Helvetica',sans-serif;position:relative;background:#fcd34d;overflow:hidden;}
+        #cv-template-7 .cv7-bg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+        #cv-template-7 .cv7-hex-big{position:absolute;top:-10%;right:-5%;width:600px;height:600px;background:#f59e0b;clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);}
+        #cv-template-7 .cv7-hex-photo-wrap{position:absolute;top:15%;right:10%;width:350px;height:350px;clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);background:#fff;display:flex;align-items:center;justify-content:center;}
+        #cv-template-7 .cv7-photo{width:330px;height:330px;object-fit:cover;clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);}
+        #cv-template-7 .cv7-hex-small1{position:absolute;top:70%;right:35%;width:150px;height:150px;border:8px solid #333;clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);}
+        #cv-template-7 .cv7-hex-small2{position:absolute;top:40%;left:-5%;width:200px;height:200px;border:2px solid #333;clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);}
+        #cv-template-7 .cv7-content{position:relative;z-index:1;padding:50px;width:60%;display:flex;flex-direction:column;justify-content:center;height:100%;}
+        #cv-template-7 .cv7-header{margin-bottom:40px;background:rgba(255,255,255,0.7);padding:20px 30px;border-radius:10px;border-left:8px solid #f59e0b;}
+        #cv-template-7 .cv7-name{font-size:42px;color:#1e293b;margin-bottom:5px;font-weight:800;letter-spacing:1px;}
+        #cv-template-7 .cv7-role{font-size:22px;color:#334155;font-weight:600;}
+        #cv-template-7 .cv7-projects{display:flex;flex-direction:column;gap:20px;padding-left:20px;}
+        #cv-template-7 .cv7-project{border-left:4px solid #333;padding-left:15px;}
+        #cv-template-7 .cv7-proj-title{font-size:16px;font-weight:700;color:#1e293b;margin-bottom:5px;}
+        #cv-template-7 .cv7-proj-desc{font-size:14px;color:#475569;line-height:1.5;}
+        #cv-template-7 .cv7-footer{position:absolute;bottom:0;left:0;width:100%;background:rgba(255,255,255,0.85);padding:15px 50px;font-size:18px;font-weight:700;color:#1e293b;text-align:center;}
+
+        /* Plantilla 8 - Portafolio Timeline Azul */
+        #cv-template-8{width:297mm;min-height:210mm;display:flex;font-family:'Helvetica',sans-serif;background:#fff;}
+        #cv-template-8 .cv8-left{width:32%;background:linear-gradient(180deg, #0284c7 0%, #38bdf8 100%);color:#fff;padding:60px 30px;display:flex;flex-direction:column;align-items:center;position:relative;clip-path:polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);}
+        #cv-template-8 .cv8-photo-container{width:180px;height:240px;border-radius:90px 90px 40px 40px;overflow:hidden;border:6px solid #1e293b;margin-bottom:30px;box-shadow:0 10px 20px rgba(0,0,0,0.3);}
+        #cv-template-8 .cv8-photo{width:100%;height:100%;object-fit:cover;}
+        #cv-template-8 .cv8-name{font-size:32px;font-weight:800;text-align:center;line-height:1.1;margin-bottom:15px;color:#1e293b;text-transform:uppercase;}
+        #cv-template-8 .cv8-bio{font-size:14px;text-align:center;line-height:1.6;}
+        #cv-template-8 .cv8-right{width:68%;padding:50px;display:flex;flex-direction:column;}
+        #cv-template-8 .cv8-header{display:flex;justify-content:flex-end;margin-bottom:40px;}
+        #cv-template-8 .cv8-header h2{font-size:24px;font-weight:700;color:#1e293b;}
+        #cv-template-8 .cv8-main-title{font-size:20px;font-weight:700;color:#0284c7;text-align:center;letter-spacing:4px;margin-bottom:40px;}
+        #cv-template-8 .cv8-timeline-container{display:flex;gap:40px;}
+        #cv-template-8 .cv8-col{flex:1;}
+        #cv-template-8 .cv8-col-title{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800;color:#1e293b;margin-bottom:30px;}
+        #cv-template-8 .cv8-timeline{border-left:2px solid #0284c7;padding-left:20px;}
+        #cv-template-8 .cv8-time-item{position:relative;margin-bottom:25px;background:#f8fafc;padding:15px;border:1px solid #e2e8f0;border-radius:8px;}
+        #cv-template-8 .cv8-time-item::before{content:'';position:absolute;left:-27px;top:20px;width:12px;height:12px;border-radius:50%;background:#0284c7;}
+        #cv-template-8 .cv8-time-date{font-size:12px;color:#0284c7;font-weight:700;margin-bottom:5px;}
+        #cv-template-8 .cv8-time-title{font-size:14px;font-weight:800;color:#1e293b;margin-bottom:5px;text-transform:uppercase;}
+        #cv-template-8 .cv8-time-desc{font-size:13px;color:#475569;}
+
+        /* Plantilla 9 - Portafolio Elegante (Círculos) */
+        #cv-template-9{width:297mm;min-height:210mm;display:flex;flex-direction:column;font-family:'Helvetica',sans-serif;background:#fff;}
+        #cv-template-9 .cv9-top{height:35%;background:#333;position:relative;display:flex;align-items:center;justify-content:flex-end;padding-right:60px;}
+        #cv-template-9 .cv9-top::before{content:'';position:absolute;left:0;top:0;width:300px;height:100%;background:repeating-linear-gradient(90deg, #ccc, #ccc 2px, transparent 2px, transparent 10px);opacity:0.3;}
+        #cv-template-9 .cv9-top-text{font-size:26px;color:#fff;text-align:right;line-height:1.2;font-weight:300;}
+        #cv-template-9 .cv9-photo-wrapper{position:absolute;left:150px;top:50px;width:240px;height:240px;border-radius:50%;background:#2563eb;padding:10px;z-index:10;}
+        #cv-template-9 .cv9-photo{width:100%;height:100%;border-radius:50%;object-fit:cover;border:6px solid #fff;}
+        #cv-template-9 .cv9-bottom{height:65%;display:flex;background:#1e3a8a;color:#fff;}
+        #cv-template-9 .cv9-bottom-left{width:40%;padding:120px 40px 40px;position:relative;overflow:hidden;}
+        #cv-template-9 .cv9-contact{display:flex;flex-direction:column;gap:15px;position:relative;z-index:2;}
+        #cv-template-9 .cv9-contact-row{display:flex;font-size:13px;}
+        #cv-template-9 .cv9-label{width:100px;font-weight:700;}
+        #cv-template-9 .cv9-val{flex:1;opacity:0.9;}
+        #cv-template-9 .cv9-bottom-right{width:60%;padding:60px 60px 40px 0;}
+        #cv-template-9 .cv9-name-box{border-bottom:2px solid rgba(255,255,255,0.3);padding-bottom:20px;margin-bottom:30px;}
+        #cv-template-9 .cv9-name{font-size:42px;font-weight:800;margin-bottom:10px;}
+        #cv-template-9 .cv9-role{font-size:18px;opacity:0.8;}
+        #cv-template-9 .cv9-projects{display:flex;flex-direction:column;gap:20px;}
+        #cv-template-9 .cv9-project{background:rgba(255,255,255,0.05);padding:15px;border-radius:8px;}
+        #cv-template-9 .cv9-proj-title{font-size:16px;font-weight:700;margin-bottom:8px;}
+        #cv-template-9 .cv9-proj-desc{font-size:13px;line-height:1.5;opacity:0.8;}
+
+        /* Plantilla 10 - Portafolio Columnas Minimalista */
+        #cv-template-10{width:297mm;min-height:210mm;display:flex;font-family:'Georgia',serif;background:#f3f4f6;}
+        #cv-template-10 .cv10-col-left{width:25%;background:#27272a;color:#fff;padding:40px 20px;display:flex;flex-direction:column;align-items:center;}
+        #cv-template-10 .cv10-photo-wrap{width:140px;height:180px;background:#fff;padding:5px;margin-bottom:30px;}
+        #cv-template-10 .cv10-photo{width:100%;height:100%;object-fit:cover;}
+        #cv-template-10 .cv10-name{font-size:24px;text-align:center;margin-bottom:40px;color:#fda4af;line-height:1.2;}
+        #cv-template-10 .cv10-contact{width:100%;display:flex;flex-direction:column;gap:15px;margin-top:auto;}
+        #cv-template-10 .cv10-contact-item{display:flex;align-items:center;gap:10px;font-size:12px;font-family:'Helvetica',sans-serif;}
+        #cv-template-10 .cv10-icon{width:24px;height:24px;border-radius:50%;background:#fda4af;display:flex;align-items:center;justify-content:center;color:#27272a;}
+        #cv-template-10 .cv10-col-mid{width:35%;background:#e0a59e;padding:40px 30px;color:#27272a;}
+        #cv-template-10 .cv10-col-right{width:40%;background:#f8fafc;padding:40px 30px;color:#27272a;}
+        #cv-template-10 .cv10-title{font-size:28px;font-weight:400;margin-bottom:30px;}
+        #cv-template-10 .cv10-title small{font-style:italic;font-size:22px;}
+        #cv-template-10 .cv10-timeline{border-left:2px solid #27272a;padding-left:15px;}
+        #cv-template-10 .cv10-timeline-alt{border-left:2px solid #94a3b8;}
+        #cv-template-10 .cv10-item{position:relative;margin-bottom:25px;font-family:'Helvetica',sans-serif;}
+        #cv-template-10 .cv10-item::before{content:'';position:absolute;left:-21px;top:5px;width:10px;height:10px;border-radius:50%;background:#27272a;}
+        #cv-template-10 .cv10-timeline-alt .cv10-item::before{background:#94a3b8;}
+        #cv-template-10 .cv10-item-title{font-size:14px;font-weight:700;color:#27272a;}
+        #cv-template-10 .cv10-item-sub{font-size:13px;font-style:italic;color:#475569;margin-top:2px;}
+        #cv-template-10 .cv10-item-date{font-size:12px;color:#64748b;margin:4px 0;}
+        #cv-template-10 .cv10-item-desc{font-size:12px;line-height:1.4;color:#333;}
+        #cv-template-10 .cv10-box{background:#fff;padding:20px;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.05);margin-bottom:20px;font-family:'Helvetica',sans-serif;}
+        #cv-template-10 .cv10-box-title{font-size:18px;font-weight:400;margin-bottom:15px;font-family:'Georgia',serif;}
+        #cv-template-10 .cv10-list{list-style:none;padding:0;}
+        #cv-template-10 .cv10-list li{font-size:12px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+        
         #cv-template-6 .cv6-contact-item{font-size:13px;color:#475569;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
 
         /* ══════════════════════════════════════
@@ -459,13 +550,21 @@
             body *{visibility:hidden;}
             #view-reportes,#view-reportes *{visibility:visible;}
             #view-reportes{position:absolute;left:0;top:0;width:100%;min-height:100vh;}
-            .topbar,aside,.rpanel,.content-bar,footer,.template-selector{display:none !important;}
+            .topbar,aside,.rpanel,.content-bar,footer,.template-selector,.reportes-tabs{display:none !important;}
             .cv-template-view{display:none !important;}
             .cv-template-view.active-tpl{display:flex !important;}
             main{background:#fff;padding:0;overflow:visible;width:100%;min-height:100vh;display:block;}
             .main-inner{padding:0;display:block;}
             .cv-wrapper{padding-bottom:0;justify-content:flex-start;min-height:100vh;}
             .cv-container{box-shadow:none;width:100%;min-height:100vh;}
-            @page{size:auto;margin:0;}
         }
+        @media print {
+            @page { margin: 0; }
+            body { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            body.print-landscape {
+                /* landscape is handled by javascript */
+            }
+        }
+        
+        /* Regla inyectada dinámicamente si es necesario */
     </style>

@@ -177,9 +177,14 @@
                   . '/storage/v1/object/public/'
                   . config('services.supabase.bucket');
 
-    $fotoActual = auth()->user()->foto_perfil
-        ? $supabaseBase . '/' . ltrim(auth()->user()->foto_perfil, '/')
-        : null;
+    $fotoActual = null;
+    if (auth()->user()->foto_perfil) {
+        if (str_starts_with(auth()->user()->foto_perfil, 'http')) {
+            $fotoActual = auth()->user()->foto_perfil;
+        } else {
+            $fotoActual = $supabaseBase . '/' . ltrim(auth()->user()->foto_perfil, '/');
+        }
+    }
 
     // ── Todas las cadenas traducidas disponibles para el JS ──
     $t = [

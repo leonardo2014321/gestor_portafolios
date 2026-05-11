@@ -3,9 +3,14 @@
     $supabaseBase = rtrim(config('services.supabase.url'), '/')
                 . '/storage/v1/object/public/'
                 . config('services.supabase.bucket');
-    $fotoNavbar = auth()->user()->foto_perfil
-        ? $supabaseBase . '/' . ltrim(auth()->user()->foto_perfil, '/')
-        : null;
+    $fotoNavbar = null;
+    if (auth()->user()->foto_perfil) {
+        if (str_starts_with(auth()->user()->foto_perfil, 'http')) {
+            $fotoNavbar = auth()->user()->foto_perfil;
+        } else {
+            $fotoNavbar = $supabaseBase . '/' . ltrim(auth()->user()->foto_perfil, '/');
+        }
+    }
 @endphp
 @endauth
 

@@ -93,7 +93,7 @@ Route::middleware('auth')->group(function () {
     })->name('academico');
 
     Route::get('/reportes', function () {
-        return view('reportes');
+        return view('_reportes_menu');
     })->name('reportes');
 
     // Gestión de Perfil y Redes
