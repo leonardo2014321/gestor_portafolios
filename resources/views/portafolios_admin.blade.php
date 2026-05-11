@@ -36,30 +36,40 @@
         </div>
         <div class="table-wrap">
             <table id="tabla-portafolios">
-                <thead><tr><th>Portafolio</th><th>Tipo</th><th>Tags</th><th>Estado</th><th>Acciones</th></tr></thead>
+                <thead><tr><th>Portafolio</th><th>Autor</th><th>Repositorio</th><th>Estado</th><th>Acciones</th></tr></thead>
                 <tbody>
                     @foreach($todos_portafolios as $portafolio)
                     <tr>
                         <td>
                             <div class="user-cell">
-                                <div class="u-avatar {{ $portafolio->avatar_class }}">{{ $portafolio->avatar_letter }}</div>
+                                <div class="u-avatar" style="background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: #fff;">
+                                    {{ strtoupper(substr($portafolio->nombre, 0, 1)) }}
+                                </div>
                                 <div class="u-info">
-                                    <span class="u-name">{{ $portafolio->titulo }}</span>
-                                    <span class="u-email">{{ Str::limit($portafolio->descripcion, 40) }}</span>
+                                    <span class="u-name">{{ $portafolio->nombre }}</span>
+                                    <span class="u-email">{{ Str::limit($portafolio->descripcion, 40) ?: 'Sin descripción' }}</span>
                                 </div>
                             </div>
                         </td>
-                        <td>{{ ucfirst($portafolio->tipo) }}</td>
                         <td>
-                            @if(is_array($portafolio->tags))
-                                @foreach(array_slice($portafolio->tags, 0, 2) as $tag)
-                                    <span class="status-badge" style="background:var(--gray); color:var(--muted); text-transform:none; font-size:10px;">{{ $tag }}</span>
-                                @endforeach
+                            @if($portafolio->usuario)
+                                <span style="font-weight: 500;">{{ $portafolio->usuario->nombre }} {{ $portafolio->usuario->apellido }}</span>
+                            @else
+                                <span style="color: var(--muted); font-size: 12px; font-style: italic;">Sin usuario</span>
                             @endif
                         </td>
                         <td>
-                            <span class="status-badge {{ $portafolio->has_users ? 'st-active' : 'st-pending' }}">
-                                {{ $portafolio->has_users ? 'Vinculado' : 'Pendiente' }}
+                            @if($portafolio->repositorio_url)
+                                <a href="{{ $portafolio->repositorio_url }}" target="_blank" style="color: var(--admin-purple); text-decoration: none; font-size: 12.5px; display: inline-flex; align-items: center; gap: 4px;">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 1 7.54.54l3 3a5 5 0 0 1-7.07 7.07l-1.72-1.71"/><path d="M14 11a5 5 0 0 1-7.54-.54l-3-3A5 5 0 0 1 10.54.39l1.71 1.71"/></svg> Enlace
+                                </a>
+                            @else
+                                <span style="color: var(--muted); font-size: 12px;">Sin repositorio</span>
+                            @endif
+                        </td>
+                        <td>
+                            <span class="status-badge {{ $portafolio->estado === 'activo' ? 'st-active' : 'st-inactive' }}">
+                                {{ $portafolio->estado === 'activo' ? 'Activo' : ($portafolio->estado ?: 'Desconocido') }}
                             </span>
                         </td>
                         <td>
@@ -67,10 +77,18 @@
                                 <button class="action-btn" onclick="toggleActionMenu(this)">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
                                 </button>
+                                <div class="action-menu">
+                                    <button class="btn-action-admin btn-role-user" onclick="alert('Funcionalidad en desarrollo')">Ver Detalles</button>
+                                </div>
                             </div>
                         </td>
                     </tr>
                     @endforeach
+                    @if($todos_portafolios->isEmpty())
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 2rem; color: var(--muted);">No hay portafolios registrados en el sistema.</td>
+                    </tr>
+                    @endif
                 </tbody>
             </table>
         </div>

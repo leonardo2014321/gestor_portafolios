@@ -215,6 +215,9 @@ Route::middleware('auth')->group(function () {
     // Admin: Gestión de Usuarios (Estado y Rol)
     Route::post('/admin/usuarios/{id}/toggle-status', [AdminController::class, 'toggleStatus'])->name('admin.usuarios.toggle-status')->middleware('es_admin');
     Route::post('/admin/usuarios/{id}/toggle-role', [AdminController::class, 'toggleRole'])->name('admin.usuarios.toggle-role')->middleware('es_admin');
+    
+    // Admin: Limpiar actividades recientes
+    Route::delete('/admin/actividad/limpiar', [AdminController::class, 'limpiarActividad'])->name('admin.actividad.limpiar')->middleware('es_admin');
 });
 // lenguaje 
 Route::get('/lang/{lang}', [LanguageController::class, 'switch'])

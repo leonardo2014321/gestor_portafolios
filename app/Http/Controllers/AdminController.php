@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Usuario;
 use App\Models\Busqueda;
 use App\Models\Actividad;
+use App\Models\Portafolio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -22,18 +24,17 @@ class AdminController extends Controller
             'total_admins' => Usuario::where('es_admin', true)->count(),
         ];
 
-        // Estadísticas de Portafolios (Busquedas)
-        // Como no hay campo público/privado explícito, usaremos has_users como proxy o simplemente el total
+        // Estadísticas de Portafolios
         $portafolios_stats = [
-            'total' => Busqueda::where('tipo', '!=', 'perfil')->where('titulo', '!=', 'Administrador')->count(),
-            'con_usuarios' => Busqueda::where('tipo', '!=', 'perfil')->where('has_users', true)->count(),
-            'sin_usuarios' => Busqueda::where('tipo', '!=', 'perfil')->where('has_users', false)->count(),
+            'total' => Portafolio::count(),
+            'con_usuarios' => Portafolio::whereNotNull('usuario_id')->count(),
+            'sin_usuarios' => Portafolio::whereNull('usuario_id')->count(),
         ];
 
         // Listados
         $usuarios_recientes = Usuario::orderBy('created_at', 'desc')->limit(5)->get();
         $todos_usuarios = Usuario::orderBy('created_at', 'desc')->get();
-        $todos_portafolios = Busqueda::where('tipo', '!=', 'perfil')->where('titulo', '!=', 'Administrador')->orderBy('created_at', 'desc')->get();
+        $todos_portafolios = Portafolio::with('usuario')->orderBy('created_at', 'desc')->get();
 
         // Actividad Reciente (Últimas 10 acciones)
         $actividades_recientes = Actividad::with('usuario')
@@ -121,5 +122,20 @@ class AdminController extends Controller
             'es_admin' => $usuario->es_admin,
             'mensaje' => 'Rol del usuario actualizado correctamente.'
         ]);
+    }
+
+    /**
+     * Limpia todos los registros de la tabla de actividades recientes.
+     */
+    public function limpiarActividad(Request $request)
+    {
+        // Validar que el usuario que intenta limpiar es un administrador
+        if (!auth()->user() || !auth()->user()->es_admin) {
+            abort(403, 'No autorizado.');
+        }
+
+        Actividad::truncate();
+
+        return redirect()->back()->with('success', 'Historial de actividades limpiado correctamente.');
     }
 }

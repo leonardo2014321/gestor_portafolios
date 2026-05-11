@@ -414,7 +414,7 @@
                 </div>
 
                 <!-- Stats Grid -->
-                <div class="stats-grid">
+                <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
                     <div class="stat-card">
                         <div class="stat-info">
                             <div class="stat-label">Usuarios Totales</div>
@@ -445,20 +445,6 @@
 
                     <div class="stat-card">
                         <div class="stat-info">
-                            <div class="stat-label">Documentos Subidos</div>
-                            <div class="stat-val">4,302</div>
-                            <div class="stat-trend trend-up">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                                +18% vs mes anterior
-                            </div>
-                        </div>
-                        <div class="stat-icon icon-teal">
-                            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-info">
                             <div class="stat-label">Administradores</div>
                             <div class="stat-val">{{ $stats['total_admins'] }}</div>
                             <div class="stat-trend trend-down">
@@ -473,23 +459,21 @@
                 </div>
 
                 <!-- Main Grid -->
-                <div class="dash-grid">
+                <div class="dash-grid" style="grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));">
                     
                     <!-- Últimos Usuarios -->
                     <div class="panel">
                         <div class="panel-header">
                             <h2 class="panel-title">Usuarios Recientes</h2>
-                            <a href="#" class="panel-action">Ver todos</a>
+                            <a href="#" onclick="mostrarVista('usuarios'); return false;" class="panel-action">Ver todos</a>
                         </div>
                         <div class="table-wrap">
                             <table>
                                 <thead>
                                     <tr>
                                         <th>Usuario</th>
-                                        <th>Rol</th>
-                                        <th>Fecha Registro</th>
+                                        <th>Registro</th>
                                         <th>Estado</th>
-                                        <th>Acción</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -506,30 +490,63 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td id="role-{{ $usuario->id }}">{{ $usuario->es_admin ? 'Administrador' : 'Usuario' }}</td>
                                         <td>{{ $usuario->created_at->diffForHumans() }}</td>
                                         <td>
                                             <span class="status-badge {{ $usuario->activo ? 'st-active' : 'st-inactive' }}" id="status-{{ $usuario->id }}">
                                                 {{ $usuario->activo ? 'Activo' : 'Inactivo' }}
                                             </span>
                                         </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Últimos Portafolios -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Portafolios Recientes</h2>
+                            <a href="#" onclick="mostrarVista('portafolios'); return false;" class="panel-action">Ver todos</a>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Portafolio</th>
+                                        <th>Autor</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($todos_portafolios->take(5) as $portafolio)
+                                    <tr>
                                         <td>
-                                            <div class="action-dropdown-container">
-                                                <button class="action-btn" onclick="toggleActionMenu(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
-                                                <div class="action-menu">
-                                                    <button class="btn-action-admin {{ $usuario->activo ? 'btn-status-off' : 'btn-status-on' }}" 
-                                                            onclick="adminToggleStatus({{ $usuario->id }}, 'status-{{ $usuario->id }}', this)">
-                                                        {{ $usuario->activo ? 'Desactivar cuenta' : 'Activar cuenta' }}
-                                                    </button>
-                                                    <button class="btn-action-admin {{ $usuario->es_admin ? 'btn-role-user' : 'btn-role-admin' }}" 
-                                                            onclick="adminToggleRole({{ $usuario->id }}, 'role-{{ $usuario->id }}', this)">
-                                                        {{ $usuario->es_admin ? 'Quitar administrador' : 'Volver administrador' }}
-                                                    </button>
+                                            <div class="user-cell">
+                                                <div class="u-avatar" style="background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: #fff;">
+                                                    {{ strtoupper(substr($portafolio->nombre, 0, 1)) }}
+                                                </div>
+                                                <div class="u-info">
+                                                    <span class="u-name" style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ $portafolio->nombre }}</span>
+                                                    <span class="u-email" style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ Str::limit($portafolio->descripcion, 30) ?: 'Sin descripción' }}</span>
                                                 </div>
                                             </div>
                                         </td>
+                                        <td>
+                                            @if($portafolio->usuario)
+                                                <span style="font-weight: 500;">{{ $portafolio->usuario->nombre }}</span>
+                                            @else
+                                                <span style="color: var(--muted); font-size: 12px; font-style: italic;">Sin usuario</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $portafolio->created_at->format('d/m/Y') }}</td>
                                     </tr>
                                     @endforeach
+                                    @if($todos_portafolios->isEmpty())
+                                    <tr>
+                                        <td colspan="3" style="text-align: center; padding: 2rem; color: var(--muted); font-size: 13.5px;">No hay portafolios recientes.</td>
+                                    </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -651,8 +668,17 @@
             <!-- Actividad Reciente -->
             <div style="padding: 1rem;">
                 <div class="panel">
-                    <div class="panel-header" style="padding: 1rem;">
-                        <h2 class="panel-title">Actividad Reciente</h2>
+                    <div class="panel-header" style="padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                        <h2 class="panel-title" style="margin: 0;">Actividad Reciente</h2>
+                        @if($actividades_recientes->count() > 0)
+                            <form action="{{ route('admin.actividad.limpiar') }}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas borrar todo el registro de actividades? Esta acción no se puede deshacer.');" style="margin: 0;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" title="Limpiar historial" style="background: none; border: none; color: var(--rose); cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(244, 63, 94, 0.1)'" onmouseout="this.style.background='none'">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                </button>
+                            </form>
+                        @endif
                     </div>
                     <div class="activity-list">
                         @forelse($actividades_recientes as $act)
