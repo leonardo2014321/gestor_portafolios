@@ -112,6 +112,20 @@
     .vp-btn-close{padding:8px 18px;border-radius:9px;border:none;background:var(--blue);color:#fff;font-size:13px;font-weight:600;cursor:pointer}
     .vp-btn-edit{padding:8px 18px;border-radius:9px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);font-size:13px;font-weight:600;cursor:pointer}
     .vp-btn-edit:hover{background:#eff6ff}
+    /* Proyectos en modal Ver */
+    .vp-proj-card{border:1px solid var(--gray2);border-radius:12px;padding:14px;margin-bottom:10px;background:var(--gray)}
+    .vp-proj-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
+    .vp-proj-name{font-size:14px;font-weight:700;color:var(--text)}
+    .vp-proj-desc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.4;word-break:break-word}
+    .vp-proj-files{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+    .vp-proj-no-files{font-size:11.5px;color:var(--muted);padding:4px 0}
+    .vp-proj-add-file{display:inline-flex;align-items:center;gap:4px;margin-top:8px;cursor:pointer;color:var(--blue);font-size:12px;font-weight:600;user-select:none}
+    .vp-proj-add-file:hover span{text-decoration:underline}
+    .vp-file-dl{color:var(--blue);font-size:11px;font-weight:600;text-decoration:none;padding:2px 6px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+    .vp-file-dl:hover{text-decoration:underline}
+    .vp-file-del{background:none;border:none;cursor:pointer;color:var(--muted);padding:0 0 0 4px;flex-shrink:0}
+    .vp-file-del:hover{color:#ef4444}
+    .vp-file-del svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
     /* Modal Confirmación */
     .conf-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
     .conf-overlay.open{opacity:1;pointer-events:all}
@@ -185,6 +199,27 @@
                 </div>
             </div>
 
+            {{-- Archivos adjuntos --}}
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+                    Archivos adjuntos <span style="font-weight:400;text-transform:none;letter-spacing:0">(opcional)</span>
+                </div>
+                <div class="mp-drop" id="mpDropZone"
+                     onclick="document.getElementById('mpFileInput').click()"
+                     ondragover="event.preventDefault();this.classList.add('dragover')"
+                     ondragleave="this.classList.remove('dragover')"
+                     ondrop="event.preventDefault();this.classList.remove('dragover');mpHandleFiles(event.dataTransfer.files)">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <p>Arrastra o haz clic para subir</p>
+                    <span>Imágenes, ZIP, PDF, Word, Excel · máx. 20 MB por archivo</span>
+                </div>
+                <input type="file" id="mpFileInput" multiple
+                       accept="image/*,.zip,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+                       style="display:none" onchange="mpHandleFiles(this.files)">
+                <div class="mp-flist" id="mpFlist"></div>
+            </div>
+
         </div>
         <div class="mp-footer">
             <button class="mp-btn-ghost" id="mpBtnBorrador" onclick="mpGuardar('borrador')" disabled>
@@ -220,6 +255,8 @@
                 <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 <span id="vpFecha"></span>
             </div>
+            <div class="vp-sec" style="margin-top:20px">Proyectos</div>
+            <div id="vpProyectosList"><div class="vp-empty">Cargando...</div></div>
         </div>
         <div class="vp-foot">
             <button class="vp-btn-del" id="vpBtnEliminar" onclick="vpConfirmarEliminar()">Eliminar portafolio</button>
@@ -412,9 +449,10 @@
 
 <script>
     const VP_DATA = @json($portafolios ?? []);
+    let mpFiles = [];
 
     /* ══ MODAL 2 · Ver ══ */
-    function verPortafolio(id) {
+    async function verPortafolio(id) {
         const p = VP_DATA.find(x => x.id == id);
         if (!p) return;
         document.getElementById('vpNombre').textContent = p.nombre;
@@ -434,7 +472,16 @@
         document.getElementById('vpFecha').textContent = 'Actualizado: ' + fecha.toLocaleDateString('es-BO', {day:'2-digit',month:'long',year:'numeric'});
         document.getElementById('vpBtnEliminar').dataset.id = id;
         document.getElementById('vpBtnEditar').dataset.id  = id;
+        document.getElementById('vpProyectosList').innerHTML = '<div class="vp-empty">Cargando proyectos...</div>';
         document.getElementById('modalVerPortafolio').classList.add('open');
+        try {
+            const res  = await fetch('/portafolio-proyecto/portafolio/' + id);
+            const json = await res.json();
+            if (json.ok) vpRenderProyectos(json.proyectos, id);
+            else document.getElementById('vpProyectosList').innerHTML = '<div class="vp-empty">Error al cargar proyectos.</div>';
+        } catch(e) {
+            document.getElementById('vpProyectosList').innerHTML = '<div class="vp-empty">Error al cargar proyectos.</div>';
+        }
     }
     function vpCerrar() {
         document.getElementById('modalVerPortafolio').classList.remove('open');
@@ -592,6 +639,10 @@
             opt.textContent = p.nombre + (p.estado === 'publicado' ? '' : ' (borrador)');
             sel.appendChild(opt);
         });
+        mpFiles = [];
+        document.getElementById('mpFlist').innerHTML = '';
+        const fi = document.getElementById('mpFileInput');
+        if (fi) fi.value = '';
         mpCheckBtns();
     }
     function mpCheckBtns() {
@@ -759,12 +810,119 @@
             const text = await res.text();
             let json;
             try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
-            if (json.ok) { mpCerrar(); location.reload(); return; }
+            if (json.ok) {
+                if (mpFiles.length > 0) {
+                    const token2 = document.querySelector('meta[name="csrf-token"]').content;
+                    const ff = new FormData();
+                    ff.append('proyecto_id', json.proyecto.id);
+                    ff.append('_token', token2);
+                    mpFiles.forEach(f => ff.append('archivos[]', f));
+                    await fetch('/portafolio-archivos', { method: 'POST', body: ff });
+                }
+                mpCerrar();
+                location.reload();
+                return;
+            }
             const msg = json.errors ? Object.values(json.errors).flat().join('\n') : 'Error al guardar.';
             alert(msg);
         } catch(err) { alert(err.message); }
         btnB.disabled = btnP.disabled = false;
         btnP.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> Añadir proyecto';
+    }
+
+    /* ══ Archivos en Modal 1 ══ */
+    function mpHandleFiles(files) {
+        for (const f of files) {
+            if (f.size > 20 * 1024 * 1024) { alert('"' + f.name + '" supera el límite de 20 MB.'); continue; }
+            mpFiles.push(f);
+        }
+        mpRenderFlist();
+    }
+    function mpRenderFlist() {
+        const list = document.getElementById('mpFlist');
+        if (!list) return;
+        list.innerHTML = mpFiles.map((f, i) =>
+            '<div class="mp-fitem">' +
+            '<span class="mp-fitem-name">' + escHtml(f.name) + '</span>' +
+            '<span class="mp-fitem-size">' + fmtSize(f.size) + '</span>' +
+            '<button class="mp-frem" onclick="mpRemoveFile(' + i + ')">' +
+            '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+            '</button></div>'
+        ).join('');
+    }
+    function mpRemoveFile(i) { mpFiles.splice(i, 1); mpRenderFlist(); }
+
+    /* ══ Render proyectos en Modal 2 ══ */
+    function vpRenderProyectos(proyectos, portafolioId) {
+        const container = document.getElementById('vpProyectosList');
+        if (!proyectos || !proyectos.length) {
+            container.innerHTML = '<div class="vp-empty">Sin proyectos aún. Usa &ldquo;Añadir Proyecto&rdquo; para crear uno.</div>';
+            return;
+        }
+        container.innerHTML = proyectos.map(proj => {
+            const archivosHtml = proj.archivos && proj.archivos.length
+                ? '<div class="vp-proj-files">' + proj.archivos.map(a =>
+                    '<div class="vp-file" id="vf-' + a.id + '">' +
+                    '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
+                    '<span class="vp-file-name">' + escHtml(a.nombre_original) + '</span>' +
+                    '<span class="vp-file-size">' + fmtSize(a.tamanio) + '</span>' +
+                    '<a class="vp-file-dl" href="' + a.url + '" target="_blank" download>Descargar</a>' +
+                    '<button class="vp-file-del" onclick="vpEliminarArchivo(' + a.id + ')" title="Eliminar">' +
+                    '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+                    '</button></div>'
+                ).join('') + '</div>'
+                : '<div class="vp-proj-no-files">Sin archivos adjuntos</div>';
+            return '<div class="vp-proj-card">' +
+                '<div class="vp-proj-head">' +
+                '<div><div class="vp-proj-name">' + escHtml(proj.nombre) + '</div>' +
+                '<div class="vp-proj-desc">' + escHtml(proj.descripcion || '') + '</div></div>' +
+                '<span class="vp-badge ' + proj.estado + '">' + (proj.estado === 'publicado' ? 'Publicado' : 'Borrador') + '</span>' +
+                '</div>' + archivosHtml +
+                '<label class="vp-proj-add-file">' +
+                '<input type="file" multiple accept="image/*,.zip,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" style="display:none" ' +
+                'onchange="vpAgregarArchivos(' + proj.id + ',' + portafolioId + ',this)">' +
+                '<span>+ Subir archivos</span>' +
+                '</label></div>';
+        }).join('');
+    }
+
+    async function vpEliminarArchivo(id) {
+        if (!confirm('¿Eliminar este archivo?')) return;
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        try {
+            const res  = await fetch('/portafolio-archivos/' + id, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': token } });
+            const json = await res.json();
+            if (json.ok) { const el = document.getElementById('vf-' + id); if (el) el.remove(); }
+            else alert('No se pudo eliminar el archivo.');
+        } catch(e) { alert('Error al eliminar.'); }
+    }
+
+    async function vpAgregarArchivos(proyectoId, portafolioId, input) {
+        if (!input.files.length) return;
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        const form  = new FormData();
+        form.append('proyecto_id', proyectoId);
+        form.append('_token', token);
+        for (const f of input.files) form.append('archivos[]', f);
+        try {
+            const res  = await fetch('/portafolio-archivos', { method: 'POST', body: form });
+            const json = await res.json();
+            if (json.ok) {
+                const r2 = await fetch('/portafolio-proyecto/portafolio/' + portafolioId);
+                const j2 = await r2.json();
+                if (j2.ok) vpRenderProyectos(j2.proyectos, portafolioId);
+            } else { alert('Error al subir archivos.'); }
+        } catch(e) { alert('Error al subir archivos.'); }
+        input.value = '';
+    }
+
+    function escHtml(s) {
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function fmtSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / 1048576).toFixed(1) + ' MB';
     }
 </script>
 

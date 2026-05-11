@@ -8,9 +8,35 @@ use App\Models\PortafolioProyecto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class PortafolioProyectoController extends Controller
 {
+    public function byPortafolio($portafolioId)
+    {
+        Portafolio::where('id', $portafolioId)
+            ->where('usuario_id', Auth::id())
+            ->firstOrFail();
+
+        $proyectos = PortafolioProyecto::where('portafolio_id', $portafolioId)
+            ->where('usuario_id', Auth::id())
+            ->with('archivos')
+            ->orderByDesc('updated_at')
+            ->get()
+            ->map(function ($p) {
+                $arr = $p->toArray();
+                $arr['archivos'] = $p->archivos->map(fn ($a) => [
+                    'id'              => $a->id,
+                    'nombre_original' => $a->nombre_original,
+                    'tamanio'         => $a->tamanio,
+                    'url'             => asset('storage/' . $a->ruta),
+                ])->values();
+                return $arr;
+            });
+
+        return response()->json(['ok' => true, 'proyectos' => $proyectos]);
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([

@@ -15,6 +15,7 @@ use App\Http\Controllers\Perfil\PerfilController;
 use App\Http\Controllers\Perfil\TrayectoriaController;
 use App\Http\Controllers\Portafolio\PortafolioController;
 use App\Http\Controllers\Portafolio\PortafolioProyectoController;
+use App\Http\Controllers\Portafolio\PortafolioArchivoController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LanguageController;
 
@@ -111,9 +112,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/mis-portafolios/{id}', [PortafolioController::class, 'destroy']);
 
     // Proyectos dentro de portafolios (tabla portafolio_proyecto)
+    Route::get('/portafolio-proyecto/portafolio/{id}', [PortafolioProyectoController::class, 'byPortafolio']);
     Route::post('/portafolio-proyecto', [PortafolioProyectoController::class, 'store']);
     Route::post('/portafolio-proyecto/{id}', [PortafolioProyectoController::class, 'update']);
     Route::delete('/portafolio-proyecto/{id}', [PortafolioProyectoController::class, 'destroy']);
+
+    // Archivos de proyectos (tabla portafolio_archivos)
+    Route::post('/portafolio-archivos', [PortafolioArchivoController::class, 'store']);
+    Route::delete('/portafolio-archivos/{id}', [PortafolioArchivoController::class, 'destroy']);
 
     // Trayectoria y Habilidades
     Route::get('/trayectoria', [TrayectoriaController::class, 'index']);
