@@ -481,4 +481,104 @@ return [
         'empty_documento_titulo' => 'Protocoles de sécurité interne V2',
         'empty_documento_desc'   => 'Documentation technique sur les bonnes pratiques en matière de chiffrement.',
     ],
+    'modales_pf' => [
+
+        // ── Titres et sous-titres des modales ────────────────────────────
+        'modal1_titulo'              => 'Ajouter un projet',
+        'modal1_subtitulo'           => 'Sélectionnez un portfolio et renseignez les informations du projet.',
+        'modal4_titulo'              => 'Modifier le portfolio',
+        'modal4_subtitulo'           => 'Mettez à jour les informations de votre portfolio.',
+        'modal5_titulo'              => 'Créer un portfolio',
+        'modal5_subtitulo'           => 'Renseignez les données pour créer un nouveau portfolio.',
+
+        // ── Étiquettes de sections ───────────────────────────────────────
+        'seccion_destino'            => 'Portfolio cible',
+        'seccion_info_proyecto'      => 'Informations du projet',
+        'seccion_vinculos'           => 'Liens',
+        'seccion_archivos'           => 'Pièces jointes',
+        'seccion_info_pf'            => 'Informations du portfolio',
+        'seccion_banner'             => 'Bannière',
+        'seccion_logo'               => 'Logo',
+        'opcional'                   => 'Facultatif',
+
+        // ── Champs et étiquettes ─────────────────────────────────────────
+        'selecciona_portafolio'      => 'Portfolio',
+        'elige_portafolio'           => 'Choisissez un portfolio…',
+        'nombre_proyecto'            => 'Nom du projet',
+        'nombre_proyecto_placeholder'=> 'Ex. : Mon application web',
+        'descripcion'                => 'Description',
+        'desc_proyecto_placeholder'  => 'Décrivez brièvement le projet…',
+        'repo_github'                => 'Dépôt GitHub',
+        'repo_placeholder'           => 'https://github.com/utilisateur/depot',
+        'url_deploy'                 => 'URL de déploiement',
+        'deploy_placeholder'         => 'https://mon-projet.vercel.app',
+        'nombre'                     => 'Nom',
+        'nombre_pf_label'            => 'Nom du portfolio',
+        'nombre_pf_placeholder'      => 'Ex. : Portfolio de développement web',
+        'desc_pf_placeholder'        => 'Décrivez l\'axe ou la thématique de ce portfolio…',
+
+        // ── Zone de dépôt (drag & drop) ──────────────────────────────────
+        'drop_texto'                 => 'Glissez des fichiers ici ou cliquez pour sélectionner',
+        'drop_hint'                  => 'Images, ZIP, PDF, Office · max 20 Mo par fichier',
+        'drop_cambiar'               => 'Cliquez ou glissez pour changer l\'image',
+        'banner_hint'                => 'PNG ou JPG recommandé',
+        'banner_hint_full'           => 'PNG ou JPG · recommandé 1200 × 300 px',
+        'logo_titulo'                => 'Logo du portfolio',
+        'logo_hint'                  => 'PNG ou JPG carré recommandé · max 2 Mo',
+
+        // ── Boutons ──────────────────────────────────────────────────────
+        'guardar_borrador'           => 'Enregistrer comme brouillon',
+        'btn_anadir_proyecto'        => 'Ajouter le projet',
+        'btn_publicar'               => 'Publier le portfolio',
+        'btn_guardar_cambios'        => 'Enregistrer les modifications',
+        'editar'                     => 'Modifier',
+        'eliminar'                   => 'Supprimer',
+        'eliminar_portafolio'        => 'Supprimer le portfolio',
+        'cerrar'                     => 'Fermer',
+        'cancelar'                   => 'Annuler',
+        'confirmar'                  => 'Confirmer',
+        'si_eliminar'                => 'Oui, supprimer',
+        'si_guardar'                 => 'Oui, enregistrer',
+        'subir_archivos'             => 'Téléverser des fichiers',
+        'guardando'                  => 'Enregistrement…',
+
+        // ── États et badges ──────────────────────────────────────────────
+        'badge_publicado'            => 'Publié',
+        'badge_borrador'             => 'Brouillon',
+        'proyectos'                  => 'Projets',
+        'cargando'                   => 'Chargement…',
+        'actualizado_prefijo'        => 'Mis à jour le',
+        'sin_archivos'               => 'Aucune pièce jointe',
+        'sin_proyectos'              => 'Aucun projet dans ce portfolio pour l\'instant.',
+
+        // ── Dialogues de confirmation ────────────────────────────────────
+        'conf_elim_pf_titulo'        => 'Supprimer le portfolio ?',
+        'conf_elim_pf_desc'          => 'Cette action supprimera définitivement le portfolio et tous ses projets. Cette opération est irréversible.',
+        'conf_elim_proj_titulo'      => 'Supprimer le projet ?',
+        'conf_elim_proj_desc'        => 'Le projet « :nombre » et tous ses fichiers seront supprimés. Cette opération est irréversible.',
+        'conf_guardar_titulo'        => 'Enregistrer les modifications ?',
+        'conf_guardar_desc_pf'       => 'Les informations du portfolio seront mises à jour.',
+        'conf_guardar_desc_proj'     => 'Les informations du projet seront mises à jour.',
+
+        // ── Messages d\'erreur ───────────────────────────────────────────
+        'err_portafolio'             => 'Veuillez sélectionner un portfolio.',
+        'err_nombre'                 => 'Le nom est obligatoire.',
+        'err_descripcion'            => 'La description est obligatoire.',
+        'err_campo_obligatorio'      => 'Ce champ est obligatoire.',
+        'err_url'                    => 'Veuillez saisir une URL valide.',
+        'err_url_repo'               => 'L\'URL du dépôt n\'est pas valide.',
+        'err_url_deploy'             => 'L\'URL de déploiement n\'est pas valide.',
+        'err_nombre_desc'            => 'Veuillez renseigner le nom et la description.',
+        'err_guardar'                => 'Impossible d\'enregistrer. Veuillez réessayer.',
+        'err_elim_pf'                => 'Impossible de supprimer le portfolio.',
+        'err_elim_proj'              => 'Impossible de supprimer le projet.',
+        'err_servidor'               => 'Erreur serveur',
+        'error_cargar_proyectos'     => 'Impossible de charger les projets.',
+
+        // ── Validation des fichiers ──────────────────────────────────────
+        'solo_png_jpg'               => 'Seules les images PNG ou JPG sont autorisées.',
+        'limite_banner'              => 'La bannière ne peut pas dépasser 5 Mo.',
+        'limite_logo'                => 'Le logo ne peut pas dépasser 2 Mo.',
+        'limite_archivo'             => 'dépasse la limite de 20 Mo.',
+    ],
 ];
