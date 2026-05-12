@@ -481,4 +481,104 @@ return [
         'empty_documento_titulo' => 'Internal Security Protocols V2',
         'empty_documento_desc'   => 'Technical documentation on best practices in encryption.',
     ],
+    'modales_pf' => [
+
+        // ── Modal titles and subtitles ───────────────────────────────────
+        'modal1_titulo'              => 'Add project',
+        'modal1_subtitulo'           => 'Select a portfolio and fill in the project details.',
+        'modal4_titulo'              => 'Edit portfolio',
+        'modal4_subtitulo'           => 'Update your portfolio information.',
+        'modal5_titulo'              => 'Create portfolio',
+        'modal5_subtitulo'           => 'Fill in the details to create a new portfolio.',
+
+        // ── Section labels ───────────────────────────────────────────────
+        'seccion_destino'            => 'Target portfolio',
+        'seccion_info_proyecto'      => 'Project information',
+        'seccion_vinculos'           => 'Links',
+        'seccion_archivos'           => 'Attachments',
+        'seccion_info_pf'            => 'Portfolio information',
+        'seccion_banner'             => 'Banner',
+        'seccion_logo'               => 'Logo',
+        'opcional'                   => 'Optional',
+
+        // ── Fields and labels ────────────────────────────────────────────
+        'selecciona_portafolio'      => 'Portfolio',
+        'elige_portafolio'           => 'Choose a portfolio…',
+        'nombre_proyecto'            => 'Project name',
+        'nombre_proyecto_placeholder'=> 'E.g.: My web application',
+        'descripcion'                => 'Description',
+        'desc_proyecto_placeholder'  => 'Briefly describe the project…',
+        'repo_github'                => 'GitHub repository',
+        'repo_placeholder'           => 'https://github.com/user/repository',
+        'url_deploy'                 => 'Deploy URL',
+        'deploy_placeholder'         => 'https://my-project.vercel.app',
+        'nombre'                     => 'Name',
+        'nombre_pf_label'            => 'Portfolio name',
+        'nombre_pf_placeholder'      => 'E.g.: Web development portfolio',
+        'desc_pf_placeholder'        => 'Describe the focus or theme of this portfolio…',
+
+        // ── Drag & drop upload zone ──────────────────────────────────────
+        'drop_texto'                 => 'Drag files here or click to select',
+        'drop_hint'                  => 'Images, ZIP, PDF, Office · max 20 MB per file',
+        'drop_cambiar'               => 'Click or drag to change image',
+        'banner_hint'                => 'PNG or JPG recommended',
+        'banner_hint_full'           => 'PNG or JPG · recommended 1200 × 300 px',
+        'logo_titulo'                => 'Portfolio logo',
+        'logo_hint'                  => 'Square PNG or JPG recommended · max 2 MB',
+
+        // ── Buttons ──────────────────────────────────────────────────────
+        'guardar_borrador'           => 'Save as draft',
+        'btn_anadir_proyecto'        => 'Add project',
+        'btn_publicar'               => 'Publish portfolio',
+        'btn_guardar_cambios'        => 'Save changes',
+        'editar'                     => 'Edit',
+        'eliminar'                   => 'Delete',
+        'eliminar_portafolio'        => 'Delete portfolio',
+        'cerrar'                     => 'Close',
+        'cancelar'                   => 'Cancel',
+        'confirmar'                  => 'Confirm',
+        'si_eliminar'                => 'Yes, delete',
+        'si_guardar'                 => 'Yes, save',
+        'subir_archivos'             => 'Upload files',
+        'guardando'                  => 'Saving…',
+
+        // ── Statuses and badges ──────────────────────────────────────────
+        'badge_publicado'            => 'Published',
+        'badge_borrador'             => 'Draft',
+        'proyectos'                  => 'Projects',
+        'cargando'                   => 'Loading…',
+        'actualizado_prefijo'        => 'Updated on',
+        'sin_archivos'               => 'No attachments',
+        'sin_proyectos'              => 'No projects in this portfolio yet.',
+
+        // ── Confirmation dialogs ─────────────────────────────────────────
+        'conf_elim_pf_titulo'        => 'Delete portfolio?',
+        'conf_elim_pf_desc'          => 'This will permanently delete the portfolio and all its projects. This cannot be undone.',
+        'conf_elim_proj_titulo'      => 'Delete project?',
+        'conf_elim_proj_desc'        => 'The project ":nombre" and all its files will be deleted. This cannot be undone.',
+        'conf_guardar_titulo'        => 'Save changes?',
+        'conf_guardar_desc_pf'       => 'The portfolio information will be updated.',
+        'conf_guardar_desc_proj'     => 'The project information will be updated.',
+
+        // ── Error messages ───────────────────────────────────────────────
+        'err_portafolio'             => 'Please select a portfolio.',
+        'err_nombre'                 => 'Name is required.',
+        'err_descripcion'            => 'Description is required.',
+        'err_campo_obligatorio'      => 'This field is required.',
+        'err_url'                    => 'Please enter a valid URL.',
+        'err_url_repo'               => 'The repository URL is not valid.',
+        'err_url_deploy'             => 'The deploy URL is not valid.',
+        'err_nombre_desc'            => 'Please complete the name and description.',
+        'err_guardar'                => 'Could not save. Please try again.',
+        'err_elim_pf'                => 'Could not delete the portfolio.',
+        'err_elim_proj'              => 'Could not delete the project.',
+        'err_servidor'               => 'Server error',
+        'error_cargar_proyectos'     => 'Could not load projects.',
+
+        // ── File validation ──────────────────────────────────────────────
+        'solo_png_jpg'               => 'Only PNG or JPG images are allowed.',
+        'limite_banner'              => 'The banner cannot exceed 5 MB.',
+        'limite_logo'                => 'The logo cannot exceed 2 MB.',
+        'limite_archivo'             => 'exceeds the 20 MB limit.',
+    ],
 ];

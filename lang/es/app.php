@@ -484,4 +484,104 @@ return [
         'empty_documento_titulo' => 'Protocolos de Seguridad Interna V2',
         'empty_documento_desc'   => 'Documentación técnica sobre buenas prácticas en encriptación.',
     ],
+    'modales_pf' => [
+
+        // ── Títulos y subtítulos de modales ─────────────────────────────
+        'modal1_titulo'              => 'Añadir proyecto',
+        'modal1_subtitulo'           => 'Selecciona un portafolio y completa los datos del proyecto.',
+        'modal4_titulo'              => 'Editar portafolio',
+        'modal4_subtitulo'           => 'Actualiza la información de tu portafolio.',
+        'modal5_titulo'              => 'Crear portafolio',
+        'modal5_subtitulo'           => 'Completa los datos para crear un nuevo portafolio.',
+
+        // ── Secciones (etiquetas de grupo) ───────────────────────────────
+        'seccion_destino'            => 'Portafolio destino',
+        'seccion_info_proyecto'      => 'Información del proyecto',
+        'seccion_vinculos'           => 'Vínculos',
+        'seccion_archivos'           => 'Archivos adjuntos',
+        'seccion_info_pf'            => 'Información del portafolio',
+        'seccion_banner'             => 'Banner',
+        'seccion_logo'               => 'Logo',
+        'opcional'                   => 'Opcional',
+
+        // ── Campos y etiquetas ───────────────────────────────────────────
+        'selecciona_portafolio'      => 'Portafolio',
+        'elige_portafolio'           => 'Elige un portafolio…',
+        'nombre_proyecto'            => 'Nombre del proyecto',
+        'nombre_proyecto_placeholder'=> 'Ej: Mi aplicación web',
+        'descripcion'                => 'Descripción',
+        'desc_proyecto_placeholder'  => 'Describe brevemente el proyecto…',
+        'repo_github'                => 'Repositorio GitHub',
+        'repo_placeholder'           => 'https://github.com/usuario/repositorio',
+        'url_deploy'                 => 'URL de despliegue',
+        'deploy_placeholder'         => 'https://mi-proyecto.vercel.app',
+        'nombre'                     => 'Nombre',
+        'nombre_pf_label'            => 'Nombre del portafolio',
+        'nombre_pf_placeholder'      => 'Ej: Portafolio de desarrollo web',
+        'desc_pf_placeholder'        => 'Describe el enfoque o temática de este portafolio…',
+
+        // ── Zona de carga de archivos (drag & drop) ──────────────────────
+        'drop_texto'                 => 'Arrastra archivos aquí o haz clic para seleccionar',
+        'drop_hint'                  => 'Imágenes, ZIP, PDF, Office · máx. 20 MB por archivo',
+        'drop_cambiar'               => 'Haz clic o arrastra para cambiar la imagen',
+        'banner_hint'                => 'PNG o JPG recomendado',
+        'banner_hint_full'           => 'PNG o JPG · recomendado 1200 × 300 px',
+        'logo_titulo'                => 'Logo del portafolio',
+        'logo_hint'                  => 'PNG o JPG cuadrado recomendado · máx. 2 MB',
+
+        // ── Botones ──────────────────────────────────────────────────────
+        'guardar_borrador'           => 'Guardar borrador',
+        'btn_anadir_proyecto'        => 'Añadir proyecto',
+        'btn_publicar'               => 'Publicar portafolio',
+        'btn_guardar_cambios'        => 'Guardar cambios',
+        'editar'                     => 'Editar',
+        'eliminar'                   => 'Eliminar',
+        'eliminar_portafolio'        => 'Eliminar portafolio',
+        'cerrar'                     => 'Cerrar',
+        'cancelar'                   => 'Cancelar',
+        'confirmar'                  => 'Confirmar',
+        'si_eliminar'                => 'Sí, eliminar',
+        'si_guardar'                 => 'Sí, guardar',
+        'subir_archivos'             => 'Subir archivos',
+        'guardando'                  => 'Guardando…',
+
+        // ── Estados y badges ─────────────────────────────────────────────
+        'badge_publicado'            => 'Publicado',
+        'badge_borrador'             => 'Borrador',
+        'proyectos'                  => 'Proyectos',
+        'cargando'                   => 'Cargando…',
+        'actualizado_prefijo'        => 'Actualizado el',
+        'sin_archivos'               => 'Sin archivos adjuntos',
+        'sin_proyectos'              => 'Aún no hay proyectos en este portafolio.',
+
+        // ── Diálogos de confirmación ─────────────────────────────────────
+        'conf_elim_pf_titulo'        => '¿Eliminar portafolio?',
+        'conf_elim_pf_desc'          => 'Esta acción eliminará el portafolio y todos sus proyectos. No se puede deshacer.',
+        'conf_elim_proj_titulo'      => '¿Eliminar proyecto?',
+        'conf_elim_proj_desc'        => 'Se eliminará el proyecto ":nombre" y todos sus archivos. No se puede deshacer.',
+        'conf_guardar_titulo'        => '¿Guardar cambios?',
+        'conf_guardar_desc_pf'       => 'Se actualizarán los datos del portafolio.',
+        'conf_guardar_desc_proj'     => 'Se actualizarán los datos del proyecto.',
+
+        // ── Mensajes de error ────────────────────────────────────────────
+        'err_portafolio'             => 'Selecciona un portafolio.',
+        'err_nombre'                 => 'El nombre es obligatorio.',
+        'err_descripcion'            => 'La descripción es obligatoria.',
+        'err_campo_obligatorio'      => 'Este campo es obligatorio.',
+        'err_url'                    => 'Ingresa una URL válida.',
+        'err_url_repo'               => 'La URL del repositorio no es válida.',
+        'err_url_deploy'             => 'La URL de despliegue no es válida.',
+        'err_nombre_desc'            => 'Completa el nombre y la descripción.',
+        'err_guardar'                => 'No se pudo guardar. Inténtalo de nuevo.',
+        'err_elim_pf'                => 'No se pudo eliminar el portafolio.',
+        'err_elim_proj'              => 'No se pudo eliminar el proyecto.',
+        'err_servidor'               => 'Error del servidor',
+        'error_cargar_proyectos'     => 'No se pudieron cargar los proyectos.',
+
+        // ── Validaciones de archivos ─────────────────────────────────────
+        'solo_png_jpg'               => 'Solo se permiten imágenes PNG o JPG.',
+        'limite_banner'              => 'El banner no puede superar 5 MB.',
+        'limite_logo'                => 'El logo no puede superar 2 MB.',
+        'limite_archivo'             => 'supera el límite de 20 MB.',
+    ],
 ];

@@ -30,7 +30,7 @@
                 <rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/>
                 <rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/>
             </svg>
-            Crear portafolio
+            {{ __('app.modales_pf.modal5_titulo') }}
         </button>
     </div>
 </div>
@@ -209,7 +209,7 @@
                 style="display:inline-block;margin-top:1rem;padding:9px 22px;background:var(--blue);
                        color:#fff;border-radius:10px;font-size:13px;font-weight:600;
                        text-decoration:none;border:none;cursor:pointer">
-            Crear portafolio
+            {{ __('app.modales_pf.modal5_titulo') }}
         </button>
     </div>
 @endif
