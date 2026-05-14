@@ -15,6 +15,7 @@ return [
         'marcar_leidas'   => 'Marcar todas como leídas',
         'cargando'        => 'Cargando...',
         'solo_tus_notif'  => 'Solo ves notificaciones dirigidas a ti',
+        'panel_admin'     => 'Panel de control',
     ],
     'home' => [
         'hero_linea1'       => 'Tu Portafolio,',
@@ -39,6 +40,8 @@ return [
         'card3_desc'        => 'Muestra tu información personal, experiencia y habilidades.',
         'card4_titulo'      => 'Acceso Seguro',
         'card4_desc'        => 'Sistema de autenticación con registro, inicio de sesión y recuperación de contraseña.',
+        'ir_mi_perfil'      => 'Ir a mi perfil',
+        'ir_panel_control'  => 'Ir a panel de control',
     ],
     'menu' => [
         'titulo'            => 'Sistema de Portafolios',
@@ -95,6 +98,7 @@ return [
         'semanas'           => 'Semanas',
         'meses'             => 'Meses',
         'anios'             => 'Años',
+        'mis_portafolios'   => 'Mis portafolios',
     ],
         // ─── PERFIL ───────────────────────────────────────────────────────────────
     'perfil' => [
@@ -317,6 +321,8 @@ return [
         'error_conexion'      => 'No se pudo enviar el correo. Intenta más tarde.',
         'exito'               => 'Si el correo es válido, recibirás un enlace de verificación.<br>Revisa también tu bandeja de spam.',
         'verificado'          => '✔ Cuenta verificada. Ya puedes iniciar sesión.',
+        '8_caracteres'            => '8+ caracteres',
+        'repite'            => 'Repite aquí',
     ],
     // ─── LOGIN ────────────────────────────────────────────────────────────────
     'login' => [
@@ -335,6 +341,14 @@ return [
         'desactivada_normas'  => 'Tu cuenta fue desactivada por no cumplir con las normas de la plataforma o por inactividad prolongada.<br>Si crees que esto es un error, contacta con soporte.',
         'reactivar'           => 'Sí, reactivar mi cuenta',
         'cancelar'            => 'Cancelar',
+        'reactivacion_titulo'       => 'Solicitud Enviada',
+        'reactivacion_desc'         => 'Hemos notificado al administrador. Se evaluará tu caso y, de ser aprobado, tu cuenta será reactivada a la brevedad.',
+        'reactivacion_btn'          => 'Entendido',
+        'btn_solicitar_reactivacion'=> 'Solicitar reactivación al administrador',
+        'placeholder_password'      => 'Mínimo 8 caracteres',
+        'iniciando_sesion'          => 'Iniciando sesión...',
+        'o_continua_con'            => 'o continúa con',
+        'tu_correo'            => 'tu@correo.com',
     ],
     // ───reportes ────────────────────────────────────────────────────────────────
     'reportes' => [
@@ -583,5 +597,393 @@ return [
         'limite_banner'              => 'El banner no puede superar 5 MB.',
         'limite_logo'                => 'El logo no puede superar 2 MB.',
         'limite_archivo'             => 'supera el límite de 20 MB.',
+    ],
+    
+// ============================================================
+// ESPAÑOL (es) — lang/es/app.php  →  'admin' => [ ... ]
+// ============================================================
+    'admin' => [
+    
+        // Página
+        'titulo_pagina'                  => 'Panel de Administración - SansiFolios',
+        
+        // Modal cambio de rol
+        'modal_rol_titulo'               => '¿Cambiar permisos?',
+        'modal_rol_texto'                => 'Esta acción modificará el nivel de acceso del usuario al sistema administrativo.',
+        'confirma_contrasena'            => 'Confirma tu contraseña',
+        'placeholder_contrasena'         => 'Ingresa tu contraseña',
+        'cancelar'                       => 'Cancelar',
+        'confirmar_cambio'               => 'Confirmar cambio',
+    
+        // Sidebar
+        'sidebar_general'                => 'General',
+        'menu_principal'                 => 'Menu Principal',
+        'usuarios'                       => 'Usuarios',
+        'portafolios'                    => 'Portafolios',
+        'notificaciones'                 => 'Notificaciones',
+    
+        // Dashboard Hero
+        'panel_control'                  => 'Panel de Control',
+        'panel_control_sub'              => 'Visión general del rendimiento y actividad de la plataforma.',
+    
+        // Stats
+        'stat_usuarios_totales'          => 'Usuarios Totales',
+        'stat_activos'                   => 'activos',
+        'stat_portafolios_registrados'   => 'Portafolios Registrados',
+        'stat_con_vinculacion'           => 'con vinculación',
+        'stat_documentos_subidos'        => 'Documentos Subidos',
+        'stat_archivos_proyectos'        => 'Archivos en proyectos',
+        'stat_administradores'           => 'Administradores',
+        'stat_personal_gestion'          => 'Personal de gestión',
+    
+        // Tablas dashboard
+        'usuarios_recientes'             => 'Usuarios Recientes',
+        'portafolios_recientes'          => 'Portafolios Recientes',
+        'ver_todos'                      => 'Ver todos',
+        'th_usuario'                     => 'Usuario',
+        'th_registro'                    => 'Registro',
+        'th_estado'                      => 'Estado',
+        'th_portafolio'                  => 'Portafolio',
+        'th_autor'                       => 'Autor',
+        'th_fecha'                       => 'Fecha',
+        'activo'                         => 'Activo',
+        'inactivo'                       => 'Inactivo',
+        'sin_descripcion'                => 'Sin descripción',
+        'sin_usuario'                    => 'Sin usuario',
+        'empty_portafolios_recientes'    => 'No hay portafolios recientes.',
+    
+        // Notificaciones (vista)
+        'notif_titulo'                   => 'Notificaciones',
+        'notif_sub'                      => 'Envía avisos a usuarios individuales, por rol o a todos.',
+        'notif_nueva'                    => 'Nueva Notificación',
+        'notif_enviada_ok'               => '✓ Notificación enviada correctamente.',
+        'notif_campo_titulo'             => 'Título',
+        'notif_placeholder_titulo'       => 'Ej: Mantenimiento programado',
+        'notif_campo_mensaje'            => 'Mensaje',
+        'notif_placeholder_mensaje'      => 'Escribe el mensaje aquí...',
+        'notif_destinatario'             => 'Destinatario',
+        'notif_todos'                    => 'Todos los usuarios',
+        'notif_solo_admins'              => 'Solo administradores',
+        'notif_usuario_especifico'       => 'Usuario específico',
+        'notif_seleccionar_usuario'      => 'Seleccionar usuario',
+        'notif_elige_usuario'            => '-- Elige un usuario --',
+        'notif_btn_enviar'               => 'Enviar notificación',
+        'notif_historial'                => 'Historial de enviadas',
+        'notif_actualizar'               => '↻ Actualizar',
+        'notif_sin_enviadas'             => 'Sin notificaciones enviadas aún.',
+        'notif_tag_todos'                => 'Todos',
+        'notif_tag_admins'               => 'Admins',
+        'notif_tag_individual'           => 'Individual',
+        'eliminar'                       => 'Eliminar',
+        'cargando'                       => 'Cargando...',
+    
+        // Actividad reciente
+        'actividad_reciente'             => 'Actividad Reciente',
+        'confirm_limpiar_actividad'      => '¿Estás seguro de que deseas borrar todo el registro de actividades? Esta acción no se puede deshacer.',
+        'limpiar_historial'              => 'Limpiar historial',
+        'act_accion'                     => 'Acción',
+        'act_login'                      => 'Sesión iniciada',
+        'act_logout'                     => 'Sesión cerrada',
+        'act_registro_usuario'           => 'Nuevo registro',
+        'act_password_actualizado'       => 'Contraseña cambiada',
+        'act_solicitar_recuperacion'     => 'Recuperación solicitada',
+        'act_reactivacion_cuenta'        => 'Cuenta reactivada',
+        'act_solicitud_registro'         => 'Nueva solicitud registro',
+        'act_email_no_existe'            => 'Error: Email no existe',
+        'act_token_invalido'             => 'Error: Token inválido',
+        'act_error_recuperacion'         => 'Falla en recuperación',
+        'act_perfil_actualizado'         => 'Perfil actualizado',
+        'act_cuenta_desactivada'         => 'Cuenta desactivada',
+        'act_sistema_invitado'           => 'Sistema/Invitado',
+        'act_recientemente'              => 'Recientemente',
+        'empty_actividad'                => 'No hay actividad reciente registrada.',
+        'ver_registro_completo'          => 'Ver todo el registro',
+    
+        // Roles
+        'rol_administrador'              => 'Administrador',
+        'rol_usuario'                    => 'Usuario',
+    
+        // Calendario
+        'cal_mes'                        => 'Mes',
+        'cal_dias'                       => 'Días',
+        'cal_semanas'                    => 'Semanas',
+        'cal_meses'                      => 'Meses',
+        'cal_anios'                      => 'Años',
+        'cal_do'                         => 'Do',
+        'cal_lu'                         => 'Lu',
+        'cal_ma'                         => 'Ma',
+        'cal_mi'                         => 'Mi',
+        'cal_ju'                         => 'Ju',
+        'cal_vi'                         => 'Vi',
+        'cal_sa'                         => 'Sá',
+        'cal_feriado'                    => 'Feriado',
+    
+        // Feriados Bolivia
+        'feriado_anio_nuevo'             => 'Año Nuevo',
+        'feriado_estado_plurinacional'   => 'Día del Estado Plurinacional',
+        'feriado_dia_padre'              => 'Día del Padre',
+        'feriado_dia_nino'               => 'Día del Niño',
+        'feriado_dia_trabajo'            => 'Día del Trabajo',
+        'feriado_dia_madre'              => 'Día de la Madre',
+        'feriado_anio_aymara'            => 'Año Nuevo Aymara',
+        'feriado_independencia'          => 'Día de la Independencia',
+        'feriado_dia_bandera'            => 'Día de la Bandera',
+        'feriado_dia_primavera'          => 'Día de la Primavera',
+        'feriado_mujer_boliviana'        => 'Día de la Mujer Boliviana',
+        'feriado_dia_difuntos'           => 'Día de los Difuntos',
+        'feriado_navidad'                => 'Navidad',
+    
+        // Meses
+        'mes_enero'                      => 'Enero',
+        'mes_febrero'                    => 'Febrero',
+        'mes_marzo'                      => 'Marzo',
+        'mes_abril'                      => 'Abril',
+        'mes_mayo'                       => 'Mayo',
+        'mes_junio'                      => 'Junio',
+        'mes_julio'                      => 'Julio',
+        'mes_agosto'                     => 'Agosto',
+        'mes_septiembre'                 => 'Septiembre',
+        'mes_octubre'                    => 'Octubre',
+        'mes_noviembre'                  => 'Noviembre',
+        'mes_diciembre'                  => 'Diciembre',
+    
+        // JS inline
+        'js_ingresar_contrasena'         => 'Debes ingresar tu contraseña para continuar.',
+        'js_procesando'                  => 'Procesando...',
+        'js_desactivar_cuenta'           => 'Desactivar cuenta',
+        'js_activar_cuenta'              => 'Activar cuenta',
+        'js_error_estado'                => 'Error al actualizar el estado.',
+        'js_error_conexion'              => 'Ocurrió un error en la conexión.',
+        'js_hacer_admin'                 => '¿Hacer administrador?',
+        'js_quitar_admin'                => 'Quitar administrador',
+        'js_texto_hacer_admin'           => 'El usuario tendrá permisos totales para gestionar la plataforma.',
+        'js_texto_quitar_admin'          => 'El usuario perderá sus privilegios administrativos.',
+        'js_volver_admin'                => 'Volver administrador',
+        'js_error_rol'                   => 'Error al actualizar el rol.',
+        'js_completar_campos'            => 'Completa todos los campos obligatorios.',
+        'js_seleccionar_usuario'         => 'Selecciona un usuario destinatario.',
+        'js_error_enviar'                => 'Error al enviar. Revisa los campos.',
+        'js_confirm_eliminar_notif'      => '¿Eliminar esta notificación?',
+    ],
+    'recuperar' => [
+        'titulo'                      => 'Recuperar acceso',
+        'descripcion_correo'          => 'Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.',
+        'descripcion_reset'           => 'Define una nueva contraseña segura para proteger tu cuenta y tu portafolio.',
+        'label_correo'                => 'Correo electrónico',
+        'placeholder_correo'          => 'tu@correo.com',
+        'enviando_correo'             => 'Enviando correo...',
+        'btn_enviar_enlace'           => 'Enviar enlace de recuperación →',
+        'label_nueva_contrasena'      => 'Nueva contraseña',
+        'placeholder_nueva_contrasena'=> 'Mínimo 8 caracteres',
+        'label_confirmar_contrasena'  => 'Confirmar contraseña',
+        'placeholder_confirmar_contrasena' => 'Repite la contraseña',
+        'regla_longitud'              => '8 caracteres',
+        'regla_numero_simbolo'        => 'Número o símbolo',
+        'btn_actualizar_contrasena'   => 'Actualizar contraseña →',
+        'actualizando'                => 'Actualizando...',
+        'correo_valido'               => 'Correo válido',
+        'correo_invalido'             => 'Formato de correo inválido',
+        'error_correo_obligatorio'    => 'El correo es obligatorio',
+        'contrasenas_coinciden'       => 'Las contraseñas coinciden',
+        'contrasenas_no_coinciden'    => 'No coinciden',
+        'error_contrasena_invalida'   => 'Mínimo 8 caracteres y un número o símbolo',
+        'correo_enviado'              => 'Correo enviado correctamente',
+        'error_enviar'                => 'Error al enviar',
+        'error_conexion'              => 'No se pudo conectar con el servidor',
+        'contrasena_actualizada'      => 'Contraseña actualizada correctamente',
+        'exito_login'                 => '✓ Contraseña actualizada. Ya puedes iniciar sesión.',
+        'error_actualizar'            => 'Error al actualizar',
+        'error_actualizar_contrasena' => 'Error al actualizar contraseña',
+        'titulo'             => 'Recuperar contraseña',
+        'nombre_sistema'     => 'SansiFolios',
+        'encabezado'         => 'Recupera tu acceso',
+        'saludo'             => 'Hola :nombre,',
+        'cuerpo'             => 'Te enviamos un enlace para restablecer tu contraseña.',
+        'boton_restablecer'  => 'Restablecer contraseña →',
+        'expiracion'         => 'Este enlace expira en 2 horas.',
+    ],
+    'terminos' => [
+        // Cabecera
+        'titulo_prefijo'      => 'Términos — ',
+        'vigencia'            => 'Vigente desde enero 2025',
+ 
+        // Aviso inicial
+        'aviso_intro'         => 'Por favor, lee estos términos detenidamente antes de crear tu cuenta. Al registrarte en',
+        'aviso_intro_2'       => ', confirmas que has leído, comprendido y aceptado estas condiciones.',
+ 
+        // Sección 1
+        's1_titulo'           => 'Descripción del servicio',
+        's1_texto'            => 'es una plataforma digital boliviana que permite a sus usuarios crear, personalizar y publicar portafolios profesionales en línea. Cada cuenta registrada genera un perfil público donde el usuario puede mostrar información personal, académica, laboral y proyectos relevantes.',
+ 
+        // Sección 2
+        's2_titulo'           => 'Registro y cuenta de usuario',
+        's2_item1_a'          => 'Para usar',
+        's2_item1_b'          => 'debes tener al menos',
+        's2_item1_edad'       => '14 años',
+        's2_item1_c'          => '. Si eres menor de edad, necesitas el consentimiento de un tutor legal.',
+        's2_item2_a'          => 'La información proporcionada al registrarte (nombre, apellido, correo electrónico) debe ser',
+        's2_item2_veraz'      => 'veraz y actualizada',
+        's2_item2_b'          => '.',
+        's2_item3_a'          => 'Eres responsable de mantener la confidencialidad de tu contraseña.',
+        's2_item3_b'          => 'no se hace responsable por acceso no autorizado derivado de una contraseña comprometida por el usuario.',
+        's2_item4_a'          => 'Cada persona puede tener',
+        's2_item4_una'        => 'una sola cuenta',
+        's2_item4_b'          => '. La creación de cuentas duplicadas o falsas puede resultar en la eliminación de todas las cuentas asociadas.',
+ 
+        // Sección 3
+        's3_titulo'           => 'Uso aceptable del servicio',
+        's3_intro_a'          => 'Al usar',
+        's3_intro_b'          => ', te comprometes a',
+        's3_no'               => 'no',
+        's3_intro_c'          => ':',
+        's3_item1'            => 'Publicar contenido falso, engañoso, difamatorio, obsceno o que viole derechos de terceros.',
+        's3_item2'            => 'Suplantar la identidad de otra persona o entidad.',
+        's3_item3'            => 'Usar la plataforma para actividades ilegales conforme a la legislación boliviana.',
+        's3_item4'            => 'Intentar acceder sin autorización a sistemas, datos o cuentas de otros usuarios.',
+        's3_item5'            => 'Publicar spam, publicidad no solicitada o contenido que interfiera con la experiencia de otros usuarios.',
+ 
+        // Sección 4
+        's4_titulo'           => 'Contenido del usuario',
+        's4_p1_a'             => 'Todo el contenido que publiques en tu portafolio (textos, imágenes, enlaces, proyectos) sigue siendo de tu propiedad. Al publicarlo en',
+        's4_p1_b'             => ', nos otorgas una licencia',
+        's4_p1_licencia'      => 'no exclusiva, gratuita y revocable',
+        's4_p1_c'             => ' para mostrarlo en la plataforma con el fin de prestar el servicio.',
+        's4_p2_no_vende'      => 'no vende ni cede',
+        's4_p2_resto'         => 'tu contenido a terceros. Nos reservamos el derecho de eliminar contenido que viole estos términos o la legislación aplicable.',
+ 
+        // Sección 5
+        's5_titulo'           => 'Privacidad y protección de datos',
+        's5_p1_a'             => 'recopila únicamente los datos necesarios para el funcionamiento del servicio: nombre, apellido y correo electrónico. Esta información se almacena de forma segura y',
+        's5_p1_no_comparte'   => 'no se comparte con terceros',
+        's5_p1_b'             => ' salvo requerimiento legal expreso.',
+        's5_p2'               => 'Tu perfil público es visible para cualquier persona que acceda al enlace de tu portafolio. Puedes controlar qué información aparece en él desde la configuración de tu cuenta. El tratamiento de datos personales se rige por la legislación boliviana vigente.',
+ 
+        // Sección 6
+        's6_titulo'           => 'Suspensión y eliminación de cuenta',
+        's6_intro'            => 'puede suspender o eliminar tu cuenta si:',
+        's6_item1'            => 'Incumples alguno de los puntos de estos Términos.',
+        's6_item2'            => 'Tu cuenta permanece inactiva por un período prolongado sin actividad registrada.',
+        's6_item3'            => 'Lo solicita una autoridad competente boliviana.',
+        's6_reactivacion'     => 'En caso de suspensión por inactividad, recibirás una notificación previa al correo registrado y tendrás la posibilidad de solicitar la reactivación de tu cuenta.',
+ 
+        // Sección 7
+        's7_titulo'           => 'Disponibilidad del servicio',
+        's7_p1_a'             => 'Nos esforzamos por mantener',
+        's7_p1_b'             => 'disponible de forma continua, pero no garantizamos disponibilidad ininterrumpida. Pueden existir períodos de mantenimiento, actualizaciones o interrupciones no planificadas. No somos responsables por pérdidas derivadas de la indisponibilidad temporal del servicio.',
+ 
+        // Sección 8
+        's8_titulo'           => 'Modificaciones a estos términos',
+        's8_texto'            => 'puede actualizar estos Términos y Condiciones en cualquier momento. Cuando lo hagamos, publicaremos la nueva versión en la plataforma y, si el cambio es significativo, te notificaremos por correo electrónico. Continuar usando el servicio después de la notificación implica la aceptación de los nuevos términos.',
+ 
+        // Sección 9
+        's9_titulo'           => 'Legislación aplicable',
+        's9_p1_a'             => 'Estos Términos se rigen por las leyes del',
+        's9_bolivia'          => 'Estado Plurinacional de Bolivia',
+        's9_p1_b'             => '. Cualquier controversia derivada del uso de',
+        's9_p1_c'             => 'se someterá a los tribunales competentes de Bolivia, renunciando expresamente a cualquier otro fuero que pudiera corresponder.',
+ 
+        // Sección 10
+        's10_titulo'          => 'Contacto',
+        's10_texto'           => 'Si tienes dudas sobre estos Términos o sobre el tratamiento de tus datos, puedes escribirnos a:',
+ 
+        // Pie
+        'btn_aceptar'         => 'Acepto los términos',
+        'btn_cerrar'          => 'Cerrar',
+    ],
+    'verificacion_ok' => [
+        'titulo'           => 'Verificado',
+        'cuenta_verificada'=> '✔ Cuenta verificada',
+        'cerrar_pestana'   => 'Puedes cerrar esta pestaña.',
+    ],
+
+    'verificacion_error' => [
+        'titulo'            => 'Error de verificación',
+        'token_invalido'    => 'Token inválido o expirado',
+        'enlace_invalido'   => 'El enlace de verificación no es válido o ya expiró.',
+        'volver_registrarse'=> 'Volver a registrarse',
+    ],
+
+    'verificar' => [
+        'titulo'          => 'Verifica tu cuenta',
+        'instruccion'     => 'Haz clic en el botón para activar tu cuenta:',
+        'boton_verificar' => 'Verificar correo',
+        'expiracion'      => 'Este enlace expira en 24 horas.',
+    ],
+    'usuarios_admin' => [
+        'titulo'               => 'Gestión de Usuarios',
+        'subtitulo'            => 'Administra los usuarios registrados en la plataforma.',
+
+        // Stats
+        'stat_total'           => 'Total Usuarios',
+        'stat_registrados'     => 'Registrados',
+        'stat_activos'         => 'Activos',
+        'stat_en_linea'        => 'En línea',
+        'stat_inactivos'       => 'Inactivos',
+        'stat_desactivados'    => 'Desactivados',
+        'stat_admins'          => 'Admins',
+        'stat_privilegios'     => 'Con privilegios',
+
+        // Tabla
+        'lista_titulo'         => 'Lista de Usuarios',
+        'buscar_placeholder'   => 'Buscar usuario...',
+        'filtro_todos'         => 'Todos',
+        'filtro_activos'       => 'Activos',
+        'filtro_inactivos'     => 'Inactivos',
+        'col_usuario'          => 'Usuario',
+        'col_rol'              => 'Rol',
+        'col_fecha_registro'   => 'Fecha Registro',
+        'col_estado'           => 'Estado',
+        'col_acciones'         => 'Acciones',
+
+        // Roles
+        'rol_administrador'    => 'Administrador',
+        'rol_usuario'          => 'Usuario',
+
+        // Estados
+        'estado_activo'        => 'Activo',
+        'estado_inactivo'      => 'Inactivo',
+
+        // Acciones
+        'accion_activar'       => 'Activar cuenta',
+        'accion_desactivar'    => 'Desactivar cuenta',
+        'accion_hacer_admin'   => 'Volver administrador',
+        'accion_quitar_admin'  => 'Quitar administrador',
+    ],
+
+    'portafolios_admin' => [
+        'titulo'               => 'Gestión de Portafolios',
+        'subtitulo'            => 'Supervisa y administra los portafolios de los estudiantes.',
+
+        // Stats
+        'stat_total'           => 'Total Portafolios',
+        'stat_registrados'     => 'Registrados',
+        'stat_vinculados'      => 'Vinculados',
+        'stat_con_usuarios'    => 'Con usuarios',
+        'stat_no_vinculados'   => 'No Vinculados',
+        'stat_sin_usuarios'    => 'Sin usuarios',
+
+        // Tabla
+        'lista_titulo'         => 'Lista de Portafolios',
+        'buscar_placeholder'   => 'Buscar portafolio...',
+        'col_portafolio'       => 'Portafolio',
+        'col_autor'            => 'Autor',
+        'col_repositorio'      => 'Repositorio',
+        'col_estado'           => 'Estado',
+        'col_acciones'         => 'Acciones',
+
+        // Estados
+        'estado_activo'        => 'Activo',
+        'estado_desconocido'   => 'Desconocido',
+
+        // Vacíos / fallbacks
+        'empty_descripcion'    => 'Sin descripción',
+        'empty_usuario'        => 'Sin usuario',
+        'empty_repositorio'    => 'Sin repositorio',
+        'empty_tabla'          => 'No hay portafolios registrados en el sistema.',
+
+        // Acciones
+        'enlace_repo'          => 'Enlace',
+        'accion_ver_detalles'  => 'Ver Detalles',
+        'en_desarrollo'        => 'Funcionalidad en desarrollo',
     ],
 ];

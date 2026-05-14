@@ -235,36 +235,66 @@
                         </div>
                     </div>
 
-                    <div style="padding:6px;">
-                        <button onclick="if(typeof showView === 'function'){showView('perfil');cerrarNavMenu();}else{window.location.href='{{ url('/menu') }}'}"
-                            style="width:100%;display:flex;align-items:center;gap:10px;
-                                   padding:9px 12px;border-radius:8px;border:none;background:none;
-                                   cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
-                                   color:#1e293b;text-align:left;"
-                            onmouseover="this.style.background='#f1f5f9'"
-                            onmouseout="this.style.background='none'">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                 stroke="#64748b" stroke-width="2" stroke-linecap="round">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                <circle cx="12" cy="7" r="4"/>
-                            </svg>
-                            {{ __('app.nav.mi_perfil') }}
-                        </button>
+                    {{--
+                        DROPDOWN DE ACCIONES:
+                        - Admin    → solo "Panel de control" (enlace a /admin)
+                        - Usuario  → "Mi perfil" + "Reportes" (cambian vista SPA interna)
+                    --}}
+                    @if(auth()->user()->es_admin)
 
-                        <button onclick="if(typeof showView === 'function'){showView('reportes');cerrarNavMenu();}else{window.location.href='{{ url('/menu') }}'}"
-                            style="width:100%;display:flex;align-items:center;gap:10px;
-                                   padding:9px 12px;border-radius:8px;border:none;background:none;
-                                   cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
-                                   color:#1e293b;text-align:left;"
-                            onmouseover="this.style.background='#f1f5f9'"
-                            onmouseout="this.style.background='none'">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                 stroke="#64748b" stroke-width="2" stroke-linecap="round">
-                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                            </svg>
-                            {{ __('app.nav.reportes') }}
-                        </button>
-                    </div>
+                        {{-- Admin: un único acceso directo al panel --}}
+                        <div style="padding:6px;">
+                            <a href="{{ route('admin') }}"
+                                style="width:100%;display:flex;align-items:center;gap:10px;
+                                       padding:9px 12px;border-radius:8px;
+                                       cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
+                                       color:#4f46e5;text-align:left;text-decoration:none;background:none;"
+                                onmouseover="this.style.background='#eef2ff'"
+                                onmouseout="this.style.background='none'">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                     stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                                    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                                </svg>
+                                {{ __('app.nav.panel_admin') }}
+                            </a>
+                        </div>
+
+                    @else
+
+                        {{-- Usuario normal: acceso a su perfil y sus reportes --}}
+                        <div style="padding:6px;">
+                            <button onclick="if(typeof showView === 'function'){showView('perfil');cerrarNavMenu();}else{window.location.href='{{ url('/menu') }}'}"
+                                style="width:100%;display:flex;align-items:center;gap:10px;
+                                       padding:9px 12px;border-radius:8px;border:none;background:none;
+                                       cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
+                                       color:#1e293b;text-align:left;"
+                                onmouseover="this.style.background='#f1f5f9'"
+                                onmouseout="this.style.background='none'">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                     stroke="#64748b" stroke-width="2" stroke-linecap="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                                {{ __('app.nav.mi_perfil') }}
+                            </button>
+
+                            <button onclick="if(typeof showView === 'function'){showView('reportes');cerrarNavMenu();}else{window.location.href='{{ url('/menu') }}'}"
+                                style="width:100%;display:flex;align-items:center;gap:10px;
+                                       padding:9px 12px;border-radius:8px;border:none;background:none;
+                                       cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
+                                       color:#1e293b;text-align:left;"
+                                onmouseover="this.style.background='#f1f5f9'"
+                                onmouseout="this.style.background='none'">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                     stroke="#64748b" stroke-width="2" stroke-linecap="round">
+                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                                </svg>
+                                {{ __('app.nav.reportes') }}
+                            </button>
+                        </div>
+
+                    @endif
 
                     <div style="height:1px;background:#f1f5f9;margin:0 6px;"></div>
 
@@ -355,14 +385,52 @@
         });
 
         function spaNav(view) {
-            // Si existe showView (contexto menú autenticado), úsalo
+            /*
+             * Mapa de rutas externas — usado SOLO como fallback
+             * cuando no hay vista SPA disponible (ej: home sin vistas registradas).
+             */
+            const routes = {
+                'inicio':          '{{ url("/") }}',
+                'portafolios':     '{{ route("portafolios.index") }}',
+                'explorador':      '{{ route("explorador") }}',
+                'caracteristicas': '{{ route("caracteristicas") }}',
+            };
+
+            /*
+             * CONTEXTO ADMIN (admin.blade.php define: var esContextoAdmin = true)
+             * Llama a mostrarVista() para cambiar entre vistas internas del panel,
+             * mostrando las mismas páginas que ve el usuario en su menú.
+             * "inicio" lleva al dashboard del admin.
+             * "portafolios" apunta a view-portafolios-menu (vista pública),
+             *   distinto de view-portafolios que es la gestión interna del sidebar.
+             */
+            if (typeof esContextoAdmin !== 'undefined' && esContextoAdmin) {
+                const mapaAdmin = {
+                    'inicio':          'dashboard',
+                    'caracteristicas': 'caracteristicas',
+                    'portafolios':     'portafolios-menu',
+                    'explorador':      'explorador',
+                };
+                if (mapaAdmin[view]) mostrarVista(mapaAdmin[view]);
+                return;
+            }
+
+            /*
+             * CONTEXTO MENÚ DE USUARIO (menu.blade.php define: function showView)
+             * Cambia la vista SPA interna sin recargar la página.
+             * "inicio" mapea a la vista "menu" (pantalla principal del usuario).
+             */
             if (typeof showView === 'function') {
                 if (view === 'inicio') view = 'menu';
                 showView(view);
                 return;
             }
 
-            // Contexto home: mostrar/ocultar secciones SPA
+            /*
+             * CONTEXTO HOME / OTRAS PÁGINAS
+             * Busca un #view-{nombre} en la página para SPA simple.
+             * Si no existe, redirige a la ruta real correspondiente.
+             */
             const allViews = document.querySelectorAll('.spa-view');
             allViews.forEach(v => v.style.display = 'none');
 
@@ -370,17 +438,10 @@
             if (target) {
                 target.style.display = 'block';
             } else {
-                // Si la vista no existe en esta página, redirigir
-                const routes = {
-                    'inicio':         '{{ url("/") }}',
-                    'portafolios':    '{{ route("portafolios.index") }}',
-                    'explorador':     '{{ route("explorador") }}',
-                    'caracteristicas':'{{ route("caracteristicas") }}',
-                };
                 if (routes[view]) window.location.href = routes[view];
             }
 
-            // Actualizar estado activo en nav
+            // Resalta el link activo en la navbar
             document.querySelectorAll('.tb-nav a, .tb-nav button').forEach(el => {
                 el.style.color = 'rgba(255,255,255,0.65)';
             });

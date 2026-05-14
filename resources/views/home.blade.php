@@ -43,6 +43,11 @@
         #view-explorador {
             padding: 1.6rem 1.8rem;
         }
+        /* ── Spinner logout ── */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
     </style>
 </head>
 
@@ -67,10 +72,17 @@
                 </p>
                 <div class="mt-6 flex flex-col sm:flex-row gap-4">
                     @auth
-                        <a href="{{ route('menu') }}"
-                           class="bg-blue-600 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-blue-700 transition">
-                            {{ __('app.home.ir_dashboard') }}
-                        </a>
+                        @if(auth()->user()->es_admin)
+                            <a href="{{ route('admin') }}"
+                               class="bg-blue-600 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-blue-700 transition">
+                                {{ __('app.home.ir_panel_control') }}
+                            </a>
+                        @else
+                            <a href="{{ route('menu') }}"
+                               class="bg-blue-600 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-blue-700 transition">
+                                {{ __('app.home.ir_mi_perfil') }}
+                            </a>
+                        @endif
                     @else
                         <button id="openLoginModal"
                                 class="bg-blue-600 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-blue-700 transition">
@@ -209,12 +221,12 @@
         document.body.style.overflow = modalRecuperar.classList.contains('hidden') ? 'auto' : 'hidden';
     };
     recuperarButtons.forEach(btn => { if (btn) btn.addEventListener('click', toggleRecuperar); });
-    if (modalRecuperar) modalRecuperar.addEventListener('click', e => {
-        if (e.target === modalRecuperar) cerrarModalRecuperar();
-    });
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape' && modalRecuperar && !modalRecuperar.classList.contains('hidden')) cerrarModalRecuperar();
-    });
+        if (modalRecuperar) modalRecuperar.addEventListener('click', e => {
+            if (e.target === modalRecuperar && !modalRecuperar.getAttribute('data-no-close')) cerrarModalRecuperar();
+        });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && modalRecuperar && !modalRecuperar.classList.contains('hidden') && !modalRecuperar.getAttribute('data-no-close')) cerrarModalRecuperar();
+        });
 </script>
 @endguest
 

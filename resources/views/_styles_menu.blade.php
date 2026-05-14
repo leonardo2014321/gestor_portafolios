@@ -1,4 +1,4 @@
-    {{-- _styles_menu.blade.php --}}
+{{-- _styles_menu.blade.php --}}
     <style>
         /* ══════════════════════════════════════
            RESET & VARIABLES
@@ -56,6 +56,7 @@
            SIDEBAR
         ══════════════════════════════════════ */
         aside{width:var(--sw);background:#0f172a !important;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,0.06) !important;}
+        .sb-label{font-size:11px;font-weight:700;color:#8ba5c8;text-transform:uppercase;letter-spacing:1px;padding:0 24px;margin-bottom:12px;margin-top:10px;font-family:'Plus Jakarta Sans',sans-serif;}
         .sb-item{display:flex;align-items:center;gap:11px;padding:10px 20px;cursor:pointer;color:#8ba5c8;font-size:13px;font-weight:400;transition:all .18s;border-left:3px solid transparent;font-family:"DM Sans",sans-serif;text-decoration:none;background:none;border-top:none;border-right:none;border-bottom:none;width:100%}
         .sb-item:hover{background:rgba(255,255,255,0.05);color:#c8d8ef;transform:translateX(4px)}
         .sb-item.active{background:rgba(37,99,235,0.18);color:#fff;border-left-color:#3b82f6;font-weight:600}
