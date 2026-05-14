@@ -1,7 +1,7 @@
 {{--
     Partial: Auth/registro.blade.php
 --}}
-@include('auth.terminos')
+@include('Auth.terminos')
 <div id="registerModal" class="fixed inset-0 z-50 hidden bg-slate-900/20 backdrop-blur-sm flex items-center justify-center px-4 py-6">
     {{-- Contenedor con scroll interno --}}
     <div class="w-full max-w-[440px] max-h-[92vh] overflow-y-auto rounded-[32px] bg-white shadow-[0_30px_80px_rgba(15,23,42,0.14)] ring-1 ring-slate-200/70 font-[Poppins]

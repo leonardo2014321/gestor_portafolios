@@ -863,29 +863,52 @@
         document.getElementById('notif-selector-usuario').style.display =
             radio.value === 'individual' ? 'block' : 'none';
     }
-
     async function notifEnviar() {
-        const titulo  = document.getElementById('notif-titulo').value.trim();
-        const mensaje = document.getElementById('notif-mensaje').value.trim();
-        const tipoEl  = document.querySelector('input[name="notif-tipo"]:checked');
-        const tipo    = tipoEl ? tipoEl.value : '';
-        const destId  = document.getElementById('notif-destinatario')?.value;
+    const titulo  = document.getElementById('notif-titulo').value.trim();
+    const mensaje = document.getElementById('notif-mensaje').value.trim();
+    const tipoEl  = document.querySelector('input[name="notif-tipo"]:checked');
+    const tipo    = tipoEl ? tipoEl.value : '';
+    const destId  = document.getElementById('notif-destinatario')?.value;
 
-        if (!titulo || !mensaje || !tipo) {
-            alert('{{ __('app.admin.js_completar_campos') }}'); return;
-        }
-        if (tipo === 'individual' && !destId) {
-            alert('{{ __('app.admin.js_seleccionar_usuario') }}'); return;
-        }
+    if (!titulo || !mensaje || !tipo) {
+        alert('Completa todos los campos obligatorios.'); return;
+    }
+    if (tipo === 'individual' && !destId) {
+        alert('Selecciona un usuario destinatario.'); return;
+    }
 
-        const token = document.querySelector('meta[name="csrf-token"]').content;
-        const body  = new FormData();
-        body.append('titulo',     titulo);
-        body.append('mensaje',    mensaje);
-        body.append('tipo_envio', tipo);
-        if (tipo === 'individual') body.append('destinatario_id', destId);
+    // Deshabilitar botón y mostrar spinner
+    const btn = document.querySelector('button[onclick="notifEnviar()"]');
+    const textoOriginal = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = `
+        <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;animation:spin 1s linear infinite">
+            <circle cx="12" cy="12" r="10" stroke-opacity="0.3"/>
+            <path d="M12 2a10 10 0 0 1 10 10"/>
+        </svg>
+        Enviando...`;
 
-        const res  = await fetch('/admin/notificaciones', { method:'POST', headers:{'X-CSRF-TOKEN':token}, body });
+    // Agregar animación spin si no existe
+    if (!document.getElementById('spin-style')) {
+        const style = document.createElement('style');
+        style.id = 'spin-style';
+        style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+        document.head.appendChild(style);
+    }
+
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const body  = new FormData();
+    body.append('titulo',     titulo);
+    body.append('mensaje',    mensaje);
+    body.append('tipo_envio', tipo);
+    if (tipo === 'individual') body.append('destinatario_id', destId);
+
+    try {
+        const res  = await fetch('/admin/notificaciones', {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': token },
+            body
+        });
         const json = await res.json().catch(() => ({}));
 
         if (res.ok) {
@@ -899,9 +922,16 @@
             setTimeout(() => ok.style.display = 'none', 3000);
             notifCargarHistorial();
         } else {
-            alert('{{ __('app.admin.js_error_enviar') }}');
+            alert('Error: ' + (json.error || 'Revisa los campos.'));
         }
+    } catch(e) {
+        alert('Error de conexión.');
+    } finally {
+        // Rehabilitar botón siempre
+        btn.disabled = false;
+        btn.innerHTML = textoOriginal;
     }
+}
 
     async function notifCargarHistorial() {
         const token = document.querySelector('meta[name="csrf-token"]').content;
