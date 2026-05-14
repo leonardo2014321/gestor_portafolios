@@ -18,6 +18,10 @@ use App\Http\Controllers\Portafolio\PortafolioProyectoController;
 use App\Http\Controllers\Portafolio\PortafolioArchivoController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\PerfilPublicoController;
+use App\Http\Controllers\PortafolioPublicoController;
+use App\Http\Controllers\ProyectoPublicoController; 
+
 
 /*
 |--------------------------------------------------------------------------
@@ -222,3 +226,16 @@ Route::middleware('auth')->group(function () {
 // lenguaje 
 Route::get('/lang/{lang}', [LanguageController::class, 'switch'])
      ->name('lang.switch');
+ 
+// Vista pública del perfil de un usuario
+Route::get('/perfil/{usuarioId}', [PerfilPublicoController::class, 'show'])
+     ->name('perfil.publico');
+// Vista pública de un portafolio
+Route::get('/portafolio/{portafolio_id}', [PortafolioPublicoController::class, 'show'])
+    ->name('portafolio.publico')
+    ->whereNumber('portafolio_id');
+
+Route::get('/portafolio/{id}', [PortafolioPublicoController::class, 'show'])
+     ->name('portafolio.publico');
+
+Route::get('/proyecto/{proyecto}',    [ProyectoPublicoController::class,   'show'])->name('proyecto.publico');
