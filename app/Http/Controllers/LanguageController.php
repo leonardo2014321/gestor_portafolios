@@ -14,11 +14,15 @@ class LanguageController extends Controller
             session(['locale' => $lang]);
         }
 
-        // Redirige a la página anterior, si no hay anterior va al home
+        // Si viene del fetch del navbar → devuelve JSON y el JS recarga solo
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['ok' => true, 'locale' => $lang]);
+        }
+
+        // Navegación normal (link directo) → redirige a la página anterior
         $previous = url()->previous();
         $current  = url()->current();
 
-        // Evita loop infinito si la página anterior es la misma ruta de lang
         if ($previous === $current || str_contains($previous, '/lang/')) {
             return redirect('/');
         }
