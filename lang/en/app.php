@@ -99,6 +99,7 @@ return [
         'meses'             => 'Months',
         'anios'             => 'Years',
         'mis_portafolios'   => 'My Portfolios',
+        'ver_portafolio'    => 'see portfolio',
     ],
         // ─── PROFILE ──────────────────────────────────────────────────────────────
     'perfil' => [

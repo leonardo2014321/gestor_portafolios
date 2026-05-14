@@ -52,6 +52,11 @@ class Usuario extends Authenticatable
     {
         return $this->hasMany(\App\Models\RedPerfil::class, 'usuario_id');
     }
+    // Alias que necesita PerfilPublicoController
+    public function redesPerfil()
+    {
+        return $this->hasMany(\App\Models\RedPerfil::class, 'usuario_id');
+    }
 
     public function experiencias()
     {
@@ -71,5 +76,10 @@ class Usuario extends Authenticatable
     public function certificaciones()
     {
         return $this->hasMany(\App\Models\Certificacion::class, 'usuario_id');
+    }
+    // Necesaria para PerfilPublicoController y _portafolios_menu
+    public function portafolios()
+    {
+        return $this->hasMany(\App\Models\Portafolio::class, 'usuario_id');
     }
 }
