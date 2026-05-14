@@ -983,6 +983,24 @@
                 const sidebarAv = document.getElementById('sidebarAv');
                 if (sidebarAv) sidebarAv.innerHTML =
                     `<img src="${data.foto_url}?t=${Date.now()}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+
+                //  NUEVO: actualiza navbar con foto
+                if (typeof actualizarNavbar === 'function') {
+                    actualizarNavbar(
+                        document.getElementById('fNombre').value,
+                        document.getElementById('fApellido').value,
+                        data.foto_url + '?t=' + Date.now()
+                    );
+                }
+            } else {
+                //  NUEVO: actualiza navbar sin foto (solo nombre)
+                if (typeof actualizarNavbar === 'function') {
+                    actualizarNavbar(
+                        document.getElementById('fNombre').value,
+                        document.getElementById('fApellido').value,
+                        null
+                    );
+                }
             }
 
             original.nombre    = document.getElementById('fNombre').value;
