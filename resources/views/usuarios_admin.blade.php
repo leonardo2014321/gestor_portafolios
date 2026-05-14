@@ -2,27 +2,43 @@
 <div id="view-usuarios" class="admin-view" style="display:none">
     <div class="admin-hero" style="margin-bottom:1.5rem">
         <div class="hero-content">
-            <h1 class="hero-title">Gestión de Usuarios</h1>
-            <p class="hero-sub">Administra los usuarios registrados en la plataforma.</p>
+            <h1 class="hero-title">{{ __('app.usuarios_admin.titulo') }}</h1>
+            <p class="hero-sub">{{ __('app.usuarios_admin.subtitulo') }}</p>
         </div>
     </div>
 
     <!-- Stats rápidas -->
     <div class="stats-grid" style="margin-bottom:1.5rem">
         <div class="stat-card">
-            <div class="stat-info"><div class="stat-label">Total Usuarios</div><div class="stat-val">{{ number_format($stats['total_usuarios']) }}</div><div class="stat-trend trend-up">Registrados</div></div>
+            <div class="stat-info">
+                <div class="stat-label">{{ __('app.usuarios_admin.stat_total') }}</div>
+                <div class="stat-val">{{ number_format($stats['total_usuarios']) }}</div>
+                <div class="stat-trend trend-up">{{ __('app.usuarios_admin.stat_registrados') }}</div>
+            </div>
             <div class="stat-icon icon-purple"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         </div>
         <div class="stat-card">
-            <div class="stat-info"><div class="stat-label">Activos</div><div class="stat-val">{{ number_format($stats['usuarios_activos']) }}</div><div class="stat-trend trend-up">En línea</div></div>
+            <div class="stat-info">
+                <div class="stat-label">{{ __('app.usuarios_admin.stat_activos') }}</div>
+                <div class="stat-val">{{ number_format($stats['usuarios_activos']) }}</div>
+                <div class="stat-trend trend-up">{{ __('app.usuarios_admin.stat_en_linea') }}</div>
+            </div>
             <div class="stat-icon icon-teal"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
         </div>
         <div class="stat-card">
-            <div class="stat-info"><div class="stat-label">Inactivos</div><div class="stat-val">{{ number_format($stats['usuarios_inactivos']) }}</div><div class="stat-trend trend-down">Desactivados</div></div>
+            <div class="stat-info">
+                <div class="stat-label">{{ __('app.usuarios_admin.stat_inactivos') }}</div>
+                <div class="stat-val">{{ number_format($stats['usuarios_inactivos']) }}</div>
+                <div class="stat-trend trend-down">{{ __('app.usuarios_admin.stat_desactivados') }}</div>
+            </div>
             <div class="stat-icon icon-rose"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
         </div>
         <div class="stat-card">
-            <div class="stat-info"><div class="stat-label">Admins</div><div class="stat-val">{{ $stats['total_admins'] }}</div><div class="stat-trend trend-up">Con privilegios</div></div>
+            <div class="stat-info">
+                <div class="stat-label">{{ __('app.usuarios_admin.stat_admins') }}</div>
+                <div class="stat-val">{{ $stats['total_admins'] }}</div>
+                <div class="stat-trend trend-up">{{ __('app.usuarios_admin.stat_privilegios') }}</div>
+            </div>
             <div class="stat-icon icon-blue"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         </div>
     </div>
@@ -30,22 +46,32 @@
     <!-- Tabla completa -->
     <div class="panel" style="margin-bottom:0">
         <div class="panel-header" style="padding:1.2rem 1.5rem;border-bottom:1px solid var(--gray2);">
-            <h2 class="panel-title">Lista de Usuarios</h2>
+            <h2 class="panel-title">{{ __('app.usuarios_admin.lista_titulo') }}</h2>
             <div style="display:flex;gap:10px;align-items:center;">
                 <div style="display:flex;align-items:center;gap:8px;background:var(--gray);border:1px solid var(--gray2);border-radius:10px;padding:8px 14px;">
                     <svg width="14" height="14" fill="none" stroke="var(--muted)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    <input id="buscar-usuario" oninput="filtrarUsuarios()" type="text" placeholder="Buscar usuario..." style="border:none;outline:none;background:transparent;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);width:160px">
+                    <input id="buscar-usuario" oninput="filtrarUsuarios()" type="text"
+                        placeholder="{{ __('app.usuarios_admin.buscar_placeholder') }}"
+                        style="border:none;outline:none;background:transparent;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);width:160px">
                 </div>
                 <select id="filtro-estado" onchange="filtrarUsuarios()" style="padding:8px 12px;border:1px solid var(--gray2);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;background:#fff;cursor:pointer;outline:none;">
-                    <option value="">Todos</option>
-                    <option value="activo">Activos</option>
-                    <option value="inactivo">Inactivos</option>
+                    <option value="">{{ __('app.usuarios_admin.filtro_todos') }}</option>
+                    <option value="activo">{{ __('app.usuarios_admin.filtro_activos') }}</option>
+                    <option value="inactivo">{{ __('app.usuarios_admin.filtro_inactivos') }}</option>
                 </select>
             </div>
         </div>
         <div class="table-wrap">
             <table id="tabla-usuarios">
-                <thead><tr><th>Usuario</th><th>Rol</th><th>Fecha Registro</th><th>Estado</th><th>Acciones</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>{{ __('app.usuarios_admin.col_usuario') }}</th>
+                        <th>{{ __('app.usuarios_admin.col_rol') }}</th>
+                        <th>{{ __('app.usuarios_admin.col_fecha_registro') }}</th>
+                        <th>{{ __('app.usuarios_admin.col_estado') }}</th>
+                        <th>{{ __('app.usuarios_admin.col_acciones') }}</th>
+                    </tr>
+                </thead>
                 <tbody>
                     @foreach($todos_usuarios as $usuario)
                     <tr data-estado="{{ $usuario->activo ? 'activo' : 'inactivo' }}">
@@ -60,24 +86,30 @@
                                 </div>
                             </div>
                         </td>
-                        <td><span id="ur-{{ $usuario->id }}">{{ $usuario->es_admin ? 'Administrador' : 'Usuario' }}</span></td>
+                        <td>
+                            <span id="ur-{{ $usuario->id }}">
+                                {{ $usuario->es_admin ? __('app.usuarios_admin.rol_administrador') : __('app.usuarios_admin.rol_usuario') }}
+                            </span>
+                        </td>
                         <td>{{ $usuario->created_at->format('d/m/Y') }}</td>
                         <td>
                             <span class="status-badge {{ $usuario->activo ? 'st-active' : 'st-inactive' }}" id="us-{{ $usuario->id }}">
-                                {{ $usuario->activo ? 'Activo' : 'Inactivo' }}
+                                {{ $usuario->activo ? __('app.usuarios_admin.estado_activo') : __('app.usuarios_admin.estado_inactivo') }}
                             </span>
                         </td>
                         <td>
                             <div class="action-dropdown-container">
-                                <button class="action-btn" onclick="toggleActionMenu(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></button>
+                                <button class="action-btn" onclick="toggleActionMenu(this)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                                </button>
                                 <div class="action-menu">
-                                    <button class="btn-action-admin {{ $usuario->activo ? 'btn-status-off' : 'btn-status-on' }}" 
+                                    <button class="btn-action-admin {{ $usuario->activo ? 'btn-status-off' : 'btn-status-on' }}"
                                             onclick="adminToggleStatus({{ $usuario->id }}, 'us-{{ $usuario->id }}', this)">
-                                        {{ $usuario->activo ? 'Desactivar cuenta' : 'Activar cuenta' }}
+                                        {{ $usuario->activo ? __('app.usuarios_admin.accion_desactivar') : __('app.usuarios_admin.accion_activar') }}
                                     </button>
-                                    <button class="btn-action-admin {{ $usuario->es_admin ? 'btn-role-user' : 'btn-role-admin' }}" 
+                                    <button class="btn-action-admin {{ $usuario->es_admin ? 'btn-role-user' : 'btn-role-admin' }}"
                                             onclick="adminToggleRole({{ $usuario->id }}, 'ur-{{ $usuario->id }}', this)">
-                                        {{ $usuario->es_admin ? 'Quitar administrador' : 'Volver administrador' }}
+                                        {{ $usuario->es_admin ? __('app.usuarios_admin.accion_quitar_admin') : __('app.usuarios_admin.accion_hacer_admin') }}
                                     </button>
                                 </div>
                             </div>
