@@ -35,28 +35,96 @@
     }
 
     function notifRenderLista() {
-        const lista = document.getElementById('notif-lista');
-        if (!lista) return;
-        if (!notifDatos.length) {
-            lista.innerHTML = `<div style="padding:32px;text-align:center">
-                <svg viewBox="0 0 24 24" style="width:36px;height:36px;fill:none;stroke:#cbd5e1;stroke-width:1.5;margin:0 auto 8px;display:block"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                <p style="color:#94a3b8;font-size:13px;margin:0">Sin notificaciones</p>
-            </div>`;
-            return;
-        }
-        lista.innerHTML = notifDatos.map(n => `
-            <div onclick="notifMarcarLeida(${n.id}, this)"
-                 style="display:flex;gap:12px;padding:14px 18px;border-bottom:1px solid #f8fafc;cursor:pointer;transition:background .15s;background:${n.leida ? '#fff' : '#f0f6ff'}"
-                 onmouseover="this.style.background='#f8fafc'"
-                 onmouseout="this.style.background='${n.leida ? '#fff' : '#f0f6ff'}'">
-                <div style="width:8px;height:8px;border-radius:50%;background:${n.leida ? 'transparent' : '#2563eb'};flex-shrink:0;margin-top:5px"></div>
-                <div style="flex:1;min-width:0">
-                    <div style="font-size:13px;font-weight:${n.leida ? '400' : '600'};color:#0f172a;margin-bottom:2px">${n.titulo}</div>
-                    <div style="font-size:12px;color:#64748b;line-height:1.4;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${n.mensaje}</div>
-                    <div style="font-size:10px;color:#94a3b8;margin-top:4px">${new Date(n.created_at).toLocaleDateString('es-BO',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</div>
-                </div>
-            </div>`).join('');
+    const lista = document.getElementById('notif-lista');
+    if (!notifDatos.length) {
+        lista.innerHTML = `<div style="padding:32px;text-align:center">
+            <svg viewBox="0 0 24 24" style="width:36px;height:36px;fill:none;stroke:#cbd5e1;stroke-width:1.5;margin:0 auto 8px;display:block">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            <p style="color:#94a3b8;font-size:13px;margin:0">Sin notificaciones</p>
+        </div>`;
+        return;
     }
+
+    lista.innerHTML = notifDatos.map(n => {
+        const esLarga = n.mensaje.length > 80;
+        const preview = esLarga ? n.mensaje.substring(0, 80) + '...' : n.mensaje;
+        const idMsg   = `notif-msg-${n.id}`;
+        const idBtn   = `notif-btn-${n.id}`;
+
+        return `
+        <div id="notif-item-${n.id}"
+             style="display:flex;gap:10px;padding:14px 16px;border-bottom:1px solid #f1f5f9;
+                    background:${n.leida ? '#fff' : '#eff6ff'};
+                    border-left:3px solid ${n.leida ? 'transparent' : '#2563eb'};
+                    transition:all .3s">
+
+            <!-- Punto indicador -->
+            <div id="notif-dot-${n.id}"
+                 style="width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;
+                        background:${n.leida ? 'transparent' : '#2563eb'};
+                        transition:background .3s">
+            </div>
+
+            <div style="flex:1;min-width:0">
+                <!-- Título -->
+                <div style="font-size:13px;font-weight:${n.leida ? '500' : '700'};
+                            color:#0f172a;margin-bottom:4px">
+                    ${n.titulo}
+                </div>
+
+                <!-- Mensaje con expand -->
+                <div id="${idMsg}"
+                     style="font-size:12px;color:#475569;line-height:1.5">
+                    ${escapeHtml(preview)}
+                </div>
+
+                ${esLarga ? `
+                <button id="${idBtn}" onclick="notifExpandir(${n.id}, ${JSON.stringify(n.mensaje)}, this)"
+                    style="font-size:11px;color:#2563eb;background:none;border:none;
+                           cursor:pointer;padding:2px 0;margin-top:2px;font-weight:600">
+                    Ver más
+                </button>` : ''}
+
+                <!-- Fecha y botón leída -->
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
+                    <span style="font-size:10px;color:#94a3b8">
+                        ${new Date(n.created_at).toLocaleDateString('es-BO',{
+                            day:'2-digit',month:'short',
+                            hour:'2-digit',minute:'2-digit'
+                        })}
+                    </span>
+                    ${!n.leida ? `
+                    <button onclick="notifMarcarLeida(${n.id})"
+                        style="font-size:10px;color:#2563eb;background:none;border:1px solid #bfdbfe;
+                               border-radius:6px;padding:2px 8px;cursor:pointer;font-weight:600;
+                               transition:all .2s"
+                        onmouseover="this.style.background='#eff6ff'"
+                        onmouseout="this.style.background='none'">
+                        ✓ Marcar leída
+                    </button>` : `
+                    <span style="font-size:10px;color:#94a3b8;font-style:italic">Leída</span>`}
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function notifExpandir(id, mensajeCompleto, btn) {
+    const msgEl = document.getElementById(`notif-msg-${id}`);
+    if (btn.textContent === 'Ver más') {
+        msgEl.textContent = mensajeCompleto;
+        btn.textContent = 'Ver menos';
+    } else {
+        msgEl.textContent = mensajeCompleto.substring(0, 80) + '...';
+        btn.textContent = 'Ver más';
+    }
+}
 
     function notifToggle() {
         const panel = document.getElementById('notif-panel');
