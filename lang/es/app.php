@@ -100,6 +100,10 @@ return [
         'anios'             => 'Años',
         'mis_portafolios'   => 'Mis portafolios',
         'ver_portafolio'    => 'ver portafolio',
+           // falta en en y fr
+        'pagina' => 'Página',
+        'de'     => 'de',
+        'buscar_placeholder' => 'Buscar en portafolios...',
     ],
         // ─── PERFIL ───────────────────────────────────────────────────────────────
     'perfil' => [
@@ -439,7 +443,7 @@ return [
  
         // Hero
         'hero_titulo'           => 'Sistema de Portafolios',
-        'hero_subtitulo'        => 'Gestión Institucional de Activos Digitales · UMSS',
+        'hero_subtitulo'        => 'Descubre y conecta con el talento de nuestra comunidad',
  
         // Buscador
         'buscar_placeholder'    => 'Buscar... (Ctrl + K)',
