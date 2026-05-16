@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Portafolio;
 use App\Http\Controllers\Controller;
 use App\Models\Portafolio;
 use App\Models\PortafolioProyecto;
+use App\Services\SupabaseStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Storage;
 
 class PortafolioProyectoController extends Controller
 {
+    public function __construct(private SupabaseStorageService $supabase) {}
+
     public function byPortafolio($portafolioId)
     {
         Portafolio::where('id', $portafolioId)
@@ -29,7 +31,7 @@ class PortafolioProyectoController extends Controller
                     'id'              => $a->id,
                     'nombre_original' => $a->nombre_original,
                     'tamanio'         => $a->tamanio,
-                    'url'             => asset('storage/' . $a->ruta),
+                    'url'             => $this->supabase->publicUrl($a->ruta),
                 ])->values();
                 return $arr;
             });
@@ -48,7 +50,6 @@ class PortafolioProyectoController extends Controller
             'deploy_url'      => 'nullable|url|max:500',
         ]);
 
-        // Verificar que el portafolio pertenece al usuario
         $portafolio = Portafolio::where('id', $data['portafolio_id'])
             ->where('usuario_id', Auth::id())
             ->firstOrFail();

@@ -674,14 +674,14 @@
         document.getElementById('epDescCount').textContent = (p.descripcion || '').length;
         epBannerFile = null;
         epLogoFile   = null;
-        if (p.banner_ruta) {
-            document.getElementById('epBannerPreview').src = '/storage/' + p.banner_ruta;
+        if (p.banner_url) {
+            document.getElementById('epBannerPreview').src = p.banner_url;
             document.getElementById('epBannerPreview').style.display = 'block';
             document.getElementById('epBannerPlaceholder').style.display = 'none';
             document.getElementById('epBannerZone').classList.add('has-img');
         } else { epQuitarImg('banner'); }
-        if (p.logo_ruta) {
-            document.getElementById('epLogoPreview').src = '/storage/' + p.logo_ruta;
+        if (p.logo_url) {
+            document.getElementById('epLogoPreview').src = p.logo_url;
             document.getElementById('epLogoPreview').style.display = 'block';
             document.getElementById('epLogoPlaceholder').style.display = 'none';
             document.getElementById('epLogoZone').classList.add('has-img');

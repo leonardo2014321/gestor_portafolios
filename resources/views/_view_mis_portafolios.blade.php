@@ -101,12 +101,12 @@
                 <div class="pcard-pf {{ $publicado ? 'pcard-pf-pub' : 'pcard-pf-bor' }}"
                      onclick="verPortafolio({{ $portafolio->id }})">
                     <div class="pcard-pf-top">
-                        <img src="{{ asset('storage/' . $portafolio->banner_ruta) }}"
+                        <img src="{{ $portafolio->banner_url }}"
                              class="pcard-pf-banner-img" alt="">
                         <div class="pcard-pf-overlay"></div>
                         @if($hasLogo)
                             <div class="pcard-pf-logo">
-                                <img src="{{ asset('storage/' . $portafolio->logo_ruta) }}" alt="">
+                                <img src="{{ $portafolio->logo_url }}" alt="">
                             </div>
                         @else
                             <div class="pcard-pf-logo pcard-pf-logo-ico">
