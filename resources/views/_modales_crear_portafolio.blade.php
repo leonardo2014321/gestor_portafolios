@@ -139,6 +139,9 @@
     .vp-proj-edit-url-wrap{display:flex;gap:8px}
     .vp-proj-edit-url-wrap .vp-proj-edit-input{flex:1}
     .vp-proj-edit-btns{display:flex;gap:8px}
+    /* Banner del proyecto en card */
+    .vp-proj-banner{margin:-14px -14px 12px;height:110px;overflow:hidden;border-radius:8px 8px 0 0;flex-shrink:0}
+    .vp-proj-banner img{width:100%;height:100%;object-fit:cover;display:block}
     .vp-file-dl{color:var(--blue);font-size:11px;font-weight:600;text-decoration:none;padding:2px 6px;border-radius:4px;white-space:nowrap;flex-shrink:0}
     .vp-file-dl:hover{text-decoration:underline}
     .vp-file-del{background:none;border:none;cursor:pointer;color:var(--muted);padding:0 0 0 4px;flex-shrink:0}
@@ -219,6 +222,29 @@
                         <span id="mpDescCount">0</span>/500
                     </div>
                     <div class="mp-err" id="mpErrDesc">{{ __('app.modales_pf.err_descripcion') }}</div>
+                </div>
+            </div>
+
+            {{-- Banner del proyecto --}}
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    Banner del proyecto <span style="font-weight:400;text-transform:none;letter-spacing:0">({{ __('app.modales_pf.opcional') }})</span>
+                </div>
+                <input type="file" id="mpBannerInput" accept="image/png,image/jpeg,image/jpg"
+                       style="display:none" onchange="mpHandleImgBanner(this.files[0])">
+                <div class="pf-img-zone pf-banner-zone" id="mpBannerZone"
+                     onclick="document.getElementById('mpBannerInput').click()"
+                     ondragover="event.preventDefault();this.classList.add('has-img')"
+                     ondragleave="mpDragLeaveBanner(event)"
+                     ondrop="event.preventDefault();mpHandleImgBanner(event.dataTransfer.files[0])">
+                    <img id="mpBannerPreview" src="" alt="" style="display:none">
+                    <div class="pf-img-placeholder" id="mpBannerPlaceholder">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        <p>Arrastra o haz clic para subir</p>
+                        <span>PNG, JPG · máx. 5 MB</span>
+                    </div>
+                    <button class="pf-remove" onclick="event.stopPropagation();mpQuitarBanner()">&times;</button>
                 </div>
             </div>
 
@@ -577,7 +603,7 @@
     };
 
     const VP_DATA = @json($portafolios ?? []);
-    let mpFiles = [];
+    let mpFiles = [], mpBannerFile = null;
     let vpProyectosCache = {}, vpPortafolioIdActual = null;
 
     /* ══ MODAL 2 · Ver ══ */
@@ -822,7 +848,37 @@
         document.getElementById('mpFlist').innerHTML = '';
         const fi = document.getElementById('mpFileInput');
         if (fi) fi.value = '';
+        mpQuitarBanner();
         mpCheckBtns();
+    }
+    function mpHandleImgBanner(file) {
+        if (!file) return;
+        if (!file.type.match(/image\/(png|jpe?g)/)) { alert('Solo PNG o JPG.'); return; }
+        if (file.size > 5 * 1024 * 1024) { alert('La imagen supera el límite de 5 MB.'); return; }
+        mpBannerFile = file;
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById('mpBannerPreview').src = e.target.result;
+            document.getElementById('mpBannerPreview').style.display = 'block';
+            document.getElementById('mpBannerPlaceholder').style.display = 'none';
+            document.getElementById('mpBannerZone').classList.add('has-img');
+        };
+        reader.readAsDataURL(file);
+    }
+    function mpQuitarBanner() {
+        mpBannerFile = null;
+        const prev = document.getElementById('mpBannerPreview');
+        const ph   = document.getElementById('mpBannerPlaceholder');
+        const zone = document.getElementById('mpBannerZone');
+        const inp  = document.getElementById('mpBannerInput');
+        if (prev) { prev.src = ''; prev.style.display = 'none'; }
+        if (ph)   ph.style.display = '';
+        if (zone) zone.classList.remove('has-img');
+        if (inp)  inp.value = '';
+    }
+    function mpDragLeaveBanner(event) {
+        const zone = document.getElementById('mpBannerZone');
+        if (!zone.querySelector('img')?.src) zone.classList.remove('has-img');
     }
     function mpCheckBtns() {
         const ok = document.getElementById('mpPortafolioId').value !== '' &&
@@ -972,6 +1028,7 @@
         form.append('repositorio_url', document.getElementById('mpRepo').value.trim());
         form.append('deploy_url',      document.getElementById('mpDeploy').value.trim());
         form.append('_token',          document.querySelector('meta[name="csrf-token"]').content);
+        if (mpBannerFile) form.append('banner', mpBannerFile);
         const btnB = document.getElementById('mpBtnBorrador');
         const btnP = document.getElementById('mpBtnPublicar');
         btnB.disabled = btnP.disabled = true;
@@ -1070,7 +1127,11 @@
               'Deploy</a>' : '') +
               '</div>'
             : '';
+        const bannerHtml = proj.banner_url
+            ? '<div class="vp-proj-banner"><img src="' + proj.banner_url + '" alt=""></div>'
+            : '';
         return '<div class="vp-proj-card" id="proj-card-' + proj.id + '">' +
+            bannerHtml +
             '<div class="vp-proj-head">' +
             '<div><div class="vp-proj-name">' + escHtml(proj.nombre) + '</div>' +
             '<div class="vp-proj-desc">' + escHtml(proj.descripcion || '') + '</div></div>' +
@@ -1092,8 +1153,18 @@
         if (!proj) return;
         const card = document.getElementById('proj-card-' + id);
         if (!card) return;
+        const bannerActual = proj.banner_url
+            ? '<img src="' + proj.banner_url + '" style="width:100%;height:80px;object-fit:cover;border-radius:6px;display:block;margin-bottom:6px">'
+            : '';
         card.innerHTML =
             '<div class="vp-proj-edit-form">' +
+            '<div>' + bannerActual +
+            '<label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:var(--blue);font-size:12px;font-weight:600">' +
+            '<input type="file" id="vpe-banner-' + id + '" accept="image/png,image/jpeg,image/jpg" style="display:none" ' +
+            'onchange="vpHandleEditBanner(' + id + ',this.files[0])">' +
+            '<svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>' +
+            (proj.banner_url ? 'Cambiar banner' : 'Subir banner') +
+            '</label></div>' +
             '<input class="vp-proj-edit-input" id="vpe-nombre-' + id + '" type="text" maxlength="100" ' +
             'placeholder="' + _t.nombre_proyecto + '" value="' + escHtml(proj.nombre) + '">' +
             '<textarea class="vp-proj-edit-input vp-proj-edit-textarea" id="vpe-desc-' + id + '" maxlength="500" ' +
@@ -1112,6 +1183,25 @@
             '<button class="vp-proj-btn-del2" style="flex:1" onclick="vpCancelarEditarProyecto(' + id + ')">' + _t.cancelar + '</button>' +
             '<button class="vp-proj-btn-edit" style="flex:2" onclick="vpConfirmarGuardarProyecto(' + id + ')">' + _t.guardar_cambios + '</button>' +
             '</div></div>';
+    }
+
+    const _vpEditBannerFiles = {};
+    function vpHandleEditBanner(id, file) {
+        if (!file) return;
+        if (!file.type.match(/image\/(png|jpe?g)/)) { alert('Solo PNG o JPG.'); return; }
+        if (file.size > 5 * 1024 * 1024) { alert('Máx. 5 MB.'); return; }
+        _vpEditBannerFiles[id] = file;
+        const reader = new FileReader();
+        reader.onload = e => {
+            let preview = document.querySelector('#proj-card-' + id + ' .vp-proj-edit-form img');
+            if (!preview) {
+                preview = document.createElement('img');
+                preview.style.cssText = 'width:100%;height:80px;object-fit:cover;border-radius:6px;display:block;margin-bottom:6px';
+                document.querySelector('#proj-card-' + id + ' .vp-proj-edit-form div').prepend(preview);
+            }
+            preview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
     }
 
     function vpCancelarEditarProyecto(id) {
@@ -1152,6 +1242,7 @@
         form.append('repositorio_url', repo);
         form.append('deploy_url',      deploy);
         form.append('_token',          token);
+        if (_vpEditBannerFiles[id]) { form.append('banner', _vpEditBannerFiles[id]); delete _vpEditBannerFiles[id]; }
         try {
             const res  = await fetch('/portafolio-proyecto/' + id, { method: 'POST', body: form });
             const text = await res.text();

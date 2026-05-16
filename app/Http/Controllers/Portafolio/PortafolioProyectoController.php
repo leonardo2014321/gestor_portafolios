@@ -48,6 +48,7 @@ class PortafolioProyectoController extends Controller
             'estado'          => ['required', Rule::in(['borrador', 'publicado'])],
             'repositorio_url' => 'nullable|url|max:500',
             'deploy_url'      => 'nullable|url|max:500',
+            'banner'          => 'nullable|image|max:5120|mimes:png,jpg,jpeg',
         ]);
 
         $portafolio = Portafolio::where('id', $data['portafolio_id'])
@@ -64,6 +65,14 @@ class PortafolioProyectoController extends Controller
             'deploy_url'      => $data['deploy_url'] ?? null,
         ]);
 
+        if ($request->hasFile('banner')) {
+            $proyecto->banner_ruta = $this->supabase->upload(
+                'proyectos/' . $proyecto->id . '/banner',
+                $request->file('banner')
+            );
+            $proyecto->save();
+        }
+
         return response()->json(['ok' => true, 'proyecto' => $proyecto]);
     }
 
@@ -79,9 +88,24 @@ class PortafolioProyectoController extends Controller
             'estado'          => ['required', Rule::in(['borrador', 'publicado'])],
             'repositorio_url' => 'nullable|url|max:500',
             'deploy_url'      => 'nullable|url|max:500',
+            'banner'          => 'nullable|image|max:5120|mimes:png,jpg,jpeg',
         ]);
 
-        $proyecto->update($data);
+        $proyecto->nombre          = $data['nombre'];
+        $proyecto->descripcion     = $data['descripcion'];
+        $proyecto->estado          = $data['estado'];
+        $proyecto->repositorio_url = $data['repositorio_url'] ?? null;
+        $proyecto->deploy_url      = $data['deploy_url'] ?? null;
+
+        if ($request->hasFile('banner')) {
+            if ($proyecto->banner_ruta) $this->supabase->delete($proyecto->banner_ruta);
+            $proyecto->banner_ruta = $this->supabase->upload(
+                'proyectos/' . $proyecto->id . '/banner',
+                $request->file('banner')
+            );
+        }
+
+        $proyecto->save();
 
         return response()->json(['ok' => true, 'proyecto' => $proyecto]);
     }
@@ -91,6 +115,8 @@ class PortafolioProyectoController extends Controller
         $proyecto = PortafolioProyecto::where('id', $id)
             ->where('usuario_id', Auth::id())
             ->firstOrFail();
+
+        if ($proyecto->banner_ruta) $this->supabase->delete($proyecto->banner_ruta);
 
         $proyecto->delete();
 
