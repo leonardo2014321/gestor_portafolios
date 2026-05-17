@@ -13,11 +13,7 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return response()->view('auth.login')->withHeaders([
-            'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
-            'Pragma'        => 'no-cache',
-            'Expires'       => '0',
-        ]);
+        return redirect('/home?login=1');
     }
 
     public function store(Request $request)
@@ -83,7 +79,7 @@ class LoginController extends Controller
 
         session()->forget('reactivar_uid');
 
-        return redirect('/login')->with('success_reactivacion', true);
+        return redirect('/home')->with('success_reactivacion', true);
     }
 
     public function destroy(Request $request)

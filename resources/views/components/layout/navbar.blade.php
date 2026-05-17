@@ -31,6 +31,7 @@
     </div>
 
     {{-- ── Nav central ── --}}
+    @if (!request()->routeIs('admin') && !request()->is('admin*'))
     <nav class="tb-nav">
 
         <a href="#"
@@ -74,6 +75,7 @@
         </a>
 
     </nav>
+    @endif
 
     {{-- ── Lado derecho ── --}}
     <div class="tb-right" style="display:flex;align-items:center;gap:12px;">

@@ -107,10 +107,12 @@
                                             onclick="adminToggleStatus({{ $usuario->id }}, 'us-{{ $usuario->id }}', this)">
                                         {{ $usuario->activo ? __('app.usuarios_admin.accion_desactivar') : __('app.usuarios_admin.accion_activar') }}
                                     </button>
-                                    <button class="btn-action-admin {{ $usuario->es_admin ? 'btn-role-user' : 'btn-role-admin' }}"
+                                    @if($usuario->es_admin && $usuario->id !== auth()->id())
+                                    <button class="btn-action-admin btn-role-user"
                                             onclick="adminToggleRole({{ $usuario->id }}, 'ur-{{ $usuario->id }}', this)">
-                                        {{ $usuario->es_admin ? __('app.usuarios_admin.accion_quitar_admin') : __('app.usuarios_admin.accion_hacer_admin') }}
+                                        {{ __('app.usuarios_admin.accion_quitar_admin') }}
                                     </button>
+                                    @endif
                                 </div>
                             </div>
                         </td>

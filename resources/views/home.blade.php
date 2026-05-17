@@ -704,8 +704,14 @@
     ];
     const toggleModal = () => {
         if (!modal) return;
+        const isClosing = !modal.classList.contains('hidden');
         modal.classList.toggle('hidden');
         document.body.classList.toggle('overflow-hidden');
+        @if(session('success_reactivacion') || session('cuenta_desactivada'))
+            if (isClosing) {
+                window.location.href = '/home';
+            }
+        @endif
     };
     openButtons.forEach(btn => { if (btn) btn.addEventListener('click', toggleModal); });
     if (closeButton) closeButton.addEventListener('click', toggleModal);
@@ -747,7 +753,7 @@
 </script>
 @endguest
 
-@if ($errors->any() || session('cuenta_desactivada'))
+@if ($errors->any() || session('cuenta_desactivada') || session('success_reactivacion'))
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const modal = document.getElementById('loginModal');
@@ -760,6 +766,15 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const params = new URLSearchParams(window.location.search);
+
+        if (params.get('login') === '1') {
+            window.history.replaceState({}, '', '/');
+            const loginModal = document.getElementById('loginModal');
+            if (loginModal) {
+                loginModal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            }
+        }
 
         if (params.get('verificado') === '1') {
             window.history.replaceState({}, '', '/');

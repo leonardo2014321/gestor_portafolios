@@ -37,20 +37,9 @@
             </div>
             <button onclick="cerrarModal()" style="width:36px;height:36px;border-radius:50%;border:1px solid #e2e8f0;background:transparent;cursor:pointer;font-size:16px;color:#64748b;">✕</button>
         </div>
-        <div style="display:flex;flex-direction:column;gap:10px;padding:20px 28px 0;" id="listaEventos"></div>
-        <div style="padding:16px 28px 0;">
-            <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;margin-bottom:10px;">Nuevo evento</div>
-            <input id="nuevoEventoInput" type="text" placeholder="Nombre del evento..."
-                style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid #e2e8f0;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;margin-bottom:8px;">
-            <input id="nuevoEventoHora" type="text" placeholder="Hora (ej: 10:00 AM)"
-                style="width:100%;padding:10px 14px;border-radius:12px;border:1.5px solid #e2e8f0;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;">
-        </div>
-        <div style="display:flex;gap:12px;padding:16px 28px 28px;">
-            <button onclick="cerrarModal()" style="flex:1;padding:13px;border-radius:12px;border:1px solid #e2e8f0;background:transparent;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Cerrar</button>
-            <button onclick="agregarEvento()" style="flex:1.3;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:12px;border:none;background:#2563eb;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="12" x2="12" y1="14" y2="18"/><line x1="10" x2="14" y1="16" y2="16"/></svg>
-                Agregar evento
-            </button>
+        <div style="display:flex;flex-direction:column;gap:10px;padding:20px 28px 20px;" id="listaEventos"></div>
+        <div style="display:flex;gap:12px;padding:0 28px 28px;">
+            <button onclick="cerrarModal()" style="width:100%;padding:13px;border-radius:12px;border:1px solid #e2e8f0;background:transparent;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Cerrar</button>
         </div>
     </div>
 </div>
@@ -61,14 +50,11 @@
     let eventos = JSON.parse(localStorage.getItem('eventos') || '{}');
     let modalDia = null, modalMes = null, modalAnio = null;
 
-    function guardarEventos() { localStorage.setItem('eventos', JSON.stringify(eventos)); }
     function keyFecha(d, m, y) { return `${y}-${m}-${d}`; }
 
     function abrirModal(dia, mes, anio) {
         modalDia = dia; modalMes = mes; modalAnio = anio;
         document.getElementById('modalFecha').textContent = dia + ' de ' + months_es[mes] + ', ' + anio;
-        document.getElementById('nuevoEventoInput').value = '';
-        document.getElementById('nuevoEventoHora').value = '';
         renderEventosModal();
         document.getElementById('modalDia').style.display = 'flex';
     }
@@ -95,29 +81,7 @@
                     <div style="font-size:14px;font-weight:600;color:#0f172a;">${ev.nombre}</div>
                     ${ev.hora ? `<div style="display:flex;align-items:center;gap:5px;color:#64748b;margin-top:4px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span style="font-size:12px;">${ev.hora}</span></div>` : ''}
                 </div>
-                <button onclick="eliminarEvento(${i})" style="background:none;border:none;cursor:pointer;color:#94a3b8;padding:2px;display:flex;align-items:center;" title="Eliminar">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-                </button>
             </div>`).join('');
-    }
-
-    function agregarEvento() {
-        const nombre = document.getElementById('nuevoEventoInput').value.trim();
-        const hora   = document.getElementById('nuevoEventoHora').value.trim();
-        if (!nombre) return;
-        const key = keyFecha(modalDia, modalMes, modalAnio);
-        if (!eventos[key]) eventos[key] = [];
-        eventos[key].push({ nombre, hora });
-        guardarEventos(); renderEventosModal(); renderCal();
-        document.getElementById('nuevoEventoInput').value = '';
-        document.getElementById('nuevoEventoHora').value  = '';
-    }
-
-    function eliminarEvento(idx) {
-        const key = keyFecha(modalDia, modalMes, modalAnio);
-        eventos[key].splice(idx, 1);
-        if (eventos[key].length === 0) delete eventos[key];
-        guardarEventos(); renderEventosModal(); renderCal();
     }
 
     /* ══ Render del calendario ══ */
