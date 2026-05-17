@@ -41,8 +41,30 @@
     /* Overlay sidebar móvil */
     .sidebar-overlay { position: fixed; top: var(--hh); left: 0; width: 100%; height: calc(100vh - var(--hh)); background: rgba(0,0,0,0.4); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
     .sidebar-overlay.show { opacity: 1; visibility: visible; }
-    .mobile-menu-btn { display: none; background: none; border: none; color: #fff; cursor: pointer; padding: 4px; margin-right: 8px; }
-    .mobile-menu-btn svg { width: 24px; height: 24px; }
+
+    /* Botones iconos móviles/tablets */
+    .mobile-toggle-container {
+        display: none;
+        width: 100%;
+        margin-bottom: 0.5rem;
+        justify-content: space-between;
+    }
+    .mobile-toggle-btn {
+        background: #fff;
+        color: var(--text);
+        border: 1px solid var(--gray2);
+        border-radius: 12px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .mobile-toggle-btn:hover { background: var(--gray); border-color: var(--admin-purple); }
+    .mobile-toggle-btn svg { width: 22px; height: 22px; stroke: var(--admin-purple); fill: none; stroke-width: 2.5; }
 
     /* ══════════════════════════════════════
        MAIN ADMIN (grid con panel derecho)
@@ -70,7 +92,9 @@
     /* ══════════════════════════════════════
        STATS GRID
     ══════════════════════════════════════ */
-    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 2rem; }
+    .stats-grid { display: grid; gap: 1.2rem; margin-bottom: 2rem; }
+    .dashboard-stats { grid-template-columns: repeat(4, 1fr); }
+    .portafolios-stats { grid-template-columns: repeat(3, 1fr); }
     .stat-card { background: #fff; border-radius: 16px; padding: 1.5rem; border: 1px solid var(--gray2); box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; align-items: flex-start; justify-content: space-between; transition: all 0.2s; }
     .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.05); border-color: var(--gray3); }
     .stat-info { display: flex; flex-direction: column; gap: 6px; }
@@ -89,14 +113,14 @@
     /* ══════════════════════════════════════
        PANEL / TABLA
     ══════════════════════════════════════ */
-    .dash-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+    .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr)); gap: 1.5rem; }
     .panel { background: #fff; border-radius: 16px; border: 1px solid var(--gray2); box-shadow: 0 2px 10px rgba(0,0,0,0.02); overflow: hidden; }
     .panel-header { padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--gray2); display: flex; justify-content: space-between; align-items: center; }
     .panel-title { font-family: "Plus Jakarta Sans", sans-serif; font-size: 16px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; }
     .panel-action { font-size: 13px; font-weight: 600; color: var(--admin-purple); text-decoration: none; }
     .panel-action:hover { text-decoration: underline; }
-    .table-wrap { width: 100%; overflow: visible; }
-    table { width: 100%; border-collapse: collapse; text-align: left; }
+    .table-wrap { width: 100%; overflow-x: auto; }
+    table { width: 100%; min-width: 800px; border-collapse: collapse; text-align: left; }
     th { padding: 12px 1.5rem; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; background: var(--gray); border-bottom: 1px solid var(--gray2); }
     td { padding: 14px 1.5rem; font-size: 13.5px; color: var(--text); border-bottom: 1px solid var(--gray2); vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
@@ -157,8 +181,8 @@
     /* ══════════════════════════════════════
        PANEL DERECHO / CALENDARIO
     ══════════════════════════════════════ */
-    .rpanel { width: 100%; background: #fff; border-left: 1px solid var(--gray2); display: flex; flex-direction: column; overflow-y: auto; }
-    .rp-sec { padding: .9rem 1rem; border-bottom: 1px solid var(--gray2); }
+    .rpanel { width: 100%; background: #fff; border-left: 1px solid var(--gray2); display: flex; flex-direction: column; overflow: hidden; }
+    .rp-sec { padding: .9rem 1rem; border-bottom: 1px solid var(--gray2); flex-shrink: 0; }
     .cal-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
     .cal-month { font-family: "Plus Jakarta Sans", sans-serif; font-size: 15px; font-weight: 700; color: var(--text); }
     .cal-navs { display: flex; gap: 2px; }
@@ -195,26 +219,56 @@
        RESPONSIVE ADMIN
     ══════════════════════════════════════ */
     @media(max-width: 1200px) {
+        .mobile-toggle-container { display: flex; }
         main { grid-template-columns: 1fr; overflow-y: auto; }
         .main-inner { overflow-y: visible; padding: 1.5rem; height: max-content; }
-        .rpanel { border-left: none; border-top: 1px solid var(--gray2); overflow-y: visible; height: max-content; }
-        .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media(max-width: 768px) {
-        .mobile-menu-btn { display: block; }
-        .table-wrap { overflow-x: auto; }
+        
+        /* Left Sidebar as Drawer */
         aside {
             position: fixed;
             top: var(--hh);
-            left: -260px;
-            width: 260px;
+            left: -280px;
+            width: 260px !important;
             height: calc(100vh - var(--hh));
             z-index: 1000;
-            transition: left 0.3s ease;
-            box-shadow: 4px 0 15px rgba(0,0,0,0.3);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 4px 0 15px rgba(0,0,0,0.15);
+            background: #fff;
+        }
+        /* Restaurar textos que _styles_menu.blade.php oculta en < 992px */
+        aside .sb-item span, aside .sb-uname, aside .sb-uid, aside .btn-logout span {
+            display: inline-block !important;
+        }
+        aside .sb-item {
+            justify-content: flex-start !important;
+            padding: 10px 20px !important;
+        }
+        aside .sb-user-block, aside .btn-logout {
+            justify-content: flex-start !important;
         }
         aside.open { left: 0; }
-        .stats-grid { grid-template-columns: 1fr; }
+        
+        /* Right Panel as Drawer */
+        .rpanel { 
+            position: fixed;
+            top: var(--hh);
+            right: -340px;
+            width: 320px;
+            height: calc(100vh - var(--hh));
+            z-index: 1000;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -4px 0 15px rgba(0,0,0,0.15);
+            border-left: none;
+            background: #fff;
+        }
+        .rpanel.open { right: 0; }
+        
+        .dashboard-stats, .portafolios-stats { grid-template-columns: repeat(2, 1fr) !important; }
+        .dash-grid { grid-template-columns: 1fr !important; }
+    }
+    @media(max-width: 768px) {
+        .table-wrap { overflow-x: auto; }
+        .dashboard-stats, .portafolios-stats, .stats-grid { grid-template-columns: 1fr !important; }
         .main-inner { padding: 1rem; }
         .admin-hero { padding: 1.5rem; }
         .hero-title { font-size: 24px; }

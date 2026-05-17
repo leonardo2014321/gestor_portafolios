@@ -97,7 +97,7 @@
     </div>
 
     <div class="body-row">
-        <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+        <div id="sidebar-overlay" class="sidebar-overlay" onclick="closeAllPanels()"></div>
 
         <!-- Sidebar -->
         <aside>
@@ -122,9 +122,19 @@
             </div>
         </aside>
 
-        <!-- Main content -->
         <main>
             <div class="main-inner">
+
+                <!-- Botones responsive (solo íconos) -->
+                <div class="mobile-toggle-container">
+                    <button class="mobile-toggle-btn" onclick="toggleSidebar()" title="{{ __('app.admin.menu_principal') }}">
+                        <svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </button>
+                    
+                    <button class="mobile-toggle-btn" onclick="toggleRightPanel()" title="{{ __('app.admin.actividad_reciente') }}">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    </button>
+                </div>
 
                 <!-- ═══ VISTA: DASHBOARD ═══ -->
                 <div id="view-dashboard" class="admin-view" style="display:block">
@@ -138,7 +148,7 @@
                     </div>
 
                     <!-- Stats Grid -->
-                    <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="stats-grid dashboard-stats">
                         <div class="stat-card">
                             <div class="stat-info">
                                 <div class="stat-label">{{ __('app.admin.stat_usuarios_totales') }}</div>
@@ -197,7 +207,7 @@
                     </div>
 
                     <!-- Main Grid -->
-                    <div class="dash-grid" style="grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));">
+                    <div class="dash-grid">
 
                         <!-- Últimos Usuarios -->
                         <div class="panel">
@@ -403,7 +413,7 @@
 
                     <!-- Historial de enviadas -->
                     <div class="panel">
-                        <div class="panel-header" style="padding:1.2rem 1.5rem;border-bottom:1px solid var(--gray2);display:flex;align-items:center;justify-content:space-between">
+                        <div class="panel-header" style="padding:1.2rem 1.5rem;border-bottom:1px solid var(--gray2);">
                             <h2 class="panel-title">{{ __('app.admin.notif_historial') }}</h2>
                             <button onclick="notifCargarHistorial()" style="font-size:12px;color:var(--blue);background:none;border:none;cursor:pointer;font-weight:600">{{ __('app.admin.notif_actualizar') }}</button>
                         </div>
@@ -415,9 +425,11 @@
 
             </div><!-- /.main-inner -->
 
-        <!-- Right panel (Calendario) -->
+        <!-- Right panel (Calendario y Actividad) -->
         <div class="rpanel">
-            <div class="rp-sec">
+            
+            <!-- Calendario -->
+            <div class="rp-sec" style="padding-bottom: 0; border-bottom: none;">
                 <div class="cal-hd" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
                     <div class="cal-month" id="cal-title" style="flex:1;">{{ __('app.admin.cal_mes') }}</div>
                     <select class="cal-view-selector" id="cal-view-sel" onchange="changeCalView(this.value)" style="margin:0;">
@@ -437,9 +449,9 @@
             </div>
 
             <!-- Actividad Reciente -->
-            <div style="padding: 1rem;">
-                <div class="panel">
-                    <div class="panel-header" style="padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 250px;">
+                <div style="display: flex; flex-direction: column; height: 100%;">
+                    <div style="padding: 1rem; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; border-top: 1px solid var(--gray2);">
                         <h2 class="panel-title" style="margin: 0;">{{ __('app.admin.actividad_reciente') }}</h2>
                         @if($actividades_recientes->count() > 0)
                             <form action="{{ route('admin.actividad.limpiar') }}" method="POST" onsubmit="return confirm('{{ __('app.admin.confirm_limpiar_actividad') }}');" style="margin: 0;">
@@ -451,7 +463,7 @@
                             </form>
                         @endif
                     </div>
-                    <div class="activity-list">
+                    <div class="activity-list" style="overflow-y: auto; flex: 1;">
                         @forelse($actividades_recientes as $act)
                             @php
                                 $titulo = __('app.admin.act_accion') . ': ' . $act->accion;
@@ -544,6 +556,8 @@
                 </div>
             </div>
 
+
+
         </div><!-- /.rpanel -->
 
         </main>
@@ -586,6 +600,11 @@
         document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
         var btn = document.getElementById('btn-' + nombre);
         if (btn) btn.classList.add('active');
+        
+        // Cerrar panel al seleccionar en móvil
+        if(window.innerWidth <= 1200) {
+            closeAllPanels();
+        }
     }
 
     /* ══ Buscar y filtrar usuarios ══ */
@@ -612,8 +631,45 @@
     function toggleSidebar() {
         const sidebar = document.querySelector('aside');
         const overlay = document.getElementById('sidebar-overlay');
+        const rpanel = document.querySelector('.rpanel');
+        
+        if (rpanel && rpanel.classList.contains('open')) {
+            rpanel.classList.remove('open');
+        }
+        
         sidebar.classList.toggle('open');
-        overlay.classList.toggle('show');
+        if (sidebar.classList.contains('open')) {
+            overlay.classList.add('show');
+        } else {
+            overlay.classList.remove('show');
+        }
+    }
+
+    function toggleRightPanel() {
+        const rpanel = document.querySelector('.rpanel');
+        const overlay = document.getElementById('sidebar-overlay');
+        const sidebar = document.querySelector('aside');
+        
+        if (sidebar && sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
+        }
+        
+        rpanel.classList.toggle('open');
+        if (rpanel.classList.contains('open')) {
+            overlay.classList.add('show');
+        } else {
+            overlay.classList.remove('show');
+        }
+    }
+
+    function closeAllPanels() {
+        const sidebar = document.querySelector('aside');
+        const rpanel = document.querySelector('.rpanel');
+        const overlay = document.getElementById('sidebar-overlay');
+        
+        if (sidebar) sidebar.classList.remove('open');
+        if (rpanel) rpanel.classList.remove('open');
+        if (overlay) overlay.classList.remove('show');
     }
 
     document.addEventListener('click', function(e) {
