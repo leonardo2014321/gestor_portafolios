@@ -95,7 +95,7 @@
     .panel-title { font-family: "Plus Jakarta Sans", sans-serif; font-size: 16px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; }
     .panel-action { font-size: 13px; font-weight: 600; color: var(--admin-purple); text-decoration: none; }
     .panel-action:hover { text-decoration: underline; }
-    .table-wrap { width: 100%; overflow-x: auto; }
+    .table-wrap { width: 100%; overflow: visible; }
     table { width: 100%; border-collapse: collapse; text-align: left; }
     th { padding: 12px 1.5rem; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; background: var(--gray); border-bottom: 1px solid var(--gray2); }
     td { padding: 14px 1.5rem; font-size: 13.5px; color: var(--text); border-bottom: 1px solid var(--gray2); vertical-align: middle; }
@@ -202,6 +202,7 @@
     }
     @media(max-width: 768px) {
         .mobile-menu-btn { display: block; }
+        .table-wrap { overflow-x: auto; }
         aside {
             position: fixed;
             top: var(--hh);

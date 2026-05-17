@@ -42,6 +42,60 @@
         </div>
     </div>
 
+    <!-- Modal confirmación desactivar cuenta -->
+    <div id="modal-user-deactivate" onclick="if(event.target===this)cerrarModalDeactivate()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:15px;box-sizing:border-box;">
+        <div style="background:#fff;border-radius:24px;padding:2.2rem 2rem 1.8rem;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,0.22);text-align:center;animation:fadeInScale .2s ease;box-sizing:border-box;max-height:90vh;display:flex;flex-direction:column;">
+            <div style="overflow-y:auto;padding-right:4px;width:100%;box-sizing:border-box;">
+                <div style="width:60px;height:60px;border-radius:18px;background:#e0e7ff;display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem;">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#1e3adb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:800;color:#0f172a;margin-bottom:8px;">{{ __('app.admin.modal_desactivar_titulo') }}</h3>
+                <p style="font-size:13.5px;color:#64748b;line-height:1.65;margin-bottom:1.5rem;">{{ __('app.admin.modal_desactivar_texto') }}</p>
+
+                <div style="text-align:left;margin-bottom:1.5rem">
+                    <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">{{ __('app.admin.confirma_contrasena') }}</label>
+                    <input type="password" id="admin-confirm-pass" placeholder="{{ __('app.admin.placeholder_contrasena') }}" style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid var(--gray2);outline:none;font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color 0.2s;box-sizing:border-box;" onfocus="this.style.borderColor='var(--admin-purple)'" onblur="this.style.borderColor='var(--gray2)'">
+                </div>
+
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <button onclick="cerrarModalDeactivate()" style="flex:1;min-width:120px;padding:12px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;font-size:13.5px;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;">{{ __('app.admin.cancelar') }}</button>
+                    <button id="btn-confirm-deactivate" style="flex:1;min-width:120px;padding:12px;border-radius:14px;border:none;background:linear-gradient(135deg,#1428c6,#1e3adb);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 14px rgba(20,40,198,0.3);">{{ __('app.admin.btn_desactivar_ahora') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal detalle del día (Calendario) -->
+    <div id="modalDia" onclick="if(event.target===this)cerrarModal()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:15px;box-sizing:border-box;">
+        <div style="background:#fff;border-radius:24px;padding:2.2rem 2rem 1.8rem;width:100%;max-width:440px;box-shadow:0 24px 64px rgba(0,0,0,0.22);text-align:center;animation:fadeInScale .2s ease;box-sizing:border-box;max-height:90vh;display:flex;flex-direction:column;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;">
+                <div style="text-align:left;">
+                    <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;margin-bottom:4px;">{{ __('app.admin.modal_cal_detalle') }}</div>
+                    <div id="modalFecha" style="font-size:20px;font-weight:800;color:#0f172a;font-family:'Plus Jakarta Sans',sans-serif;"></div>
+                </div>
+                <button onclick="cerrarModal()" style="width:36px;height:36px;border-radius:50%;border:1px solid #e2e8f0;background:transparent;cursor:pointer;font-size:16px;color:#64748b;display:flex;align-items:center;justify-content:center;transition:background 0.2s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">✕</button>
+            </div>
+            
+            <div style="display:flex;flex-direction:column;gap:10px;overflow-y:auto;max-height:30vh;padding-right:4px;margin-bottom:1rem;text-align:left;" id="listaEventos"></div>
+            
+            <div style="text-align:left;border-top:1px solid #f1f5f9;padding-top:1.2rem;margin-bottom:1.5rem;">
+                <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;margin-bottom:10px;">{{ __('app.admin.modal_cal_nuevo_evento') }}</div>
+                <input id="nuevoEventoInput" type="text" placeholder="{{ __('app.admin.modal_cal_placeholder_nombre') }}"
+                    style="width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid #e2e8f0;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;margin-bottom:8px;box-sizing:border-box;">
+                <input id="nuevoEventoHora" type="text" placeholder="{{ __('app.admin.modal_cal_placeholder_hora') }}"
+                    style="width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid #e2e8f0;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;box-sizing:border-box;">
+            </div>
+            
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button onclick="cerrarModal()" style="flex:1;min-width:120px;padding:12px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;font-size:13.5px;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;">{{ __('app.admin.modal_cal_btn_cerrar') }}</button>
+                <button onclick="agregarEvento()" style="flex:1.3;min-width:140px;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:14px;border:none;background:linear-gradient(135deg,#1428c6,#1e3adb);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 14px rgba(20,40,198,0.3);">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="12" x2="12" y1="14" y2="18"/><line x1="10" x2="14" y1="16" y2="16"/></svg>
+                    {{ __('app.admin.modal_cal_btn_agregar') }}
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="body-row">
         <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
@@ -589,7 +643,8 @@
             menu.classList.remove('menu-up');
             menu.style.display = 'flex';
             const rect = menu.getBoundingClientRect();
-            if (rect.bottom > window.innerHeight) {
+            const isLastRow = btn.closest('tr') === btn.closest('tbody')?.lastElementChild;
+            if (rect.bottom > window.innerHeight || isLastRow) {
                 menu.classList.add('menu-up');
             }
         }
@@ -714,8 +769,7 @@
                     btn.className = 'btn-action-admin btn-role-user';
                 } else {
                     roleCell.innerText = '{{ __('app.admin.rol_usuario') }}';
-                    btn.innerText = '{{ __('app.admin.js_volver_admin') }}';
-                    btn.className = 'btn-action-admin btn-role-admin';
+                    btn.style.display = 'none';
                 }
                 const row = btn.closest('tr');
                 if(row) row.setAttribute('data-rol', data.es_admin ? 'admin' : 'usuario');
@@ -739,6 +793,72 @@
     let cur = new Date();
     let currentCalView = 'dias';
     let eventos = JSON.parse(localStorage.getItem('eventos') || '{}');
+    let modalDia = null, modalMes = null, modalAnio = null;
+    const months_es = [
+        "{{ __('app.admin.mes_enero') }}","{{ __('app.admin.mes_febrero') }}","{{ __('app.admin.mes_marzo') }}",
+        "{{ __('app.admin.mes_abril') }}","{{ __('app.admin.mes_mayo') }}","{{ __('app.admin.mes_junio') }}",
+        "{{ __('app.admin.mes_julio') }}","{{ __('app.admin.mes_agosto') }}","{{ __('app.admin.mes_septiembre') }}",
+        "{{ __('app.admin.mes_octubre') }}","{{ __('app.admin.mes_noviembre') }}","{{ __('app.admin.mes_diciembre') }}"
+    ];
+
+    function guardarEventos() { localStorage.setItem('eventos', JSON.stringify(eventos)); }
+
+    function abrirModal(dia, mes, anio) {
+        modalDia = dia; modalMes = mes; modalAnio = anio;
+        document.getElementById('modalFecha').textContent = dia + ' de ' + months_es[mes] + ', ' + anio;
+        document.getElementById('nuevoEventoInput').value = '';
+        document.getElementById('nuevoEventoHora').value = '';
+        renderEventosModal();
+        document.getElementById('modalDia').style.display = 'flex';
+    }
+
+    function cerrarModal() { document.getElementById('modalDia').style.display = 'none'; }
+
+    function renderEventosModal() {
+        const key = keyFecha(modalDia, modalMes, modalAnio);
+        const lista = eventos[key] || [];
+        const container = document.getElementById('listaEventos');
+        if (lista.length === 0) {
+            container.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;padding:18px;border-radius:16px;border:2px dashed #e2e8f0;gap:4px;width:100%;box-sizing:border-box;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="16"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
+                <span style="font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:#94a3b8;">{{ __('app.admin.modal_cal_sin_eventos') }}</span>
+            </div>`;
+            return;
+        }
+        container.innerHTML = lista.map((ev, i) => `
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:14px;background:#f0f4f8;border-radius:4px 16px 16px 4px;border-left:4px solid #1e3adb;box-sizing:border-box;width:100%;">
+                <div style="width:34px;height:34px;border-radius:10px;background:#e0e7ff;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1e3adb" stroke-width="2" stroke-linecap="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                </div>
+                <div style="flex:1;min-width:0;">
+                    <div style="font-size:14px;font-weight:600;color:#0f172a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${ev.nombre}</div>
+                    ${ev.hora ? `<div style="display:flex;align-items:center;gap:5px;color:#64748b;margin-top:4px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span style="font-size:12px;">${ev.hora}</span></div>` : ''}
+                </div>
+                <button onclick="eliminarEvento(${i})" style="background:none;border:none;cursor:pointer;color:#94a3b8;padding:2px;display:flex;align-items:center;transition:color 0.2s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#94a3b8'" title="Eliminar">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                </button>
+            </div>`).join('');
+    }
+
+    function agregarEvento() {
+        const nombre = document.getElementById('nuevoEventoInput').value.trim();
+        const hora   = document.getElementById('nuevoEventoHora').value.trim();
+        if (!nombre) return;
+        const key = keyFecha(modalDia, modalMes, modalAnio);
+        if (!eventos[key]) eventos[key] = [];
+        eventos[key].push({ nombre, hora });
+        guardarEventos(); renderEventosModal(); renderCal();
+        document.getElementById('nuevoEventoInput').value = '';
+        document.getElementById('nuevoEventoHora').value  = '';
+    }
+
+    function eliminarEvento(idx) {
+        if (!confirm('¿Seguro que deseas eliminar este evento?')) return;
+        const key = keyFecha(modalDia, modalMes, modalAnio);
+        eventos[key].splice(idx, 1);
+        if (eventos[key].length === 0) delete eventos[key];
+        guardarEventos(); renderEventosModal(); renderCal();
+    }
 
     const boliviaHolidays = {
         "01-01": "{{ __('app.admin.feriado_anio_nuevo') }}",
@@ -808,7 +928,7 @@
                     cls += " holiday";
                     titleAttr = `title="{{ __('app.admin.cal_feriado') }}: ${boliviaHolidays[holidayKey]}"`;
                 }
-                html += `<div class="${cls}" ${titleAttr}>${i}</div>`;
+                html += `<div class="${cls}" ${titleAttr} style="cursor:pointer;" onclick="abrirModal(${i},${m},${y})">${i}</div>`;
                 dayCount++;
             }
 
