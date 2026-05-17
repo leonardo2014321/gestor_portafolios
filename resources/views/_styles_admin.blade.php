@@ -120,9 +120,10 @@
     .panel-action { font-size: 13px; font-weight: 600; color: var(--admin-purple); text-decoration: none; }
     .panel-action:hover { text-decoration: underline; }
     .table-wrap { width: 100%; overflow-x: auto; }
-    table { width: 100%; min-width: 800px; border-collapse: collapse; text-align: left; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    #tabla-usuarios, #tabla-portafolios { min-width: 800px; }
     th { padding: 12px 1.5rem; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; background: var(--gray); border-bottom: 1px solid var(--gray2); }
-    td { padding: 14px 1.5rem; font-size: 13.5px; color: var(--text); border-bottom: 1px solid var(--gray2); vertical-align: middle; }
+    td { padding: 14px 1.5rem; font-size: 12.5px; color: var(--text); border-bottom: 1px solid var(--gray2); vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: var(--gray); }
 
@@ -134,7 +135,7 @@
     .u-info { display: flex; flex-direction: column; gap: 2px; }
     .u-name { font-size: 13px; font-weight: 600; color: var(--text); }
     .u-email { font-size: 11.5px; color: var(--muted); }
-    .status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+    .status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
     .st-active { background: rgba(16,185,129,0.1); color: #059669; }
     .st-pending { background: #fef9c3; color: #854d0e; border: 1px solid #fde68a; }
     .st-inactive { background: rgba(239,68,68,0.1); color: #ef4444; }
