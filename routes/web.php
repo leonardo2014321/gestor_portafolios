@@ -18,6 +18,11 @@ use App\Http\Controllers\Portafolio\PortafolioProyectoController;
 use App\Http\Controllers\Portafolio\PortafolioArchivoController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\PerfilPublicoController;
+use App\Http\Controllers\PortafolioPublicoController;
+use App\Http\Controllers\ProyectoPublicoController; 
+use App\Http\Controllers\ExploradorController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -45,9 +50,6 @@ Route::get('/caracteristicas', function () {
     return view('Auth.caracteristicas');
 })->name('caracteristicas');
 
-Route::get('/explorador', function () {
-    return view('Auth.explorador');
-})->name('explorador');
 
 // RUTA CORREGIDA: Ahora está en la zona pública y no pedirá login
 Route::get('/portafolios', function () {
@@ -78,13 +80,6 @@ Route::middleware('auth')->group(function () {
 
     // Panel de Administrador (solo accesible para cuentas admin)
     Route::get('/admin', [AdminController::class, 'index'])->name('admin')->middleware('es_admin');
-
-
-    /**
-     * IMPLEMENTACIÓN DEL EXPLORADOR
-     * Carga la vista ubicada en resources/views/Auth/explorador.blade.php
-     */
-    Route::get('/explorador', [App\Http\Controllers\ExploradorController::class, 'index'])->name('explorador');
 
     // (La ruta de portafolios ya fue eliminada de aquí)
 
@@ -222,3 +217,37 @@ Route::middleware('auth')->group(function () {
 // lenguaje 
 Route::get('/lang/{lang}', [LanguageController::class, 'switch'])
      ->name('lang.switch');
+ 
+// Vista pública del perfil de un usuario
+Route::get('/perfil/{usuarioId}', [PerfilPublicoController::class, 'show'])
+     ->name('perfil.publico');
+// Vista pública de un portafolio
+Route::get('/portafolio/{portafolio_id}', [PortafolioPublicoController::class, 'show'])
+    ->name('portafolio.publico')
+    ->whereNumber('portafolio_id');
+
+Route::get('/portafolio/{id}', [PortafolioPublicoController::class, 'show'])
+     ->name('portafolio.publico');
+
+Route::get('/proyecto/{proyecto}',    [ProyectoPublicoController::class,   'show'])->name('proyecto.publico');
+
+ 
+// las 4 rutas de / y /home  y  /explorador
+Route::get('/', [ExploradorController::class, 'home'])->name('inicio');
+
+Route::get('/home', [ExploradorController::class, 'home'])->name('home');
+
+Route::get('/explorador', [ExploradorController::class, 'index'])->name('explorador');
+
+Route::get('/menu', [ExploradorController::class, 'menu'])->name('menu');
+
+
+Route::get('/caracteristicas', function () {
+    return view('Auth.caracteristicas');
+})->name('caracteristicas');
+
+Route::get('/portafolios', function () {
+    return view('Auth.portafolios');
+})->name('portafolios.index');
+
+Route::get('/admin', [ExploradorController::class, 'admin'])->name('admin')->middleware('es_admin');

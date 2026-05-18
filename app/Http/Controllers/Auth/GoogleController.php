@@ -12,14 +12,19 @@ class GoogleController extends Controller
 {
     public function redirect()
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')->stateless()->redirect();
     }
 
     public function callback()
     {
-        $googleUser = Socialite::driver('google')
-            ->setHttpClient(new Client(['verify' => base_path('cacert.pem')]))
-            ->user();
+        try {
+            $googleUser = Socialite::driver('google')
+                ->setHttpClient(new Client(['verify' => base_path('cacert.pem')]))
+                ->stateless()
+                ->user();
+        } catch (\Exception $e) {
+            return redirect('/')->withErrors(['google' => 'No se pudo autenticar con Google. Intenta de nuevo.']);
+        }
 
         $nombre = $googleUser->getName() ?? $googleUser->getNickname() ?? 'Usuario';
 

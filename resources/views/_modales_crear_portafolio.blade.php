@@ -107,10 +107,10 @@
     .vp-file-size{color:var(--muted);font-size:11px;flex-shrink:0}
     .vp-empty{text-align:center;padding:14px;color:var(--muted);font-size:13px}
     .vp-foot{display:flex;justify-content:flex-end;padding:0 28px 24px;gap:10px}
-    .vp-btn-del{padding:8px 18px;border-radius:9px;border:1.5px solid #fca5a5;background:#fff;color:#ef4444;font-size:13px;font-weight:600;cursor:pointer}
+    .vp-btn-del{padding:5px 14px;border-radius:8px;border:1.5px solid #fca5a5;background:#fff;color:#ef4444;font-size:12px;font-weight:600;cursor:pointer}
     .vp-btn-del:hover{background:#fef2f2}
     .vp-btn-close{padding:8px 18px;border-radius:9px;border:none;background:var(--blue);color:#fff;font-size:13px;font-weight:600;cursor:pointer}
-    .vp-btn-edit{padding:8px 18px;border-radius:9px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);font-size:13px;font-weight:600;cursor:pointer}
+    .vp-btn-edit{padding:5px 14px;border-radius:8px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);font-size:12px;font-weight:600;cursor:pointer}
     .vp-btn-edit:hover{background:#eff6ff}
     /* Proyectos en modal Ver */
     .vp-proj-card{border:1px solid var(--gray2);border-radius:12px;padding:14px;margin-bottom:10px;background:var(--gray)}
@@ -127,10 +127,10 @@
     .vp-proj-link svg{width:12px;height:12px;fill:currentColor;flex-shrink:0}
     .vp-proj-add-file{display:inline-flex;align-items:center;gap:4px;margin-top:8px;cursor:pointer;color:var(--blue);font-size:12px;font-weight:600;user-select:none}
     .vp-proj-add-file:hover span{text-decoration:underline}
-    .vp-proj-actions{display:flex;gap:6px;margin-top:10px;border-top:1px solid var(--gray2);padding-top:10px}
-    .vp-proj-btn-edit{flex:1;padding:6px 10px;border-radius:7px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
+    .vp-proj-actions{display:flex;gap:6px;margin-top:10px;border-top:1px solid var(--gray2);padding-top:10px;justify-content:flex-end}
+    .vp-proj-btn-edit{padding:4px 12px;border-radius:7px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
     .vp-proj-btn-edit:hover{background:#eff6ff}
-    .vp-proj-btn-del2{flex:1;padding:6px 10px;border-radius:7px;border:1.5px solid #fca5a5;background:#fff;color:#ef4444;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
+    .vp-proj-btn-del2{padding:4px 12px;border-radius:7px;border:1.5px solid #fca5a5;background:#fff;color:#ef4444;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
     .vp-proj-btn-del2:hover{background:#fef2f2}
     .vp-proj-edit-form{display:flex;flex-direction:column;gap:10px}
     .vp-proj-edit-input{width:100%;background:var(--gray);border:1px solid var(--gray2);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--text);font-family:"DM Sans",sans-serif;outline:none;transition:border-color .2s;box-sizing:border-box}
@@ -138,7 +138,10 @@
     .vp-proj-edit-textarea{min-height:72px;resize:vertical}
     .vp-proj-edit-url-wrap{display:flex;gap:8px}
     .vp-proj-edit-url-wrap .vp-proj-edit-input{flex:1}
-    .vp-proj-edit-btns{display:flex;gap:8px}
+    .vp-proj-edit-btns{display:flex;gap:8px;justify-content:flex-end}
+    /* Banner del proyecto en card */
+    .vp-proj-banner{margin:-14px -14px 12px;height:110px;overflow:hidden;border-radius:8px 8px 0 0;flex-shrink:0}
+    .vp-proj-banner img{width:100%;height:100%;object-fit:cover;display:block}
     .vp-file-dl{color:var(--blue);font-size:11px;font-weight:600;text-decoration:none;padding:2px 6px;border-radius:4px;white-space:nowrap;flex-shrink:0}
     .vp-file-dl:hover{text-decoration:underline}
     .vp-file-del{background:none;border:none;cursor:pointer;color:var(--muted);padding:0 0 0 4px;flex-shrink:0}
@@ -174,8 +177,8 @@
     <div class="mp-modal">
         <div class="mp-header-wrap">
             <div class="mp-header">
-                <h2>Añadir Proyecto</h2>
-                <p>El proyecto quedará guardado dentro del portafolio que selecciones.</p>
+                <h2>{{ __('app.modales_pf.modal1_titulo') }}</h2>
+                <p>{{ __('app.modales_pf.modal1_subtitulo') }}</p>
             </div>
             <button class="mp-close" onclick="mpCerrar()">
                 <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -187,14 +190,14 @@
             <div class="mp-section">
                 <div class="mp-section-label">
                     <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
-                    Portafolio destino
+                    {{ __('app.modales_pf.seccion_destino') }}
                 </div>
                 <div class="mp-field">
-                    <label class="mp-label">Selecciona el portafolio <span>*</span></label>
+                    <label class="mp-label">{{ __('app.modales_pf.selecciona_portafolio') }} <span>*</span></label>
                     <select class="mp-input" id="mpPortafolioId" onchange="mpCheckBtns()">
-                        <option value="">— Elige un portafolio —</option>
+                        <option value="">{{ __('app.modales_pf.elige_portafolio') }}</option>
                     </select>
-                    <div class="mp-err" id="mpErrPortafolio">Debes seleccionar un portafolio.</div>
+                    <div class="mp-err" id="mpErrPortafolio">{{ __('app.modales_pf.err_portafolio') }}</div>
                 </div>
             </div>
 
@@ -202,23 +205,46 @@
             <div class="mp-section">
                 <div class="mp-section-label">
                     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    Información del proyecto
+                    {{ __('app.modales_pf.seccion_info_proyecto') }}
                 </div>
                 <div class="mp-field">
-                    <label class="mp-label">Nombre del proyecto <span>*</span></label>
+                    <label class="mp-label">{{ __('app.modales_pf.nombre_proyecto') }} <span>*</span></label>
                     <input class="mp-input" id="mpNombre" type="text" maxlength="100"
-                           placeholder="p.ej. Sistema de inventario" oninput="mpCheckBtns()">
-                    <div class="mp-err" id="mpErrNombre">El nombre es obligatorio.</div>
+                           placeholder="{{ __('app.modales_pf.nombre_proyecto_placeholder') }}" oninput="mpCheckBtns()">
+                    <div class="mp-err" id="mpErrNombre">{{ __('app.modales_pf.err_nombre') }}</div>
                 </div>
                 <div class="mp-field">
-                    <label class="mp-label">Descripción <span>*</span></label>
+                    <label class="mp-label">{{ __('app.modales_pf.descripcion') }} <span>*</span></label>
                     <textarea class="mp-textarea" id="mpDesc" maxlength="500" rows="3"
-                              placeholder="Describe brevemente tu proyecto..."
+                              placeholder="{{ __('app.modales_pf.desc_proyecto_placeholder') }}"
                               oninput="mpCheckBtns();document.getElementById('mpDescCount').textContent=this.value.length"></textarea>
                     <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:3px">
                         <span id="mpDescCount">0</span>/500
                     </div>
-                    <div class="mp-err" id="mpErrDesc">La descripción es obligatoria.</div>
+                    <div class="mp-err" id="mpErrDesc">{{ __('app.modales_pf.err_descripcion') }}</div>
+                </div>
+            </div>
+
+            {{-- Banner del proyecto --}}
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    Banner del proyecto <span style="font-weight:400;text-transform:none;letter-spacing:0">({{ __('app.modales_pf.opcional') }})</span>
+                </div>
+                <input type="file" id="mpBannerInput" accept="image/png,image/jpeg,image/jpg"
+                       style="display:none" onchange="mpHandleImgBanner(this.files[0])">
+                <div class="pf-img-zone pf-banner-zone" id="mpBannerZone"
+                     onclick="document.getElementById('mpBannerInput').click()"
+                     ondragover="event.preventDefault();this.classList.add('has-img')"
+                     ondragleave="mpDragLeaveBanner(event)"
+                     ondrop="event.preventDefault();mpHandleImgBanner(event.dataTransfer.files[0])">
+                    <img id="mpBannerPreview" src="" alt="" style="display:none">
+                    <div class="pf-img-placeholder" id="mpBannerPlaceholder">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        <p>Arrastra o haz clic para subir</p>
+                        <span>PNG, JPG · máx. 5 MB</span>
+                    </div>
+                    <button class="pf-remove" onclick="event.stopPropagation();mpQuitarBanner()">&times;</button>
                 </div>
             </div>
 
@@ -226,29 +252,29 @@
             <div class="mp-section">
                 <div class="mp-section-label">
                     <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                    Vínculos <span style="font-weight:400;text-transform:none;letter-spacing:0">(opcional)</span>
+                    {{ __('app.modales_pf.seccion_vinculos') }} <span style="font-weight:400;text-transform:none;letter-spacing:0">({{ __('app.modales_pf.opcional') }})</span>
                 </div>
                 <div class="mp-field">
-                    <label class="mp-label">Repositorio GitHub</label>
+                    <label class="mp-label">{{ __('app.modales_pf.repo_github') }}</label>
                     <div class="mp-url-wrap">
                         <input class="mp-input" id="mpRepo" type="text" maxlength="500"
-                               placeholder="https://github.com/usuario/repositorio"
+                               placeholder="{{ __('app.modales_pf.repo_placeholder') }}"
                                oninput="mpValidarUrl('mpRepo','mpRepoTick','mpErrRepo')"
                                style="padding-right:36px">
                         <svg class="mp-url-tick" id="mpRepoTick" viewBox="0 0 24 24"></svg>
                     </div>
-                    <div class="mp-err" id="mpErrRepo">Ingresa una URL válida.</div>
+                    <div class="mp-err" id="mpErrRepo">{{ __('app.modales_pf.err_url') }}</div>
                 </div>
                 <div class="mp-field">
-                    <label class="mp-label">URL de Deploy</label>
+                    <label class="mp-label">{{ __('app.modales_pf.url_deploy') }}</label>
                     <div class="mp-url-wrap">
                         <input class="mp-input" id="mpDeploy" type="text" maxlength="500"
-                               placeholder="https://mi-proyecto.vercel.app"
+                               placeholder="{{ __('app.modales_pf.deploy_placeholder') }}"
                                oninput="mpValidarUrl('mpDeploy','mpDeployTick','mpErrDeploy')"
                                style="padding-right:36px">
                         <svg class="mp-url-tick" id="mpDeployTick" viewBox="0 0 24 24"></svg>
                     </div>
-                    <div class="mp-err" id="mpErrDeploy">Ingresa una URL válida.</div>
+                    <div class="mp-err" id="mpErrDeploy">{{ __('app.modales_pf.err_url') }}</div>
                 </div>
             </div>
 
@@ -256,7 +282,7 @@
             <div class="mp-section">
                 <div class="mp-section-label">
                     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
-                    Archivos adjuntos <span style="font-weight:400;text-transform:none;letter-spacing:0">(opcional)</span>
+                    {{ __('app.modales_pf.seccion_archivos') }} <span style="font-weight:400;text-transform:none;letter-spacing:0">({{ __('app.modales_pf.opcional') }})</span>
                 </div>
                 <div class="mp-drop" id="mpDropZone"
                      onclick="document.getElementById('mpFileInput').click()"
@@ -264,8 +290,8 @@
                      ondragleave="this.classList.remove('dragover')"
                      ondrop="event.preventDefault();this.classList.remove('dragover');mpHandleFiles(event.dataTransfer.files)">
                     <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    <p>Arrastra o haz clic para subir</p>
-                    <span>Imágenes, ZIP, PDF, Word, Excel · máx. 20 MB por archivo</span>
+                    <p>{{ __('app.modales_pf.drop_texto') }}</p>
+                    <span>{{ __('app.modales_pf.drop_hint') }}</span>
                 </div>
                 <input type="file" id="mpFileInput" multiple
                        accept="image/*,.zip,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
@@ -276,11 +302,11 @@
         </div>
         <div class="mp-footer">
             <button class="mp-btn-ghost" id="mpBtnBorrador" onclick="mpGuardar('borrador')" disabled>
-                Guardar como borrador
+                {{ __('app.modales_pf.guardar_borrador') }}
             </button>
             <button class="mp-btn-primary" id="mpBtnPublicar" onclick="mpGuardar('publicado')" disabled>
                 <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                Añadir proyecto
+                {{ __('app.modales_pf.btn_anadir_proyecto') }}
             </button>
         </div>
     </div>
@@ -308,13 +334,13 @@
                 <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 <span id="vpFecha"></span>
             </div>
-            <div class="vp-sec" style="margin-top:20px">Proyectos</div>
-            <div id="vpProyectosList"><div class="vp-empty">Cargando...</div></div>
+            <div class="vp-sec" style="margin-top:20px">{{ __('app.modales_pf.proyectos') }}</div>
+            <div id="vpProyectosList"><div class="vp-empty">{{ __('app.modales_pf.cargando') }}</div></div>
         </div>
         <div class="vp-foot">
-            <button class="vp-btn-del" id="vpBtnEliminar" onclick="vpConfirmarEliminar()">Eliminar portafolio</button>
-            <button class="vp-btn-edit" id="vpBtnEditar" onclick="vpAbrirEditar()">Editar</button>
-            <button class="vp-btn-close" onclick="vpCerrar()">Cerrar</button>
+            <button class="vp-btn-del" id="vpBtnEliminar" onclick="vpConfirmarEliminar()">{{ __('app.modales_pf.eliminar_portafolio') }}</button>
+            <button class="vp-btn-edit" id="vpBtnEditar" onclick="vpAbrirEditar()">{{ __('app.modales_pf.editar') }}</button>
+            <button class="vp-btn-close" onclick="vpCerrar()">{{ __('app.modales_pf.cerrar') }}</button>
         </div>
     </div>
 </div>
@@ -328,8 +354,8 @@
         <div class="conf-title" id="confTitle"></div>
         <div class="conf-desc"  id="confDesc"></div>
         <div class="conf-btns">
-            <button class="conf-btn-cancel" onclick="confCerrar()">Cancelar</button>
-            <button class="conf-btn-ok"     id="confBtnOk">Confirmar</button>
+            <button class="conf-btn-cancel" onclick="confCerrar()">{{ __('app.modales_pf.cancelar') }}</button>
+            <button class="conf-btn-ok"     id="confBtnOk">{{ __('app.modales_pf.confirmar') }}</button>
         </div>
     </div>
 </div>
@@ -339,8 +365,8 @@
     <div class="mp-modal">
         <div class="mp-header-wrap">
             <div class="mp-header">
-                <h2>Editar portafolio</h2>
-                <p>Actualiza la información de tu portafolio.</p>
+                <h2>{{ __('app.modales_pf.modal4_titulo') }}</h2>
+                <p>{{ __('app.modales_pf.modal4_subtitulo') }}</p>
             </div>
             <button class="mp-close" onclick="epCerrar()">
                 <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -353,23 +379,23 @@
             <div class="mp-section">
                 <div class="mp-section-label">
                     <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
-                    Información del portafolio
+                    {{ __('app.modales_pf.seccion_info_pf') }}
                 </div>
                 <div class="mp-field">
-                    <label class="mp-label">Nombre <span>*</span></label>
+                    <label class="mp-label">{{ __('app.modales_pf.nombre') }} <span>*</span></label>
                     <input class="mp-input" id="epNombre" type="text" maxlength="100"
-                           placeholder="Nombre del portafolio" oninput="epCheckBtns()">
-                    <div class="mp-err" id="epErrNombre">El nombre es obligatorio.</div>
+                           placeholder="{{ __('app.modales_pf.nombre_pf_placeholder') }}" oninput="epCheckBtns()">
+                    <div class="mp-err" id="epErrNombre">{{ __('app.modales_pf.err_nombre') }}</div>
                 </div>
                 <div class="mp-field">
-                    <label class="mp-label">Descripción <span>*</span></label>
+                    <label class="mp-label">{{ __('app.modales_pf.descripcion') }} <span>*</span></label>
                     <textarea class="mp-textarea" id="epDesc" maxlength="500" rows="3"
-                              placeholder="Describe brevemente tu portafolio..."
+                              placeholder="{{ __('app.modales_pf.desc_pf_placeholder') }}"
                               oninput="epCheckBtns();document.getElementById('epDescCount').textContent=this.value.length"></textarea>
                     <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:3px">
                         <span id="epDescCount">0</span>/500
                     </div>
-                    <div class="mp-err" id="epErrDesc">La descripción es obligatoria.</div>
+                    <div class="mp-err" id="epErrDesc">{{ __('app.modales_pf.err_descripcion') }}</div>
                 </div>
             </div>
 
@@ -377,7 +403,7 @@
             <div class="mp-section">
                 <div class="mp-section-label">
                     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                    Banner / Portada
+                    {{ __('app.modales_pf.seccion_banner') }}
                 </div>
                 <input type="file" id="epBannerInput" accept="image/png,image/jpeg,image/jpg"
                        style="display:none" onchange="epHandleImg('banner',this.files[0])">
@@ -389,8 +415,8 @@
                     <img id="epBannerPreview" src="" alt="" style="display:none">
                     <div class="pf-img-placeholder" id="epBannerPlaceholder">
                         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                        <p>Arrastra o haz clic para cambiar</p>
-                        <span>PNG, JPG · máx. 5 MB</span>
+                        <p>{{ __('app.modales_pf.drop_cambiar') }}</p>
+                        <span>{{ __('app.modales_pf.banner_hint') }}</span>
                     </div>
                     <button class="pf-remove" onclick="event.stopPropagation();epQuitarImg('banner')">&times;</button>
                 </div>
@@ -400,7 +426,7 @@
             <div class="mp-section">
                 <div class="mp-section-label">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-                    Logo / Imagen
+                    {{ __('app.modales_pf.seccion_logo') }}
                 </div>
                 <input type="file" id="epLogoInput" accept="image/png,image/jpeg,image/jpg"
                        style="display:none" onchange="epHandleImg('logo',this.files[0])">
@@ -417,8 +443,8 @@
                         <button class="pf-remove" onclick="event.stopPropagation();epQuitarImg('logo')">&times;</button>
                     </div>
                     <div style="padding-top:6px">
-                        <p style="font-size:13px;font-weight:600;color:var(--text);margin:0 0 4px">Logo del portafolio</p>
-                        <p style="font-size:12px;color:var(--muted);margin:0">PNG, JPG · máx. 2 MB<br>Recomendado 200×200 px</p>
+                        <p style="font-size:13px;font-weight:600;color:var(--text);margin:0 0 4px">{{ __('app.modales_pf.logo_titulo') }}</p>
+                        <p style="font-size:12px;color:var(--muted);margin:0">{{ __('app.modales_pf.logo_hint') }}</p>
                     </div>
                 </div>
             </div>
@@ -426,11 +452,11 @@
         </div>
         <div class="mp-footer">
             <button class="mp-btn-ghost" id="epBtnBorrador" onclick="epConfirmarGuardar('borrador')" disabled>
-                Guardar como borrador
+                {{ __('app.modales_pf.guardar_borrador') }}
             </button>
             <button class="mp-btn-primary" id="epBtnPublicar" onclick="epConfirmarGuardar('publicado')" disabled>
                 <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                Guardar cambios
+                {{ __('app.modales_pf.btn_guardar_cambios') }}
             </button>
         </div>
     </div>
@@ -441,8 +467,8 @@
     <div class="mp-modal">
         <div class="mp-header-wrap">
             <div class="mp-header">
-                <h2>Crear portafolio</h2>
-                <p>Define el nombre, descripción e imagen de tu portafolio.</p>
+                <h2>{{ __('app.modales_pf.modal5_titulo') }}</h2>
+                <p>{{ __('app.modales_pf.modal5_subtitulo') }}</p>
             </div>
             <button class="mp-close" onclick="pfCerrar()">
                 <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -454,23 +480,23 @@
             <div class="mp-section">
                 <div class="mp-section-label">
                     <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
-                    Información del portafolio
+                    {{ __('app.modales_pf.seccion_info_pf') }}
                 </div>
                 <div class="mp-field">
-                    <label class="mp-label">Nombre del portafolio <span>*</span></label>
+                    <label class="mp-label">{{ __('app.modales_pf.nombre_pf_label') }} <span>*</span></label>
                     <input class="mp-input" id="pfNombre" type="text" maxlength="100"
-                           placeholder="p.ej. Portafolio de Diseño UI" oninput="pfCheckBtns()">
-                    <div class="mp-err" id="pfErrNombre">Este campo es obligatorio.</div>
+                           placeholder="{{ __('app.modales_pf.nombre_pf_placeholder') }}" oninput="pfCheckBtns()">
+                    <div class="mp-err" id="pfErrNombre">{{ __('app.modales_pf.err_campo_obligatorio') }}</div>
                 </div>
                 <div class="mp-field">
-                    <label class="mp-label">Descripción <span>*</span></label>
+                    <label class="mp-label">{{ __('app.modales_pf.descripcion') }} <span>*</span></label>
                     <textarea class="mp-textarea" id="pfDesc" maxlength="500" rows="3"
-                              placeholder="Describe brevemente tu portafolio..."
+                              placeholder="{{ __('app.modales_pf.desc_pf_placeholder') }}"
                               oninput="pfCheckBtns();document.getElementById('pfDescCount').textContent=this.value.length"></textarea>
                     <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:3px">
                         <span id="pfDescCount">0</span>/500
                     </div>
-                    <div class="mp-err" id="pfErrDesc">La descripción es obligatoria.</div>
+                    <div class="mp-err" id="pfErrDesc">{{ __('app.modales_pf.err_descripcion') }}</div>
                 </div>
             </div>
 
@@ -478,7 +504,7 @@
             <div class="mp-section">
                 <div class="mp-section-label">
                     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                    Banner / Portada
+                    {{ __('app.modales_pf.seccion_banner') }}
                 </div>
                 <input type="file" id="pfBannerInput" accept="image/png,image/jpeg,image/jpg"
                        style="display:none" onchange="pfHandleImg('banner',this.files[0])">
@@ -490,8 +516,8 @@
                     <img id="pfBannerPreview" src="" alt="" style="display:none">
                     <div class="pf-img-placeholder" id="pfBannerPlaceholder">
                         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                        <p>Arrastra o haz clic para subir</p>
-                        <span>PNG, JPG · máx. 5 MB · recomendado 1200×400 px</span>
+                        <p>{{ __('app.modales_pf.drop_texto') }}</p>
+                        <span>{{ __('app.modales_pf.banner_hint_full') }}</span>
                     </div>
                     <button class="pf-remove" onclick="event.stopPropagation();pfQuitarImg('banner')">&times;</button>
                 </div>
@@ -501,7 +527,7 @@
             <div class="mp-section">
                 <div class="mp-section-label">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-                    Logo / Imagen
+                    {{ __('app.modales_pf.seccion_logo') }}
                 </div>
                 <input type="file" id="pfLogoInput" accept="image/png,image/jpeg,image/jpg"
                        style="display:none" onchange="pfHandleImg('logo',this.files[0])">
@@ -518,8 +544,8 @@
                         <button class="pf-remove" onclick="event.stopPropagation();pfQuitarImg('logo')">&times;</button>
                     </div>
                     <div style="padding-top:6px">
-                        <p style="font-size:13px;font-weight:600;color:var(--text);margin:0 0 4px">Logo del portafolio</p>
-                        <p style="font-size:12px;color:var(--muted);margin:0">PNG, JPG · máx. 2 MB<br>Recomendado 200×200 px</p>
+                        <p style="font-size:13px;font-weight:600;color:var(--text);margin:0 0 4px">{{ __('app.modales_pf.logo_titulo') }}</p>
+                        <p style="font-size:12px;color:var(--muted);margin:0">{{ __('app.modales_pf.logo_hint') }}</p>
                     </div>
                 </div>
             </div>
@@ -527,19 +553,60 @@
         </div>
         <div class="mp-footer">
             <button class="mp-btn-ghost" id="pfBtnBorrador" onclick="pfGuardar('borrador')" disabled>
-                Guardar como borrador
+                {{ __('app.modales_pf.guardar_borrador') }}
             </button>
             <button class="mp-btn-primary" id="pfBtnPublicar" onclick="pfGuardar('publicado')" disabled>
                 <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                Publicar portafolio
+                {{ __('app.modales_pf.btn_publicar') }}
             </button>
         </div>
     </div>
 </div>
 
 <script>
+    // Textos JS desde Laravel (necesarios para strings dinámicos en JavaScript)
+    const _t = {
+        cargando:               @json(__('app.modales_pf.cargando')),
+        error_cargar:           @json(__('app.modales_pf.error_cargar_proyectos')),
+        actualizado:            @json(__('app.modales_pf.actualizado_prefijo')),
+        publicado:              @json(__('app.modales_pf.badge_publicado')),
+        borrador:               @json(__('app.modales_pf.badge_borrador')),
+        sin_archivos:           @json(__('app.modales_pf.sin_archivos')),
+        sin_proyectos:          @json(__('app.modales_pf.sin_proyectos')),
+        subir_archivos:         @json(__('app.modales_pf.subir_archivos')),
+        editar:                 @json(__('app.modales_pf.editar')),
+        eliminar:               @json(__('app.modales_pf.eliminar')),
+        cancelar:               @json(__('app.modales_pf.cancelar')),
+        guardar_cambios:        @json(__('app.modales_pf.btn_guardar_cambios')),
+        guardando:              @json(__('app.modales_pf.guardando')),
+        conf_elim_pf_titulo:    @json(__('app.modales_pf.conf_elim_pf_titulo')),
+        conf_elim_pf_desc:      @json(__('app.modales_pf.conf_elim_pf_desc')),
+        conf_elim_proj_titulo:  @json(__('app.modales_pf.conf_elim_proj_titulo')),
+        conf_elim_proj_desc:    @json(__('app.modales_pf.conf_elim_proj_desc')),
+        conf_guardar_titulo:    @json(__('app.modales_pf.conf_guardar_titulo')),
+        conf_guardar_desc_pf:   @json(__('app.modales_pf.conf_guardar_desc_pf')),
+        conf_guardar_desc_proj: @json(__('app.modales_pf.conf_guardar_desc_proj')),
+        si_eliminar:            @json(__('app.modales_pf.si_eliminar')),
+        si_guardar:             @json(__('app.modales_pf.si_guardar')),
+        err_elim_pf:            @json(__('app.modales_pf.err_elim_pf')),
+        err_elim_proj:          @json(__('app.modales_pf.err_elim_proj')),
+        conf_elim_archivo_titulo: @json(__('app.modales_pf.conf_elim_archivo_titulo')),
+        conf_elim_archivo_desc: @json(__('app.modales_pf.conf_elim_archivo_desc')),
+        err_elim_archivo:       @json(__('app.modales_pf.err_elim_archivo')),
+        err_guardar:            @json(__('app.modales_pf.err_guardar')),
+        err_servidor:           @json(__('app.modales_pf.err_servidor')),
+        err_url_repo:           @json(__('app.modales_pf.err_url_repo')),
+        err_url_deploy:         @json(__('app.modales_pf.err_url_deploy')),
+        err_nombre_desc:        @json(__('app.modales_pf.err_nombre_desc')),
+        solo_png_jpg:           @json(__('app.modales_pf.solo_png_jpg')),
+        limite_banner:          @json(__('app.modales_pf.limite_banner')),
+        limite_logo:            @json(__('app.modales_pf.limite_logo')),
+        limite_archivo:         @json(__('app.modales_pf.limite_archivo')),
+        elige_portafolio_opt:   @json(__('app.modales_pf.elige_portafolio')),
+    };
+
     const VP_DATA = @json($portafolios ?? []);
-    let mpFiles = [];
+    let mpFiles = [], mpBannerFile = null;
     let vpProyectosCache = {}, vpPortafolioIdActual = null;
 
     /* ══ MODAL 2 · Ver ══ */
@@ -549,7 +616,7 @@
         document.getElementById('vpNombre').textContent = p.nombre;
         document.getElementById('vpDesc').textContent   = p.descripcion || '';
         const badge = document.getElementById('vpBadge');
-        badge.textContent = p.estado === 'publicado' ? 'Publicado' : 'Borrador';
+        badge.textContent = p.estado === 'publicado' ? _t.publicado : _t.borrador;
         badge.className   = 'vp-badge ' + p.estado;
         const repoWrap = document.getElementById('vpRepoWrap');
         if (p.repositorio_url) {
@@ -560,18 +627,18 @@
             repoWrap.style.display = 'none';
         }
         const fecha = new Date(p.updated_at);
-        document.getElementById('vpFecha').textContent = 'Actualizado: ' + fecha.toLocaleDateString('es-BO', {day:'2-digit',month:'long',year:'numeric'});
+        document.getElementById('vpFecha').textContent = _t.actualizado + ' ' + fecha.toLocaleDateString('{{ app()->getLocale() }}-BO', {day:'2-digit',month:'long',year:'numeric'});
         document.getElementById('vpBtnEliminar').dataset.id = id;
         document.getElementById('vpBtnEditar').dataset.id  = id;
-        document.getElementById('vpProyectosList').innerHTML = '<div class="vp-empty">Cargando proyectos...</div>';
+        document.getElementById('vpProyectosList').innerHTML = '<div class="vp-empty">' + _t.cargando + '</div>';
         document.getElementById('modalVerPortafolio').classList.add('open');
         try {
             const res  = await fetch('/portafolio-proyecto/portafolio/' + id);
             const json = await res.json();
             if (json.ok) vpRenderProyectos(json.proyectos, id);
-            else document.getElementById('vpProyectosList').innerHTML = '<div class="vp-empty">Error al cargar proyectos.</div>';
+            else document.getElementById('vpProyectosList').innerHTML = '<div class="vp-empty">' + _t.error_cargar + '</div>';
         } catch(e) {
-            document.getElementById('vpProyectosList').innerHTML = '<div class="vp-empty">Error al cargar proyectos.</div>';
+            document.getElementById('vpProyectosList').innerHTML = '<div class="vp-empty">' + _t.error_cargar + '</div>';
         }
     }
     function vpCerrar() {
@@ -602,9 +669,9 @@
         vpConfirm({
             ico: '<path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>',
             danger: true,
-            title: '¿Eliminar portafolio?',
-            desc: 'Esta acción no se puede deshacer. Se eliminarán todos los archivos adjuntos.',
-            btnText: 'Sí, eliminar',
+            title: _t.conf_elim_pf_titulo,
+            desc:  _t.conf_elim_pf_desc,
+            btnText: _t.si_eliminar,
             onConfirm: () => vpEliminar(id),
         });
     }
@@ -613,9 +680,9 @@
         try {
             const res  = await fetch('/mis-portafolios/' + id, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': token } });
             const text = await res.text();
-            let json; try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
+            let json; try { json = JSON.parse(text); } catch(_) { throw new Error(_t.err_servidor + ' (' + res.status + ')'); }
             if (json.ok) { vpCerrar(); location.reload(); return; }
-            alert('Error al eliminar el portafolio.');
+            alert(_t.err_elim_pf);
         } catch(err) { alert(err.message); }
     }
 
@@ -636,14 +703,14 @@
         document.getElementById('epDescCount').textContent = (p.descripcion || '').length;
         epBannerFile = null;
         epLogoFile   = null;
-        if (p.banner_ruta) {
-            document.getElementById('epBannerPreview').src = '/storage/' + p.banner_ruta;
+        if (p.banner_url) {
+            document.getElementById('epBannerPreview').src = p.banner_url;
             document.getElementById('epBannerPreview').style.display = 'block';
             document.getElementById('epBannerPlaceholder').style.display = 'none';
             document.getElementById('epBannerZone').classList.add('has-img');
         } else { epQuitarImg('banner'); }
-        if (p.logo_ruta) {
-            document.getElementById('epLogoPreview').src = '/storage/' + p.logo_ruta;
+        if (p.logo_url) {
+            document.getElementById('epLogoPreview').src = p.logo_url;
             document.getElementById('epLogoPreview').style.display = 'block';
             document.getElementById('epLogoPlaceholder').style.display = 'none';
             document.getElementById('epLogoZone').classList.add('has-img');
@@ -661,9 +728,9 @@
     }
     function epHandleImg(tipo, file) {
         if (!file) return;
-        if (!file.type.match(/image\/(png|jpe?g)/)) { alert('Solo se aceptan imágenes PNG o JPG.'); return; }
+        if (!file.type.match(/image\/(png|jpe?g)/)) { alert(_t.solo_png_jpg); return; }
         const maxBytes = tipo === 'banner' ? 5 * 1024 * 1024 : 2 * 1024 * 1024;
-        if (file.size > maxBytes) { alert('La imagen supera el límite de ' + (tipo === 'banner' ? '5' : '2') + ' MB.'); return; }
+        if (file.size > maxBytes) { alert(tipo === 'banner' ? _t.limite_banner : _t.limite_logo); return; }
         if (tipo === 'banner') epBannerFile = file; else epLogoFile = file;
         const preview     = document.getElementById(tipo === 'banner' ? 'epBannerPreview' : 'epLogoPreview');
         const placeholder = document.getElementById(tipo === 'banner' ? 'epBannerPlaceholder' : 'epLogoPlaceholder');
@@ -703,9 +770,9 @@
         if (!valid) return;
         vpConfirm({
             ico: '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v14a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>',
-            danger: false, title: '¿Guardar cambios?',
-            desc: 'Se actualizará la información del portafolio.',
-            btnText: 'Sí, guardar', onConfirm: () => epGuardar(estado),
+            danger: false, title: _t.conf_guardar_titulo,
+            desc: _t.conf_guardar_desc_pf,
+            btnText: _t.si_guardar, onConfirm: () => epGuardar(estado),
         });
     }
     async function epGuardar(estado) {
@@ -721,21 +788,20 @@
         const btnB = document.getElementById('epBtnBorrador');
         const btnP = document.getElementById('epBtnPublicar');
         btnB.disabled = btnP.disabled = true;
-        btnP.innerHTML = 'Guardando...';
+        btnP.innerHTML = _t.guardando;
         try {
             const res  = await fetch('/mis-portafolios/' + id, { method: 'POST', body: form });
             const text = await res.text();
-            let json; try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
+            let json; try { json = JSON.parse(text); } catch(_) { throw new Error(_t.err_servidor + ' (' + res.status + ')'); }
             if (json.ok) { epCerrar(); location.reload(); return; }
-            const msg = json.errors ? Object.values(json.errors).flat().join('\n') : 'Error al guardar.';
+            const msg = json.errors ? Object.values(json.errors).flat().join('\n') : _t.err_guardar;
             alert(msg);
         } catch(err) { alert(err.message); }
         btnB.disabled = btnP.disabled = false;
-        btnP.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> Guardar cambios';
+        btnP.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> ' + _t.guardar_cambios;
     }
 
     /* ══ MODAL 1 · Añadir Proyecto ══ */
-
     function abrirModalPortafolio() {
         mpReset();
         document.getElementById('modalPortafolio').classList.add('open');
@@ -773,20 +839,49 @@
             const el = document.getElementById(id); if (el) el.style.display = 'none';
         });
         document.getElementById('mpDescCount').textContent = '0';
-        // Poblar selector de portafolios desde VP_DATA
         const sel = document.getElementById('mpPortafolioId');
-        sel.innerHTML = '<option value="">— Elige un portafolio —</option>';
+        sel.innerHTML = '<option value="">' + _t.elige_portafolio_opt + '</option>';
         VP_DATA.forEach(p => {
             const opt = document.createElement('option');
             opt.value = p.id;
-            opt.textContent = p.nombre + (p.estado === 'publicado' ? '' : ' (borrador)');
+            opt.textContent = p.nombre + (p.estado === 'publicado' ? '' : ' (' + _t.borrador + ')');
             sel.appendChild(opt);
         });
         mpFiles = [];
         document.getElementById('mpFlist').innerHTML = '';
         const fi = document.getElementById('mpFileInput');
         if (fi) fi.value = '';
+        mpQuitarBanner();
         mpCheckBtns();
+    }
+    function mpHandleImgBanner(file) {
+        if (!file) return;
+        if (!file.type.match(/image\/(png|jpe?g)/)) { alert('Solo PNG o JPG.'); return; }
+        if (file.size > 5 * 1024 * 1024) { alert('La imagen supera el límite de 5 MB.'); return; }
+        mpBannerFile = file;
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById('mpBannerPreview').src = e.target.result;
+            document.getElementById('mpBannerPreview').style.display = 'block';
+            document.getElementById('mpBannerPlaceholder').style.display = 'none';
+            document.getElementById('mpBannerZone').classList.add('has-img');
+        };
+        reader.readAsDataURL(file);
+    }
+    function mpQuitarBanner() {
+        mpBannerFile = null;
+        const prev = document.getElementById('mpBannerPreview');
+        const ph   = document.getElementById('mpBannerPlaceholder');
+        const zone = document.getElementById('mpBannerZone');
+        const inp  = document.getElementById('mpBannerInput');
+        if (prev) { prev.src = ''; prev.style.display = 'none'; }
+        if (ph)   ph.style.display = '';
+        if (zone) zone.classList.remove('has-img');
+        if (inp)  inp.value = '';
+    }
+    function mpDragLeaveBanner(event) {
+        const zone = document.getElementById('mpBannerZone');
+        if (!zone.querySelector('img')?.src) zone.classList.remove('has-img');
     }
     function mpCheckBtns() {
         const ok = document.getElementById('mpPortafolioId').value !== '' &&
@@ -829,23 +924,15 @@
     }
     function pfHandleImg(tipo, file) {
         if (!file) return;
-        if (!file.type.match(/image\/(png|jpe?g)/)) {
-            alert('Solo se aceptan imágenes PNG o JPG.');
-            return;
-        }
+        if (!file.type.match(/image\/(png|jpe?g)/)) { alert(_t.solo_png_jpg); return; }
         const maxBytes = tipo === 'banner' ? 5 * 1024 * 1024 : 2 * 1024 * 1024;
-        if (file.size > maxBytes) {
-            alert('La imagen supera el límite de ' + (tipo === 'banner' ? '5' : '2') + ' MB.');
-            return;
-        }
+        if (file.size > maxBytes) { alert(tipo === 'banner' ? _t.limite_banner : _t.limite_logo); return; }
         if (tipo === 'banner') pfBannerFile = file;
         else                   pfLogoFile   = file;
-
         const reader   = new FileReader();
         const preview  = document.getElementById(tipo === 'banner' ? 'pfBannerPreview' : 'pfLogoPreview');
         const placeholder = document.getElementById(tipo === 'banner' ? 'pfBannerPlaceholder' : 'pfLogoPlaceholder');
         const zone     = document.getElementById(tipo === 'banner' ? 'pfBannerZone' : 'pfLogoZone');
-
         reader.onload = e => {
             preview.src          = e.target.result;
             preview.style.display = 'block';
@@ -892,7 +979,6 @@
             document.getElementById('pfDesc').classList.remove('mp-invalid');
         }
         if (!valid) return;
-
         const form = new FormData();
         form.append('nombre',      nombre);
         form.append('descripcion', desc);
@@ -900,24 +986,21 @@
         form.append('_token',      document.querySelector('meta[name="csrf-token"]').content);
         if (pfBannerFile) form.append('banner', pfBannerFile);
         if (pfLogoFile)   form.append('logo',   pfLogoFile);
-
         const btnB = document.getElementById('pfBtnBorrador');
         const btnP = document.getElementById('pfBtnPublicar');
         btnB.disabled = btnP.disabled = true;
-        btnP.innerHTML = 'Guardando...';
-
+        btnP.innerHTML = _t.guardando;
         try {
             const res  = await fetch('/portafolios', { method: 'POST', body: form });
             const text = await res.text();
             let json;
-            try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
+            try { json = JSON.parse(text); } catch(_) { throw new Error(_t.err_servidor + ' (' + res.status + ')'); }
             if (json.ok) { pfCerrar(); location.reload(); return; }
-            const msg = json.errors ? Object.values(json.errors).flat().join('\n') : 'Error al guardar.';
+            const msg = json.errors ? Object.values(json.errors).flat().join('\n') : _t.err_guardar;
             alert(msg);
         } catch(err) { alert(err.message); }
-
         btnB.disabled = btnP.disabled = false;
-        btnP.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> Publicar portafolio';
+        btnP.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> ' + _t.btn_publicar;
     }
 
     async function mpGuardar(estado) {
@@ -948,15 +1031,16 @@
         form.append('repositorio_url', document.getElementById('mpRepo').value.trim());
         form.append('deploy_url',      document.getElementById('mpDeploy').value.trim());
         form.append('_token',          document.querySelector('meta[name="csrf-token"]').content);
+        if (mpBannerFile) form.append('banner', mpBannerFile);
         const btnB = document.getElementById('mpBtnBorrador');
         const btnP = document.getElementById('mpBtnPublicar');
         btnB.disabled = btnP.disabled = true;
-        btnP.innerHTML = 'Guardando...';
+        btnP.innerHTML = _t.guardando;
         try {
             const res  = await fetch('/portafolio-proyecto', { method: 'POST', body: form });
             const text = await res.text();
             let json;
-            try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
+            try { json = JSON.parse(text); } catch(_) { throw new Error(_t.err_servidor + ' (' + res.status + ')'); }
             if (json.ok) {
                 if (mpFiles.length > 0) {
                     const token2 = document.querySelector('meta[name="csrf-token"]').content;
@@ -970,17 +1054,17 @@
                 location.reload();
                 return;
             }
-            const msg = json.errors ? Object.values(json.errors).flat().join('\n') : 'Error al guardar.';
+            const msg = json.errors ? Object.values(json.errors).flat().join('\n') : _t.err_guardar;
             alert(msg);
         } catch(err) { alert(err.message); }
         btnB.disabled = btnP.disabled = false;
-        btnP.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> Añadir proyecto';
+        btnP.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> ' + _t.btn_anadir_proyecto;
     }
 
     /* ══ Archivos en Modal 1 ══ */
     function mpHandleFiles(files) {
         for (const f of files) {
-            if (f.size > 20 * 1024 * 1024) { alert('"' + f.name + '" supera el límite de 20 MB.'); continue; }
+            if (f.size > 20 * 1024 * 1024) { alert('"' + f.name + '" ' + _t.limite_archivo); continue; }
             mpFiles.push(f);
         }
         mpRenderFlist();
@@ -1006,7 +1090,7 @@
         if (proyectos) proyectos.forEach(p => { vpProyectosCache[p.id] = p; });
         const container = document.getElementById('vpProyectosList');
         if (!proyectos || !proyectos.length) {
-            container.innerHTML = '<div class="vp-empty">Sin proyectos aún. Usa &ldquo;Añadir Proyecto&rdquo; para crear uno.</div>';
+            container.innerHTML = '<div class="vp-empty">' + _t.sin_proyectos + '</div>';
             return;
         }
         container.innerHTML = proyectos.map(proj => vpRenderProjCard(proj)).join('');
@@ -1016,7 +1100,7 @@
         const portafolioId = vpPortafolioIdActual;
         const archivosHtml = proj.archivos && proj.archivos.length
             ? '<div class="vp-proj-files">' + proj.archivos.map(a => {
-                const delBtn = '<button class="vp-file-del" onclick="vpEliminarArchivo(' + a.id + ')" title="Eliminar">' +
+                const delBtn = '<button class="vp-file-del" onclick="vpConfirmarEliminarArchivo(' + a.id + ')" title="' + _t.eliminar + '">' +
                     '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
                 if (esImagen(a.nombre_original)) {
                     return '<div class="vp-img-preview" id="vf-' + a.id + '">' +
@@ -1035,7 +1119,7 @@
                     '<span class="vp-file-size">' + fmtSize(a.tamanio) + '</span>' +
                     delBtn + '</div>';
             }).join('') + '</div>'
-            : '<div class="vp-proj-no-files">Sin archivos adjuntos</div>';
+            : '<div class="vp-proj-no-files">' + _t.sin_archivos + '</div>';
         const vinculosHtml = (proj.repositorio_url || proj.deploy_url)
             ? '<div class="vp-proj-links">' +
               (proj.repositorio_url ? '<a href="' + proj.repositorio_url + '" target="_blank" rel="noopener" class="vp-proj-link vp-proj-link-gh">' +
@@ -1046,20 +1130,24 @@
               'Deploy</a>' : '') +
               '</div>'
             : '';
+        const bannerHtml = proj.banner_url
+            ? '<div class="vp-proj-banner"><img src="' + proj.banner_url + '" alt=""></div>'
+            : '';
         return '<div class="vp-proj-card" id="proj-card-' + proj.id + '">' +
+            bannerHtml +
             '<div class="vp-proj-head">' +
             '<div><div class="vp-proj-name">' + escHtml(proj.nombre) + '</div>' +
             '<div class="vp-proj-desc">' + escHtml(proj.descripcion || '') + '</div></div>' +
-            '<span class="vp-badge ' + proj.estado + '">' + (proj.estado === 'publicado' ? 'Publicado' : 'Borrador') + '</span>' +
+            '<span class="vp-badge ' + proj.estado + '">' + (proj.estado === 'publicado' ? _t.publicado : _t.borrador) + '</span>' +
             '</div>' + vinculosHtml + archivosHtml +
             '<label class="vp-proj-add-file">' +
             '<input type="file" multiple accept="image/*,.zip,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" style="display:none" ' +
             'onchange="vpAgregarArchivos(' + proj.id + ',' + portafolioId + ',this)">' +
-            '<span>+ Subir archivos</span>' +
+            '<span>+ ' + _t.subir_archivos + '</span>' +
             '</label>' +
             '<div class="vp-proj-actions">' +
-            '<button class="vp-proj-btn-edit" onclick="vpEditarProyecto(' + proj.id + ')">Editar</button>' +
-            '<button class="vp-proj-btn-del2" onclick="vpConfirmarEliminarProyecto(' + proj.id + ')">Eliminar</button>' +
+            '<button class="vp-proj-btn-edit" onclick="vpEditarProyecto(' + proj.id + ')">' + _t.editar + '</button>' +
+            '<button class="vp-proj-btn-del2" onclick="vpConfirmarEliminarProyecto(' + proj.id + ')">' + _t.eliminar + '</button>' +
             '</div></div>';
     }
 
@@ -1068,26 +1156,55 @@
         if (!proj) return;
         const card = document.getElementById('proj-card-' + id);
         if (!card) return;
+        const bannerActual = proj.banner_url
+            ? '<img src="' + proj.banner_url + '" style="width:100%;height:80px;object-fit:cover;border-radius:6px;display:block;margin-bottom:6px">'
+            : '';
         card.innerHTML =
             '<div class="vp-proj-edit-form">' +
+            '<div>' + bannerActual +
+            '<label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:var(--blue);font-size:12px;font-weight:600">' +
+            '<input type="file" id="vpe-banner-' + id + '" accept="image/png,image/jpeg,image/jpg" style="display:none" ' +
+            'onchange="vpHandleEditBanner(' + id + ',this.files[0])">' +
+            '<svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>' +
+            (proj.banner_url ? 'Cambiar banner' : 'Subir banner') +
+            '</label></div>' +
             '<input class="vp-proj-edit-input" id="vpe-nombre-' + id + '" type="text" maxlength="100" ' +
-            'placeholder="Nombre del proyecto" value="' + escHtml(proj.nombre) + '">' +
+            'placeholder="' + _t.nombre_proyecto + '" value="' + escHtml(proj.nombre) + '">' +
             '<textarea class="vp-proj-edit-input vp-proj-edit-textarea" id="vpe-desc-' + id + '" maxlength="500" ' +
-            'placeholder="Descripción">' + escHtml(proj.descripcion || '') + '</textarea>' +
+            'placeholder="' + _t.descripcion + '">' + escHtml(proj.descripcion || '') + '</textarea>' +
             '<div class="vp-proj-edit-url-wrap">' +
             '<input class="vp-proj-edit-input" id="vpe-repo-' + id + '" type="text" maxlength="500" ' +
-            'placeholder="GitHub URL (opcional)" value="' + escHtml(proj.repositorio_url || '') + '">' +
+            'placeholder="GitHub URL (' + _t.opcional + ')" value="' + escHtml(proj.repositorio_url || '') + '">' +
             '<input class="vp-proj-edit-input" id="vpe-deploy-' + id + '" type="text" maxlength="500" ' +
-            'placeholder="Deploy URL (opcional)" value="' + escHtml(proj.deploy_url || '') + '">' +
+            'placeholder="Deploy URL (' + _t.opcional + ')" value="' + escHtml(proj.deploy_url || '') + '">' +
             '</div>' +
             '<select class="vp-proj-edit-input" id="vpe-estado-' + id + '">' +
-            '<option value="borrador"' + (proj.estado === 'borrador' ? ' selected' : '') + '>Borrador</option>' +
-            '<option value="publicado"' + (proj.estado === 'publicado' ? ' selected' : '') + '>Publicado</option>' +
+            '<option value="borrador"' + (proj.estado === 'borrador' ? ' selected' : '') + '>' + _t.borrador + '</option>' +
+            '<option value="publicado"' + (proj.estado === 'publicado' ? ' selected' : '') + '>' + _t.publicado + '</option>' +
             '</select>' +
             '<div class="vp-proj-edit-btns">' +
-            '<button class="vp-proj-btn-del2" style="flex:1" onclick="vpCancelarEditarProyecto(' + id + ')">Cancelar</button>' +
-            '<button class="vp-proj-btn-edit" style="flex:2" onclick="vpConfirmarGuardarProyecto(' + id + ')">Guardar cambios</button>' +
+            '<button class="vp-proj-btn-del2" onclick="vpCancelarEditarProyecto(' + id + ')">' + _t.cancelar + '</button>' +
+            '<button class="vp-proj-btn-edit" onclick="vpConfirmarGuardarProyecto(' + id + ')">' + _t.guardar_cambios + '</button>' +
             '</div></div>';
+    }
+
+    const _vpEditBannerFiles = {};
+    function vpHandleEditBanner(id, file) {
+        if (!file) return;
+        if (!file.type.match(/image\/(png|jpe?g)/)) { alert('Solo PNG o JPG.'); return; }
+        if (file.size > 5 * 1024 * 1024) { alert('Máx. 5 MB.'); return; }
+        _vpEditBannerFiles[id] = file;
+        const reader = new FileReader();
+        reader.onload = e => {
+            let preview = document.querySelector('#proj-card-' + id + ' .vp-proj-edit-form img');
+            if (!preview) {
+                preview = document.createElement('img');
+                preview.style.cssText = 'width:100%;height:80px;object-fit:cover;border-radius:6px;display:block;margin-bottom:6px';
+                document.querySelector('#proj-card-' + id + ' .vp-proj-edit-form div').prepend(preview);
+            }
+            preview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
     }
 
     function vpCancelarEditarProyecto(id) {
@@ -1101,17 +1218,17 @@
     function vpConfirmarGuardarProyecto(id) {
         const nombre = (document.getElementById('vpe-nombre-' + id) || {}).value?.trim();
         const desc   = (document.getElementById('vpe-desc-'   + id) || {}).value?.trim();
-        if (!nombre || !desc) { alert('El nombre y la descripción son obligatorios.'); return; }
+        if (!nombre || !desc) { alert(_t.err_nombre_desc); return; }
         const repo   = (document.getElementById('vpe-repo-'   + id) || {}).value?.trim();
         const deploy = (document.getElementById('vpe-deploy-' + id) || {}).value?.trim();
-        if (repo   && !/^https?:\/\/.+\..+/.test(repo))   { alert('La URL del repositorio no es válida.'); return; }
-        if (deploy && !/^https?:\/\/.+\..+/.test(deploy)) { alert('La URL de deploy no es válida.'); return; }
+        if (repo   && !/^https?:\/\/.+\..+/.test(repo))   { alert(_t.err_url_repo); return; }
+        if (deploy && !/^https?:\/\/.+\..+/.test(deploy)) { alert(_t.err_url_deploy); return; }
         const estado = document.getElementById('vpe-estado-' + id).value;
         vpConfirm({
             ico: '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v14a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>',
-            danger: false, title: '¿Guardar cambios?',
-            desc: 'Se actualizará la información del proyecto.',
-            btnText: 'Sí, guardar', onConfirm: () => vpGuardarProyecto(id, estado),
+            danger: false, title: _t.conf_guardar_titulo,
+            desc: _t.conf_guardar_desc_proj,
+            btnText: _t.si_guardar, onConfirm: () => vpGuardarProyecto(id, estado),
         });
     }
 
@@ -1128,17 +1245,18 @@
         form.append('repositorio_url', repo);
         form.append('deploy_url',      deploy);
         form.append('_token',          token);
+        if (_vpEditBannerFiles[id]) { form.append('banner', _vpEditBannerFiles[id]); delete _vpEditBannerFiles[id]; }
         try {
             const res  = await fetch('/portafolio-proyecto/' + id, { method: 'POST', body: form });
             const text = await res.text();
-            let json; try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
+            let json; try { json = JSON.parse(text); } catch(_) { throw new Error(_t.err_servidor + ' (' + res.status + ')'); }
             if (json.ok) {
                 const r2 = await fetch('/portafolio-proyecto/portafolio/' + vpPortafolioIdActual);
                 const j2 = await r2.json();
                 if (j2.ok) vpRenderProyectos(j2.proyectos, vpPortafolioIdActual);
                 return;
             }
-            const msg = json.errors ? Object.values(json.errors).flat().join('\n') : 'Error al guardar.';
+            const msg = json.errors ? Object.values(json.errors).flat().join('\n') : _t.err_guardar;
             alert(msg);
         } catch(err) { alert(err.message); }
     }
@@ -1148,9 +1266,9 @@
         vpConfirm({
             ico: '<path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>',
             danger: true,
-            title: '¿Eliminar proyecto?',
-            desc: 'Se eliminará "' + (proj ? escHtml(proj.nombre) : 'este proyecto') + '" y todos sus archivos. Esta acción no se puede deshacer.',
-            btnText: 'Sí, eliminar',
+            title: _t.conf_elim_proj_titulo,
+            desc: _t.conf_elim_proj_desc.replace(':nombre', proj ? escHtml(proj.nombre) : ''),
+            btnText: _t.si_eliminar,
             onConfirm: () => vpEliminarProyecto(id),
         });
     }
@@ -1160,29 +1278,39 @@
         try {
             const res  = await fetch('/portafolio-proyecto/' + id, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': token } });
             const text = await res.text();
-            let json; try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
+            let json; try { json = JSON.parse(text); } catch(_) { throw new Error(_t.err_servidor + ' (' + res.status + ')'); }
             if (json.ok) {
                 delete vpProyectosCache[id];
                 const card = document.getElementById('proj-card-' + id);
                 if (card) card.remove();
                 if (!Object.keys(vpProyectosCache).length) {
-                    document.getElementById('vpProyectosList').innerHTML = '<div class="vp-empty">Sin proyectos aún. Usa &ldquo;Añadir Proyecto&rdquo; para crear uno.</div>';
+                    document.getElementById('vpProyectosList').innerHTML = '<div class="vp-empty">' + _t.sin_proyectos + '</div>';
                 }
                 return;
             }
-            alert('Error al eliminar el proyecto.');
+            alert(_t.err_elim_proj);
         } catch(err) { alert(err.message); }
     }
 
+    function vpConfirmarEliminarArchivo(id) {
+        vpConfirm({
+            ico: '<path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>',
+            danger: true,
+            title: _t.conf_elim_archivo_titulo,
+            desc: _t.conf_elim_archivo_desc,
+            btnText: _t.si_eliminar,
+            onConfirm: () => vpEliminarArchivo(id),
+        });
+    }
+
     async function vpEliminarArchivo(id) {
-        if (!confirm('¿Eliminar este archivo?')) return;
         const token = document.querySelector('meta[name="csrf-token"]').content;
         try {
             const res  = await fetch('/portafolio-archivos/' + id, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': token } });
             const json = await res.json();
             if (json.ok) { const el = document.getElementById('vf-' + id); if (el) el.remove(); }
-            else alert('No se pudo eliminar el archivo.');
-        } catch(e) { alert('Error al eliminar.'); }
+            else alert(_t.err_elim_archivo);
+        } catch(e) { alert(_t.err_elim_archivo); }
     }
 
     async function vpAgregarArchivos(proyectoId, portafolioId, input) {
@@ -1190,7 +1318,7 @@
         const MAX = 20 * 1024 * 1024;
         for (const f of input.files) {
             if (f.size > MAX) {
-                alert('"' + f.name + '" supera el límite de 20 MB.');
+                alert('"' + f.name + '" ' + _t.limite_archivo);
                 input.value = '';
                 return;
             }
@@ -1204,13 +1332,13 @@
             const res  = await fetch('/portafolio-archivos', { method: 'POST', body: form });
             const text = await res.text();
             let json;
-            try { json = JSON.parse(text); } catch(_) { throw new Error('Error del servidor (' + res.status + ')'); }
+            try { json = JSON.parse(text); } catch(_) { throw new Error(_t.err_servidor + ' (' + res.status + ')'); }
             if (json.ok) {
                 const r2 = await fetch('/portafolio-proyecto/portafolio/' + portafolioId);
                 const j2 = await r2.json();
                 if (j2.ok) vpRenderProyectos(j2.proyectos, portafolioId);
             } else {
-                const msg = json.errors ? Object.values(json.errors).flat().join('\n') : (json.message || 'Error al subir archivos.');
+                const msg = json.errors ? Object.values(json.errors).flat().join('\n') : (json.message || _t.err_guardar);
                 alert(msg);
             }
         } catch(e) { alert(e.message); }
@@ -1229,4 +1357,3 @@
         return /\.(png|jpe?g|gif|webp|svg)$/i.test(nombre);
     }
 </script>
-

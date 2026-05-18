@@ -31,50 +31,58 @@
     </div>
 
     {{-- ── Nav central ── --}}
+    @if (!request()->routeIs('admin') && !request()->is('admin*'))
     <nav class="tb-nav">
 
         <a href="#"
             onclick="spaNav('inicio'); return false;"
+            data-nav="inicio"
+            class="tb-nav-link"
             style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
-                text-decoration:none;transition:color .2s;"
-            onmouseover="this.style.color='#fff'"
-            onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                text-decoration:none;transition:color .25s,text-shadow .25s;
+                padding:4px 2px;position:relative;">
             {{ __('app.nav.inicio') }}
         </a>
 
         <a href="#"
             onclick="spaNav('caracteristicas'); return false;"
+            data-nav="caracteristicas"
+            class="tb-nav-link"
             style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
-                text-decoration:none;transition:color .2s;"
-            onmouseover="this.style.color='#fff'"
-            onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                text-decoration:none;transition:color .25s,text-shadow .25s;
+                padding:4px 2px;position:relative;">
             {{ __('app.nav.caracteristicas') }}
         </a>
 
         <a href="#"
             onclick="spaNav('portafolios'); return false;"
+            data-nav="portafolios"
+            class="tb-nav-link"
             style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
-                text-decoration:none;transition:color .2s;"
-            onmouseover="this.style.color='#fff'"
-            onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                text-decoration:none;transition:color .25s,text-shadow .25s;
+                padding:4px 2px;position:relative;">
             {{ __('app.nav.portafolios') }}
         </a>
 
         <a href="#"
             onclick="spaNav('explorador'); return false;"
+            data-nav="explorador"
+            class="tb-nav-link"
             style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
-                text-decoration:none;transition:color .2s;"
-            onmouseover="this.style.color='#fff'"
-            onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                text-decoration:none;transition:color .25s,text-shadow .25s;
+                padding:4px 2px;position:relative;">
             {{ __('app.nav.explorador') }}
         </a>
 
     </nav>
+    @endif
 
     {{-- ── Lado derecho ── --}}
     <div class="tb-right" style="display:flex;align-items:center;gap:12px;">
 
-        {{-- ── Selector de idioma ── --}}
+        {{-- ══════════════════════════════════════════════
+             SELECTOR DE IDIOMA — cambio SPA sin reload visible
+        ══════════════════════════════════════════════ --}}
         <div style="position:relative;" id="lang-wrap">
 
             <button onclick="langToggle()"
@@ -85,8 +93,8 @@
                     font-family:'DM Sans',sans-serif;font-size:13px;color:#fff;font-weight:500;"
                 onmouseover="this.style.background='rgba(255,255,255,0.14)'"
                 onmouseout="this.style.background='rgba(255,255,255,0.08)'">
-                <span>{{ $flags[$currentLang] ?? '🇪🇸' }}</span>
-                <span>{{ $labels[$currentLang] ?? 'ES' }}</span>
+                <span id="lang-flag">{{ $flags[$currentLang] ?? '🇪🇸' }}</span>
+                <span id="lang-label">{{ $labels[$currentLang] ?? 'ES' }}</span>
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M19 9l-7 7-7-7"/>
                 </svg>
@@ -98,37 +106,38 @@
                     box-shadow:0 8px 30px rgba(0,0,0,0.18);
                     border:1px solid #e2e8f0;overflow:hidden;z-index:9999;">
 
-                <a href="{{ route('lang.switch', 'es') }}"
-                    style="display:flex;align-items:center;gap:10px;padding:10px 14px;
-                        font-size:13px;font-family:'DM Sans',sans-serif;
-                        color:#1e293b;text-decoration:none;
+                <button onclick="cambiarIdioma('es', '🇪🇸', 'ES')"
+                    style="display:flex;align-items:center;gap:10px;padding:10px 14px;width:100%;
+                        font-size:13px;font-family:'DM Sans',sans-serif;border:none;cursor:pointer;
+                        color:#1e293b;text-align:left;
                         background:{{ $currentLang === 'es' ? '#eff6ff' : '#fff' }};"
                     onmouseover="this.style.background='#f1f5f9'"
                     onmouseout="this.style.background='{{ $currentLang === 'es' ? '#eff6ff' : '#fff' }}'">
                     <span style="font-size:18px;">🇪🇸</span> Español
-                </a>
+                </button>
 
-                <a href="{{ route('lang.switch', 'en') }}"
-                    style="display:flex;align-items:center;gap:10px;padding:10px 14px;
-                        font-size:13px;font-family:'DM Sans',sans-serif;
-                        color:#1e293b;text-decoration:none;
+                <button onclick="cambiarIdioma('en', '🇬🇧', 'EN')"
+                    style="display:flex;align-items:center;gap:10px;padding:10px 14px;width:100%;
+                        font-size:13px;font-family:'DM Sans',sans-serif;border:none;cursor:pointer;
+                        color:#1e293b;text-align:left;
                         background:{{ $currentLang === 'en' ? '#eff6ff' : '#fff' }};"
                     onmouseover="this.style.background='#f1f5f9'"
                     onmouseout="this.style.background='{{ $currentLang === 'en' ? '#eff6ff' : '#fff' }}'">
                     <span style="font-size:18px;">🇬🇧</span> English
-                </a>
+                </button>
 
-                <a href="{{ route('lang.switch', 'fr') }}"
-                    style="display:flex;align-items:center;gap:10px;padding:10px 14px;
-                        font-size:13px;font-family:'DM Sans',sans-serif;
-                        color:#1e293b;text-decoration:none;
+                <button onclick="cambiarIdioma('fr', '🇫🇷', 'FR')"
+                    style="display:flex;align-items:center;gap:10px;padding:10px 14px;width:100%;
+                        font-size:13px;font-family:'DM Sans',sans-serif;border:none;cursor:pointer;
+                        color:#1e293b;text-align:left;
                         background:{{ $currentLang === 'fr' ? '#eff6ff' : '#fff' }};"
                     onmouseover="this.style.background='#f1f5f9'"
                     onmouseout="this.style.background='{{ $currentLang === 'fr' ? '#eff6ff' : '#fff' }}'">
                     <span style="font-size:18px;">🇫🇷</span> Français
-                </a>
+                </button>
             </div>
         </div>
+        {{-- /selector idioma --}}
 
         @auth
             {{-- ── Campanita ── --}}
@@ -235,36 +244,59 @@
                         </div>
                     </div>
 
-                    <div style="padding:6px;">
-                        <button onclick="if(typeof showView === 'function'){showView('perfil');cerrarNavMenu();}else{window.location.href='{{ url('/menu') }}'}"
-                            style="width:100%;display:flex;align-items:center;gap:10px;
-                                   padding:9px 12px;border-radius:8px;border:none;background:none;
-                                   cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
-                                   color:#1e293b;text-align:left;"
-                            onmouseover="this.style.background='#f1f5f9'"
-                            onmouseout="this.style.background='none'">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                 stroke="#64748b" stroke-width="2" stroke-linecap="round">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                <circle cx="12" cy="7" r="4"/>
-                            </svg>
-                            {{ __('app.nav.mi_perfil') }}
-                        </button>
+                    @if(auth()->user()->es_admin)
 
-                        <button onclick="if(typeof showView === 'function'){showView('reportes');cerrarNavMenu();}else{window.location.href='{{ url('/menu') }}'}"
-                            style="width:100%;display:flex;align-items:center;gap:10px;
-                                   padding:9px 12px;border-radius:8px;border:none;background:none;
-                                   cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
-                                   color:#1e293b;text-align:left;"
-                            onmouseover="this.style.background='#f1f5f9'"
-                            onmouseout="this.style.background='none'">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                 stroke="#64748b" stroke-width="2" stroke-linecap="round">
-                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                            </svg>
-                            {{ __('app.nav.reportes') }}
-                        </button>
-                    </div>
+                        <div style="padding:6px;">
+                            <a href="{{ route('admin') }}"
+                                style="width:100%;display:flex;align-items:center;gap:10px;
+                                       padding:9px 12px;border-radius:8px;
+                                       cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
+                                       color:#4f46e5;text-align:left;text-decoration:none;background:none;"
+                                onmouseover="this.style.background='#eef2ff'"
+                                onmouseout="this.style.background='none'">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                     stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                                    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                                </svg>
+                                {{ __('app.nav.panel_admin') }}
+                            </a>
+                        </div>
+
+                    @else
+
+                        <div style="padding:6px;">
+                            <button onclick="if(typeof showView === 'function'){showView('perfil');cerrarNavMenu();}else{window.location.href='{{ url('/menu') }}'}"
+                                style="width:100%;display:flex;align-items:center;gap:10px;
+                                       padding:9px 12px;border-radius:8px;border:none;background:none;
+                                       cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
+                                       color:#1e293b;text-align:left;"
+                                onmouseover="this.style.background='#f1f5f9'"
+                                onmouseout="this.style.background='none'">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                     stroke="#64748b" stroke-width="2" stroke-linecap="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                                {{ __('app.nav.mi_perfil') }}
+                            </button>
+
+                            <button onclick="if(typeof showView === 'function'){showView('reportes');cerrarNavMenu();}else{window.location.href='{{ url('/menu') }}'}"
+                                style="width:100%;display:flex;align-items:center;gap:10px;
+                                       padding:9px 12px;border-radius:8px;border:none;background:none;
+                                       cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;
+                                       color:#1e293b;text-align:left;"
+                                onmouseover="this.style.background='#f1f5f9'"
+                                onmouseout="this.style.background='none'">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                     stroke="#64748b" stroke-width="2" stroke-linecap="round">
+                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                                </svg>
+                                {{ __('app.nav.reportes') }}
+                            </button>
+                        </div>
+
+                    @endif
 
                     <div style="height:1px;background:#f1f5f9;margin:0 6px;"></div>
 
@@ -312,13 +344,84 @@
 
     </div>{{-- fin tb-right --}}
 
-    {{-- Solo JS para abrir/cerrar el panel, sin localStorage --}}
+    {{-- ══════════════════════════════════════════════
+         SCRIPTS DEL NAVBAR
+    ══════════════════════════════════════════════ --}}
     <script>
+        /* ── Abrir/cerrar panel de idioma ── */
         function langToggle() {
             const panel = document.getElementById('lang-panel');
             panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
         }
 
+        /* ══════════════════════════════════════════════
+           CAMBIO DE IDIOMA — SPA-like
+           1. Actualiza el botón visualmente al instante
+           2. Muestra overlay suave que oculta el reload
+           3. Guarda locale en sesión vía fetch
+           4. Recarga la página con el nuevo idioma
+        ══════════════════════════════════════════════ */
+        function cambiarIdioma(lang, flag, label) {
+            /* Cierra el panel */
+            document.getElementById('lang-panel').style.display = 'none';
+
+            /* Actualiza el botón del navbar al instante */
+            document.getElementById('lang-flag').textContent  = flag;
+            document.getElementById('lang-label').textContent = label;
+
+            /* Mensaje de carga según el idioma elegido */
+            const msgs = {
+                es: 'Cambiando idioma…',
+                en: 'Switching language…',
+                fr: 'Changement de langue…'
+            };
+
+            /* Overlay con blur que tapa el parpadeo del reload */
+            const overlay = document.createElement('div');
+            overlay.id = 'lang-loading-overlay';
+            overlay.style.cssText = [
+                'position:fixed;inset:0;z-index:99999;',
+                'background:rgba(15,23,42,0.35);',
+                'backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);',
+                'display:flex;align-items:center;justify-content:center;',
+                'opacity:0;transition:opacity .18s ease;',
+            ].join('');
+            overlay.innerHTML = `
+                <div style="background:#fff;border-radius:16px;padding:20px 32px;
+                            display:flex;align-items:center;gap:14px;
+                            box-shadow:0 12px 40px rgba(0,0,0,0.18);">
+                    <svg style="width:22px;height:22px;flex-shrink:0;
+                                animation:nb-spin .7s linear infinite;"
+                         viewBox="0 0 24 24" fill="none"
+                         stroke="#2563eb" stroke-width="2.5" stroke-linecap="round">
+                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83
+                                 M16.24 16.24l2.83 2.83M2 12h4M18 12h4
+                                 M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                    </svg>
+                    <span style="font-family:'DM Sans',sans-serif;font-size:14px;
+                                 font-weight:600;color:#1e293b;white-space:nowrap;">
+                        ${msgs[lang] ?? msgs.es}
+                    </span>
+                </div>`;
+            document.body.appendChild(overlay);
+
+            /* Fade-in del overlay */
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => { overlay.style.opacity = '1'; });
+            });
+
+            /* Guarda el locale en sesión y recarga */
+            fetch('{{ url("lang") }}/' + lang, {
+                method: 'GET',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .finally(() => {
+                /* Recarga en cuanto el servidor responda (con o sin error) */
+                window.location.reload();
+            });
+        }
+
+        /* ── Menú de usuario ── */
         function navUserToggle() {
             const menu = document.getElementById('navUserMenu');
             menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
@@ -328,7 +431,6 @@
             const menu = document.getElementById('navUserMenu');
             if (menu) menu.style.display = 'none';
         }
-
 
         function confirmarLogout() {
             document.getElementById('modalLogout').style.display = 'flex';
@@ -343,7 +445,47 @@
             document.getElementById('formLogoutGlobal').submit();
         }
 
-        // Cierra dropdowns al click fuera (solo UN listener)
+        /* ── Actualización en vivo del navbar tras guardar perfil ──
+           Llama esta función desde tu código de guardado de perfil:
+           actualizarNavbar('Juan', 'Pérez', 'https://supabase.../foto.jpg')
+           Si no hay foto nueva, pasa null como tercer argumento.
+        ── */
+        function actualizarNavbar(nombre, apellido, fotoUrl) {
+            /* Nombre en el botón del topbar */
+            const btnNombre = document.querySelector('#nav-user-wrap button > div > div:first-child');
+            if (btnNombre) btnNombre.textContent = nombre;
+
+            /* Nombre completo en el dropdown */
+            const dropNombre = document.querySelector(
+                '#navUserMenu div[style*="font-weight:700;color:#0f172a"]'
+            );
+            if (dropNombre) dropNombre.textContent = nombre + ' ' + apellido;
+
+            /* Avatar en el botón del topbar */
+            const avatarBtn = document.querySelector('#nav-user-wrap button .sb-av');
+            if (avatarBtn) {
+                avatarBtn.innerHTML = fotoUrl
+                    ? `<img src="${fotoUrl}" alt=""
+                           style="width:100%;height:100%;object-fit:cover;border-radius:50%"
+                           onerror="this.style.display='none'">`
+                    : (nombre || 'U').charAt(0).toUpperCase() +
+                      (apellido || '').charAt(0).toUpperCase();
+            }
+
+            /* Avatar en el dropdown */
+            const avatarDrop = document.querySelector(
+                '#navUserMenu div[style*="border-radius:50%;overflow:hidden"]'
+            );
+            if (avatarDrop) {
+                avatarDrop.innerHTML = fotoUrl
+                    ? `<img src="${fotoUrl}" alt=""
+                           style="width:100%;height:100%;object-fit:cover;">`
+                    : (nombre || 'U').charAt(0).toUpperCase() +
+                      (apellido || '').charAt(0).toUpperCase();
+            }
+        }
+
+        /* ── Cierra dropdowns al click fuera ── */
         document.addEventListener('click', function(e) {
             const userWrap = document.getElementById('nav-user-wrap');
             if (userWrap && !userWrap.contains(e.target)) cerrarNavMenu();
@@ -354,15 +496,47 @@
             }
         });
 
+        /* ── Marcar enlace activo con turquesa ── */
+        function setNavActivo(view) {
+            document.querySelectorAll('.tb-nav-link').forEach(el => {
+                el.classList.remove('nav-activo');
+                el.style.color = 'rgba(255,255,255,0.65)';
+            });
+            const activo = document.querySelector('.tb-nav-link[data-nav="' + view + '"]');
+            if (activo) {
+                activo.classList.add('nav-activo');
+                activo.style.color = '#2dd4bf';
+            }
+        }
+
+        /* ── Navegación SPA entre vistas ── */
         function spaNav(view) {
-            // Si existe showView (contexto menú autenticado), úsalo
-            if (typeof showView === 'function') {
-                if (view === 'inicio') view = 'menu';
-                showView(view);
+            setNavActivo(view);
+
+            const routes = {
+                'inicio':          '{{ url("/") }}',
+                'portafolios':     '{{ route("portafolios.index") }}',
+                'explorador':      '{{ route("explorador") }}',
+                'caracteristicas': '{{ route("caracteristicas") }}',
+            };
+
+            if (typeof esContextoAdmin !== 'undefined' && esContextoAdmin) {
+                const mapaAdmin = {
+                    'inicio':          'dashboard',
+                    'caracteristicas': 'caracteristicas',
+                    'portafolios':     'portafolios-menu',
+                    'explorador':      'explorador',
+                };
+                if (mapaAdmin[view]) mostrarVista(mapaAdmin[view]);
                 return;
             }
 
-            // Contexto home: mostrar/ocultar secciones SPA
+            if (typeof showView === 'function') {
+                const spaView = view === 'inicio' ? 'menu' : view;
+                showView(spaView);
+                return;
+            }
+
             const allViews = document.querySelectorAll('.spa-view');
             allViews.forEach(v => v.style.display = 'none');
 
@@ -370,33 +544,53 @@
             if (target) {
                 target.style.display = 'block';
             } else {
-                // Si la vista no existe en esta página, redirigir
-                const routes = {
-                    'inicio':         '{{ url("/") }}',
-                    'portafolios':    '{{ route("portafolios.index") }}',
-                    'explorador':     '{{ route("explorador") }}',
-                    'caracteristicas':'{{ route("caracteristicas") }}',
-                };
                 if (routes[view]) window.location.href = routes[view];
             }
 
-            // Actualizar estado activo en nav
-            document.querySelectorAll('.tb-nav a, .tb-nav button').forEach(el => {
-                el.style.color = 'rgba(255,255,255,0.65)';
-            });
-            event.currentTarget.style.color = '#fff';
         }
 
-        // Leer URL hash al cargar (deep linking)
-        document.addEventListener('DOMContentLoaded', function() {
+        /* ── Detección de sección activa ── */
+        function detectarNavActivo() {
+            const path = window.location.pathname;
             const hash = window.location.hash.replace('#', '');
+
+            let vistaActiva = 'inicio';
             if (hash && document.getElementById('view-' + hash)) {
-                spaNav(hash);
+                vistaActiva = hash;
+            } else if (path.includes('portafolios')) {
+                vistaActiva = 'portafolios';
+            } else if (path.includes('explorador')) {
+                vistaActiva = 'explorador';
+            } else if (path.includes('caracteristicas')) {
+                vistaActiva = 'caracteristicas';
             }
+
+            setNavActivo(vistaActiva);
+        }
+
+        /* ── Deep linking por hash ── */
+        document.addEventListener('DOMContentLoaded', function() {
+            /* Intento inmediato y un reintento por si el navbar se monta tarde */
+            detectarNavActivo();
+            setTimeout(detectarNavActivo, 50);
+            setTimeout(detectarNavActivo, 200);
         });
     </script>
 
-{{-- ── Modal Logout Global ── --}}
+    {{-- ── Keyframes para el spinner del cambio de idioma ── --}}
+    <style>
+        @keyframes nb-spin { to { transform: rotate(360deg); } }
+
+        /* ── Turquesa para el nav activo ── */
+        .tb-nav-link:hover {
+            color: #fff !important;
+        }
+        .tb-nav-link.nav-activo:hover {
+            color: #5eead4 !important;
+        }
+    </style>
+
+    {{-- ── Modal Logout Global ── --}}
     @auth
     <div id="modalLogout" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99999;align-items:center;justify-content:center;">
         <div style="background:#fff;border-radius:20px;padding:32px;width:90%;max-width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
@@ -426,7 +620,7 @@
                            font-family:'DM Sans',sans-serif;display:flex;align-items:center;
                            justify-content:center;gap:8px;">
                     <svg id="logoutSpinnerGlobal"
-                        style="display:none;width:16px;height:16px;animation:spin .7s linear infinite;"
+                        style="display:none;width:16px;height:16px;animation:nb-spin .7s linear infinite;"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                         <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
                     </svg>

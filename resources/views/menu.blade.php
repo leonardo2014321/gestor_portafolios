@@ -19,24 +19,24 @@
         {{-- ══ SIDEBAR ══ --}}
         <aside>
             <div class="sb-top">
-                <button class="sb-item active" id="btn-menu" onclick="showView('menu')">
-                    <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-                    <span>{{ __('app.menu.menu_principal') }}</span>
-                </button>
-                <div class="sb-div"></div>
-                <button id="btn-portafolios" class="sb-item" onclick="showView('portafolios')">
+                <div class="sb-label">{{ __('app.menu.menu_principal') }}</div>
+
+                <button id="btn-menu" class="sb-item active" onclick="showView('menu')">
                     <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
-                    <span>{{ __('app.menu.portafolios') }}</span>
+                    <span>{{ __('app.menu.mis_portafolios') }}</span>
                 </button>
+
                 <a href="{{ route('academico') }}" class="sb-item {{ request()->routeIs('academico') ? 'active' : '' }}">
                     <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
                     <span>{{ __('app.menu.academico') }}</span>
                 </a>
-                <button id="btn-reportes" class="sb-item" onclick="showView('reportes')" style="background:none;border-top:none;border-right:none;border-bottom:none;width:100%;text-align:left;">
+
+                <button id="btn-reportes" class="sb-item" onclick="showView('reportes')">
                     <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                     <span>{{ __('app.menu.reportes') }}</span>
                 </button>
-                <button id="btn-perfil" class="sb-item" onclick="showView('perfil')" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:inherit;">
+
+                <button id="btn-perfil" class="sb-item" onclick="showView('perfil')">
                     <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     <span>{{ __('app.menu.mi_perfil') }}</span>
                 </button>
@@ -130,6 +130,20 @@
 
     @include('components.layout.footer')
 
+    <!-- Modal para leer notificaciones -->
+<div id="modal-notificacion" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; max-width:500px; width:90%; max-height:80%; overflow:auto; padding:24px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h3 id="modal-titulo" style="margin:0; font-size:18px; color:#0f172a;">Título</h3>
+            <button onclick="cerrarModalNotificacion()" style="background:none; border:none; font-size:24px; cursor:pointer; color:#94a3b8;">&times;</button>
+        </div>
+        <div id="modal-mensaje" style="font-size:14px; line-height:1.6; color:#334155; white-space:pre-wrap; word-break:break-word;"></div>
+        <div style="margin-top:20px; text-align:right;">
+            <button onclick="cerrarModalNotificacion()" style="background:#2563eb; color:#fff; border:none; padding:8px 20px; border-radius:8px; cursor:pointer;">Cerrar</button>
+        </div>
+    </div>
+</div>
+
 </div>{{-- /app --}}
 
 {{-- ══ MODALES ══ --}}
@@ -185,17 +199,11 @@
     /* ── Marcar menú principal como activo al cargar ── */
     document.getElementById('btn-menu').classList.add('active');
 
-    /* ── Logout ── */
-    function confirmarLogout() {
-        document.getElementById('modalLogout').style.display = 'flex';
-    }
-    function ejecutarLogout(btn) {
-        btn.disabled = true;
-        document.getElementById('logoutSpinner').style.display = 'block';
-        document.getElementById('logoutBtnLabel').textContent = window.trans.cerrando;
-        btn.style.opacity = '0.85';
-        document.getElementById('formLogoutGlobal').submit();
-    }
+    /*
+     * LOGOUT: el modal y el spinner están definidos en navbar.blade.php.
+     * confirmarLogout() y ejecutarLogoutGlobal() vienen del navbar compartido,
+     * no hace falta redefinirlos aquí.
+     */
 
     /* ── CV / Reportes ──
        selectTemplate → cambia la plantilla visible
