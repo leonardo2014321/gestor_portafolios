@@ -29,15 +29,16 @@ class SupabaseStorageService
         $filename  = Str::uuid() . '.' . $extension;
         $path      = trim($folder, '/') . '/' . $filename;  // ej: perfil/uuid.jpg
 
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $this->key,
-            'apikey'        => $this->key,
-            'Content-Type'  => $file->getMimeType(),
-            'x-upsert'      => 'true',   // sobreescribe si ya existe el nombre
-        ])->withBody(
-            file_get_contents($file->getRealPath()),
-            $file->getMimeType()
-        )->post($this->storageUrl($path));
+        $response = Http::withOptions(['verify' => !app()->environment('local')])
+            ->withHeaders([
+                'Authorization' => 'Bearer ' . $this->key,
+                'apikey'        => $this->key,
+                'Content-Type'  => $file->getMimeType(),
+                'x-upsert'      => 'true',
+            ])->withBody(
+                file_get_contents($file->getRealPath()),
+                $file->getMimeType()
+            )->post($this->storageUrl($path));
 
         if ($response->failed()) {
             throw new \RuntimeException(
@@ -54,11 +55,12 @@ class SupabaseStorageService
      */
     public function delete(string $path): void
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $this->key,
-            'apikey'        => $this->key,
-            'Content-Type'  => 'application/json',
-        ])->delete($this->storageUrl($path));
+        $response = Http::withOptions(['verify' => !app()->environment('local')])
+            ->withHeaders([
+                'Authorization' => 'Bearer ' . $this->key,
+                'apikey'        => $this->key,
+                'Content-Type'  => 'application/json',
+            ])->delete($this->storageUrl($path));
 
         // 404 = ya no existía, lo ignoramos
         if ($response->failed() && $response->status() !== 404) {

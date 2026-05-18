@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Portafolio;
 
 use App\Http\Controllers\Controller;
 use App\Models\Portafolio;
+use App\Services\SupabaseStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class PortafolioController extends Controller
 {
+    public function __construct(private SupabaseStorageService $supabase) {}
+
     public function index()
     {
         return response()->json(
@@ -20,7 +22,6 @@ class PortafolioController extends Controller
         );
     }
 
-    // Crea un proyecto (sin archivos; los archivos van en portafolio_proyecto)
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -41,7 +42,6 @@ class PortafolioController extends Controller
         return response()->json(['ok' => true, 'portafolio' => $portafolio]);
     }
 
-    // Crea un portafolio contenedor con banner y logo
     public function storePortafolio(Request $request)
     {
         $data = $request->validate([
@@ -60,14 +60,18 @@ class PortafolioController extends Controller
         ]);
 
         if ($request->hasFile('banner')) {
-            $portafolio->banner_ruta = $request->file('banner')
-                ->store('portafolios/' . $portafolio->id . '/banner', 'public');
+            $portafolio->banner_ruta = $this->supabase->upload(
+                'portafolios/' . $portafolio->id . '/banner',
+                $request->file('banner')
+            );
             $portafolio->save();
         }
 
         if ($request->hasFile('logo')) {
-            $portafolio->logo_ruta = $request->file('logo')
-                ->store('portafolios/' . $portafolio->id . '/logo', 'public');
+            $portafolio->logo_ruta = $this->supabase->upload(
+                'portafolios/' . $portafolio->id . '/logo',
+                $request->file('logo')
+            );
             $portafolio->save();
         }
 
@@ -93,19 +97,19 @@ class PortafolioController extends Controller
         $portafolio->estado      = $data['estado'];
 
         if ($request->hasFile('banner')) {
-            if ($portafolio->banner_ruta) {
-                Storage::disk('public')->delete($portafolio->banner_ruta);
-            }
-            $portafolio->banner_ruta = $request->file('banner')
-                ->store('portafolios/' . $portafolio->id . '/banner', 'public');
+            if ($portafolio->banner_ruta) $this->supabase->delete($portafolio->banner_ruta);
+            $portafolio->banner_ruta = $this->supabase->upload(
+                'portafolios/' . $portafolio->id . '/banner',
+                $request->file('banner')
+            );
         }
 
         if ($request->hasFile('logo')) {
-            if ($portafolio->logo_ruta) {
-                Storage::disk('public')->delete($portafolio->logo_ruta);
-            }
-            $portafolio->logo_ruta = $request->file('logo')
-                ->store('portafolios/' . $portafolio->id . '/logo', 'public');
+            if ($portafolio->logo_ruta) $this->supabase->delete($portafolio->logo_ruta);
+            $portafolio->logo_ruta = $this->supabase->upload(
+                'portafolios/' . $portafolio->id . '/logo',
+                $request->file('logo')
+            );
         }
 
         $portafolio->save();
@@ -119,13 +123,8 @@ class PortafolioController extends Controller
             ->where('usuario_id', Auth::id())
             ->firstOrFail();
 
-        // Eliminar banner y logo del storage si existen
-        if ($portafolio->banner_ruta) {
-            Storage::disk('public')->delete($portafolio->banner_ruta);
-        }
-        if ($portafolio->logo_ruta) {
-            Storage::disk('public')->delete($portafolio->logo_ruta);
-        }
+        if ($portafolio->banner_ruta) $this->supabase->delete($portafolio->banner_ruta);
+        if ($portafolio->logo_ruta)   $this->supabase->delete($portafolio->logo_ruta);
 
         $portafolio->delete();
 
