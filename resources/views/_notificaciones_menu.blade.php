@@ -111,6 +111,11 @@ function notifExpandir(id) {
     document.getElementById('modal-titulo').textContent = notif.titulo;
     document.getElementById('modal-mensaje').textContent = notif.mensaje;
     document.getElementById('modal-notificacion').style.display = 'flex';
+
+    // Marcar como leída automáticamente al abrir el mensaje completo
+    if (!notif.leida) {
+        notifMarcarLeida(id, true).then(() => notifRenderLista());
+    }
 }
 
 function cerrarModalNotificacion() {
@@ -132,7 +137,18 @@ document.addEventListener('click', function(event) {
         if (notifPanelAbierto) notifCargar();
     }
 
-    async function notifMarcarLeida(id) {
+    async function notifMarcarLeida(id, silencioso = false) {
+        // Feedback visual inmediato en el botón (solo si no es llamada silenciosa)
+        if (!silencioso) {
+            const btn = document.querySelector(`#notif-item-${id} button[onclick*="notifMarcarLeida"]`);
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = '⏳ Marcando...';
+                btn.style.opacity = '0.6';
+                btn.style.cursor = 'not-allowed';
+            }
+        }
+
         const token = document.querySelector('meta[name="csrf-token"]').content;
         await fetch(`/mis-notificaciones/${id}/leida`, {
             method: 'POST',
@@ -141,14 +157,16 @@ document.addEventListener('click', function(event) {
 
         // Actualizar el array local y re-renderizar
         const notif = notifDatos.find(n => n.id === id);
-        if (notif) notif.leida = true;
+        if (notif && !notif.leida) {
+            notif.leida = true;
 
-        const badge = document.getElementById('notif-badge');
-        let count = Math.max(0, (parseInt(badge.textContent) || 0) - 1);
-        badge.textContent = count > 9 ? '9+' : count;
-        if (count === 0) badge.style.display = 'none';
+            const badge = document.getElementById('notif-badge');
+            let count = Math.max(0, (parseInt(badge.textContent) || 0) - 1);
+            badge.textContent = count > 9 ? '9+' : count;
+            if (count === 0) badge.style.display = 'none';
+        }
 
-        notifRenderLista();
+        if (!silencioso) notifRenderLista();
     }
 
     async function notifMarcarTodasLeidas() {
