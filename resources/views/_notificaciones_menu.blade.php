@@ -50,14 +50,6 @@
     lista.innerHTML = notifDatos.map(n => {
         const esLarga = n.mensaje.length > 80;
         const preview = esLarga ? n.mensaje.substring(0, 80) + '...' : n.mensaje;
-        
-        // 🔥 CLAVE: Escapar el mensaje para que no rompa el onclick
-        const mensajeEscapado = n.mensaje
-            .replace(/\\/g, '\\\\')   // Escapar backslashes
-            .replace(/'/g, "\\'")      // Escapar comillas simples
-            .replace(/"/g, '&quot;')   // Escapar comillas dobles
-            .replace(/\n/g, '\\n')     // Escapar saltos de línea
-            .replace(/\r/g, '\\r');    // Escapar retornos de carro
 
         return `
         <div id="notif-item-${n.id}"
@@ -82,7 +74,7 @@
                 </div>
 
                 ${esLarga ? `
-                <button onclick="notifExpandir(${n.id}, '${mensajeEscapado}', this)"
+                <button onclick="notifExpandir(${n.id})"
                     style="font-size:11px;color:#2563eb;background:none;border:none;
                            cursor:pointer;padding:2px 0;margin-top:2px;font-weight:600">
                     Ver más
@@ -96,7 +88,7 @@
                         })}
                     </span>
                     ${!n.leida ? `
-                    <button onclick="notifExpandir(${n.id}, '${mensajeEscapado}', '${escapeHtml(n.titulo).replace(/'/g, "\\'")}')"
+                    <button onclick="notifMarcarLeida(${n.id})"
                         style="font-size:10px;color:#2563eb;background:none;border:1px solid #bfdbfe;
                                border-radius:6px;padding:2px 8px;cursor:pointer;font-weight:600">
                         ✓ Marcar leída
@@ -112,18 +104,12 @@ function escapeHtml(str) {
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-function notifExpandir(id, mensajeCompleto, titulo) {
-    // Si no pasan título, intentar obtenerlo
-    if (!titulo) {
-        const notif = notifDatos.find(n => n.id === id);
-        titulo = notif?.titulo || 'Notificación';
-    }
-    
-    // Llenar el modal
-    document.getElementById('modal-titulo').textContent = titulo;
-    document.getElementById('modal-mensaje').textContent = mensajeCompleto;
-    
-    // Mostrar modal
+function notifExpandir(id) {
+    const notif = notifDatos.find(n => n.id === id);
+    if (!notif) return;
+
+    document.getElementById('modal-titulo').textContent = notif.titulo;
+    document.getElementById('modal-mensaje').textContent = notif.mensaje;
     document.getElementById('modal-notificacion').style.display = 'flex';
 }
 
@@ -146,20 +132,23 @@ document.addEventListener('click', function(event) {
         if (notifPanelAbierto) notifCargar();
     }
 
-    async function notifMarcarLeida(id, el) {
+    async function notifMarcarLeida(id) {
         const token = document.querySelector('meta[name="csrf-token"]').content;
         await fetch(`/mis-notificaciones/${id}/leida`, {
             method: 'POST',
             headers: { 'X-CSRF-TOKEN': token }
         });
-        el.style.background = '#fff';
-        el.querySelector('div[style*="border-radius:50%"]').style.background = 'transparent';
-        el.querySelector('div > div:first-child').style.fontWeight = '400';
+
+        // Actualizar el array local y re-renderizar
+        const notif = notifDatos.find(n => n.id === id);
+        if (notif) notif.leida = true;
+
         const badge = document.getElementById('notif-badge');
-        let count = parseInt(badge.textContent) || 0;
-        count = Math.max(0, count - 1);
+        let count = Math.max(0, (parseInt(badge.textContent) || 0) - 1);
         badge.textContent = count > 9 ? '9+' : count;
         if (count === 0) badge.style.display = 'none';
+
+        notifRenderLista();
     }
 
     async function notifMarcarTodasLeidas() {
