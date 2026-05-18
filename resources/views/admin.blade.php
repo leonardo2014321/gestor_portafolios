@@ -42,8 +42,62 @@
         </div>
     </div>
 
+    <!-- Modal confirmación desactivar cuenta -->
+    <div id="modal-user-deactivate" onclick="if(event.target===this)cerrarModalDeactivate()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:15px;box-sizing:border-box;">
+        <div style="background:#fff;border-radius:24px;padding:2.2rem 2rem 1.8rem;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,0.22);text-align:center;animation:fadeInScale .2s ease;box-sizing:border-box;max-height:90vh;display:flex;flex-direction:column;">
+            <div style="overflow-y:auto;padding-right:4px;width:100%;box-sizing:border-box;">
+                <div style="width:60px;height:60px;border-radius:18px;background:#e0e7ff;display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem;">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#1e3adb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:800;color:#0f172a;margin-bottom:8px;">{{ __('app.admin.modal_desactivar_titulo') }}</h3>
+                <p style="font-size:13.5px;color:#64748b;line-height:1.65;margin-bottom:1.5rem;">{{ __('app.admin.modal_desactivar_texto') }}</p>
+
+                <div style="text-align:left;margin-bottom:1.5rem">
+                    <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">{{ __('app.admin.confirma_contrasena') }}</label>
+                    <input type="password" id="admin-confirm-pass" placeholder="{{ __('app.admin.placeholder_contrasena') }}" style="width:100%;padding:12px 16px;border-radius:12px;border:2px solid var(--gray2);outline:none;font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color 0.2s;box-sizing:border-box;" onfocus="this.style.borderColor='var(--admin-purple)'" onblur="this.style.borderColor='var(--gray2)'">
+                </div>
+
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <button onclick="cerrarModalDeactivate()" style="flex:1;min-width:120px;padding:12px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;font-size:13.5px;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;">{{ __('app.admin.cancelar') }}</button>
+                    <button id="btn-confirm-deactivate" style="flex:1;min-width:120px;padding:12px;border-radius:14px;border:none;background:linear-gradient(135deg,#1428c6,#1e3adb);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 14px rgba(20,40,198,0.3);">{{ __('app.admin.btn_desactivar_ahora') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal detalle del día (Calendario) -->
+    <div id="modalDia" onclick="if(event.target===this)cerrarModal()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.6);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:15px;box-sizing:border-box;">
+        <div style="background:#fff;border-radius:24px;padding:2.2rem 2rem 1.8rem;width:100%;max-width:440px;box-shadow:0 24px 64px rgba(0,0,0,0.22);text-align:center;animation:fadeInScale .2s ease;box-sizing:border-box;max-height:90vh;display:flex;flex-direction:column;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;">
+                <div style="text-align:left;">
+                    <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;margin-bottom:4px;">{{ __('app.admin.modal_cal_detalle') }}</div>
+                    <div id="modalFecha" style="font-size:20px;font-weight:800;color:#0f172a;font-family:'Plus Jakarta Sans',sans-serif;"></div>
+                </div>
+                <button onclick="cerrarModal()" style="width:36px;height:36px;border-radius:50%;border:1px solid #e2e8f0;background:transparent;cursor:pointer;font-size:16px;color:#64748b;display:flex;align-items:center;justify-content:center;transition:background 0.2s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">✕</button>
+            </div>
+            
+            <div style="display:flex;flex-direction:column;gap:10px;overflow-y:auto;max-height:30vh;padding-right:4px;margin-bottom:1rem;text-align:left;" id="listaEventos"></div>
+            
+            <div style="text-align:left;border-top:1px solid #f1f5f9;padding-top:1.2rem;margin-bottom:1.5rem;">
+                <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748b;margin-bottom:10px;">{{ __('app.admin.modal_cal_nuevo_evento') }}</div>
+                <input id="nuevoEventoInput" type="text" placeholder="{{ __('app.admin.modal_cal_placeholder_nombre') }}"
+                    style="width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid #e2e8f0;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;margin-bottom:8px;box-sizing:border-box;">
+                <input id="nuevoEventoHora" type="text" placeholder="{{ __('app.admin.modal_cal_placeholder_hora') }}"
+                    style="width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid #e2e8f0;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;box-sizing:border-box;">
+            </div>
+            
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button onclick="cerrarModal()" style="flex:1;min-width:120px;padding:12px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;font-size:13.5px;font-weight:600;color:#64748b;cursor:pointer;font-family:'DM Sans',sans-serif;">{{ __('app.admin.modal_cal_btn_cerrar') }}</button>
+                <button onclick="agregarEvento()" style="flex:1.3;min-width:140px;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:14px;border:none;background:linear-gradient(135deg,#1428c6,#1e3adb);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 14px rgba(20,40,198,0.3);">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="12" x2="12" y1="14" y2="18"/><line x1="10" x2="14" y1="16" y2="16"/></svg>
+                    {{ __('app.admin.modal_cal_btn_agregar') }}
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="body-row">
-        <div id="sidebar-overlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+        <div id="sidebar-overlay" class="sidebar-overlay" onclick="closeAllPanels()"></div>
 
         <!-- Sidebar -->
         <aside>
@@ -68,9 +122,19 @@
             </div>
         </aside>
 
-        <!-- Main content -->
         <main>
             <div class="main-inner">
+
+                <!-- Botones responsive (solo íconos) -->
+                <div class="mobile-toggle-container">
+                    <button class="mobile-toggle-btn" onclick="toggleSidebar()" title="{{ __('app.admin.menu_principal') }}">
+                        <svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </button>
+                    
+                    <button class="mobile-toggle-btn" onclick="toggleRightPanel()" title="{{ __('app.admin.actividad_reciente') }}">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    </button>
+                </div>
 
                 <!-- ═══ VISTA: DASHBOARD ═══ -->
                 <div id="view-dashboard" class="admin-view" style="display:block">
@@ -84,7 +148,7 @@
                     </div>
 
                     <!-- Stats Grid -->
-                    <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="stats-grid dashboard-stats">
                         <div class="stat-card">
                             <div class="stat-info">
                                 <div class="stat-label">{{ __('app.admin.stat_usuarios_totales') }}</div>
@@ -143,7 +207,7 @@
                     </div>
 
                     <!-- Main Grid -->
-                    <div class="dash-grid" style="grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));">
+                    <div class="dash-grid">
 
                         <!-- Últimos Usuarios -->
                         <div class="panel">
@@ -276,94 +340,15 @@
                     @include('_explorador_menu')
                 </div>
 
-                <!-- ═══ VISTA: NOTIFICACIONES (ADMIN) ═══ -->
-                <div id="view-notificaciones" class="admin-view" style="display:none">
-                    <div class="admin-hero" style="margin-bottom:1.5rem">
-                        <div class="hero-content">
-                            <h1 class="hero-title">{{ __('app.admin.notif_titulo') }}</h1>
-                            <p class="hero-sub">{{ __('app.admin.notif_sub') }}</p>
-                        </div>
-                    </div>
-
-                    <!-- Formulario envío -->
-                    <div class="panel" style="margin-bottom:1.5rem">
-                        <div class="panel-header" style="padding:1.2rem 1.5rem;border-bottom:1px solid var(--gray2)">
-                            <h2 class="panel-title">{{ __('app.admin.notif_nueva') }}</h2>
-                        </div>
-                        <div style="padding:1.5rem">
-                            <div id="notif-success" style="display:none;background:#d1fae5;color:#065f46;padding:10px 16px;border-radius:10px;font-size:13px;margin-bottom:1rem;font-weight:600;">
-                                {{ __('app.admin.notif_enviada_ok') }}
-                            </div>
-
-                            <!-- Título -->
-                            <div style="margin-bottom:1rem">
-                                <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">{{ __('app.admin.notif_campo_titulo') }} <span style="color:#ef4444">*</span></label>
-                                <input id="notif-titulo" type="text" maxlength="150" placeholder="{{ __('app.admin.notif_placeholder_titulo') }}"
-                                    style="width:100%;padding:10px 14px;border:1px solid var(--gray2);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:var(--gray);color:var(--text)">
-                            </div>
-
-                            <!-- Mensaje -->
-                            <div style="margin-bottom:1rem">
-                                <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">{{ __('app.admin.notif_campo_mensaje') }} <span style="color:#ef4444">*</span></label>
-                                <textarea id="notif-mensaje" maxlength="1000" rows="4" placeholder="{{ __('app.admin.notif_placeholder_mensaje') }}"
-                                    style="width:100%;padding:10px 14px;border:1px solid var(--gray2);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:var(--gray);color:var(--text);resize:vertical"></textarea>
-                                <div style="text-align:right;font-size:11px;color:var(--muted);margin-top:3px">
-                                    <span id="notif-msg-count">0</span>/1000
-                                </div>
-                            </div>
-
-                            <!-- Tipo de envío -->
-                            <div style="margin-bottom:1rem">
-                                <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">{{ __('app.admin.notif_destinatario') }} <span style="color:#ef4444">*</span></label>
-                                <div style="display:flex;gap:10px;flex-wrap:wrap">
-                                    <label style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:1.5px solid var(--gray2);border-radius:10px;cursor:pointer;font-size:13px;background:#fff;transition:all .2s" id="lbl-todos">
-                                        <input type="radio" name="notif-tipo" value="todos" onchange="notifTipoChange(this)" style="accent-color:#7c3aed"> {{ __('app.admin.notif_todos') }}
-                                    </label>
-                                    <label style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:1.5px solid var(--gray2);border-radius:10px;cursor:pointer;font-size:13px;background:#fff;transition:all .2s" id="lbl-rol">
-                                        <input type="radio" name="notif-tipo" value="rol" onchange="notifTipoChange(this)" style="accent-color:#7c3aed"> {{ __('app.admin.notif_solo_admins') }}
-                                    </label>
-                                    <label style="display:flex;align-items:center;gap:8px;padding:10px 18px;border:1.5px solid var(--gray2);border-radius:10px;cursor:pointer;font-size:13px;background:#fff;transition:all .2s" id="lbl-individual">
-                                        <input type="radio" name="notif-tipo" value="individual" onchange="notifTipoChange(this)" style="accent-color:#7c3aed"> {{ __('app.admin.notif_usuario_especifico') }}
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- Selector usuario (solo si individual) -->
-                            <div id="notif-selector-usuario" style="display:none;margin-bottom:1rem">
-                                <label style="display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">{{ __('app.admin.notif_seleccionar_usuario') }} <span style="color:#ef4444">*</span></label>
-                                <select id="notif-destinatario" style="width:100%;padding:10px 14px;border:1px solid var(--gray2);border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;color:var(--text);cursor:pointer">
-                                    <option value="">{{ __('app.admin.notif_elige_usuario') }}</option>
-                                    @foreach($todos_usuarios as $u)
-                                        <option value="{{ $u->id }}">{{ $u->nombre }} {{ $u->apellido }} ({{ $u->email }})</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Botón enviar -->
-                            <button onclick="notifEnviar()" style="display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:#7c3aed;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s">
-                                <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                                {{ __('app.admin.notif_btn_enviar') }}
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Historial de enviadas -->
-                    <div class="panel">
-                        <div class="panel-header" style="padding:1.2rem 1.5rem;border-bottom:1px solid var(--gray2);display:flex;align-items:center;justify-content:space-between">
-                            <h2 class="panel-title">{{ __('app.admin.notif_historial') }}</h2>
-                            <button onclick="notifCargarHistorial()" style="font-size:12px;color:var(--blue);background:none;border:none;cursor:pointer;font-weight:600">{{ __('app.admin.notif_actualizar') }}</button>
-                        </div>
-                        <div id="notif-historial" style="padding:1rem 1.5rem">
-                            <p style="color:var(--muted);font-size:13px">{{ __('app.admin.cargando') }}</p>
-                        </div>
-                    </div>
-                </div><!-- /view-notificaciones -->
+                @include('notificaciones_admin')
 
             </div><!-- /.main-inner -->
 
-        <!-- Right panel (Calendario) -->
+        <!-- Right panel (Calendario y Actividad) -->
         <div class="rpanel">
-            <div class="rp-sec">
+            
+            <!-- Calendario -->
+            <div class="rp-sec" style="padding-bottom: 0; border-bottom: none;">
                 <div class="cal-hd" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
                     <div class="cal-month" id="cal-title" style="flex:1;">{{ __('app.admin.cal_mes') }}</div>
                     <select class="cal-view-selector" id="cal-view-sel" onchange="changeCalView(this.value)" style="margin:0;">
@@ -383,9 +368,9 @@
             </div>
 
             <!-- Actividad Reciente -->
-            <div style="padding: 1rem;">
-                <div class="panel">
-                    <div class="panel-header" style="padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 250px;">
+                <div style="display: flex; flex-direction: column; height: 100%;">
+                    <div style="padding: 1rem; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; border-top: 1px solid var(--gray2);">
                         <h2 class="panel-title" style="margin: 0;">{{ __('app.admin.actividad_reciente') }}</h2>
                         @if($actividades_recientes->count() > 0)
                             <form action="{{ route('admin.actividad.limpiar') }}" method="POST" onsubmit="return confirm('{{ __('app.admin.confirm_limpiar_actividad') }}');" style="margin: 0;">
@@ -397,7 +382,7 @@
                             </form>
                         @endif
                     </div>
-                    <div class="activity-list">
+                    <div class="activity-list" style="overflow-y: auto; flex: 1;">
                         @forelse($actividades_recientes as $act)
                             @php
                                 $titulo = __('app.admin.act_accion') . ': ' . $act->accion;
@@ -490,6 +475,8 @@
                 </div>
             </div>
 
+
+
         </div><!-- /.rpanel -->
 
         </main>
@@ -532,6 +519,11 @@
         document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
         var btn = document.getElementById('btn-' + nombre);
         if (btn) btn.classList.add('active');
+        
+        // Cerrar panel al seleccionar en móvil
+        if(window.innerWidth <= 1200) {
+            closeAllPanels();
+        }
     }
 
     /* ══ Buscar y filtrar usuarios ══ */
@@ -558,8 +550,45 @@
     function toggleSidebar() {
         const sidebar = document.querySelector('aside');
         const overlay = document.getElementById('sidebar-overlay');
+        const rpanel = document.querySelector('.rpanel');
+        
+        if (rpanel && rpanel.classList.contains('open')) {
+            rpanel.classList.remove('open');
+        }
+        
         sidebar.classList.toggle('open');
-        overlay.classList.toggle('show');
+        if (sidebar.classList.contains('open')) {
+            overlay.classList.add('show');
+        } else {
+            overlay.classList.remove('show');
+        }
+    }
+
+    function toggleRightPanel() {
+        const rpanel = document.querySelector('.rpanel');
+        const overlay = document.getElementById('sidebar-overlay');
+        const sidebar = document.querySelector('aside');
+        
+        if (sidebar && sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
+        }
+        
+        rpanel.classList.toggle('open');
+        if (rpanel.classList.contains('open')) {
+            overlay.classList.add('show');
+        } else {
+            overlay.classList.remove('show');
+        }
+    }
+
+    function closeAllPanels() {
+        const sidebar = document.querySelector('aside');
+        const rpanel = document.querySelector('.rpanel');
+        const overlay = document.getElementById('sidebar-overlay');
+        
+        if (sidebar) sidebar.classList.remove('open');
+        if (rpanel) rpanel.classList.remove('open');
+        if (overlay) overlay.classList.remove('show');
     }
 
     document.addEventListener('click', function(e) {
@@ -589,7 +618,8 @@
             menu.classList.remove('menu-up');
             menu.style.display = 'flex';
             const rect = menu.getBoundingClientRect();
-            if (rect.bottom > window.innerHeight) {
+            const isLastRow = btn.closest('tr') === btn.closest('tbody')?.lastElementChild;
+            if (rect.bottom > window.innerHeight || isLastRow) {
                 menu.classList.add('menu-up');
             }
         }
@@ -714,8 +744,7 @@
                     btn.className = 'btn-action-admin btn-role-user';
                 } else {
                     roleCell.innerText = '{{ __('app.admin.rol_usuario') }}';
-                    btn.innerText = '{{ __('app.admin.js_volver_admin') }}';
-                    btn.className = 'btn-action-admin btn-role-admin';
+                    btn.style.display = 'none';
                 }
                 const row = btn.closest('tr');
                 if(row) row.setAttribute('data-rol', data.es_admin ? 'admin' : 'usuario');
@@ -739,6 +768,72 @@
     let cur = new Date();
     let currentCalView = 'dias';
     let eventos = JSON.parse(localStorage.getItem('eventos') || '{}');
+    let modalDia = null, modalMes = null, modalAnio = null;
+    const months_es = [
+        "{{ __('app.admin.mes_enero') }}","{{ __('app.admin.mes_febrero') }}","{{ __('app.admin.mes_marzo') }}",
+        "{{ __('app.admin.mes_abril') }}","{{ __('app.admin.mes_mayo') }}","{{ __('app.admin.mes_junio') }}",
+        "{{ __('app.admin.mes_julio') }}","{{ __('app.admin.mes_agosto') }}","{{ __('app.admin.mes_septiembre') }}",
+        "{{ __('app.admin.mes_octubre') }}","{{ __('app.admin.mes_noviembre') }}","{{ __('app.admin.mes_diciembre') }}"
+    ];
+
+    function guardarEventos() { localStorage.setItem('eventos', JSON.stringify(eventos)); }
+
+    function abrirModal(dia, mes, anio) {
+        modalDia = dia; modalMes = mes; modalAnio = anio;
+        document.getElementById('modalFecha').textContent = dia + ' de ' + months_es[mes] + ', ' + anio;
+        document.getElementById('nuevoEventoInput').value = '';
+        document.getElementById('nuevoEventoHora').value = '';
+        renderEventosModal();
+        document.getElementById('modalDia').style.display = 'flex';
+    }
+
+    function cerrarModal() { document.getElementById('modalDia').style.display = 'none'; }
+
+    function renderEventosModal() {
+        const key = keyFecha(modalDia, modalMes, modalAnio);
+        const lista = eventos[key] || [];
+        const container = document.getElementById('listaEventos');
+        if (lista.length === 0) {
+            container.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;padding:18px;border-radius:16px;border:2px dashed #e2e8f0;gap:4px;width:100%;box-sizing:border-box;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="16"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
+                <span style="font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:#94a3b8;">{{ __('app.admin.modal_cal_sin_eventos') }}</span>
+            </div>`;
+            return;
+        }
+        container.innerHTML = lista.map((ev, i) => `
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:14px;background:#f0f4f8;border-radius:4px 16px 16px 4px;border-left:4px solid #1e3adb;box-sizing:border-box;width:100%;">
+                <div style="width:34px;height:34px;border-radius:10px;background:#e0e7ff;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1e3adb" stroke-width="2" stroke-linecap="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                </div>
+                <div style="flex:1;min-width:0;">
+                    <div style="font-size:14px;font-weight:600;color:#0f172a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${ev.nombre}</div>
+                    ${ev.hora ? `<div style="display:flex;align-items:center;gap:5px;color:#64748b;margin-top:4px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span style="font-size:12px;">${ev.hora}</span></div>` : ''}
+                </div>
+                <button onclick="eliminarEvento(${i})" style="background:none;border:none;cursor:pointer;color:#94a3b8;padding:2px;display:flex;align-items:center;transition:color 0.2s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#94a3b8'" title="Eliminar">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                </button>
+            </div>`).join('');
+    }
+
+    function agregarEvento() {
+        const nombre = document.getElementById('nuevoEventoInput').value.trim();
+        const hora   = document.getElementById('nuevoEventoHora').value.trim();
+        if (!nombre) return;
+        const key = keyFecha(modalDia, modalMes, modalAnio);
+        if (!eventos[key]) eventos[key] = [];
+        eventos[key].push({ nombre, hora });
+        guardarEventos(); renderEventosModal(); renderCal();
+        document.getElementById('nuevoEventoInput').value = '';
+        document.getElementById('nuevoEventoHora').value  = '';
+    }
+
+    function eliminarEvento(idx) {
+        if (!confirm('¿Seguro que deseas eliminar este evento?')) return;
+        const key = keyFecha(modalDia, modalMes, modalAnio);
+        eventos[key].splice(idx, 1);
+        if (eventos[key].length === 0) delete eventos[key];
+        guardarEventos(); renderEventosModal(); renderCal();
+    }
 
     const boliviaHolidays = {
         "01-01": "{{ __('app.admin.feriado_anio_nuevo') }}",
@@ -808,7 +903,7 @@
                     cls += " holiday";
                     titleAttr = `title="{{ __('app.admin.cal_feriado') }}: ${boliviaHolidays[holidayKey]}"`;
                 }
-                html += `<div class="${cls}" ${titleAttr}>${i}</div>`;
+                html += `<div class="${cls}" ${titleAttr} style="cursor:pointer;" onclick="abrirModal(${i},${m},${y})">${i}</div>`;
                 dayCount++;
             }
 
@@ -854,92 +949,7 @@
     }
     renderCal();
 
-    // ── Notificaciones Admin ─────────────────────────
-    document.getElementById('notif-mensaje')?.addEventListener('input', function(){
-        document.getElementById('notif-msg-count').textContent = this.value.length;
-    });
-
-    function notifTipoChange(radio) {
-        document.getElementById('notif-selector-usuario').style.display =
-            radio.value === 'individual' ? 'block' : 'none';
-    }
-
-    async function notifEnviar() {
-        const titulo  = document.getElementById('notif-titulo').value.trim();
-        const mensaje = document.getElementById('notif-mensaje').value.trim();
-        const tipoEl  = document.querySelector('input[name="notif-tipo"]:checked');
-        const tipo    = tipoEl ? tipoEl.value : '';
-        const destId  = document.getElementById('notif-destinatario')?.value;
-
-        if (!titulo || !mensaje || !tipo) {
-            alert('{{ __('app.admin.js_completar_campos') }}'); return;
-        }
-        if (tipo === 'individual' && !destId) {
-            alert('{{ __('app.admin.js_seleccionar_usuario') }}'); return;
-        }
-
-        const token = document.querySelector('meta[name="csrf-token"]').content;
-        const body  = new FormData();
-        body.append('titulo',     titulo);
-        body.append('mensaje',    mensaje);
-        body.append('tipo_envio', tipo);
-        if (tipo === 'individual') body.append('destinatario_id', destId);
-
-        const res  = await fetch('/admin/notificaciones', { method:'POST', headers:{'X-CSRF-TOKEN':token}, body });
-        const json = await res.json().catch(() => ({}));
-
-        if (res.ok) {
-            document.getElementById('notif-titulo').value  = '';
-            document.getElementById('notif-mensaje').value = '';
-            document.getElementById('notif-msg-count').textContent = '0';
-            document.querySelectorAll('input[name="notif-tipo"]').forEach(r => r.checked = false);
-            document.getElementById('notif-selector-usuario').style.display = 'none';
-            const ok = document.getElementById('notif-success');
-            ok.style.display = 'block';
-            setTimeout(() => ok.style.display = 'none', 3000);
-            notifCargarHistorial();
-        } else {
-            alert('{{ __('app.admin.js_error_enviar') }}');
-        }
-    }
-
-    async function notifCargarHistorial() {
-        const token = document.querySelector('meta[name="csrf-token"]').content;
-        const res   = await fetch('/admin/notificaciones', { headers:{'X-CSRF-TOKEN':token,'Accept':'application/json'} });
-        const lista = await res.json().catch(() => []);
-        const box   = document.getElementById('notif-historial');
-
-        if (!lista.length) {
-            box.innerHTML = '<p style="color:var(--muted);font-size:13px">{{ __('app.admin.notif_sin_enviadas') }}</p>';
-            return;
-        }
-
-        box.innerHTML = lista.map(n => `
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--gray2)">
-                <div>
-                    <div style="font-size:13px;font-weight:600;color:var(--text)">${n.titulo}</div>
-                    <div style="font-size:12px;color:var(--muted);margin-top:2px">${n.mensaje}</div>
-                    <div style="display:flex;gap:8px;margin-top:6px">
-                        <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:${n.tipo_envio==='todos'?'#dbeafe':n.tipo_envio==='rol'?'#ede9fe':'#d1fae5'};color:${n.tipo_envio==='todos'?'#1e40af':n.tipo_envio==='rol'?'#5b21b6':'#065f46'}">
-                            ${n.tipo_envio==='todos'?'{{ __('app.admin.notif_tag_todos') }}':n.tipo_envio==='rol'?'{{ __('app.admin.notif_tag_admins') }}':'{{ __('app.admin.notif_tag_individual') }}'}
-                        </span>
-                        <span style="font-size:11px;color:var(--muted)">${new Date(n.created_at).toLocaleDateString('{{ app()->getLocale() }}-BO',{day:'2-digit',month:'short',year:'numeric'})}</span>
-                    </div>
-                </div>
-                <button onclick="notifEliminar(${n.id},this)" style="background:none;border:none;cursor:pointer;color:#ef4444;font-size:11px;font-weight:600;white-space:nowrap;margin-left:12px">{{ __('app.admin.eliminar') }}</button>
-            </div>`).join('');
-    }
-
-    async function notifEliminar(id, btn) {
-        if (!confirm('{{ __('app.admin.js_confirm_eliminar_notif') }}')) return;
-        const token = document.querySelector('meta[name="csrf-token"]').content;
-        const res   = await fetch(`/admin/notificaciones/${id}`, { method:'DELETE', headers:{'X-CSRF-TOKEN':token} });
-        if (res.ok) btn.closest('div[style]').remove();
-    }
-
-    if (document.getElementById('view-notificaciones')) {
-        notifCargarHistorial();
-    }
+    
 </script>
 
 </body>

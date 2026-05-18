@@ -343,7 +343,7 @@ return [
         'reactivacion_titulo'       => 'Request Sent',
         'reactivacion_desc'         => 'We have notified the administrator. Your case will be reviewed and, if approved, your account will be reactivated shortly.',
         'reactivacion_btn'          => 'Got it',
-        'btn_solicitar_reactivacion'=> 'Request reactivation from administrator',
+        'btn_solicitar_reactivacion'=> 'Send enablement request',
         'placeholder_password'      => 'Minimum 8 characters',
         'iniciando_sesion'          => 'Signing in...',
         'o_continua_con'            => 'or continue with',
@@ -609,6 +609,10 @@ return [
         'placeholder_contrasena'         => 'Enter your password',
         'cancelar'                       => 'Cancel',
         'confirmar_cambio'               => 'Confirm change',
+        'modal_desactivar_titulo'        => 'Deactivate account?',
+        'modal_desactivar_texto'         => 'The user will not be able to access the system until their account is reactivated by an administrator.',
+        'btn_desactivar_ahora'           => 'Deactivate now',
+    
     
         'sidebar_general'                => 'General',
         'menu_principal'                 => 'Main Menu',
@@ -718,6 +722,15 @@ return [
         'feriado_mujer_boliviana'        => 'Bolivian Women\'s Day',
         'feriado_dia_difuntos'           => 'All Souls\' Day',
         'feriado_navidad'                => 'Christmas',
+    
+        // Calendario Eventos
+        'modal_cal_detalle'              => 'Day details',
+        'modal_cal_sin_eventos'          => 'No events',
+        'modal_cal_nuevo_evento'         => 'New event',
+        'modal_cal_placeholder_nombre'   => 'Event name...',
+        'modal_cal_placeholder_hora'     => 'Time (e.g. 10:00 AM)',
+        'modal_cal_btn_agregar'          => 'Add event',
+        'modal_cal_btn_cerrar'           => 'Close',
     
         'mes_enero'                      => 'January',
         'mes_febrero'                    => 'February',

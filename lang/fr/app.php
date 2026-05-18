@@ -341,7 +341,7 @@ return [
         'reactivacion_titulo'       => 'Demande envoyée',
         'reactivacion_desc'         => 'Nous avons informé l\'administrateur. Votre cas sera évalué et, s\'il est approuvé, votre compte sera réactivé sous peu.',
         'reactivacion_btn'          => 'Compris',
-        'btn_solicitar_reactivacion'=> 'Demander la réactivation à l\'administrateur',
+        'btn_solicitar_reactivacion'=> 'Envoyer une demande d\'activation',
         'placeholder_password'      => 'Minimum 8 caractères',
         'iniciando_sesion'          => 'Connexion en cours...',
         'o_continua_con'            => 'ou continuer avec',
@@ -610,6 +610,10 @@ return [
         'placeholder_contrasena'         => 'Entrez votre mot de passe',
         'cancelar'                       => 'Annuler',
         'confirmar_cambio'               => 'Confirmer la modification',
+        'modal_desactivar_titulo'        => 'Désactiver le compte ?',
+        'modal_desactivar_texto'         => 'L\'utilisateur ne pourra pas accéder au système tant que son compte n\'aura pas été réactivé par un administrateur.',
+        'btn_desactivar_ahora'           => 'Désactiver maintenant',
+    
     
         'sidebar_general'                => 'Général',
         'menu_principal'                 => 'Menu principal',
@@ -719,6 +723,15 @@ return [
         'feriado_mujer_boliviana'        => 'Journée de la femme bolivienne',
         'feriado_dia_difuntos'           => 'Jour des morts',
         'feriado_navidad'                => 'Noël',
+    
+        // Calendario Eventos
+        'modal_cal_detalle'              => 'Détails du jour',
+        'modal_cal_sin_eventos'          => 'Aucun événement',
+        'modal_cal_nuevo_evento'         => 'Nouvel événement',
+        'modal_cal_placeholder_nombre'   => 'Nom de l\'événement...',
+        'modal_cal_placeholder_hora'     => 'Heure (ex. 10:00)',
+        'modal_cal_btn_agregar'          => 'Ajouter l\'événement',
+        'modal_cal_btn_cerrar'           => 'Fermer',
     
         'mes_enero'                      => 'Janvier',
         'mes_febrero'                    => 'Février',

@@ -1,7 +1,7 @@
 {{--
     Partial: Auth/registro.blade.php
 --}}
-@include('auth.terminos')
+@include('Auth.terminos')
 <div id="registerModal" class="fixed inset-0 z-50 hidden bg-slate-900/20 backdrop-blur-sm flex items-center justify-center px-4 py-6">
     {{-- Contenedor con scroll interno --}}
     <div class="w-full max-w-[440px] max-h-[92vh] overflow-y-auto rounded-[32px] bg-white shadow-[0_30px_80px_rgba(15,23,42,0.14)] ring-1 ring-slate-200/70 font-[Poppins]
@@ -110,7 +110,7 @@
                                 class="w-full border-0 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400">
                             <button type="button" onclick="togglePasswordRegistro('password')" class="flex-shrink-0 text-slate-400 hover:text-slate-600 transition" tabindex="-1">
                                 <svg id="eye-icon-password" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>
                                 </svg>
                             </button>
                         </div>
@@ -127,7 +127,7 @@
                                 class="w-full border-0 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400">
                             <button type="button" onclick="togglePasswordRegistro('password_confirmation')" class="flex-shrink-0 text-slate-400 hover:text-slate-600 transition" tabindex="-1">
                                 <svg id="eye-icon-password_confirmation" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>
                                 </svg>
                             </button>
                         </div>
@@ -300,8 +300,8 @@ function togglePasswordRegistro(id) {
     const show = input.type === 'password';
     input.type = show ? 'text' : 'password';
     eyeIcon.innerHTML = show
-        ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>'
-        : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+        ? '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'
+        : '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
 }
 
 /* ---------------- SUBMIT + VALIDACIONES ---------------- */
