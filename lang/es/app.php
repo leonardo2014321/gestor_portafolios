@@ -100,6 +100,10 @@ return [
         'anios'             => 'Años',
         'mis_portafolios'   => 'Mis portafolios',
         'ver_portafolio'    => 'ver portafolio',
+           // falta en en y fr
+        'pagina' => 'Página',
+        'de'     => 'de',
+        'buscar_placeholder' => 'Buscar en portafolios...',
     ],
         // ─── PERFIL ───────────────────────────────────────────────────────────────
     'perfil' => [
@@ -345,7 +349,7 @@ return [
         'reactivacion_titulo'       => 'Solicitud Enviada',
         'reactivacion_desc'         => 'Hemos notificado al administrador. Se evaluará tu caso y, de ser aprobado, tu cuenta será reactivada a la brevedad.',
         'reactivacion_btn'          => 'Entendido',
-        'btn_solicitar_reactivacion'=> 'Solicitar reactivación al administrador',
+        'btn_solicitar_reactivacion'=> 'Enviar solicitud de habilitación',
         'placeholder_password'      => 'Mínimo 8 caracteres',
         'iniciando_sesion'          => 'Iniciando sesión...',
         'o_continua_con'            => 'o continúa con',
@@ -439,7 +443,7 @@ return [
  
         // Hero
         'hero_titulo'           => 'Sistema de Portafolios',
-        'hero_subtitulo'        => 'Gestión Institucional de Activos Digitales · UMSS',
+        'hero_subtitulo'        => 'Descubre y conecta con el talento de nuestra comunidad',
  
         // Buscador
         'buscar_placeholder'    => 'Buscar... (Ctrl + K)',
@@ -615,6 +619,10 @@ return [
         'placeholder_contrasena'         => 'Ingresa tu contraseña',
         'cancelar'                       => 'Cancelar',
         'confirmar_cambio'               => 'Confirmar cambio',
+        'modal_desactivar_titulo'        => '¿Desactivar cuenta?',
+        'modal_desactivar_texto'         => 'El usuario no podrá acceder al sistema hasta que su cuenta sea reactivada por un administrador.',
+        'btn_desactivar_ahora'           => 'Desactivar ahora',
+    
     
         // Sidebar
         'sidebar_general'                => 'General',
@@ -733,6 +741,15 @@ return [
         'feriado_mujer_boliviana'        => 'Día de la Mujer Boliviana',
         'feriado_dia_difuntos'           => 'Día de los Difuntos',
         'feriado_navidad'                => 'Navidad',
+    
+        // Calendario Eventos
+        'modal_cal_detalle'              => 'Detalle del día',
+        'modal_cal_sin_eventos'          => 'Sin eventos',
+        'modal_cal_nuevo_evento'         => 'Nuevo evento',
+        'modal_cal_placeholder_nombre'   => 'Nombre del evento...',
+        'modal_cal_placeholder_hora'     => 'Hora (ej: 10:00 AM)',
+        'modal_cal_btn_agregar'          => 'Agregar evento',
+        'modal_cal_btn_cerrar'           => 'Cerrar',
     
         // Meses
         'mes_enero'                      => 'Enero',

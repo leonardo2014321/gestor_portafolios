@@ -31,45 +31,51 @@
     </div>
 
     {{-- ── Nav central ── --}}
+    @if (!request()->routeIs('admin') && !request()->is('admin*'))
     <nav class="tb-nav">
 
         <a href="#"
             onclick="spaNav('inicio'); return false;"
+            data-nav="inicio"
+            class="tb-nav-link"
             style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
-                text-decoration:none;transition:color .2s;"
-            onmouseover="this.style.color='#fff'"
-            onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                text-decoration:none;transition:color .25s,text-shadow .25s;
+                padding:4px 2px;position:relative;">
             {{ __('app.nav.inicio') }}
         </a>
 
         <a href="#"
             onclick="spaNav('caracteristicas'); return false;"
+            data-nav="caracteristicas"
+            class="tb-nav-link"
             style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
-                text-decoration:none;transition:color .2s;"
-            onmouseover="this.style.color='#fff'"
-            onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                text-decoration:none;transition:color .25s,text-shadow .25s;
+                padding:4px 2px;position:relative;">
             {{ __('app.nav.caracteristicas') }}
         </a>
 
         <a href="#"
             onclick="spaNav('portafolios'); return false;"
+            data-nav="portafolios"
+            class="tb-nav-link"
             style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
-                text-decoration:none;transition:color .2s;"
-            onmouseover="this.style.color='#fff'"
-            onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                text-decoration:none;transition:color .25s,text-shadow .25s;
+                padding:4px 2px;position:relative;">
             {{ __('app.nav.portafolios') }}
         </a>
 
         <a href="#"
             onclick="spaNav('explorador'); return false;"
+            data-nav="explorador"
+            class="tb-nav-link"
             style="font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.65);
-                text-decoration:none;transition:color .2s;"
-            onmouseover="this.style.color='#fff'"
-            onmouseout="this.style.color='rgba(255,255,255,0.65)'">
+                text-decoration:none;transition:color .25s,text-shadow .25s;
+                padding:4px 2px;position:relative;">
             {{ __('app.nav.explorador') }}
         </a>
 
     </nav>
+    @endif
 
     {{-- ── Lado derecho ── --}}
     <div class="tb-right" style="display:flex;align-items:center;gap:12px;">
@@ -490,8 +496,23 @@
             }
         });
 
+        /* ── Marcar enlace activo con turquesa ── */
+        function setNavActivo(view) {
+            document.querySelectorAll('.tb-nav-link').forEach(el => {
+                el.classList.remove('nav-activo');
+                el.style.color = 'rgba(255,255,255,0.65)';
+            });
+            const activo = document.querySelector('.tb-nav-link[data-nav="' + view + '"]');
+            if (activo) {
+                activo.classList.add('nav-activo');
+                activo.style.color = '#2dd4bf';
+            }
+        }
+
         /* ── Navegación SPA entre vistas ── */
         function spaNav(view) {
+            setNavActivo(view);
+
             const routes = {
                 'inicio':          '{{ url("/") }}',
                 'portafolios':     '{{ route("portafolios.index") }}',
@@ -511,8 +532,8 @@
             }
 
             if (typeof showView === 'function') {
-                if (view === 'inicio') view = 'menu';
-                showView(view);
+                const spaView = view === 'inicio' ? 'menu' : view;
+                showView(spaView);
                 return;
             }
 
@@ -526,24 +547,47 @@
                 if (routes[view]) window.location.href = routes[view];
             }
 
-            document.querySelectorAll('.tb-nav a, .tb-nav button').forEach(el => {
-                el.style.color = 'rgba(255,255,255,0.65)';
-            });
-            event.currentTarget.style.color = '#fff';
+        }
+
+        /* ── Detección de sección activa ── */
+        function detectarNavActivo() {
+            const path = window.location.pathname;
+            const hash = window.location.hash.replace('#', '');
+
+            let vistaActiva = 'inicio';
+            if (hash && document.getElementById('view-' + hash)) {
+                vistaActiva = hash;
+            } else if (path.includes('portafolios')) {
+                vistaActiva = 'portafolios';
+            } else if (path.includes('explorador')) {
+                vistaActiva = 'explorador';
+            } else if (path.includes('caracteristicas')) {
+                vistaActiva = 'caracteristicas';
+            }
+
+            setNavActivo(vistaActiva);
         }
 
         /* ── Deep linking por hash ── */
         document.addEventListener('DOMContentLoaded', function() {
-            const hash = window.location.hash.replace('#', '');
-            if (hash && document.getElementById('view-' + hash)) {
-                spaNav(hash);
-            }
+            /* Intento inmediato y un reintento por si el navbar se monta tarde */
+            detectarNavActivo();
+            setTimeout(detectarNavActivo, 50);
+            setTimeout(detectarNavActivo, 200);
         });
     </script>
 
     {{-- ── Keyframes para el spinner del cambio de idioma ── --}}
     <style>
         @keyframes nb-spin { to { transform: rotate(360deg); } }
+
+        /* ── Turquesa para el nav activo ── */
+        .tb-nav-link:hover {
+            color: #fff !important;
+        }
+        .tb-nav-link.nav-activo:hover {
+            color: #5eead4 !important;
+        }
     </style>
 
     {{-- ── Modal Logout Global ── --}}

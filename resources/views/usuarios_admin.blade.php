@@ -8,7 +8,7 @@
     </div>
 
     <!-- Stats rápidas -->
-    <div class="stats-grid" style="margin-bottom:1.5rem">
+    <div class="stats-grid dashboard-stats" style="margin-bottom:1.5rem">
         <div class="stat-card">
             <div class="stat-info">
                 <div class="stat-label">{{ __('app.usuarios_admin.stat_total') }}</div>
@@ -47,7 +47,7 @@
     <div class="panel" style="margin-bottom:0">
         <div class="panel-header" style="padding:1.2rem 1.5rem;border-bottom:1px solid var(--gray2);">
             <h2 class="panel-title">{{ __('app.usuarios_admin.lista_titulo') }}</h2>
-            <div style="display:flex;gap:10px;align-items:center;">
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
                 <div style="display:flex;align-items:center;gap:8px;background:var(--gray);border:1px solid var(--gray2);border-radius:10px;padding:8px 14px;">
                     <svg width="14" height="14" fill="none" stroke="var(--muted)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                     <input id="buscar-usuario" oninput="filtrarUsuarios()" type="text"
@@ -107,10 +107,12 @@
                                             onclick="adminToggleStatus({{ $usuario->id }}, 'us-{{ $usuario->id }}', this)">
                                         {{ $usuario->activo ? __('app.usuarios_admin.accion_desactivar') : __('app.usuarios_admin.accion_activar') }}
                                     </button>
-                                    <button class="btn-action-admin {{ $usuario->es_admin ? 'btn-role-user' : 'btn-role-admin' }}"
+                                    @if($usuario->es_admin && $usuario->id !== auth()->id())
+                                    <button class="btn-action-admin btn-role-user"
                                             onclick="adminToggleRole({{ $usuario->id }}, 'ur-{{ $usuario->id }}', this)">
-                                        {{ $usuario->es_admin ? __('app.usuarios_admin.accion_quitar_admin') : __('app.usuarios_admin.accion_hacer_admin') }}
+                                        {{ __('app.usuarios_admin.accion_quitar_admin') }}
                                     </button>
+                                    @endif
                                 </div>
                             </div>
                         </td>
