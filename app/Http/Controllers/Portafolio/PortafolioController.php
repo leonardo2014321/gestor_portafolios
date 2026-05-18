@@ -48,15 +48,17 @@ class PortafolioController extends Controller
             'nombre'      => 'required|string|max:100',
             'descripcion' => 'required|string|max:500',
             'estado'      => ['required', Rule::in(['borrador', 'publicado'])],
-            'banner'      => 'nullable|image|max:5120|mimes:png,jpg,jpeg',
-            'logo'        => 'nullable|image|max:2048|mimes:png,jpg,jpeg',
+            'categoria_id' => 'nullable|integer|exists:categorias,id',
+            'banner'       => 'nullable|image|max:5120|mimes:png,jpg,jpeg',
+            'logo'         => 'nullable|image|max:2048|mimes:png,jpg,jpeg',
         ]);
 
         $portafolio = Portafolio::create([
-            'nombre'      => $data['nombre'],
-            'descripcion' => $data['descripcion'],
-            'estado'      => $data['estado'],
-            'usuario_id'  => Auth::id(),
+            'nombre'       => $data['nombre'],
+            'descripcion'  => $data['descripcion'],
+            'estado'       => $data['estado'],
+            'categoria_id' => $data['categoria_id'] ?? null,
+            'usuario_id'   => Auth::id(),
         ]);
 
         if ($request->hasFile('banner')) {
@@ -88,13 +90,15 @@ class PortafolioController extends Controller
             'nombre'      => 'required|string|max:100',
             'descripcion' => 'required|string|max:500',
             'estado'      => ['required', Rule::in(['borrador', 'publicado'])],
-            'banner'      => 'nullable|image|max:5120|mimes:png,jpg,jpeg',
-            'logo'        => 'nullable|image|max:2048|mimes:png,jpg,jpeg',
+            'categoria_id' => 'nullable|integer|exists:categorias,id',
+            'banner'       => 'nullable|image|max:5120|mimes:png,jpg,jpeg',
+            'logo'         => 'nullable|image|max:2048|mimes:png,jpg,jpeg',
         ]);
 
-        $portafolio->nombre      = $data['nombre'];
-        $portafolio->descripcion = $data['descripcion'];
-        $portafolio->estado      = $data['estado'];
+        $portafolio->nombre       = $data['nombre'];
+        $portafolio->descripcion  = $data['descripcion'];
+        $portafolio->estado       = $data['estado'];
+        $portafolio->categoria_id = $data['categoria_id'] ?? null;
 
         if ($request->hasFile('banner')) {
             if ($portafolio->banner_ruta) $this->supabase->delete($portafolio->banner_ruta);

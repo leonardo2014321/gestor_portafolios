@@ -520,6 +520,13 @@ return [
         'seccion_archivos'           => 'Archivos adjuntos',
         'seccion_info_pf'            => 'Información del portafolio',
         'seccion_banner'             => 'Banner',
+        'seccion_categoria'          => 'Categoría',
+        'categoria_placeholder'      => 'Sin categoría',
+        'cat_tecnologia'             => 'Tecnología',
+        'cat_creativos'              => 'Creativos',
+        'cat_negocios'               => 'Negocios',
+        'cat_salud'                  => 'Salud',
+        'cat_educacion'              => 'Educación',
         'seccion_logo'               => 'Logo',
         'opcional'                   => 'Opcional',
 

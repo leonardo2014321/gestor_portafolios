@@ -25,8 +25,9 @@ class ExploradorController extends Controller
         $totalDocumentos  = \App\Models\PortafolioProyecto::whereIn('portafolio_id', $portafolios->pluck('id'))->count();
         $totalAprobados   = $portafolios->where('estado', 'publicado')->count();
         $usuarios         = $this->getUsuariosMapeados();
+        $categorias       = \App\Models\Categoria::where('activa', true)->orderBy('orden')->get();
 
-        return view('menu', compact('portafolios', 'totalPortafolios', 'totalDocumentos', 'totalAprobados', 'usuarios'));
+        return view('menu', compact('portafolios', 'totalPortafolios', 'totalDocumentos', 'totalAprobados', 'usuarios', 'categorias'));
     }
 
     public function admin()

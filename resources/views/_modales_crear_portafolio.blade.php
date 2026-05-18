@@ -399,6 +399,23 @@
                 </div>
             </div>
 
+            {{-- Categoría --}}
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+                    {{ __('app.modales_pf.seccion_categoria') }}
+                    <span style="font-weight:400;text-transform:none;letter-spacing:0">({{ __('app.modales_pf.opcional') }})</span>
+                </div>
+                <div class="mp-field">
+                    <select class="mp-input" id="epCategoria">
+                        <option value="">{{ __('app.modales_pf.categoria_placeholder') }}</option>
+                        @foreach($categorias ?? [] as $cat)
+                            <option value="{{ $cat->id }}">{{ $cat->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
             {{-- Banner --}}
             <div class="mp-section">
                 <div class="mp-section-label">
@@ -497,6 +514,23 @@
                         <span id="pfDescCount">0</span>/500
                     </div>
                     <div class="mp-err" id="pfErrDesc">{{ __('app.modales_pf.err_descripcion') }}</div>
+                </div>
+            </div>
+
+            {{-- Categoría --}}
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+                    {{ __('app.modales_pf.seccion_categoria') }}
+                    <span style="font-weight:400;text-transform:none;letter-spacing:0">({{ __('app.modales_pf.opcional') }})</span>
+                </div>
+                <div class="mp-field">
+                    <select class="mp-input" id="pfCategoria">
+                        <option value="">{{ __('app.modales_pf.categoria_placeholder') }}</option>
+                        @foreach($categorias ?? [] as $cat)
+                            <option value="{{ $cat->id }}">{{ $cat->nombre }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 
@@ -697,10 +731,11 @@
         verModal.style.transition = 'none';
         verModal.classList.remove('open');
         setTimeout(() => { verModal.style.transition = ''; }, 50);
-        document.getElementById('epId').value     = p.id;
-        document.getElementById('epNombre').value = p.nombre;
-        document.getElementById('epDesc').value   = p.descripcion || '';
+        document.getElementById('epId').value        = p.id;
+        document.getElementById('epNombre').value   = p.nombre;
+        document.getElementById('epDesc').value     = p.descripcion || '';
         document.getElementById('epDescCount').textContent = (p.descripcion || '').length;
+        document.getElementById('epCategoria').value = p.categoria_id || '';
         epBannerFile = null;
         epLogoFile   = null;
         if (p.banner_url) {
@@ -782,6 +817,7 @@
         form.append('nombre',      document.getElementById('epNombre').value.trim());
         form.append('descripcion', document.getElementById('epDesc').value.trim());
         form.append('estado',      estado);
+        form.append('categoria_id', document.getElementById('epCategoria').value || '');
         form.append('_token',      token);
         if (epBannerFile) form.append('banner', epBannerFile);
         if (epLogoFile)   form.append('logo',   epLogoFile);
@@ -902,6 +938,7 @@
         document.getElementById('modalCrearPf').classList.remove('open');
     }
     function pfReset() {
+        document.getElementById('pfCategoria').value = '';
         ['pfNombre','pfDesc'].forEach(id => {
             const el = document.getElementById(id);
             if (el) { el.value = ''; el.classList.remove('mp-invalid','mp-ok'); }
@@ -983,6 +1020,7 @@
         form.append('nombre',      nombre);
         form.append('descripcion', desc);
         form.append('estado',      estado);
+        form.append('categoria_id', document.getElementById('pfCategoria').value || '');
         form.append('_token',      document.querySelector('meta[name="csrf-token"]').content);
         if (pfBannerFile) form.append('banner', pfBannerFile);
         if (pfLogoFile)   form.append('logo',   pfLogoFile);
