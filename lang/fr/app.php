@@ -587,6 +587,9 @@ return [
         'err_guardar'                => 'Impossible d\'enregistrer. Veuillez réessayer.',
         'err_elim_pf'                => 'Impossible de supprimer le portfolio.',
         'err_elim_proj'              => 'Impossible de supprimer le projet.',
+        'conf_elim_archivo_titulo'   => 'Supprimer le fichier ?',
+        'conf_elim_archivo_desc'     => 'Le fichier joint sera supprimé. Cette action est irréversible.',
+        'err_elim_archivo'           => 'Impossible de supprimer le fichier.',
         'err_servidor'               => 'Erreur serveur',
         'error_cargar_proyectos'     => 'Impossible de charger les projets.',
 

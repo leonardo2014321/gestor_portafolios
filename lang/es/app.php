@@ -594,6 +594,9 @@ return [
         'err_guardar'                => 'No se pudo guardar. Inténtalo de nuevo.',
         'err_elim_pf'                => 'No se pudo eliminar el portafolio.',
         'err_elim_proj'              => 'No se pudo eliminar el proyecto.',
+        'conf_elim_archivo_titulo'   => '¿Eliminar archivo?',
+        'conf_elim_archivo_desc'     => 'Se eliminará el archivo adjunto. Esta acción no se puede deshacer.',
+        'err_elim_archivo'           => 'No se pudo eliminar el archivo.',
         'err_servidor'               => 'Error del servidor',
         'error_cargar_proyectos'     => 'No se pudieron cargar los proyectos.',
 

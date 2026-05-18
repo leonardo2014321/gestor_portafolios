@@ -587,6 +587,9 @@ return [
         'err_guardar'                => 'Could not save. Please try again.',
         'err_elim_pf'                => 'Could not delete the portfolio.',
         'err_elim_proj'              => 'Could not delete the project.',
+        'conf_elim_archivo_titulo'   => 'Delete file?',
+        'conf_elim_archivo_desc'     => 'The attached file will be deleted. This action cannot be undone.',
+        'err_elim_archivo'           => 'Could not delete the file.',
         'err_servidor'               => 'Server error',
         'error_cargar_proyectos'     => 'Could not load projects.',
 

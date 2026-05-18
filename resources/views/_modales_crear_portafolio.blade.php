@@ -107,10 +107,10 @@
     .vp-file-size{color:var(--muted);font-size:11px;flex-shrink:0}
     .vp-empty{text-align:center;padding:14px;color:var(--muted);font-size:13px}
     .vp-foot{display:flex;justify-content:flex-end;padding:0 28px 24px;gap:10px}
-    .vp-btn-del{padding:8px 18px;border-radius:9px;border:1.5px solid #fca5a5;background:#fff;color:#ef4444;font-size:13px;font-weight:600;cursor:pointer}
+    .vp-btn-del{padding:5px 14px;border-radius:8px;border:1.5px solid #fca5a5;background:#fff;color:#ef4444;font-size:12px;font-weight:600;cursor:pointer}
     .vp-btn-del:hover{background:#fef2f2}
     .vp-btn-close{padding:8px 18px;border-radius:9px;border:none;background:var(--blue);color:#fff;font-size:13px;font-weight:600;cursor:pointer}
-    .vp-btn-edit{padding:8px 18px;border-radius:9px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);font-size:13px;font-weight:600;cursor:pointer}
+    .vp-btn-edit{padding:5px 14px;border-radius:8px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);font-size:12px;font-weight:600;cursor:pointer}
     .vp-btn-edit:hover{background:#eff6ff}
     /* Proyectos en modal Ver */
     .vp-proj-card{border:1px solid var(--gray2);border-radius:12px;padding:14px;margin-bottom:10px;background:var(--gray)}
@@ -127,10 +127,10 @@
     .vp-proj-link svg{width:12px;height:12px;fill:currentColor;flex-shrink:0}
     .vp-proj-add-file{display:inline-flex;align-items:center;gap:4px;margin-top:8px;cursor:pointer;color:var(--blue);font-size:12px;font-weight:600;user-select:none}
     .vp-proj-add-file:hover span{text-decoration:underline}
-    .vp-proj-actions{display:flex;gap:6px;margin-top:10px;border-top:1px solid var(--gray2);padding-top:10px}
-    .vp-proj-btn-edit{flex:1;padding:6px 10px;border-radius:7px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
+    .vp-proj-actions{display:flex;gap:6px;margin-top:10px;border-top:1px solid var(--gray2);padding-top:10px;justify-content:flex-end}
+    .vp-proj-btn-edit{padding:4px 12px;border-radius:7px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
     .vp-proj-btn-edit:hover{background:#eff6ff}
-    .vp-proj-btn-del2{flex:1;padding:6px 10px;border-radius:7px;border:1.5px solid #fca5a5;background:#fff;color:#ef4444;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
+    .vp-proj-btn-del2{padding:4px 12px;border-radius:7px;border:1.5px solid #fca5a5;background:#fff;color:#ef4444;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
     .vp-proj-btn-del2:hover{background:#fef2f2}
     .vp-proj-edit-form{display:flex;flex-direction:column;gap:10px}
     .vp-proj-edit-input{width:100%;background:var(--gray);border:1px solid var(--gray2);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--text);font-family:"DM Sans",sans-serif;outline:none;transition:border-color .2s;box-sizing:border-box}
@@ -138,7 +138,7 @@
     .vp-proj-edit-textarea{min-height:72px;resize:vertical}
     .vp-proj-edit-url-wrap{display:flex;gap:8px}
     .vp-proj-edit-url-wrap .vp-proj-edit-input{flex:1}
-    .vp-proj-edit-btns{display:flex;gap:8px}
+    .vp-proj-edit-btns{display:flex;gap:8px;justify-content:flex-end}
     /* Banner del proyecto en card */
     .vp-proj-banner{margin:-14px -14px 12px;height:110px;overflow:hidden;border-radius:8px 8px 0 0;flex-shrink:0}
     .vp-proj-banner img{width:100%;height:100%;object-fit:cover;display:block}
@@ -590,6 +590,9 @@
         si_guardar:             @json(__('app.modales_pf.si_guardar')),
         err_elim_pf:            @json(__('app.modales_pf.err_elim_pf')),
         err_elim_proj:          @json(__('app.modales_pf.err_elim_proj')),
+        conf_elim_archivo_titulo: @json(__('app.modales_pf.conf_elim_archivo_titulo')),
+        conf_elim_archivo_desc: @json(__('app.modales_pf.conf_elim_archivo_desc')),
+        err_elim_archivo:       @json(__('app.modales_pf.err_elim_archivo')),
         err_guardar:            @json(__('app.modales_pf.err_guardar')),
         err_servidor:           @json(__('app.modales_pf.err_servidor')),
         err_url_repo:           @json(__('app.modales_pf.err_url_repo')),
@@ -1097,7 +1100,7 @@
         const portafolioId = vpPortafolioIdActual;
         const archivosHtml = proj.archivos && proj.archivos.length
             ? '<div class="vp-proj-files">' + proj.archivos.map(a => {
-                const delBtn = '<button class="vp-file-del" onclick="vpEliminarArchivo(' + a.id + ')" title="' + _t.eliminar + '">' +
+                const delBtn = '<button class="vp-file-del" onclick="vpConfirmarEliminarArchivo(' + a.id + ')" title="' + _t.eliminar + '">' +
                     '<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
                 if (esImagen(a.nombre_original)) {
                     return '<div class="vp-img-preview" id="vf-' + a.id + '">' +
@@ -1180,8 +1183,8 @@
             '<option value="publicado"' + (proj.estado === 'publicado' ? ' selected' : '') + '>' + _t.publicado + '</option>' +
             '</select>' +
             '<div class="vp-proj-edit-btns">' +
-            '<button class="vp-proj-btn-del2" style="flex:1" onclick="vpCancelarEditarProyecto(' + id + ')">' + _t.cancelar + '</button>' +
-            '<button class="vp-proj-btn-edit" style="flex:2" onclick="vpConfirmarGuardarProyecto(' + id + ')">' + _t.guardar_cambios + '</button>' +
+            '<button class="vp-proj-btn-del2" onclick="vpCancelarEditarProyecto(' + id + ')">' + _t.cancelar + '</button>' +
+            '<button class="vp-proj-btn-edit" onclick="vpConfirmarGuardarProyecto(' + id + ')">' + _t.guardar_cambios + '</button>' +
             '</div></div>';
     }
 
@@ -1289,8 +1292,18 @@
         } catch(err) { alert(err.message); }
     }
 
+    function vpConfirmarEliminarArchivo(id) {
+        vpConfirm({
+            ico: '<path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>',
+            danger: true,
+            title: _t.conf_elim_archivo_titulo,
+            desc: _t.conf_elim_archivo_desc,
+            btnText: _t.si_eliminar,
+            onConfirm: () => vpEliminarArchivo(id),
+        });
+    }
+
     async function vpEliminarArchivo(id) {
-        if (!confirm(_t.conf_elim_archivo)) return;
         const token = document.querySelector('meta[name="csrf-token"]').content;
         try {
             const res  = await fetch('/portafolio-archivos/' + id, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': token } });
