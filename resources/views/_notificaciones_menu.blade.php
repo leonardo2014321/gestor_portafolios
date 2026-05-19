@@ -51,18 +51,33 @@
         const esLarga = n.mensaje.length > 80;
         const preview = esLarga ? n.mensaje.substring(0, 80) + '...' : n.mensaje;
 
+        // Badge y color de acento según tipo
+        const esContacto  = n.es_contacto === true;
+        const accentColor = esContacto ? '#d97706' : '#2563eb';
+        const bgNoLeida   = esContacto ? '#fffbeb' : '#eff6ff';
+        const dotColor    = esContacto ? '#d97706' : '#2563eb';
+        const btnBorder   = esContacto ? '#fde68a' : '#bfdbfe';
+
+        const badgeContacto = esContacto ? `
+            <div style="display:inline-flex;align-items:center;gap:4px;font-size:10px;
+                        font-weight:700;padding:2px 7px;border-radius:999px;
+                        background:#fef3c7;color:#92400e;margin-bottom:6px">
+                ✉ Mensaje de usuario${n.remitente ? ': ' + escapeHtml(n.remitente) : ''}
+            </div>` : '';
+
         return `
         <div id="notif-item-${n.id}"
              style="display:flex;gap:10px;padding:14px 16px;border-bottom:1px solid #f1f5f9;
-                    background:${n.leida ? '#fff' : '#eff6ff'};
-                    border-left:3px solid ${n.leida ? 'transparent' : '#2563eb'};
+                    background:${n.leida ? '#fff' : bgNoLeida};
+                    border-left:3px solid ${n.leida ? 'transparent' : accentColor};
                     transition:all .3s">
 
             <div style="width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;
-                        background:${n.leida ? 'transparent' : '#2563eb'}">
+                        background:${n.leida ? 'transparent' : dotColor}">
             </div>
 
             <div style="flex:1;min-width:0">
+                ${badgeContacto}
                 <div style="font-size:13px;font-weight:${n.leida ? '500' : '700'};
                             color:#0f172a;margin-bottom:4px">
                     ${escapeHtml(n.titulo)}
@@ -75,7 +90,7 @@
 
                 ${esLarga ? `
                 <button onclick="notifExpandir(${n.id})"
-                    style="font-size:11px;color:#2563eb;background:none;border:none;
+                    style="font-size:11px;color:${accentColor};background:none;border:none;
                            cursor:pointer;padding:2px 0;margin-top:2px;font-weight:600">
                     Ver más
                 </button>` : ''}
@@ -89,7 +104,7 @@
                     </span>
                     ${!n.leida ? `
                     <button onclick="notifMarcarLeida(${n.id})"
-                        style="font-size:10px;color:#2563eb;background:none;border:1px solid #bfdbfe;
+                        style="font-size:10px;color:${accentColor};background:none;border:1px solid ${btnBorder};
                                border-radius:6px;padding:2px 8px;cursor:pointer;font-weight:600">
                         ✓ Marcar leída
                     </button>` : `
