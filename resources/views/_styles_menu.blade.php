@@ -55,7 +55,8 @@
         /* ══════════════════════════════════════
            SIDEBAR
         ══════════════════════════════════════ */
-        aside{width:var(--sw);background:#0f172a !important;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,0.06) !important;}
+        aside{width:var(--sw);background:#0f172a !important;flex-shrink:0;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,0.06) !important;transition:transform 0.3s ease;z-index:90;}
+        .sb-top{display:flex;flex-direction:column;position:relative;}
         .sb-label{font-size:11px;font-weight:700;color:#8ba5c8;text-transform:uppercase;letter-spacing:1px;padding:0 24px;margin-bottom:12px;margin-top:10px;font-family:'Plus Jakarta Sans',sans-serif;}
         .sb-item{display:flex;align-items:center;gap:11px;padding:10px 20px;cursor:pointer;color:#8ba5c8;font-size:13px;font-weight:400;transition:all .18s;border-left:3px solid transparent;font-family:"DM Sans",sans-serif;text-decoration:none;background:none;border-top:none;border-right:none;border-bottom:none;width:100%}
         .sb-item:hover{background:rgba(255,255,255,0.05);color:#c8d8ef;transform:translateX(4px)}
@@ -218,7 +219,7 @@
            El JS vive en _calendario_menu.blade.php
            y _notificaciones_menu.blade.php
         ══════════════════════════════════════ */
-        .rpanel{width:260px;flex-shrink:0;background:#fff;border-left:1.5px solid var(--gray2);display:flex;flex-direction:column;overflow-y:auto}
+        .rpanel{width:260px;flex-shrink:0;background:#fff;border-left:1.5px solid var(--gray2);display:flex;flex-direction:column;overflow-y:auto;transition:transform 0.3s ease;z-index:90;position:relative;}
         .rp-sec{padding:.9rem 1rem;border-bottom:1px solid #f1f5f9}
         .cal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
         .cal-month{font-family:"Plus Jakarta Sans",sans-serif;font-size:15px;font-weight:700;color:var(--text)}
@@ -488,31 +489,71 @@
         ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
 
         /* ══════════════════════════════════════
-           GRIDS ADICIONALES
+           GRIDS ADICIONALES Y TOGGLES RESPONSIVE
         ══════════════════════════════════════ */
         .caract-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
         .porta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;}
+        
+        .mobile-toggle-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            width: 36px; height: 36px;
+            align-items: center; justify-content: center;
+            cursor: pointer;
+            color: rgba(255,255,255,0.7);
+            border-radius: 9px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .mobile-toggle-btn:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+        }
+        .mobile-toggle-btn svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; }
+        .sb-close-btn, .rp-close-btn {
+            display: none;
+            position: absolute;
+            top: 10px; right: 10px;
+            background: transparent; border: none; cursor: pointer; color: var(--muted);
+            width: 30px; height: 30px; align-items: center; justify-content: center; z-index: 95;
+        }
+        .sb-close-btn:hover, .rp-close-btn:hover { color: var(--text); }
+        .sb-close-btn svg, .rp-close-btn svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+        .sb-close-btn { color: #fff; }
+        .sb-close-btn:hover { color: #cbd5e1; }
 
         /* ══════════════════════════════════════
            RESPONSIVE
         ══════════════════════════════════════ */
         @media(max-width:1200px){
-          .content-wrapper{flex-direction:column;overflow-y:auto;}
-          main{overflow-y:visible;flex:none;}
-          .rpanel{display:flex;flex-direction:row;flex-wrap:wrap;width:100%;height:auto;border-left:none;border-top:1.5px solid var(--gray2);overflow-y:visible;}
-          .rpanel > .rp-sec{flex:1;min-width:250px;}
           .porta-grid{grid-template-columns:repeat(3,1fr)}
         }
         @media(max-width:992px){
-          aside{width:72px}
-          .sb-item span,.sb-uname,.sb-uid,.btn-logout span{display:none}
-          .sb-item{justify-content:center;padding:13px 10px}
-          .sb-user-block{justify-content:center}
-          .btn-logout{justify-content:center}
+          .mobile-toggle-btn { display: flex; }
+          .sb-close-btn, .rp-close-btn { display: flex; }
+          .tb-nav{display:none}
+
+          aside {
+              position: fixed; top: 0; left: 0; height: 100%;
+              transform: translateX(-100%);
+              width: 260px; /* Ancho fijo para móvil */
+          }
+          aside.show { transform: translateX(0); box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
+          
+          .sb-item span, .sb-uname, .sb-uid, .btn-logout span { display: block; }
+          .sb-item { justify-content: flex-start; padding: 10px 20px; }
+          
+          .rpanel {
+              position: fixed; top: 0; right: 0; height: 100%;
+              transform: translateX(100%);
+              width: 280px; border-left: 1px solid var(--gray2);
+              box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+          }
+          .rpanel.show { transform: translateX(0); }
+
           .stats,.pgrid,.exp-grid{grid-template-columns:1fr}
           .caract-grid{grid-template-columns:1fr}
           .porta-grid{grid-template-columns:repeat(2,1fr)}
-          .tb-nav{display:none}
         }
         @media(max-width:768px){
           .topbar{padding:0 16px;height:auto;padding-top:10px;padding-bottom:10px;flex-wrap:wrap;gap:10px;}
@@ -530,7 +571,6 @@
           .exp-history-dropdown{width:100%;}
         }
         @media(max-width:480px){
-          aside{width:60px}
           .tb-search{display:none}
           .sysname{display:none}
           .tb-left{gap:0;justify-content:center;}
