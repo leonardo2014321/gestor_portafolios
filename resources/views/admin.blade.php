@@ -951,6 +951,7 @@
 
     
 </script>
+@include('_notificaciones_menu')
 
 </body>
 </html>
