@@ -142,7 +142,7 @@
                 {!! $iconPaths !!}
             </svg>
         </span>
-        {{ $categoria->nombre }}
+       {{ $categoria->nombre_traducido }}
     </button>
     @endforeach
 
