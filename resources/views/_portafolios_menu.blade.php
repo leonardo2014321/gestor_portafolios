@@ -63,7 +63,7 @@
     <div class="porta-hero-inner">
         <div class="porta-hero-left">
             <div class="porta-hero-title">{{ __('app.menu.inspira') }}</div>
-            <div class="porta-hero-sub">Explora portafolios publicados por la comunidad</div>
+            <div class="porta-hero-sub">{{ __('app.portafolios.hero_sub') }}</div>
             <div class="porta-search-wrap">
                 <svg class="porta-search-icon" width="14" height="14" viewBox="0 0 24 24"
                      fill="none" stroke="currentColor" stroke-width="2.2"
@@ -72,10 +72,10 @@
                 </svg>
                 <input id="portaHeroSearch" type="text"
                        class="porta-search-input"
-                       placeholder="Buscar por nombre, profesión..."
+                       placeholder="{{ __('app.portafolios.buscar_placeholder') }}"
                        oninput="portaHeroSearchFn()" />
                 @if($totalPortafolios > 0)
-                    <span class="porta-search-badge">{{ $totalPortafolios }} portafolios</span>
+                    <span class="porta-search-badge">{{ $totalPortafolios }} {{ __('app.portafolios.stat_portafolios') }}</span>
                 @endif
             </div>
         </div>
@@ -83,23 +83,23 @@
         <div class="porta-hero-stats">
             <div class="porta-stat-pill">
                 <div class="porta-stat-num">{{ $totalPortafolios }}</div>
-                <div class="porta-stat-lbl">Portafolios</div>
+                <div class="porta-stat-lbl">{{ __('app.portafolios.stat_portafolios') }}</div>
             </div>
             <div class="porta-stat-pill">
                 <div class="porta-stat-num">{{ $totalAutores }}</div>
-                <div class="porta-stat-lbl">Autores</div>
+                <div class="porta-stat-lbl">{{ __('app.portafolios.stat_autores') }}</div>
             </div>
             <div class="porta-stat-pill">
                 <div class="porta-stat-num">{{ $totalCategorias }}</div>
-                <div class="porta-stat-lbl">Áreas</div>
+                <div class="porta-stat-lbl">{{ __('app.portafolios.stat_areas') }}</div>
             </div>
         </div>
         @endif
     </div>
 </div>
 
-{{-- Filtros de categoría (dinámicos desde BD) --}}
-<div class="porta-filters" role="group" aria-label="Filtrar por categoría">
+{{-- Filtros --}}
+<div class="porta-filters" role="group" aria-label="{{ __('app.portafolios.filtro_aria') }}">
 
     {{-- Todos --}}
     <button class="porta-filter-btn porta-filter-active" data-filter="todos">
@@ -109,7 +109,7 @@
                 <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
             </svg>
         </span>
-        Todos
+        {{ __('app.portafolios.filtro_todos') }}
     </button>
 
     @php
@@ -142,7 +142,7 @@
                 {!! $iconPaths !!}
             </svg>
         </span>
-        {{ $categoria->nombre }}
+       {{ $categoria->nombre_traducido }}
     </button>
     @endforeach
 
@@ -253,7 +253,7 @@
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/>
             </svg>
-            <p>Aún no hay portafolios publicados.</p>
+            <p>{{ __('app.portafolios.empty_portafolios') }}</p>
         </div>
     @endforelse
 

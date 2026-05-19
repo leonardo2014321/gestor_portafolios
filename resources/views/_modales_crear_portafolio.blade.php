@@ -398,9 +398,9 @@
                     <div class="mp-err" id="epErrDesc">{{ __('app.modales_pf.err_descripcion') }}</div>
                 </div>
                 <div class="mp-field">
-                    <label class="mp-label">Categoría</label>
+                    <label class="mp-label">{{ __('modales_pf.categoria') }}</label>
                     <select class="mp-input" id="epCategoria">
-                        <option value="">— Sin categoría —</option>
+                        <option value="">{{ __('modales_pf.sin_categoria') }}</option>
                         @foreach(\App\Models\Categoria::where('activa', true)->orderBy('orden')->get() as $cat)
                             <option value="{{ $cat->id }}">{{ $cat->nombre }}</option>
                         @endforeach
