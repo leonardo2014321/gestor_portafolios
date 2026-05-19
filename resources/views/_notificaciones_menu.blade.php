@@ -196,15 +196,16 @@ document.addEventListener('click', function(event) {
     }
 
     // Cerrar panel al hacer click fuera
+    // (excluir el modal para que cerrarlo no cierre también el panel)
     document.addEventListener('click', function(e) {
-        const wrap = document.getElementById('notif-wrap');
-        if (wrap && !wrap.contains(e.target)) {
+        const wrap  = document.getElementById('notif-wrap');
+        const modal = document.getElementById('modal-notificacion');
+        if (wrap && !wrap.contains(e.target) && !modal?.contains(e.target)) {
             const panel = document.getElementById('notif-panel');
             if (panel) panel.style.display = 'none';
             notifPanelAbierto = false;
         }
     });
-
     // Cargar badge al iniciar y polling cada 60s
     notifCargar();
     setInterval(notifCargar, 60000);
