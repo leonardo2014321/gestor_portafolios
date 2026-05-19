@@ -591,7 +591,7 @@
             body *{visibility:hidden;}
             #view-reportes,#view-reportes *{visibility:visible;}
             #view-reportes{position:absolute;left:0;top:0;width:100%;min-height:100vh;}
-            .topbar,aside,.rpanel,.content-bar,footer,.template-selector,.reportes-tabs{display:none !important;}
+            .topbar,aside,.rpanel,.content-bar,footer,.template-selector,.reportes-tabs,#portafolio-color-panel{display:none !important;}
             .cv-template-view{display:none !important;}
             .cv-template-view.active-tpl{display:flex !important;}
             main{background:#fff;padding:0;overflow:visible;width:100%;min-height:100vh;display:block;}
