@@ -612,7 +612,146 @@
         /* ============================================================
            REPORTES Y HOJAS DE VIDA RESPONSIVE
            ============================================================ */
+        #view-reportes select {
+            box-sizing: border-box !important;
+            max-width: 100% !important;
+        }
+
+        /* ── Custom Select UI (Premium Dropdowns) ── */
+        .custom-select-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            user-select: none;
+            display: inline-block;
+        }
+        @media (max-width: 768px) {
+            .custom-select-wrapper {
+                max-width: 100% !important;
+            }
+        }
+        .custom-select-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+            background: #fff;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+        .custom-select-trigger:hover {
+            border-color: #3b82f6;
+        }
+        .custom-select-wrapper.open .custom-select-trigger {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+        .custom-select-arrow {
+            transition: transform 0.2s ease;
+            color: #64748b;
+            flex-shrink: 0;
+        }
+        .custom-select-wrapper.open .custom-select-arrow {
+            transform: rotate(180deg);
+            color: #3b82f6;
+        }
+        .custom-select-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 4px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            max-height: 250px;
+            overflow-y: auto;
+            display: none;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: opacity 0.15s ease, transform 0.15s ease;
+        }
+        .custom-select-wrapper.open .custom-select-options {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .custom-option {
+            padding: 10px 14px;
+            font-size: 13.5px;
+            color: #334155;
+            cursor: pointer;
+            transition: background 0.15s ease;
+            text-align: left;
+        }
+        .custom-option:hover {
+            background: #f1f5f9;
+        }
+        .custom-option.selected {
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        /* Smaller size for sub-panels */
+        .custom-select-sm {
+            max-width: 100% !important;
+            flex: 1;
+        }
+        .custom-select-sm .custom-select-trigger {
+            padding: 6px 12px;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+        .custom-select-sm .custom-option {
+            padding: 8px 12px;
+            font-size: 13px;
+        }
         @media(max-width:992px){
+          html, body {
+              max-width: 100vw !important;
+              overflow-x: hidden !important;
+          }
+          .app {
+              max-width: 100vw !important;
+              overflow-x: hidden !important;
+          }
+          .body-row {
+              max-width: 100vw !important;
+              overflow-x: hidden !important;
+          }
+          .content-wrapper {
+              min-width: 0 !important;
+              width: 100% !important;
+              max-width: 100vw !important;
+              overflow-x: hidden !important;
+          }
+          main {
+              min-width: 0 !important;
+              width: 100% !important;
+              max-width: 100vw !important;
+              overflow-x: hidden !important;
+          }
+          .main-inner {
+              max-width: 100% !important;
+              width: 100% !important;
+              overflow-x: hidden !important;
+              box-sizing: border-box !important;
+          }
+          #view-reportes {
+              max-width: 100% !important;
+              width: 100% !important;
+              overflow-x: hidden !important;
+              box-sizing: border-box !important;
+          }
           .cv-wrapper {
               justify-content: flex-start !important;
               overflow-x: auto !important;
@@ -757,6 +896,7 @@
           .template-selector select {
               max-width: 100% !important;
               width: 100% !important;
+              box-sizing: border-box !important;
           }
           #portafolio-color-panel {
               padding: 12px 15px !important;
@@ -774,6 +914,7 @@
           .pf-select-row select {
               width: 100% !important;
               max-width: 100% !important;
+              box-sizing: border-box !important;
           }
         }
         @media(max-width:480px){
