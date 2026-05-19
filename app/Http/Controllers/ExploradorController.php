@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Usuario;
+use Carbon\Carbon;
 
 class ExploradorController extends Controller
 {
@@ -36,19 +37,32 @@ class ExploradorController extends Controller
             'usuarios_activos'   => Usuario::where('activo', true)->count(),
             'usuarios_inactivos' => Usuario::where('activo', false)->count(),
             'total_admins'       => Usuario::where('es_admin', true)->count(),
+            'usuarios_hoy'       => Usuario::whereDate('created_at', Carbon::today())->count(),
+            'usuarios_semana'    => Usuario::where('created_at', '>=', Carbon::now()->startOfWeek())->count(),
         ];
 
         $portafolios_stats = [
-            'total'        => \App\Models\Portafolio::count(),
-            'con_usuarios' => \App\Models\Portafolio::whereNotNull('usuario_id')->count(),
-            'sin_usuarios' => \App\Models\Portafolio::whereNull('usuario_id')->count(),
+            'total'              => \App\Models\Portafolio::count(),
+            'con_usuarios'       => \App\Models\Portafolio::whereNotNull('usuario_id')->count(),
+            'sin_usuarios'       => \App\Models\Portafolio::whereNull('usuario_id')->count(),
+            'portafolios_hoy'    => \App\Models\Portafolio::whereDate('created_at', Carbon::today())->count(),
+            'portafolios_semana' => \App\Models\Portafolio::where('created_at', '>=', Carbon::now()->startOfWeek())->count(),
         ];
 
         $total_documentos      = \App\Models\PortafolioArchivo::count();
         $usuarios_recientes    = Usuario::orderBy('created_at', 'desc')->limit(5)->get();
         $todos_usuarios        = Usuario::orderBy('created_at', 'desc')->get();
         $todos_portafolios     = \App\Models\Portafolio::with('usuario')->orderBy('created_at', 'desc')->get();
-        $actividades_recientes = \App\Models\Actividad::with('usuario')->orderBy('created_at', 'desc')->limit(10)->get();
+        
+        $actividades_recientes = \App\Models\Actividad::with('usuario')
+            ->where('accion', 'login')
+            ->whereHas('usuario', function($query) {
+                $query->where('es_admin', true);
+            })
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
         $usuarios              = $this->getUsuariosMapeados();
 
         return view('admin', compact(

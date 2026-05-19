@@ -69,7 +69,7 @@
     /* ══════════════════════════════════════
        MAIN ADMIN (grid con panel derecho)
     ══════════════════════════════════════ */
-    main { flex: 1; display: grid; grid-template-columns: 1fr 320px; overflow: hidden; background: var(--gray); position: relative; }
+    main { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 320px; overflow: hidden; background: var(--gray); position: relative; }
     .main-inner { padding: 2rem 2.5rem; overflow-y: auto; width: 100%; max-width: 1400px; margin: 0 auto; }
     .admin-view { display: none; }
     .admin-view.active { display: block; }
@@ -93,8 +93,8 @@
        STATS GRID
     ══════════════════════════════════════ */
     .stats-grid { display: grid; gap: 1.2rem; margin-bottom: 2rem; }
-    .dashboard-stats { grid-template-columns: repeat(4, 1fr); }
-    .portafolios-stats { grid-template-columns: repeat(3, 1fr); }
+    .dashboard-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .portafolios-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .stat-card { background: #fff; border-radius: 16px; padding: 1.5rem; border: 1px solid var(--gray2); box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; align-items: flex-start; justify-content: space-between; transition: all 0.2s; }
     .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.05); border-color: var(--gray3); }
     .stat-info { display: flex; flex-direction: column; gap: 6px; }
@@ -113,9 +113,9 @@
     /* ══════════════════════════════════════
        PANEL / TABLA
     ══════════════════════════════════════ */
-    .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 450px), 1fr)); gap: 1.5rem; }
+    .dash-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem; }
     .panel { background: #fff; border-radius: 16px; border: 1px solid var(--gray2); box-shadow: 0 2px 10px rgba(0,0,0,0.02); overflow: hidden; }
-    .panel-header { padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--gray2); display: flex; justify-content: space-between; align-items: center; }
+    .panel-header { padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--gray2); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
     .panel-title { font-family: "Plus Jakarta Sans", sans-serif; font-size: 16px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; }
     .panel-action { font-size: 13px; font-weight: 600; color: var(--admin-purple); text-decoration: none; }
     .panel-action:hover { text-decoration: underline; }
@@ -126,6 +126,13 @@
     td { padding: 14px 1.5rem; font-size: 12.5px; color: var(--text); border-bottom: 1px solid var(--gray2); vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: var(--gray); }
+
+    /* Ajustes específicos para tablas en el dashboard para que entren a la par */
+    .dash-grid th { padding: 12px 1rem; font-size: 10.5px; }
+    .dash-grid td { padding: 12px 1rem; font-size: 12px; }
+    .dash-grid .u-name, .dash-grid .u-email { max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; }
+    .dash-grid .u-info { min-width: 0; }
+    .dash-grid td { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
 
     /* ══════════════════════════════════════
        USUARIOS
@@ -182,7 +189,7 @@
     /* ══════════════════════════════════════
        PANEL DERECHO / CALENDARIO
     ══════════════════════════════════════ */
-    .rpanel { width: 100%; background: #fff; border-left: 1px solid var(--gray2); display: flex; flex-direction: column; overflow: hidden; }
+    .rpanel { width: 100%; background: #fff; border-left: 1px solid var(--gray2); display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; }
     .rp-sec { padding: .9rem 1rem; border-bottom: 1px solid var(--gray2); flex-shrink: 0; }
     .cal-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
     .cal-month { font-family: "Plus Jakarta Sans", sans-serif; font-size: 15px; font-weight: 700; color: var(--text); }
@@ -221,7 +228,7 @@
     ══════════════════════════════════════ */
     @media(max-width: 1200px) {
         .mobile-toggle-container { display: flex; }
-        main { grid-template-columns: 1fr; overflow-y: auto; }
+        main { grid-template-columns: minmax(0, 1fr); overflow-y: auto; }
         .main-inner { overflow-y: visible; padding: 1.5rem; height: max-content; }
         
         /* Left Sidebar as Drawer */
@@ -264,12 +271,12 @@
         }
         .rpanel.open { right: 0; }
         
-        .dashboard-stats, .portafolios-stats { grid-template-columns: repeat(2, 1fr) !important; }
-        .dash-grid { grid-template-columns: 1fr !important; }
+        .dashboard-stats, .portafolios-stats { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+        .dash-grid { grid-template-columns: minmax(0, 1fr) !important; }
     }
     @media(max-width: 768px) {
         .table-wrap { overflow-x: auto; }
-        .dashboard-stats, .portafolios-stats, .stats-grid { grid-template-columns: 1fr !important; }
+        .dashboard-stats, .portafolios-stats, .stats-grid { grid-template-columns: minmax(0, 1fr) !important; }
         .main-inner { padding: 1rem; }
         .admin-hero { padding: 1.5rem; }
         .hero-title { font-size: 24px; }

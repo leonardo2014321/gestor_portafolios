@@ -17,8 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'es_admin' => \App\Http\Middleware\EsAdmin::class,
         ]);
         $middleware->web(append: [
-        \App\Http\Middleware\SetLocale::class,
-    ]);
+            \App\Http\Middleware\SetLocale::class,
+            \App\Http\Middleware\CheckUserStatus::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
