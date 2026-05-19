@@ -5,7 +5,7 @@
      Controller: PerfilPublicoController@show
      ============================================================ --}}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -253,19 +253,19 @@
                     @if($experiencias->count())
                         <div class="pp-stat">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-                            {{ $experiencias->count() }} {{ $experiencias->count() == 1 ? 'experiencia' : 'experiencias' }}
+                            {{ $experiencias->count() }} {{ trans_choice('app.perfil_publico.stat_experiencia', $experiencias->count()) }}
                         </div>
                     @endif
                     @if($habilidades->count())
                         <div class="pp-stat">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                            {{ $habilidades->count() }} habilidades
+                            {{ $habilidades->count() }} {{ __('app.perfil_publico.stat_habilidades') }}
                         </div>
                     @endif
                     @if($portafolios->count())
                         <div class="pp-stat">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
-                            {{ $portafolios->count() }} {{ $portafolios->count() == 1 ? 'portafolio' : 'portafolios' }}
+                            {{ $portafolios->count() }} {{ trans_choice('app.perfil_publico.stat_portafolio', $portafolios->count()) }}
                         </div>
                     @endif
                 </div>
@@ -310,7 +310,7 @@
             <div style="flex-shrink:0;">
                 <a href="mailto:{{ $usuario->email }}" class="pp-cta">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                    Contactar
+                    {{ __('app.perfil_publico.btn_contactar') }}
                 </a>
             </div>
         </div>
@@ -321,7 +321,7 @@
         <div class="pp-bio-card">
             <div class="pp-section-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Sobre mí
+                {{ __('app.perfil_publico.seccion_sobre_mi') }}
             </div>
             <div class="pp-bio-text">{{ $usuario->biografia }}</div>
         </div>
@@ -332,7 +332,7 @@
         <div class="pp-card">
             <div class="pp-section-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                Habilidades
+                {{ __('app.perfil_publico.seccion_habilidades') }}
             </div>
             @if($habilidades->count())
                 <div class="pp-skills-wrap">
@@ -346,19 +346,19 @@
                 @php $apren = $habilidades->where('tipo','aprendiendo')->count(); @endphp
                 @if($apren)
                     <div style="margin-top:10px;font-size:11.5px;color:var(--pp-muted);">
-                        <span style="color:#3b82f6;font-weight:700;">●</span> Dominadas &nbsp;
-                        <span style="color:#f59e0b;font-weight:700;">●</span> En aprendizaje
+                        <span style="color:#3b82f6;font-weight:700;">●</span> {{ __('app.perfil_publico.leyenda_dominadas') }} &nbsp;
+                        <span style="color:#f59e0b;font-weight:700;">●</span> {{ __('app.perfil_publico.leyenda_en_aprendizaje') }}
                     </div>
                 @endif
             @else
-                <div class="pp-empty">Sin habilidades registradas aún.</div>
+                <div class="pp-empty">{{ __('app.perfil_publico.empty_habilidades') }}</div>
             @endif
         </div>
 
         <div class="pp-card">
             <div class="pp-section-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
-                Certificaciones
+                {{ __('app.perfil_publico.seccion_certificaciones') }}
             </div>
             @if($certificaciones->count())
                 <div class="pp-cert-list">
@@ -379,7 +379,7 @@
                     @endforeach
                 </div>
             @else
-                <div class="pp-empty">Sin certificaciones registradas.</div>
+                <div class="pp-empty">{{ __('app.perfil_publico.empty_certificaciones') }}</div>
             @endif
         </div>
     </div>
@@ -389,7 +389,7 @@
         <div class="pp-card">
             <div class="pp-section-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-                Experiencia
+                {{ __('app.perfil_publico.seccion_experiencia') }}
             </div>
             @if($experiencias->count())
                 <div class="pp-timeline">
@@ -405,7 +405,7 @@
                                 <div class="pp-tl-date">
                                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                                     {{ \Carbon\Carbon::parse($exp->fecha_inicio)->format('M Y') }} –
-                                    {{ $exp->actual ? 'Actualidad' : ($exp->fecha_fin ? \Carbon\Carbon::parse($exp->fecha_fin)->format('M Y') : '') }}
+                                    {{ $exp->actual ? __('app.perfil_publico.actualidad') : ($exp->fecha_fin ? \Carbon\Carbon::parse($exp->fecha_fin)->format('M Y') : '') }}
                                 </div>
                                 @if($exp->descripcion)
                                     <div class="pp-tl-desc">{{ \Illuminate\Support\Str::limit($exp->descripcion, 120) }}</div>
@@ -415,14 +415,14 @@
                     @endforeach
                 </div>
             @else
-                <div class="pp-empty">Sin experiencia registrada.</div>
+                <div class="pp-empty">{{ __('app.perfil_publico.empty_experiencia') }}</div>
             @endif
         </div>
 
         <div class="pp-card">
             <div class="pp-section-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                Formación
+                {{ __('app.perfil_publico.seccion_formacion') }}
             </div>
             @if($formaciones->count())
                 <div class="pp-timeline">
@@ -448,7 +448,7 @@
                     @endforeach
                 </div>
             @else
-                <div class="pp-empty">Sin formación registrada.</div>
+                <div class="pp-empty">{{ __('app.perfil_publico.empty_formacion') }}</div>
             @endif
         </div>
     </div>
@@ -458,7 +458,7 @@
         <div class="pp-card" style="margin-bottom:1.2rem;">
             <div class="pp-section-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
-                Portafolios
+                {{ __('app.perfil_publico.seccion_portafolios') }}
             </div>
             <div class="pp-porta-grid">
                 @foreach($portafolios as $p)
