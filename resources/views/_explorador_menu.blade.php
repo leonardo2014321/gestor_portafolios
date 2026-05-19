@@ -251,7 +251,7 @@
                 @if($u['foto_url'])
                     <img src="{{ $u['foto_url'] }}" class="exp-av exp-av-foto" alt="{{ $u['nombre'] }}">
                 @else
-                    <div class="exp-av {{ $avClass }}">{{ $u['inicial'] }}</div>
+                    <div class="exp-av {{ $avClass }}" data-iniciales="{{ $u['inicial'] }}">{{ $u['inicial'] }}</div>
                 @endif
 
                 <div class="exp-card-info">

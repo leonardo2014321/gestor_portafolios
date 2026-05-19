@@ -173,7 +173,8 @@
         @endphp
 
         <div class="porta-card"
-             data-categoria="{{ $portafolio->categoria?->slug ?? '' }}">
+             data-categoria="{{ $portafolio->categoria?->slug ?? '' }}"
+             data-user-id="{{ $usuario->id }}">
 
             {{-- ── Cuadro grande: foto cubre todo el área con overlay ── --}}
             <div class="porta-card-cover">
