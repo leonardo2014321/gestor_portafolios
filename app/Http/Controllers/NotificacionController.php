@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificacionController extends Controller
 {
+    // ── Admin: enviar notificación a usuarios ────────────────
     public function store(Request $request)
     {
         if (!Auth::user()->es_admin) abort(403);
@@ -38,24 +39,70 @@ class NotificacionController extends Controller
         return response()->json(['ok' => true]);
     }
 
+    // ── Usuario: enviar mensaje al administrador ─────────────
+    public function storeDesdeUsuario(Request $request)
+    {
+        $request->validate([
+            'titulo'  => 'required|string|max:150',
+            'mensaje' => 'required|string|max:1000',
+        ]);
+
+        $user  = Auth::user();
+        $admin = Usuario::where('es_admin', true)->where('activo', true)->first();
+
+        if (!$admin) {
+            return response()->json(['error' => 'No hay administradores disponibles.'], 503);
+        }
+
+        Notificacion::create([
+            'titulo'          => '[Usuario] ' . $request->titulo,
+            'mensaje'         => $request->mensaje,
+            'tipo_envio'      => 'individual',
+            'destinatario_id' => $admin->id,
+            'creado_por'      => $user->id,
+            'leida'           => false,
+        ]);
+
+        return response()->json(['ok' => true]);
+    }
+
+    // ── Campanita: notificaciones del usuario autenticado ────
     public function misNotificaciones()
     {
         $user = Auth::user();
 
-        $notificaciones = Notificacion::where(function ($q) use ($user) {
+        $notificaciones = Notificacion::with('creadoPor')
+            ->where(function ($q) use ($user) {
                 $q->where('tipo_envio', 'individual')
                   ->where('destinatario_id', $user->id);
             })
             ->orWhere('tipo_envio', 'todos')
             ->orWhere(function ($q) use ($user) {
                 $q->where('tipo_envio', 'rol')
-                  ->where(function($q2) use ($user) {
+                  ->where(function ($q2) use ($user) {
                       if ($user->es_admin) $q2->whereNotNull('id');
                       else $q2->whereNull('id');
                   });
             })
             ->orderByDesc('created_at')
-            ->get();
+            ->get()
+            ->map(function ($n) {
+                $esContacto = str_starts_with($n->titulo, '[Usuario] ');
+                return [
+                    'id'          => $n->id,
+                    'titulo'      => $esContacto
+                                        ? substr($n->titulo, strlen('[Usuario] '))
+                                        : $n->titulo,
+                    'mensaje'     => $n->mensaje,
+                    'tipo_envio'  => $n->tipo_envio,
+                    'leida'       => $n->leida,
+                    'created_at'  => $n->created_at,
+                    'remitente'   => $esContacto && $n->creadoPor
+                                        ? $n->creadoPor->nombre . ' ' . $n->creadoPor->apellido
+                                        : null,
+                    'es_contacto' => $esContacto,
+                ];
+            });
 
         $noLeidas = $notificaciones->where('leida', false)->count();
 
@@ -65,6 +112,7 @@ class NotificacionController extends Controller
         ]);
     }
 
+    // ── Marcar notificación como leída ───────────────────────
     public function marcarLeida($id)
     {
         $user  = Auth::user();
@@ -81,17 +129,39 @@ class NotificacionController extends Controller
         return response()->json(['ok' => true]);
     }
 
+    // ── Admin: listar historial completo ─────────────────────
     public function index()
     {
         if (!Auth::user()->es_admin) abort(403);
 
         $notificaciones = Notificacion::with(['creadoPor', 'destinatario'])
             ->orderByDesc('created_at')
-            ->get();
+            ->get()
+            ->map(function ($n) {
+                $esContacto = str_starts_with($n->titulo, '[Usuario] ');
+                return [
+                    'id'              => $n->id,
+                    'titulo'          => $esContacto
+                                            ? substr($n->titulo, strlen('[Usuario] '))
+                                            : $n->titulo,
+                    'mensaje'         => $n->mensaje,
+                    'tipo_envio'      => $n->tipo_envio,
+                    'created_at'      => $n->created_at,
+                    'es_contacto'     => $esContacto,
+                    'remitente'       => $n->creadoPor
+                                            ? $n->creadoPor->nombre . ' ' . $n->creadoPor->apellido
+                                            : null,
+                    'remitente_email' => $n->creadoPor?->email,
+                    'destinatario'    => $n->destinatario
+                                            ? $n->destinatario->nombre . ' ' . $n->destinatario->apellido
+                                            : null,
+                ];
+            });
 
         return response()->json($notificaciones);
     }
 
+    // ── Admin: eliminar notificación ─────────────────────────
     public function destroy($id)
     {
         if (!Auth::user()->es_admin) abort(403);
