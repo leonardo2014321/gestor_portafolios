@@ -14,7 +14,35 @@ class PerfilController extends Controller
 
     public function index()
     {
-        return view('perfil.index', ['usuario' => Auth::user()]);
+        $usuario = Auth::user();
+
+        // Redes con visible = true
+        $redes = $usuario->redesPerfil()
+            ->where('visible', true)
+            ->whereNotNull('url')
+            ->where('url', '!=', '')
+            ->get();
+
+        $habilidades     = $usuario->habilidades()->orderBy('tipo')->orderBy('nombre')->get();
+        $experiencias    = $usuario->experiencias()->orderByDesc('fecha_inicio')->get();
+        $formaciones     = $usuario->formaciones()->orderByDesc('fecha_inicio')->get();
+        $certificaciones = $usuario->certificaciones()->orderByDesc('fecha_obtencion')->get();
+
+        // Solo portafolios publicados
+        $portafolios = $usuario->portafolios()
+            ->where('estado', 'publicado')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('perfil.index', compact(
+            'usuario',
+            'redes',
+            'habilidades',
+            'experiencias',
+            'formaciones',
+            'certificaciones',
+            'portafolios'
+        ));
     }
 
     private function sanitize(string $value): string
@@ -24,6 +52,12 @@ class PerfilController extends Controller
 
     public function update(Request $request)
     {
+        \Log::info('=== PERFIL UPDATE CALLED ===', [
+            'ajax' => $request->ajax(),
+            'wantsJson' => $request->wantsJson(),
+            'payload' => $request->all(),
+        ]);
+
         if (!$request->ajax() && !$request->wantsJson()) {
             return response()->json(['error' => 'Solicitud no válida.'], 400);
         }

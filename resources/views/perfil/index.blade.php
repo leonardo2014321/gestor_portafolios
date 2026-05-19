@@ -144,7 +144,7 @@
         .btn-deactivate{background:#fff;color:var(--red);border:1.5px solid #fecaca;border-radius:9px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:"DM Sans",sans-serif;display:inline-flex;align-items:center;gap:7px;transition:all .2s}
         .btn-deactivate:hover{background:#fee2e2}
         .btn-deactivate svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-        .preview-card{background:linear-gradient(140deg,#1e2d50,#1a2340);border-radius:14px;padding:1.4rem;color:#fff;display:none}
+        .preview-card{background:none;border-radius:0;padding:0;color:var(--text);display:none}
         .preview-card.show{display:block}
         .preview-av{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#0d9488);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;margin-bottom:12px;overflow:hidden}
         .preview-av img{width:100%;height:100%;object-fit:cover}
@@ -165,6 +165,181 @@
         ::-webkit-scrollbar{width:4px}
         ::-webkit-scrollbar-track{background:transparent}
         ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
+
+        /* ─── ESTILOS DE PERFIL PÚBLICO INTEGRADOS EN VISTA PREVIA ─── */
+        :root {
+            --pp-navy:   #0f172a;
+            --pp-blue:   #2563eb;
+            --pp-blue2:  #3b82f6;
+            --pp-teal:   #0d9488;
+            --pp-gray:   #f0f4f8;
+            --pp-gray2:  #e2e8f0;
+            --pp-text:   #1e293b;
+            --pp-muted:  #64748b;
+            --pp-radius: 20px;
+        }
+
+        .pp-shell {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 1.5rem 0 3rem;
+        }
+
+        .pp-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0d4f4a 100%);
+            border-radius: var(--pp-radius);
+            padding: 2.5rem 2rem 2rem;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1.2rem;
+        }
+        .pp-hero::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 220px; height: 220px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.04);
+        }
+        .pp-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -40px; left: -40px;
+            width: 160px; height: 160px;
+            border-radius: 50%;
+            background: rgba(37,99,235,0.15);
+        }
+        .pp-hero-inner {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.8rem;
+            position: relative;
+            z-index: 1;
+        }
+        .pp-avatar-wrap { position: relative; flex-shrink: 0; }
+        .pp-avatar {
+            width: 96px; height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255,255,255,0.25);
+        }
+        .pp-avatar-initials {
+            width: 96px; height: 96px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #0d9488);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; font-weight: 800; color: #fff;
+            border: 3px solid rgba(255,255,255,0.2);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .pp-hero-info { flex: 1; min-width: 0; }
+        .pp-nombre {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 24px; font-weight: 800;
+            color: #fff; line-height: 1.2; margin-bottom: 4px;
+        }
+        .pp-profesion {
+            font-size: 14px; color: rgba(255,255,255,0.75);
+            font-weight: 500; margin-bottom: 12px;
+        }
+
+        .pp-redes-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+        .pp-red-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 12px; border-radius: 999px;
+            font-size: 12px; font-weight: 600; text-decoration: none;
+            transition: all .2s;
+            border: 1.5px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.9);
+            backdrop-filter: blur(4px);
+        }
+        .pp-red-badge:hover { background: rgba(255,255,255,0.18); transform: translateY(-1px); }
+        .pp-red-badge svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+        .pp-stats { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+        .pp-stat { display: flex; align-items: center; gap: 5px; font-size: 12px; color: rgba(255,255,255,0.65); font-weight: 500; }
+        .pp-stat svg { width: 13px; height: 13px; }
+
+        .pp-cta {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 11px 26px; border-radius: 999px;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: #fff; font-size: 14px; font-weight: 700;
+            text-decoration: none; transition: all .2s;
+            box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+            font-family: 'DM Sans', sans-serif;
+            border: none; cursor: pointer; white-space: nowrap;
+        }
+        .pp-cta:hover { box-shadow: 0 6px 20px rgba(37,99,235,0.45); transform: translateY(-1px); }
+        .pp-cta svg { width: 16px; height: 16px; }
+
+        .pp-bio-card {
+            background: #fff; border-radius: var(--pp-radius);
+            padding: 1.4rem 1.6rem; border: 1.5px solid var(--pp-gray2);
+            margin-bottom: 1.2rem;
+        }
+        .pp-card {
+            background: #fff; border-radius: var(--pp-radius);
+            padding: 1.4rem 1.6rem; border: 1.5px solid var(--pp-gray2);
+        }
+        .pp-section-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 13px; font-weight: 800; letter-spacing: .8px;
+            text-transform: uppercase; color: var(--pp-muted);
+            margin-bottom: .9rem;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .pp-section-title::after { content: ''; flex: 1; height: 1px; background: var(--pp-gray2); }
+        .pp-section-title svg { width: 15px; height: 15px; flex-shrink: 0; }
+        .pp-bio-text { font-size: 14px; color: var(--pp-text); line-height: 1.75; white-space: pre-wrap; word-break: break-word; }
+
+        .pp-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
+
+        .pp-skills-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+        .pp-skill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 13px; border-radius: 999px; font-size: 12.5px; font-weight: 600; }
+        .pp-skill.fuerte { background: #dbeafe; color: #1d4ed8; }
+        .pp-skill.blanda { background: #ccfbf1; color: #0f766e; }
+        .pp-skill-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+        .pp-skill.fuerte .pp-skill-dot { background: #3b82f6; }
+        .pp-skill.blanda .pp-skill-dot { background: #0d9488; }
+
+        .pp-timeline { display: flex; flex-direction: column; gap: .9rem; }
+        .pp-tl-item { display: flex; gap: 12px; align-items: flex-start; }
+        .pp-tl-dot-col { display: flex; flex-direction: column; align-items: center; padding-top: 5px; }
+        .pp-tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--pp-blue); flex-shrink: 0; border: 2px solid #dbeafe; }
+        .pp-tl-line { width: 2px; flex: 1; background: var(--pp-gray2); min-height: 24px; margin-top: 4px; }
+        .pp-tl-item:last-child .pp-tl-line { display: none; }
+        .pp-tl-body { flex: 1; min-width: 0; padding-bottom: 6px; }
+        .pp-tl-title { font-size: 13.5px; font-weight: 700; color: var(--pp-text); line-height: 1.3; }
+        .pp-tl-sub { font-size: 12.5px; color: var(--pp-blue); font-weight: 600; margin-top: 2px; }
+        .pp-tl-date { font-size: 11.5px; color: var(--pp-muted); margin-top: 3px; display: flex; align-items: center; gap: 4px; }
+        .pp-tl-desc { font-size: 12.5px; color: var(--pp-muted); margin-top: 5px; line-height: 1.6; }
+
+        .pp-cert-list { display: flex; flex-direction: column; gap: .75rem; }
+        .pp-cert-item { background: var(--pp-gray); border-radius: 12px; padding: .85rem 1rem; display: flex; align-items: flex-start; gap: 12px; }
+        .pp-cert-icon { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #fef3c7, #fde68a); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .pp-cert-icon svg { width: 17px; height: 17px; }
+        .pp-cert-name { font-size: 13px; font-weight: 700; color: var(--pp-text); }
+        .pp-cert-org { font-size: 12px; color: var(--pp-muted); margin-top: 2px; }
+
+        .pp-porta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.2rem; }
+        .pp-porta-card { background: #fff; border: 1.5px solid var(--pp-gray2); border-radius: 16px; overflow: hidden; transition: all .25s; text-decoration: none; display: block; }
+        .pp-porta-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.1); border-color: var(--pp-blue2); }
+        .pp-porta-banner { height: 120px; object-fit: cover; width: 100%; background: linear-gradient(135deg, #dbeafe, #ccfbf1); }
+        .pp-porta-info { padding: .9rem 1rem; }
+        .pp-porta-name { font-size: 13.5px; font-weight: 700; color: var(--pp-text); }
+        .pp-porta-desc { font-size: 12px; color: var(--pp-muted); margin-top: 4px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+        .pp-empty { font-size: 13px; color: var(--pp-muted); font-style: italic; padding: .5rem 0; }
+
+        @media (max-width: 640px) {
+            .pp-cols { grid-template-columns: 1fr; }
+            .pp-hero-inner { flex-direction: column; align-items: center; text-align: center; }
+            .pp-redes-row, .pp-stats { justify-content: center; }
+            .pp-hero { padding: 1.8rem 1.2rem; }
+        }
 </style>
 
 @php
@@ -306,20 +481,265 @@
 
 {{-- Vista previa --}}
 <div class="preview-card" id="previewCard">
-    <div class="preview-lbl">
-        <svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2;display:inline;margin-right:4px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        {{ __('app.perfil.preview_label') }}
-    </div>
-    <div class="preview-av" id="prevAv">
-        @if($fotoActual)
-            <img src="{{ $fotoActual }}" alt="foto" style="width:100%;height:100%;object-fit:cover">
-        @else
-            {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}
+    <div class="pp-shell">
+        {{-- ── HERO ── --}}
+        <div class="pp-hero">
+            <div class="pp-hero-inner">
+                <div class="pp-avatar-wrap" id="prevAv">
+                    @if($fotoActual)
+                        <img class="pp-avatar" src="{{ $fotoActual }}" alt="{{ auth()->user()->nombre }}">
+                    @else
+                        <div class="pp-avatar-initials">
+                            {{ strtoupper(substr(auth()->user()->nombre ?? 'U', 0, 1)) }}{{ strtoupper(substr(auth()->user()->apellido ?? '', 0, 1)) }}
+                        </div>
+                    @endif
+                </div>
+
+                <div class="pp-hero-info">
+                    <div class="pp-nombre" id="prevName">{{ auth()->user()->nombre }} {{ auth()->user()->apellido }}</div>
+                    <div class="pp-profesion" id="prevProf">{{ auth()->user()->profesion ?? __('app.perfil.sin_profesion') }}</div>
+
+                    <div class="pp-stats">
+                        <div class="pp-stat" id="prevStatExpWrap" style="{{ $experiencias->count() ? '' : 'display:none;' }}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+                            <span id="prevStatExp">{{ $experiencias->count() }} {{ $experiencias->count() == 1 ? 'experiencia' : 'experiencias' }}</span>
+                        </div>
+                        <div class="pp-stat" id="prevStatHabWrap" style="{{ $habilidades->count() ? '' : 'display:none;' }}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                            <span id="prevStatHab">{{ $habilidades->count() }} habilidades</span>
+                        </div>
+                        @if($portafolios->count())
+                            <div class="pp-stat">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+                                <span>{{ $portafolios->count() }} {{ $portafolios->count() == 1 ? 'portafolio' : 'portafolios' }}</span>
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="pp-redes-row" id="prevRedesRow">
+                        @foreach($redes as $red)
+                            @php
+                                $redMeta = [
+                                    'linkedin'  => 'LinkedIn',
+                                    'github'    => 'GitHub',
+                                    'twitter'   => 'Twitter/X',
+                                    'facebook'  => 'Facebook',
+                                    'instagram' => 'Instagram',
+                                    'tiktok'    => 'TikTok',
+                                ];
+                                $label = $redMeta[$red->tipo] ?? ucfirst($red->tipo);
+                            @endphp
+                            <a href="{{ $red->url }}" target="_blank" rel="noopener" class="pp-red-badge" data-red-tipo="{{ $red->tipo }}">
+                                @if($red->tipo === 'linkedin')
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                                @elseif($red->tipo === 'github')
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                @elseif($red->tipo === 'twitter')
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                @elseif($red->tipo === 'facebook')
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                @elseif($red->tipo === 'instagram')
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                                @elseif($red->tipo === 'tiktok')
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                                @else
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                @endif
+                                <span>{{ $label }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div>
+                    <a href="mailto:{{ auth()->user()->email }}" class="pp-cta">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        Contactar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {{-- ── SOBRE MÍ ── --}}
+        <div class="pp-bio-card" id="prevBioCard" style="{{ auth()->user()->biografia ? '' : 'display:none;' }}">
+            <div class="pp-section-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Sobre mí
+            </div>
+            <div class="pp-bio-text" id="prevBio">{{ auth()->user()->biografia }}</div>
+        </div>
+
+        {{-- ── HABILIDADES + CERTIFICACIONES ── --}}
+        <div class="pp-cols">
+            <div class="pp-card">
+                <div class="pp-section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    Habilidades
+                </div>
+                <div id="prevSkillsWrap">
+                    @if($habilidades->count())
+                        <div class="pp-skills-wrap">
+                            @foreach($habilidades as $h)
+                                <span class="pp-skill {{ $h->tipo }}">
+                                    <span class="pp-skill-dot"></span>
+                                    {{ $h->nombre }}
+                                </span>
+                            @endforeach
+                        </div>
+                        @php $blandas = $habilidades->where('tipo','blanda')->count(); @endphp
+                        <div id="prevSkillsLegend" style="margin-top:10px;font-size:11.5px;color:var(--pp-muted); {{ $blandas ? '' : 'display:none;' }}">
+                            <span style="color:#3b82f6;font-weight:700;">●</span> Fuertes &nbsp;
+                            <span style="color:#0d9488;font-weight:700;">●</span> Blandas
+                        </div>
+                    @else
+                        <div class="pp-empty">Sin habilidades registradas aún.</div>
+                    @endif
+                </div>
+            </div>
+
+            <div class="pp-card">
+                <div class="pp-section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+                    Certificaciones
+                </div>
+                <div id="prevCertsWrap">
+                    @if($certificaciones->count())
+                        <div class="pp-cert-list">
+                            @foreach($certificaciones as $c)
+                                <div class="pp-cert-item">
+                                    <div class="pp-cert-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+                                    </div>
+                                    <div class="pp-cert-body">
+                                        <div class="pp-cert-name">{{ $c->nombre }}</div>
+                                        @if($c->organizacion)
+                                            <div class="pp-cert-org">{{ $c->organizacion }}
+                                                @if($c->fecha_obtencion) · {{ \Carbon\Carbon::parse($c->fecha_obtencion)->format('M Y') }} @endif
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="pp-empty">Sin certificaciones registradas.</div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        {{-- ── EXPERIENCIA + FORMACIÓN ── --}}
+        <div class="pp-cols">
+            <div class="pp-card">
+                <div class="pp-section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+                    Experiencia
+                </div>
+                <div id="prevExpsWrap">
+                    @if($experiencias->count())
+                        <div class="pp-timeline">
+                            @foreach($experiencias as $exp)
+                                <div class="pp-tl-item">
+                                    <div class="pp-tl-dot-col">
+                                        <div class="pp-tl-dot"></div>
+                                        <div class="pp-tl-line"></div>
+                                    </div>
+                                    <div class="pp-tl-body">
+                                        <div class="pp-tl-title">{{ $exp->cargo }}</div>
+                                        <div class="pp-tl-sub">{{ $exp->empresa }}</div>
+                                        <div class="pp-tl-date">
+                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                            {{ \Carbon\Carbon::parse($exp->fecha_inicio)->format('M Y') }} –
+                                            {{ $exp->actual ? 'Actualidad' : ($exp->fecha_fin ? \Carbon\Carbon::parse($exp->fecha_fin)->format('M Y') : '') }}
+                                        </div>
+                                        @if($exp->descripcion)
+                                            <div class="pp-tl-desc">{{ \Illuminate\Support\Str::limit($exp->descripcion, 120) }}</div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="pp-empty">Sin experiencia registrada.</div>
+                    @endif
+                </div>
+            </div>
+
+            <div class="pp-card">
+                <div class="pp-section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                    Formación
+                </div>
+                <div id="prevFormsWrap">
+                    @if($formaciones->count())
+                        <div class="pp-timeline">
+                            @foreach($formaciones as $f)
+                                <div class="pp-tl-item">
+                                    <div class="pp-tl-dot-col">
+                                        <div class="pp-tl-dot" style="background:#0d9488;border-color:#ccfbf1;"></div>
+                                        <div class="pp-tl-line"></div>
+                                    </div>
+                                    <div class="pp-tl-body">
+                                        <div class="pp-tl-title">{{ $f->titulo ?? $f->nivel }}</div>
+                                        <div class="pp-tl-sub" style="color:#0d9488;">{{ $f->institucion }}</div>
+                                        <div class="pp-tl-date">
+                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                            {{ \Carbon\Carbon::parse($f->fecha_inicio)->format('Y') }}
+                                            @if($f->fecha_fin) – {{ \Carbon\Carbon::parse($f->fecha_fin)->format('Y') }} @endif
+                                        </div>
+                                        @if($f->nivel && $f->titulo)
+                                            <div class="pp-tl-desc">{{ $f->nivel }}</div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="pp-empty">Sin formación registrada.</div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        {{-- ── PORTAFOLIOS ── --}}
+        @if($portafolios->count())
+            <div class="pp-card" style="margin-bottom:1.2rem;">
+                <div class="pp-section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+                    Portafolios
+                </div>
+                <div class="pp-porta-grid">
+                    @foreach($portafolios as $p)
+                        @php
+                            $bannerUrl = null;
+                            if ($p->banner_ruta) {
+                                if (str_starts_with($p->banner_ruta, 'http')) {
+                                    $bannerUrl = $p->banner_ruta;
+                                } else {
+                                    $bannerUrl = $supabaseBase . '/' . ltrim($p->banner_ruta, '/');
+                                }
+                            }
+                        @endphp
+                        <a href="{{ route('portafolio.publico', $p->id) }}" target="_blank" rel="noopener" class="pp-porta-card">
+                            @if($bannerUrl)
+                                <img class="pp-porta-banner" src="{{ $bannerUrl }}" alt="{{ $p->nombre }}">
+                            @else
+                                <div class="pp-porta-banner" style="display:flex;align-items:center;justify-content:center;">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+                                </div>
+                            @endif
+                            <div class="pp-porta-info">
+                                <div class="pp-porta-name">{{ $p->nombre }}</div>
+                                @if($p->descripcion)
+                                    <div class="pp-porta-desc">{{ $p->descripcion }}</div>
+                                @endif
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
         @endif
     </div>
-    <div class="preview-name" id="prevName">{{ auth()->user()->nombre }} {{ auth()->user()->apellido }}</div>
-    <div class="preview-prof" id="prevProf">{{ auth()->user()->profesion ?? __('app.perfil.sin_profesion') }}</div>
-    <div class="preview-bio" id="prevBio">{{ auth()->user()->biografia ?? __('app.perfil.sin_biografia') }}</div>
 </div>
 
 {{-- Formulario principal --}}
@@ -405,7 +825,7 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn-save" id="btnSave" onclick="abrirModalGuardar()">
+                    <button type="button" class="btn-save" id="btnSave" onclick="submitPerfil()">
                         <div class="spinner"></div>
                         <span class="btn-label">{{ __('app.perfil.guardar') }}</span>
                     </button>
@@ -734,6 +1154,24 @@
     // ── Traducciones inyectadas desde PHP para uso en JS ──────────────────────
     const T = @json($t);
 
+    // ── Restricción de caracteres (Definido al inicio para evitar TDZ en autofill) ──
+    const CHARS_PROHIBIDOS = /[<>";\`\\{}]/;
+
+    function charCheck(inputEl, errId) {
+        const errEl = errId ? document.getElementById(errId) : null;
+        if (CHARS_PROHIBIDOS.test(inputEl.value)) {
+            inputEl.classList.add('error');
+            if (errEl) { errEl.textContent = T.chars_prohibidos; errEl.classList.add('show'); }
+            return false;
+        }
+        if (errEl && errEl.textContent === T.chars_prohibidos) {
+            errEl.textContent = '';
+            errEl.classList.remove('show');
+            inputEl.classList.remove('error');
+        }
+        return true;
+    }
+
     // Valores originales para comparar y cancelar
     const original = {
         nombre:    '{{ addslashes(auth()->user()->nombre ?? '') }}',
@@ -791,22 +1229,198 @@
             (document.getElementById('fApellido').value || '');
         document.getElementById('prevProf').textContent =
             document.getElementById('fProfesion').value || T.sin_profesion;
-        document.getElementById('prevBio').textContent =
-            document.getElementById('fBiografia').value || T.sin_biografia;
+
+        const bio = document.getElementById('fBiografia').value || '';
+        const bioCard = document.getElementById('prevBioCard');
+        const bioText = document.getElementById('prevBio');
+        if (bio.trim()) {
+            if (bioCard) bioCard.style.display = '';
+            if (bioText) bioText.textContent = bio;
+        } else {
+            if (bioCard) bioCard.style.display = 'none';
+        }
     }
 
     ['fNombre','fApellido','fProfesion'].forEach(id => {
         document.getElementById(id).addEventListener('input', updatePreview);
     });
 
+    // ── Re-renderizado dinámico de la trayectoria en la vista previa ──
+    function renderPreviewTrayectoria() {
+        // ── 1. HABILIDADES ──
+        const habsWrap = document.getElementById('prevSkillsWrap');
+        if (habsWrap) {
+            if (trayData.habilidades && trayData.habilidades.length) {
+                let html = '<div class="pp-skills-wrap">';
+                trayData.habilidades.forEach(h => {
+                    html += `
+                        <span class="pp-skill ${h.tipo}">
+                            <span class="pp-skill-dot"></span>
+                            ${escH(h.nombre)}
+                        </span>`;
+                });
+                html += '</div>';
+
+                const blandas = trayData.habilidades.filter(h => h.tipo === 'blanda').length;
+                html += `
+                    <div id="prevSkillsLegend" style="margin-top:10px;font-size:11.5px;color:var(--pp-muted); ${blandas ? '' : 'display:none;'}">
+                        <span style="color:#3b82f6;font-weight:700;">●</span> Fuertes &nbsp;
+                        <span style="color:#0d9488;font-weight:700;">●</span> Blandas
+                    </div>`;
+                habsWrap.innerHTML = html;
+            } else {
+                habsWrap.innerHTML = '<div class="pp-empty">Sin habilidades registradas aún.</div>';
+            }
+        }
+
+        // ── 2. CERTIFICACIONES ──
+        const certsWrap = document.getElementById('prevCertsWrap');
+        if (certsWrap) {
+            if (trayData.certificaciones && trayData.certificaciones.length) {
+                let html = '<div class="pp-cert-list">';
+                trayData.certificaciones.forEach(c => {
+                    const dateStr = c.fecha_obtencion ? ' · ' + formatMinsDate(c.fecha_obtencion) : '';
+                    html += `
+                        <div class="pp-cert-item">
+                            <div class="pp-cert-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+                            </div>
+                            <div class="pp-cert-body">
+                                <div class="pp-cert-name">${escH(c.nombre)}</div>
+                                ${c.organizacion ? `<div class="pp-cert-org">${escH(c.organizacion)}${dateStr}</div>` : ''}
+                            </div>
+                        </div>`;
+                });
+                html += '</div>';
+                certsWrap.innerHTML = html;
+            } else {
+                certsWrap.innerHTML = '<div class="pp-empty">Sin certificaciones registradas.</div>';
+            }
+        }
+
+        // ── 3. EXPERIENCIA ──
+        const expsWrap = document.getElementById('prevExpsWrap');
+        if (expsWrap) {
+            if (trayData.experiencias && trayData.experiencias.length) {
+                let html = '<div class="pp-timeline">';
+                trayData.experiencias.forEach(e => {
+                    const iniStr = e.fecha_inicio ? formatMinsDate(e.fecha_inicio) : '';
+                    const finStr = e.actual ? 'Actualidad' : (e.fecha_fin ? formatMinsDate(e.fecha_fin) : '');
+                    const descStr = e.descripcion ? `<div class="pp-tl-desc">${escH(limitStr(e.descripcion, 120))}</div>` : '';
+                    html += `
+                        <div class="pp-tl-item">
+                            <div class="pp-tl-dot-col">
+                                <div class="pp-tl-dot"></div>
+                                <div class="pp-tl-line"></div>
+                            </div>
+                            <div class="pp-tl-body">
+                                <div class="pp-tl-title">${escH(e.cargo)}</div>
+                                <div class="pp-tl-sub">${escH(e.empresa)}</div>
+                                <div class="pp-tl-date">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                    ${iniStr} – ${finStr}
+                                </div>
+                                ${descStr}
+                            </div>
+                        </div>`;
+                });
+                html += '</div>';
+                expsWrap.innerHTML = html;
+            } else {
+                expsWrap.innerHTML = '<div class="pp-empty">Sin experiencia registrada.</div>';
+            }
+        }
+
+        // ── 4. FORMACIÓN ──
+        const formsWrap = document.getElementById('prevFormsWrap');
+        if (formsWrap) {
+            if (trayData.formaciones && trayData.formaciones.length) {
+                let html = '<div class="pp-timeline">';
+                trayData.formaciones.forEach(f => {
+                    const iniYear = f.fecha_inicio ? f.fecha_inicio.substring(0, 4) : '';
+                    const finYear = f.fecha_fin ? f.fecha_fin.substring(0, 4) : '';
+                    const dateStr = iniYear + (finYear ? ' – ' + finYear : '');
+                    html += `
+                        <div class="pp-tl-item">
+                            <div class="pp-tl-dot-col">
+                                <div class="pp-tl-dot" style="background:#0d9488;border-color:#ccfbf1;"></div>
+                                <div class="pp-tl-line"></div>
+                            </div>
+                            <div class="pp-tl-body">
+                                <div class="pp-tl-title">${escH(f.titulo || f.nivel)}</div>
+                                <div class="pp-tl-sub" style="color:#0d9488;">${escH(f.institucion)}</div>
+                                <div class="pp-tl-date">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                    ${dateStr}
+                                </div>
+                                ${f.nivel && f.titulo ? `<div class="pp-tl-desc">${escH(f.nivel)}</div>` : ''}
+                            </div>
+                        </div>`;
+                });
+                html += '</div>';
+                formsWrap.innerHTML = html;
+            } else {
+                formsWrap.innerHTML = '<div class="pp-empty">Sin formación registrada.</div>';
+            }
+        }
+
+        // ── 5. STATS EN HERO ──
+        const expCount = trayData.experiencias ? trayData.experiencias.length : 0;
+        const habCount = trayData.habilidades ? trayData.habilidades.length : 0;
+
+        const statExpWrap = document.getElementById('prevStatExpWrap');
+        if (statExpWrap) {
+            if (expCount > 0) {
+                statExpWrap.style.display = '';
+                document.getElementById('prevStatExp').textContent = expCount + ' ' + (expCount === 1 ? 'experiencia' : 'experiencias');
+            } else {
+                statExpWrap.style.display = 'none';
+            }
+        }
+
+        const statHabWrap = document.getElementById('prevStatHabWrap');
+        if (statHabWrap) {
+            if (habCount > 0) {
+                statHabWrap.style.display = '';
+                document.getElementById('prevStatHab').textContent = habCount + ' habilidades';
+            } else {
+                statHabWrap.style.display = 'none';
+            }
+        }
+    }
+
+    function formatMinsDate(dateStr) {
+        if (!dateStr) return '';
+        const parts = dateStr.substring(0, 10).split('-');
+        if (parts.length < 2) return '';
+        const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        const mIdx = parseInt(parts[1], 10) - 1;
+        return (months[mIdx] || '') + ' ' + parts[0];
+    }
+
+    function limitStr(str, limit) {
+        if (!str) return '';
+        if (str.length <= limit) return str;
+        return str.substring(0, limit) + '...';
+    }
+
     // ── Toggle vista previa ───────────────────────────────────────────────────
     function togglePreview() {
         const card = document.getElementById('previewCard');
         const btn  = document.getElementById('btnPreview');
+        const form = document.getElementById('perfilForm');
         updatePreview();
         card.classList.toggle('show');
         btn.classList.toggle('active');
-        btn.innerHTML = card.classList.contains('show')
+        
+        const isShown = card.classList.contains('show');
+        if (isShown) {
+            form.style.display = 'none';
+        } else {
+            form.style.display = '';
+        }
+
+        btn.innerHTML = isShown
             ? `<svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/></svg> ${T.ocultar_preview}`
             : `<svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ${T.vista_previa}`;
     }
@@ -863,6 +1477,7 @@
     // ── Validación front-end ──────────────────────────────────────────────────
     function validateForm() {
         let valid = true;
+        let errors = [];
 
         const fields = [
             { id: 'fNombre',    err: 'errNombre',   msg: T.nombre_error   },
@@ -873,13 +1488,20 @@
         fields.forEach(f => {
             const el  = document.getElementById(f.id);
             const err = document.getElementById(f.err);
+            if (!el) {
+                errors.push('No se encontró el elemento: ' + f.id);
+                valid = false;
+                return;
+            }
             if (!el.value.trim()) {
                 el.classList.add('error');
                 err.textContent = f.msg;
                 err.classList.add('show');
                 valid = false;
+                errors.push(f.msg || (f.id + ' es obligatorio'));
             } else if (!charCheck(el, f.err)) {
                 valid = false;
+                errors.push((el.previousElementSibling ? el.previousElementSibling.textContent : f.id) + ': contiene caracteres no permitidos.');
             } else {
                 el.classList.remove('error');
                 err.classList.remove('show');
@@ -888,34 +1510,61 @@
 
         const bio    = document.getElementById('fBiografia');
         const errBio = document.getElementById('errBiografia');
-        if (bio.value.trim() === '') {
-            errBio.textContent = T.biografia_error_vacia;
-            errBio.classList.add('show');
-            bio.classList.add('error');
+        if (!bio) {
+            errors.push('No se encontró el elemento: fBiografia');
             valid = false;
-        } else if (!charCheck(bio, 'errBiografia')) {
-            valid = false;
-        } else if (bio.value.length <= 1000) {
-            errBio.classList.remove('show');
-            bio.classList.remove('error');
+        } else {
+            if (bio.value.trim() === '') {
+                errBio.textContent = T.biografia_error_vacia;
+                errBio.classList.add('show');
+                bio.classList.add('error');
+                valid = false;
+                errors.push(T.biografia_error_vacia || 'La biografía es obligatoria.');
+            } else if (!charCheck(bio, 'errBiografia')) {
+                valid = false;
+                errors.push('Biografía: contiene caracteres no permitidos.');
+            } else if (bio.value.length > 1000) {
+                errBio.textContent = T.biografia_error_limite || 'Supera el límite de 1000 caracteres.';
+                errBio.classList.add('show');
+                bio.classList.add('error');
+                valid = false;
+                errors.push(T.biografia_error_limite || 'Supera el límite de 1000 caracteres.');
+            } else {
+                errBio.classList.remove('show');
+                bio.classList.remove('error');
+            }
         }
 
+        if (!valid && errors.length > 0) {
+            alert('Por favor corrige los siguientes errores de validación:\n\n- ' + errors.join('\n- '));
+        }
         return valid;
     }
 
     // ── Submit perfil ─────────────────────────────────────────────────────────
     function submitPerfil() {
-        if (!validateForm()) return;
+        console.log('submitPerfil clicked');
+        try {
+            if (!validateForm()) {
+                console.warn('validateForm returned false');
+                return;
+            }
+            console.log('validateForm passed successfully');
 
-        const btn = document.getElementById('btnSave');
-        btn.classList.add('loading');
-        btn.disabled = true;
-        document.getElementById('alertRetry').style.display = 'none';
+            const btn = document.getElementById('btnSave');
+            btn.classList.add('loading');
+            btn.disabled = true;
+            document.getElementById('alertRetry').style.display = 'none';
 
-        const form = document.getElementById('perfilForm');
-        pendingFormData = new FormData(form);
+            const form = document.getElementById('perfilForm');
+            pendingFormData = new FormData(form);
 
-        sendRequest(pendingFormData, btn);
+            console.log('Form data extracted, calling sendRequest');
+            sendRequest(pendingFormData, btn);
+        } catch (e) {
+            console.error('Crash in submitPerfil:', e);
+            alert('Error al procesar el perfil: ' + e.message);
+        }
     }
 
     // ─── Sincroniza foto en tarjeta del explorador ────────────────────────────
@@ -954,11 +1603,9 @@ function _sincronizarFotoEnPortafolios(fotoUrl) {
         const avatar = cover.querySelector('.porta-cover-avatar');
 
         if (bg && avatar) {
-            // Ya tenía foto — solo actualiza el src
             bg.src     = fotoUrl;
             avatar.src = fotoUrl;
         } else {
-            // Tenía iniciales — reemplaza todo el contenido del cover con foto
             const badge = cover.querySelector('.porta-badge');
             cover.innerHTML = `
                 <img src="${fotoUrl}" class="porta-cover-bg" alt="">
@@ -966,13 +1613,13 @@ function _sincronizarFotoEnPortafolios(fotoUrl) {
                 <img src="${fotoUrl}" class="porta-cover-avatar" alt="">
                 <div class="porta-cover-name"><span></span></div>
             `;
-            // Restaura el badge
             if (badge) cover.appendChild(badge);
         }
     });
 }
 
 function sendRequest(formData, btn) {
+    console.log('sendRequest started');
     fetch('{{ route("perfil.update") }}', {
         method: 'POST',
         headers: {
@@ -982,12 +1629,17 @@ function sendRequest(formData, btn) {
         body: formData,
     })
     .then(res => {
+        console.log('Server response status:', res.status);
         if (res.status === 422) {
             return res.json().then(errData => {
+                console.error('Validation error on server:', errData);
                 btn.classList.remove('loading');
                 btn.disabled = false;
                 const msgs = errData.errors ? Object.values(errData.errors).flat() : [];
                 const msg  = msgs.length ? msgs[0] : T.chars_prohibidos;
+                
+                alert('Error de validación del servidor: ' + msg);
+                
                 let alertEl = document.getElementById('perfilAlertError');
                 if (!alertEl) {
                     alertEl = document.createElement('div');
@@ -1006,6 +1658,7 @@ function sendRequest(formData, btn) {
         return res.json();
     })
     .then(data => {
+        console.log('Response JSON parsed successfully:', data);
         if (!data) return;
         btn.classList.remove('loading');
         btn.disabled = false;
@@ -1050,7 +1703,7 @@ function sendRequest(formData, btn) {
             if (typeof _sincronizarFotoEnExplorador === 'function') {
                 _sincronizarFotoEnExplorador(fotoConCache);
             }
-
+ 
             if (typeof _sincronizarFotoEnPortafolios === 'function') {
                 _sincronizarFotoEnPortafolios(fotoConCache);
             }
@@ -1060,7 +1713,7 @@ function sendRequest(formData, btn) {
             if (typeof actualizarNavbar === 'function') {
                 actualizarNavbar(nombre, apellido, null);
             }
-
+ 
         }
  
         original.nombre    = nombre;
@@ -1083,7 +1736,9 @@ function sendRequest(formData, btn) {
         alertEl.style.display = 'flex';
         setTimeout(() => { alertEl.style.display = 'none'; }, 4000);
     })
-    .catch(() => {
+    .catch((err) => {
+        console.error('Fetch caught error:', err);
+        alert('Error de conexión o de red: ' + err.message);
         btn.classList.remove('loading');
         btn.disabled = false;
         document.getElementById('alertRetry').style.display = 'flex';
@@ -1136,6 +1791,9 @@ function sendRequest(formData, btn) {
     // Inicializar
     updateCounter();
     syncCancelBtn();
+    if (typeof renderPreviewTrayectoria === 'function') {
+        renderPreviewTrayectoria();
+    }
 
     // ── Modales ───────────────────────────────────────────────────────────────
     function abrirModalGuardar() {
@@ -1165,29 +1823,18 @@ function sendRequest(formData, btn) {
         }).then(() => window.location.href = '/home');
     }
 
-    // ── Restricción de caracteres ─────────────────────────────────────────────
-    const CHARS_PROHIBIDOS = /[<>";\`\\{}]/;
 
-    function charCheck(inputEl, errId) {
-        const errEl = errId ? document.getElementById(errId) : null;
-        if (CHARS_PROHIBIDOS.test(inputEl.value)) {
-            inputEl.classList.add('error');
-            if (errEl) { errEl.textContent = T.chars_prohibidos; errEl.classList.add('show'); }
-            return false;
-        }
-        if (errEl && errEl.textContent === T.chars_prohibidos) {
-            errEl.textContent = '';
-            errEl.classList.remove('show');
-            inputEl.classList.remove('error');
-        }
-        return true;
-    }
 
     // ── TRAYECTORIA ───────────────────────────────────────────────────────────
     const CSRF = () => document.querySelector('meta[name="csrf-token"]').content;
     let starValue = 0;
     let habTipo   = 'fuerte';
-    let trayData  = { habilidades: [], experiencias: [], formaciones: [], certificaciones: [] };
+    let trayData  = {
+        habilidades: @json($habilidades),
+        experiencias: @json($experiencias),
+        formaciones: @json($formaciones),
+        certificaciones: @json($certificaciones)
+    };
     let pendingDel = null;
     let pendingConfirm = null;
     let lastTrayAction = null;
@@ -1438,6 +2085,7 @@ function sendRequest(formData, btn) {
             html += blandas.map(cardHtml).join('');
         }
         list.innerHTML = html;
+        if (typeof renderPreviewTrayectoria === 'function') renderPreviewTrayectoria();
     }
 
     // ── EXPERIENCIA ───────────────────────────────────────────────────────────
@@ -1588,6 +2236,7 @@ function sendRequest(formData, btn) {
                 </div>
             </div>`;
         }).join('');
+        if (typeof renderPreviewTrayectoria === 'function') renderPreviewTrayectoria();
     }
 
     // ── FORMACIÓN ─────────────────────────────────────────────────────────────
@@ -1715,6 +2364,7 @@ function sendRequest(formData, btn) {
                 </div>
             </div>`;
         }).join('');
+        if (typeof renderPreviewTrayectoria === 'function') renderPreviewTrayectoria();
     }
 
     // ── CERTIFICACIONES ───────────────────────────────────────────────────────
@@ -1826,6 +2476,7 @@ function sendRequest(formData, btn) {
                 </div>
             </div>`;
         }).join('');
+        if (typeof renderPreviewTrayectoria === 'function') renderPreviewTrayectoria();
     }
 
     // ── ELIMINAR ──────────────────────────────────────────────────────────────

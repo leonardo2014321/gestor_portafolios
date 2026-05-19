@@ -163,10 +163,10 @@
         .pp-skills-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
         .pp-skill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 13px; border-radius: 999px; font-size: 12.5px; font-weight: 600; }
         .pp-skill.fuerte { background: #dbeafe; color: #1d4ed8; }
-        .pp-skill.aprendiendo { background: #fef9c3; color: #92400e; }
+        .pp-skill.blanda { background: #ccfbf1; color: #0f766e; }
         .pp-skill-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
         .pp-skill.fuerte .pp-skill-dot { background: #3b82f6; }
-        .pp-skill.aprendiendo .pp-skill-dot { background: #f59e0b; }
+        .pp-skill.blanda .pp-skill-dot { background: #0d9488; }
 
         /* Timeline */
         .pp-timeline { display: flex; flex-direction: column; gap: .9rem; }
@@ -343,8 +343,8 @@
                         </span>
                     @endforeach
                 </div>
-                @php $apren = $habilidades->where('tipo','aprendiendo')->count(); @endphp
-                @if($apren)
+                @php $blandas = $habilidades->where('tipo','blanda')->count(); @endphp
+                @if($blandas)
                     <div style="margin-top:10px;font-size:11.5px;color:var(--pp-muted);">
                         <span style="color:#3b82f6;font-weight:700;">●</span> {{ __('app.perfil_publico.leyenda_dominadas') }} &nbsp;
                         <span style="color:#f59e0b;font-weight:700;">●</span> {{ __('app.perfil_publico.leyenda_en_aprendizaje') }}
