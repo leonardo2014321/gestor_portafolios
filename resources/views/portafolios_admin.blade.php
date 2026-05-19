@@ -55,7 +55,6 @@
                     <th>{{ __('app.portafolios_admin.col_autor') }}</th>
                     <th>{{ __('app.portafolios_admin.col_repositorio') }}</th>
                     <th>{{ __('app.portafolios_admin.col_estado') }}</th>
-                    <th>{{ __('app.portafolios_admin.col_acciones') }}</th>
                 </tr></thead>
                 <tbody>
                     @foreach($todos_portafolios as $portafolio)
@@ -93,23 +92,11 @@
                                 {{ $portafolio->estado === 'activo' ? __('app.portafolios_admin.estado_activo') : ($portafolio->estado ?: __('app.portafolios_admin.estado_desconocido')) }}
                             </span>
                         </td>
-                        <td>
-                            <div class="action-dropdown-container">
-                                <button class="action-btn" onclick="toggleActionMenu(this)">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-                                </button>
-                                <div class="action-menu">
-                                    <button class="btn-action-admin btn-role-user" onclick="alert('Funcionalidad en desarrollo')">
-                                        {{ __('app.portafolios_admin.accion_ver_detalles') }}
-                                    </button>
-                                </div>
-                            </div>
-                        </td>
                     </tr>
                     @endforeach
                     @if($todos_portafolios->isEmpty())
                     <tr>
-                        <td colspan="5" style="text-align: center; padding: 2rem; color: var(--muted);">
+                        <td colspan="4" style="text-align: center; padding: 2rem; color: var(--muted);">
                             {{ __('app.portafolios_admin.empty_tabla') }}
                         </td>
                     </tr>

@@ -8,7 +8,24 @@
             </svg>
         </button>
 
-        @if(session('success_reactivacion'))
+        @if(session('error_sesion_caduco'))
+            {{-- ===== PANTALLA SESIÓN CADUCADA ===== --}}
+            <div class="flex flex-col items-center text-center">
+                <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-[28px] bg-blue-50">
+                    <svg width="40" height="40" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold tracking-tight text-slate-900">Sesión Caducada</h2>
+                <p class="mt-3 text-sm text-slate-500 leading-relaxed">
+                   Tu cuenta ha sido desactivada por un administrador. Tu inicio de sesión ha caducado.
+                </p>
+                <button type="button" onclick="toggleModal()" class="mt-7 w-full rounded-[28px] bg-blue-600 hover:bg-blue-700 px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition">
+                    Cerrar
+                </button>
+            </div>
+
+        @elseif(session('success_reactivacion'))
             {{-- ===== PANTALLA DE ÉXITO REACTIVACIÓN ===== --}}
             <div class="flex flex-col items-center text-center">
                 <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-[28px] bg-emerald-50">

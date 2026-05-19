@@ -49,8 +49,8 @@
                 <div style="width:60px;height:60px;border-radius:18px;background:#e0e7ff;display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem;">
                     <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#1e3adb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                 </div>
-                <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:800;color:#0f172a;margin-bottom:8px;">{{ __('app.admin.modal_desactivar_titulo') }}</h3>
-                <p style="font-size:13.5px;color:#64748b;line-height:1.65;margin-bottom:1.5rem;">{{ __('app.admin.modal_desactivar_texto') }}</p>
+                <h3 id="modal-status-title" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:800;color:#0f172a;margin-bottom:8px;">{{ __('app.admin.modal_desactivar_titulo') }}</h3>
+                <p id="modal-status-text" style="font-size:13.5px;color:#64748b;line-height:1.65;margin-bottom:1.5rem;">{{ __('app.admin.modal_desactivar_texto') }}</p>
 
                 <div style="text-align:left;margin-bottom:1.5rem">
                     <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">{{ __('app.admin.confirma_contrasena') }}</label>
@@ -238,7 +238,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>{{ $usuario->created_at->diffForHumans() }}</td>
+                                            <td>{{ $usuario->created_at->format('d/m/Y') }}</td>
                                             <td>
                                                 <span class="status-badge {{ $usuario->activo ? 'st-active' : 'st-inactive' }}" id="status-{{ $usuario->id }}">
                                                     {{ $usuario->activo ? __('app.admin.activo') : __('app.admin.inactivo') }}
@@ -368,109 +368,67 @@
             </div>
 
             <!-- Actividad Reciente -->
-            <div style="flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 250px;">
+            <div style="display: flex; flex-direction: column; flex: 1; overflow: hidden; min-height: 300px;">
                 <div style="display: flex; flex-direction: column; height: 100%;">
                     <div style="padding: 1rem; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; border-top: 1px solid var(--gray2);">
                         <h2 class="panel-title" style="margin: 0;">{{ __('app.admin.actividad_reciente') }}</h2>
-                        @if($actividades_recientes->count() > 0)
-                            <form action="{{ route('admin.actividad.limpiar') }}" method="POST" onsubmit="return confirm('{{ __('app.admin.confirm_limpiar_actividad') }}');" style="margin: 0;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" title="{{ __('app.admin.limpiar_historial') }}" style="background: none; border: none; color: var(--rose); cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(244, 63, 94, 0.1)'" onmouseout="this.style.background='none'">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                </button>
-                            </form>
-                        @endif
+                        <form action="{{ route('admin.actividad.limpiar') }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar los registros de inicio de sesión?');" style="margin: 0;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" title="Limpiar inicios de sesión" style="background: none; border: none; color: var(--rose); cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(244, 63, 94, 0.1)'" onmouseout="this.style.background='none'">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                            </button>
+                        </form>
                     </div>
-                    <div class="activity-list" style="overflow-y: auto; flex: 1;">
-                        @forelse($actividades_recientes as $act)
-                            @php
-                                $titulo = __('app.admin.act_accion') . ': ' . $act->accion;
-                                $iconClass = "icon-purple";
-                                $svg = '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>';
+                    
+                    <div class="activity-list" id="activity-list-container" style="flex: 1; overflow-y: auto;">
+                        @include('_admin_actividad_lista')
+                    </div>
 
-                                switch($act->accion) {
-                                    case 'login':
-                                        $titulo = __('app.admin.act_login');
-                                        $iconClass = "icon-teal";
-                                        $svg = '<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>';
-                                        break;
-                                    case 'logout':
-                                        $titulo = __('app.admin.act_logout');
-                                        $iconClass = "icon-rose";
-                                        $svg = '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>';
-                                        break;
-                                    case 'registro_usuario':
-                                        $titulo = __('app.admin.act_registro_usuario');
-                                        $iconClass = "icon-purple";
-                                        $svg = '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>';
-                                        break;
-                                    case 'PASSWORD_ACTUALIZADO':
-                                        $titulo = __('app.admin.act_password_actualizado');
-                                        $iconClass = "icon-teal";
-                                        $svg = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>';
-                                        break;
-                                    case 'SOLICITAR_RECUPERACION':
-                                        $titulo = __('app.admin.act_solicitar_recuperacion');
-                                        $iconClass = "icon-blue";
-                                        $svg = '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>';
-                                        break;
-                                    case 'reactivacion_cuenta':
-                                        $titulo = __('app.admin.act_reactivacion_cuenta');
-                                        $iconClass = "icon-teal";
-                                        $svg = '<path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>';
-                                        break;
-                                    case 'SOLICITUD_REGISTRO':
-                                        $titulo = __('app.admin.act_solicitud_registro');
-                                        $iconClass = "icon-purple";
-                                        $svg = '<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>';
-                                        break;
-                                    case 'RECUPERACION_EMAIL_NO_EXISTE':
-                                        $titulo = __('app.admin.act_email_no_existe');
-                                        $iconClass = "icon-rose";
-                                        $svg = '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>';
-                                        break;
-                                    case 'TOKEN_INVALIDO':
-                                        $titulo = __('app.admin.act_token_invalido');
-                                        $iconClass = "icon-rose";
-                                        $svg = '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>';
-                                        break;
-                                    case 'ERROR_RECUPERACION':
-                                        $titulo = __('app.admin.act_error_recuperacion');
-                                        $iconClass = "icon-rose";
-                                        $svg = '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>';
-                                        break;
-                                    case 'PERFIL_ACTUALIZADO':
-                                        $titulo = __('app.admin.act_perfil_actualizado');
-                                        $iconClass = "icon-blue";
-                                        $svg = '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>';
-                                        break;
-                                    case 'CUENTA_DESACTIVADA':
-                                        $titulo = __('app.admin.act_cuenta_desactivada');
-                                        $iconClass = "icon-rose";
-                                        $svg = '<path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/>';
-                                        break;
-                                }
-                            @endphp
-                            <div class="act-item" style="padding: 1rem; gap: 10px;">
-                                <div class="act-icon {{ $iconClass }}" style="width: 32px; height: 32px;">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $svg !!}</svg>
+                    <div style="padding: 0.8rem; display: flex; flex-direction: row; gap: 8px; background: linear-gradient(0deg, #f8fafc 0%, #ffffff 100%); border-top: 1px solid var(--gray2); flex-shrink: 0;">
+                        <!-- Card Usuarios -->
+                        <div style="flex: 1; min-width: 0; position: relative; overflow: hidden; background: #fff; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.02); display: flex; flex-direction: column; align-items: flex-start; gap: 8px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(99, 102, 241, 0.08)'" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.02)'">
+                            <div style="position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: linear-gradient(180deg, #6366f1, #8b5cf6);"></div>
+                            <div style="display: flex; align-items: center; gap: 6px; width: 100%;">
+                                <div style="width: 32px; height: 32px; border-radius: 8px; background: #eef2ff; color: #6366f1; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                                 </div>
-                                <div class="act-content">
-                                    <div class="act-title" style="font-size: 12px;">
-                                        {{ $titulo }} <br>
-                                        <span>{{ $act->usuario ? $act->usuario->nombre . ' ' . $act->usuario->apellido : __('app.admin.act_sistema_invitado') }}</span>
-                                    </div>
-                                    <div class="act-time" style="font-size: 10px;">{{ $act->created_at ? $act->created_at->diffForHumans() : __('app.admin.act_recientemente') }}</div>
+                                <div style="font-size: 11px; font-weight: 700; color: #1e293b; line-height: 1.1;">Usuarios<br>Registrados</div>
+                            </div>
+                            <div style="display: flex; gap: 8px; width: 100%;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <span style="font-size: 8px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; font-weight: 600;">Hoy</span>
+                                    <span style="font-size: 14px; font-weight: 800; color: #6366f1;">{{ $stats['usuarios_hoy'] ?? 0 }}</span>
+                                </div>
+                                <div style="width: 1px; background: #e2e8f0; margin: 2px 0;"></div>
+                                <div style="display: flex; flex-direction: column;">
+                                    <span style="font-size: 8px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; font-weight: 600;">Semana</span>
+                                    <span style="font-size: 14px; font-weight: 800; color: #0f172a;">{{ $stats['usuarios_semana'] ?? 0 }}</span>
                                 </div>
                             </div>
-                        @empty
-                            <div style="padding: 2rem; text-align: center; color: var(--muted); font-size: 13px;">
-                                {{ __('app.admin.empty_actividad') }}
-                            </div>
-                        @endforelse
+                        </div>
 
-                        <a href="#" style="display: block; text-align: center; padding: 1rem; font-size: 12px; font-weight: 600; color: var(--admin-purple); text-decoration: none; border-top: 1px solid var(--gray2);">{{ __('app.admin.ver_registro_completo') }}</a>
+                        <!-- Card Portafolios -->
+                        <div style="flex: 1; min-width: 0; position: relative; overflow: hidden; background: #fff; padding: 10px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.02); display: flex; flex-direction: column; align-items: flex-start; gap: 8px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(14, 165, 233, 0.08)'" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.02)'">
+                            <div style="position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: linear-gradient(180deg, #0ea5e9, #38bdf8);"></div>
+                            <div style="display: flex; align-items: center; gap: 6px; width: 100%;">
+                                <div style="width: 32px; height: 32px; border-radius: 8px; background: #f0f9ff; color: #0ea5e9; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                </div>
+                                <div style="font-size: 11px; font-weight: 700; color: #1e293b; line-height: 1.1;">Portafolios<br>Creados</div>
+                            </div>
+                            <div style="display: flex; gap: 8px; width: 100%;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <span style="font-size: 8px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; font-weight: 600;">Hoy</span>
+                                    <span style="font-size: 14px; font-weight: 800; color: #0ea5e9;">{{ $portafolios_stats['portafolios_hoy'] ?? 0 }}</span>
+                                </div>
+                                <div style="width: 1px; background: #e2e8f0; margin: 2px 0;"></div>
+                                <div style="display: flex; flex-direction: column;">
+                                    <span style="font-size: 8px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; font-weight: 600;">Semana</span>
+                                    <span style="font-size: 14px; font-weight: 800; color: #0f172a;">{{ $portafolios_stats['portafolios_semana'] ?? 0 }}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -489,6 +447,31 @@
 </div><!-- /.app -->
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        setInterval(function() {
+            fetch('{{ route('admin.actividad.reciente') }}?_t=' + new Date().getTime(), {
+                cache: 'no-store',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'text/html'
+                }
+            })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '/home?login=1';
+                    return null;
+                }
+                return response.text();
+            })
+            .then(html => {
+                if(html) {
+                    document.getElementById('activity-list-container').innerHTML = html;
+                }
+            })
+            .catch(error => console.error('Error actualizando actividad:', error));
+        }, 5000);
+    });
+
     function abrirLogoutAdmin() {
         document.getElementById('modal-logout-confirm').style.display = 'flex';
         document.getElementById('admin-dropdown').style.display = 'none';
@@ -629,28 +612,38 @@
         const badge = document.getElementById(badgeId);
         const isCurrentlyActive = badge.classList.contains('st-active');
 
-        if (isCurrentlyActive) {
-            document.getElementById('modal-user-deactivate').style.display = 'flex';
-            document.getElementById('admin-confirm-pass').value = '';
-            document.getElementById('admin-confirm-pass').focus();
+        const titleEl = document.getElementById('modal-status-title');
+        const textEl = document.getElementById('modal-status-text');
+        const btnConfirm = document.getElementById('btn-confirm-deactivate');
 
-            document.getElementById('btn-confirm-deactivate').onclick = async function() {
-                const password = document.getElementById('admin-confirm-pass').value;
-                if (!password) {
-                    alert('{{ __('app.admin.js_ingresar_contrasena') }}');
-                    return;
-                }
-                const originalBtnText = this.innerText;
-                this.innerText = '{{ __('app.admin.js_procesando') }}';
-                this.disabled = true;
-                const success = await executeStatusUpdate(userId, badgeId, btn, password);
-                this.innerText = originalBtnText;
-                this.disabled = false;
-                if (success) cerrarModalDeactivate();
-            };
+        if (isCurrentlyActive) {
+            titleEl.innerText = '{{ __('app.admin.modal_desactivar_titulo') }}';
+            textEl.innerText = '{{ __('app.admin.modal_desactivar_texto') }}';
+            btnConfirm.innerText = '{{ __('app.admin.btn_desactivar_ahora') }}';
         } else {
-            executeStatusUpdate(userId, badgeId, btn);
+            titleEl.innerText = '{{ __('app.admin.modal_activar_titulo') }}';
+            textEl.innerText = '{{ __('app.admin.modal_activar_texto') }}';
+            btnConfirm.innerText = '{{ __('app.admin.btn_activar_ahora') }}';
         }
+
+        document.getElementById('modal-user-deactivate').style.display = 'flex';
+        document.getElementById('admin-confirm-pass').value = '';
+        document.getElementById('admin-confirm-pass').focus();
+
+        btnConfirm.onclick = async function() {
+            const password = document.getElementById('admin-confirm-pass').value;
+            if (!password) {
+                alert('{{ __('app.admin.js_ingresar_contrasena') }}');
+                return;
+            }
+            const originalBtnText = this.innerText;
+            this.innerText = '{{ __('app.admin.js_procesando') }}';
+            this.disabled = true;
+            const success = await executeStatusUpdate(userId, badgeId, btn, password);
+            this.innerText = originalBtnText;
+            this.disabled = false;
+            if (success) cerrarModalDeactivate();
+        };
     }
 
     async function executeStatusUpdate(userId, badgeId, btn, password = null) {

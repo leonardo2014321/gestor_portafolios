@@ -622,6 +622,9 @@ return [
         'modal_desactivar_titulo'        => '¿Desactivar cuenta?',
         'modal_desactivar_texto'         => 'El usuario no podrá acceder al sistema hasta que su cuenta sea reactivada por un administrador.',
         'btn_desactivar_ahora'           => 'Desactivar ahora',
+        'modal_activar_titulo'           => '¿Activar cuenta?',
+        'modal_activar_texto'            => 'El usuario recuperará el acceso al sistema de forma inmediata.',
+        'btn_activar_ahora'              => 'Activar ahora',
     
     
         // Sidebar
