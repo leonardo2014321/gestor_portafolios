@@ -397,11 +397,19 @@
                     </div>
                     <div class="mp-err" id="epErrDesc">{{ __('app.modales_pf.err_descripcion') }}</div>
                 </div>
+            </div>
+
+            {{-- Categoría --}}
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+                    {{ __('app.modales_pf.seccion_categoria') }}
+                    <span style="font-weight:400;text-transform:none;letter-spacing:0">({{ __('app.modales_pf.opcional') }})</span>
+                </div>
                 <div class="mp-field">
-                    <label class="mp-label">{{ __('modales_pf.categoria') }}</label>
                     <select class="mp-input" id="epCategoria">
-                        <option value="">{{ __('modales_pf.sin_categoria') }}</option>
-                        @foreach(\App\Models\Categoria::where('activa', true)->orderBy('orden')->get() as $cat)
+                        <option value="">{{ __('app.modales_pf.categoria_placeholder') }}</option>
+                        @foreach($categorias ?? [] as $cat)
                             <option value="{{ $cat->id }}">{{ $cat->nombre }}</option>
                         @endforeach
                     </select>
@@ -507,11 +515,19 @@
                     </div>
                     <div class="mp-err" id="pfErrDesc">{{ __('app.modales_pf.err_descripcion') }}</div>
                 </div>
+            </div>
+
+            {{-- Categoría --}}
+            <div class="mp-section">
+                <div class="mp-section-label">
+                    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+                    {{ __('app.modales_pf.seccion_categoria') }}
+                    <span style="font-weight:400;text-transform:none;letter-spacing:0">({{ __('app.modales_pf.opcional') }})</span>
+                </div>
                 <div class="mp-field">
-                    <label class="mp-label">Categoría</label>
                     <select class="mp-input" id="pfCategoria">
-                        <option value="">— Sin categoría —</option>
-                        @foreach(\App\Models\Categoria::where('activa', true)->orderBy('orden')->get() as $cat)
+                        <option value="">{{ __('app.modales_pf.categoria_placeholder') }}</option>
+                        @foreach($categorias ?? [] as $cat)
                             <option value="{{ $cat->id }}">{{ $cat->nombre }}</option>
                         @endforeach
                     </select>
@@ -715,9 +731,9 @@
         verModal.style.transition = 'none';
         verModal.classList.remove('open');
         setTimeout(() => { verModal.style.transition = ''; }, 50);
-        document.getElementById('epId').value     = p.id;
-        document.getElementById('epNombre').value = p.nombre;
-        document.getElementById('epDesc').value   = p.descripcion || '';
+        document.getElementById('epId').value        = p.id;
+        document.getElementById('epNombre').value   = p.nombre;
+        document.getElementById('epDesc').value     = p.descripcion || '';
         document.getElementById('epDescCount').textContent = (p.descripcion || '').length;
         const epCatSel = document.getElementById('epCategoria');
         if (epCatSel) epCatSel.value = p.categoria_id ?? '';
@@ -802,6 +818,7 @@
         form.append('nombre',      document.getElementById('epNombre').value.trim());
         form.append('descripcion', document.getElementById('epDesc').value.trim());
         form.append('estado',      estado);
+        form.append('categoria_id', document.getElementById('epCategoria').value || '');
         form.append('_token',      token);
         const epCat = document.getElementById('epCategoria').value;
         if (epCat) form.append('categoria_id', epCat);
@@ -924,6 +941,7 @@
         document.getElementById('modalCrearPf').classList.remove('open');
     }
     function pfReset() {
+        document.getElementById('pfCategoria').value = '';
         ['pfNombre','pfDesc'].forEach(id => {
             const el = document.getElementById(id);
             if (el) { el.value = ''; el.classList.remove('mp-invalid','mp-ok'); }
@@ -1007,6 +1025,7 @@
         form.append('nombre',      nombre);
         form.append('descripcion', desc);
         form.append('estado',      estado);
+        form.append('categoria_id', document.getElementById('pfCategoria').value || '');
         form.append('_token',      document.querySelector('meta[name="csrf-token"]').content);
         const pfCat = document.getElementById('pfCategoria').value;
         if (pfCat) form.append('categoria_id', pfCat);

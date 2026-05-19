@@ -1788,6 +1788,30 @@ function sendRequest(formData, btn) {
         syncCancelBtn();
     }
 
+    // ── TRAYECTORIA ───────────────────────────────────────────────────────────
+    const CSRF = () => document.querySelector('meta[name="csrf-token"]').content;
+    let starValue = 0;
+    let habTipo   = 'fuerte';
+    let trayData  = {
+        habilidades: @json($habilidades),
+        experiencias: @json($experiencias),
+        formaciones: @json($formaciones),
+        certificaciones: @json($certificaciones)
+    };
+    let pendingDel = null;
+    let pendingConfirm = null;
+    let lastTrayAction = null;
+    const editing = { habilidades: null, experiencias: null, formaciones: null, certificaciones: null };
+
+    const SUGERENCIAS = [
+        'JavaScript','TypeScript','Python','Java','C#','C++','PHP','Go','Rust','Swift',
+        'Kotlin','Ruby','Scala','R','MATLAB','Dart','Flutter','React','Vue','Angular',
+        'Node.js','Laravel','Django','Spring Boot','ASP.NET','MySQL','PostgreSQL','MongoDB',
+        'Redis','Docker','Kubernetes','AWS','Azure','GCP','Git','Linux','Figma',
+        'Adobe XD','Photoshop','Illustrator','SQL','HTML','CSS','Tailwind CSS','Bootstrap',
+        'GraphQL','REST APIs','Machine Learning','Deep Learning','Data Science','Excel','Power BI'
+    ];
+
     // Inicializar
     updateCounter();
     syncCancelBtn();
@@ -1825,32 +1849,12 @@ function sendRequest(formData, btn) {
 
 
 
-    // ── TRAYECTORIA ───────────────────────────────────────────────────────────
-    const CSRF = () => document.querySelector('meta[name="csrf-token"]').content;
-    let starValue = 0;
-    let habTipo   = 'fuerte';
-    let trayData  = {
-        habilidades: @json($habilidades),
-        experiencias: @json($experiencias),
-        formaciones: @json($formaciones),
-        certificaciones: @json($certificaciones)
-    };
-    let pendingDel = null;
-    let pendingConfirm = null;
-    let lastTrayAction = null;
-    const editing = { habilidades: null, experiencias: null, formaciones: null, certificaciones: null };
-
-    const SUGERENCIAS = [
-        'JavaScript','TypeScript','Python','Java','C#','C++','PHP','Go','Rust','Swift',
-        'Kotlin','Ruby','Scala','R','MATLAB','Dart','Flutter','React','Vue','Angular',
-        'Node.js','Laravel','Django','Spring Boot','ASP.NET','MySQL','PostgreSQL','MongoDB',
-        'Redis','Docker','Kubernetes','AWS','Azure','GCP','Git','Linux','Figma',
-        'Adobe XD','Photoshop','Illustrator','SQL','HTML','CSS','Tailwind CSS','Bootstrap',
-        'GraphQL','REST APIs','Machine Learning','Deep Learning','Data Science','Excel','Power BI'
-    ];
-
     function abrirTrayectoria() {
         document.getElementById('modalTrayectoria').classList.add('show');
+        renderHabilidades();
+        renderExperiencias();
+        renderFormaciones();
+        renderCertificaciones();
         cargarTrayectoria();
         cargarRedes();
     }
