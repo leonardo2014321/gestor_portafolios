@@ -945,5 +945,22 @@
     
 </script>
 
+{{-- ══ MODAL PARA LEER NOTIFICACIONES COMPLETAS ══ --}}
+<div id="modal-notificacion" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:16px;max-width:500px;width:90%;max-height:80%;overflow:auto;padding:24px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <h3 id="modal-titulo" style="margin:0;font-size:18px;color:#0f172a;font-family:'Plus Jakarta Sans',sans-serif;"></h3>
+            <button onclick="cerrarModalNotificacion()" style="background:none;border:none;font-size:24px;cursor:pointer;color:#94a3b8;">&times;</button>
+        </div>
+        <div id="modal-mensaje" style="font-size:14px;line-height:1.6;color:#334155;white-space:pre-wrap;word-break:break-word;"></div>
+        <div style="margin-top:20px;text-align:right;">
+            <button onclick="cerrarModalNotificacion()" style="background:#2563eb;color:#fff;border:none;padding:8px 20px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+{{-- ══ NOTIFICACIONES DINÁMICAS (campanita) ══ --}}
+@include('_notificaciones_menu')
+
 </body>
 </html>
