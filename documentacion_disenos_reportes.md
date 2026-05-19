@@ -15,20 +15,13 @@ Este documento detalla los diferentes modelos y diseños disponibles para la gen
 *   **Descripción:** Ideal para perfiles tecnológicos o modernos. Resalta la información de contacto y habilidades en la barra lateral azul, mientras que la experiencia y educación se detallan en el área blanca principal para facilitar su lectura.
 
 ### 2. Plantilla Clásica (Formal)
-*   **Modelo:** Diseño tradicional de una sola columna, centrado y sobrio. Usa tipografías serif clásicas (`Times New Roman`).
-*   **Colores Principales:**
-    *   **Texto y Líneas:** Azul Marino Oscuro / Pizarra (`#1e293b`).
-    *   **Fondo:** Blanco (`#ffffff`).
-*   **Descripción:** Perfecto para entornos corporativos formales, legales o académicos. Se enfoca puramente en el contenido textual con divisores limpios y sin distracciones visuales.
-
-### 3. Plantilla Minimalista
 *   **Modelo:** Diseño extremadamente limpio estructurado en una cuadrícula asimétrica, dando prioridad máxima al espacio en blanco y la legibilidad.
 *   **Colores Principales:**
     *   **Texto Principal:** Pizarra Oscuro (`#0f172a`).
     *   **Acentos y Etiquetas:** Gris Pizarra Claro (`#f1f5f9` para etiquetas de habilidades, `#94a3b8` para títulos de sección).
 *   **Descripción:** Un enfoque moderno y sutil. Utiliza contrastes de grises para jerarquizar la información sin utilizar colores llamativos. Excelente para profesionales que buscan proyectar simplicidad y orden.
 
-### 4. Plantilla Elegante
+### 3. Plantilla Elegante
 *   **Modelo:** Estructura geométrica con un encabezado superior en forma de polígono asimétrico y la fotografía en formato circular superpuesta.
 *   **Colores Principales:**
     *   **Encabezado:** Gris oscuro / Azul acero (`#374856`).
@@ -36,19 +29,12 @@ Este documento detalla los diferentes modelos y diseños disponibles para la gen
     *   **Barras de Habilidades:** Azul acero (`#475a68`).
 *   **Descripción:** Transmite sofisticación y alto perfil. El contraste entre el encabezado oscuro superior y el cuerpo claro crea un documento visualmente impactante, muy recomendado para puestos gerenciales.
 
-### 5. Plantilla Creativa
+### 4. Plantilla Creativa
 *   **Modelo:** Diseño no convencional con bloques de color asimétricos y banners superpuestos. Usa tipografía serif para dar un toque editorial.
 *   **Colores Principales:**
     *   **Columna Izquierda (Fondo):** Verde azulado / Teal (`#6a9a98`).
     *   **Banner Superior:** Rosa empolvado / Granate suave (`#b88a8d`).
 *   **Descripción:** Diseñado especialmente para perfiles creativos (diseñadores, artistas, marketing). Usa una paleta de colores complementaria, orgánica y cálida que destaca fuertemente sobre formatos tradicionales.
-
-### 6. Plantilla Malva
-*   **Modelo:** Estética suave y moderna con un banner superior alineado a la derecha y estructura de dos columnas (izquierda más angosta).
-*   **Colores Principales:**
-    *   **Banner Superior y Viñetas:** Malva / Rosa ceniza (`#ab8589`).
-    *   **Columna Izquierda (Fondo):** Gris casi blanco (`#f8f9fa`).
-*   **Descripción:** Un diseño delicado, empático y muy profesional. El uso del color malva aporta un toque distintivo, contemporáneo y elegante sin perder la formalidad del documento.
 
 ---
 
