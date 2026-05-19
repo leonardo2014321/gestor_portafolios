@@ -608,4 +608,65 @@
         }
         
         /* Regla inyectada dinámicamente si es necesario */
+        
+        /* ============================================================
+           REPORTES Y HOJAS DE VIDA RESPONSIVE
+           ============================================================ */
+        @media(max-width:992px){
+          .cv-wrapper {
+              justify-content: flex-start !important;
+              overflow-x: auto !important;
+              padding: 15px !important;
+              -webkit-overflow-scrolling: touch;
+              width: 100% !important;
+          }
+          .cv-container {
+              margin: 0 auto !important;
+              flex-shrink: 0 !important;
+          }
+        }
+        @media(max-width:768px){
+          .template-selector {
+              flex-direction: column !important;
+              align-items: stretch !important;
+              gap: 8px !important;
+              padding: 12px 15px !important;
+          }
+          .template-selector label {
+              margin-bottom: 2px !important;
+              font-size: 13px !important;
+          }
+          .template-selector select {
+              max-width: 100% !important;
+              width: 100% !important;
+          }
+          #portafolio-color-panel {
+              padding: 12px 15px !important;
+              gap: 10px !important;
+          }
+          #portafolio-color-panel > div {
+              flex-wrap: wrap !important;
+              gap: 8px !important;
+          }
+          .pf-select-row {
+              flex-direction: column !important;
+              align-items: stretch !important;
+              gap: 6px !important;
+          }
+          .pf-select-row select {
+              width: 100% !important;
+              max-width: 100% !important;
+          }
+        }
+        @media(max-width:480px){
+          .reportes-tabs {
+              gap: 5px !important;
+          }
+          .rep-tab {
+              flex: 1;
+              text-align: center;
+              padding: 10px 5px !important;
+              font-size: 13px !important;
+          }
+        }
     </style>

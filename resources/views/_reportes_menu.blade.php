@@ -107,7 +107,7 @@
 
     {{-- Selector de portafolio real --}}
     @if($r_portafolios->count() > 0)
-    <div style="display:flex;align-items:center;gap:10px;width:100%;padding-bottom:10px;
+    <div class="pf-select-row" style="display:flex;align-items:center;gap:10px;width:100%;padding-bottom:10px;
                 border-bottom:1px dashed #bcd0e5;margin-bottom:4px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
         <label style="font-size:13px;font-weight:600;color:#334155;">Portafolio a mostrar:</label>
