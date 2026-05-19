@@ -6,6 +6,7 @@
 
 @php
     use App\Models\Portafolio;
+    use App\Models\Categoria;
 
     $supabaseBase = rtrim(config('services.supabase.url'), '/')
                   . '/storage/v1/object/public/'
@@ -19,7 +20,7 @@
             : $supabaseBase . '/' . ltrim($path, '/');
     };
 
-    $portafoliosGrid = Portafolio::with('usuario')
+    $portafoliosGrid = Portafolio::with(['usuario', 'categoria'])
         ->where('estado', 'publicado')
         ->whereHas('usuario', fn($q) => $q->where('activo', true))
         ->latest()
@@ -41,6 +42,11 @@
         return '#64748b';
     };
 
+    // Categorías activas desde la BD (ordenadas)
+    $categorias = Categoria::where('activa', true)
+        ->orderBy('orden')
+        ->get();
+
     // Stats para el hero
     $totalPortafolios = Portafolio::where('estado', 'publicado')
         ->whereHas('usuario', fn($q) => $q->where('activo', true))
@@ -48,7 +54,7 @@
     $totalAutores = Portafolio::where('estado', 'publicado')
         ->whereHas('usuario', fn($q) => $q->where('activo', true))
         ->distinct('usuario_id')->count('usuario_id');
-    $totalCategorias = 6;
+    $totalCategorias = $categorias->count();
 @endphp
 
 {{-- Hero banner --}}
@@ -92,7 +98,7 @@
     </div>
 </div>
 
-{{-- Filtros de categoría --}}
+{{-- Filtros de categoría (dinámicos desde BD) --}}
 <div class="porta-filters" role="group" aria-label="Filtrar por categoría">
 
     {{-- Todos --}}
@@ -106,55 +112,39 @@
         Todos
     </button>
 
-    {{-- Creativos --}}
-    <button class="porta-filter-btn" data-filter="creativos">
-        <span class="porta-filter-icon porta-filter-icon--pink">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
-            </svg>
-        </span>
-        Creativos
-    </button>
+    @php
+        $categoriaIcons = [
+            'tecnologia' => '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+            'diseno'     => '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>',
+            'negocios'   => '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>',
+            'educacion'  => '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+            'salud'      => '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+            'arte'       => '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
+        ];
+        $categoriaColors = [
+            'tecnologia' => 'porta-filter-icon--indigo',
+            'diseno'     => 'porta-filter-icon--pink',
+            'negocios'   => 'porta-filter-icon--blue',
+            'educacion'  => 'porta-filter-icon--amber',
+            'salud'      => 'porta-filter-icon--green',
+            'arte'       => 'porta-filter-icon--purple',
+        ];
+    @endphp
 
-    {{-- Salud --}}
-    <button class="porta-filter-btn" data-filter="salud">
-        <span class="porta-filter-icon porta-filter-icon--green">
+    @foreach($categorias as $categoria)
+    @php
+        $iconPaths = $categoriaIcons[$categoria->slug] ?? '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>';
+        $iconColor = $categoriaColors[$categoria->slug] ?? '';
+    @endphp
+    <button class="porta-filter-btn" data-filter="{{ $categoria->slug }}">
+        <span class="porta-filter-icon {{ $iconColor }}">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                {!! $iconPaths !!}
             </svg>
         </span>
-        Salud
+        {{ $categoria->nombre }}
     </button>
-
-    {{-- Negocios --}}
-    <button class="porta-filter-btn" data-filter="negocios">
-        <span class="porta-filter-icon porta-filter-icon--blue">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-            </svg>
-        </span>
-        Negocios
-    </button>
-
-    {{-- Educación --}}
-    <button class="porta-filter-btn" data-filter="educacion">
-        <span class="porta-filter-icon porta-filter-icon--amber">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-            </svg>
-        </span>
-        Educación
-    </button>
-
-    {{-- Tecnología --}}
-    <button class="porta-filter-btn" data-filter="tecnologia">
-        <span class="porta-filter-icon porta-filter-icon--indigo">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
-            </svg>
-        </span>
-        Tecnología
-    </button>
+    @endforeach
 
 </div>
 
@@ -183,7 +173,8 @@
         @endphp
 
         <div class="porta-card"
-             data-categoria="{{ mb_strtolower($usuario->profesion ?? '') }}">
+             data-categoria="{{ $portafolio->categoria?->slug ?? '' }}"
+             data-user-id="{{ $usuario->id }}">
 
             {{-- ── Cuadro grande: foto cubre todo el área con overlay ── --}}
             <div class="porta-card-cover">
@@ -423,12 +414,14 @@
 .porta-filter-icon--blue   { background: #eff6ff; color: var(--porta-blue); }
 .porta-filter-icon--amber  { background: #fffbeb; color: var(--porta-amber); }
 .porta-filter-icon--indigo { background: #eef2ff; color: var(--porta-indigo); }
+.porta-filter-icon--purple { background: #f5f3ff; color: #7c3aed; }
 
 .porta-filter-btn:hover .porta-filter-icon--pink   { background: #fce7f3; }
 .porta-filter-btn:hover .porta-filter-icon--green  { background: #d1fae5; }
 .porta-filter-btn:hover .porta-filter-icon--blue   { background: #dbeafe; }
 .porta-filter-btn:hover .porta-filter-icon--amber  { background: #fef3c7; }
 .porta-filter-btn:hover .porta-filter-icon--indigo { background: #e0e7ff; }
+.porta-filter-btn:hover .porta-filter-icon--purple { background: #ede9fe; }
 
 /* ── Barra de resultados ── */
 .porta-results-bar {
@@ -725,20 +718,8 @@
         searchQuery:  '',
     };
 
-    const categoryMap = {
-        creativos:  ['diseñ', 'arquitect', 'ilustr', 'fotograf', 'artis', 'creativ'],
-        salud:      ['salud', 'méd', 'médic', 'fisioterap', 'enfermer', 'nutri'],
-        negocios:   ['contad', 'financ', 'consult', 'mercado', 'market', 'administr', 'comerc'],
-        educacion:  ['docen', 'educat', 'profes', 'tutor', 'maestr'],
-        tecnologia: ['ingenier', 'sistem', 'program', 'software', 'desarroll', 'tecnolog', 'devops'],
-    };
-
-    function matchesCategory(cat, filter) {
-        if (filter === 'todos') return true;
-        return (categoryMap[filter] ?? []).some(kw => cat.includes(kw));
-    }
-
     // Función central: aplica AMBOS filtros a la vez
+    // Ahora data-categoria contiene el slug real de la BD (ej: "tecnologia", "salud")
     window.portaApplyFilters = function () {
         const { activeFilter, searchQuery } = window.portaGridState;
         const q = searchQuery.trim().toLowerCase();
@@ -746,10 +727,10 @@
         let visible = 0;
 
         cards.forEach(card => {
-            const cat  = (card.dataset.categoria ?? '').toLowerCase();
+            const cat  = (card.dataset.categoria ?? '');
             const text = card.textContent.toLowerCase();
 
-            const okCat    = matchesCategory(cat, activeFilter);
+            const okCat    = activeFilter === 'todos' || cat === activeFilter;
             const okSearch = !q || text.includes(q);
 
             if (okCat && okSearch) {

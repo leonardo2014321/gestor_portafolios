@@ -923,112 +923,177 @@
         sendRequest(pendingFormData, btn);
     }
 
-    function sendRequest(formData, btn) {
-        fetch('{{ route("perfil.update") }}', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-            body: formData,
-        })
-        .then(res => {
-            if (res.status === 422) {
-                return res.json().then(errData => {
-                    btn.classList.remove('loading');
-                    btn.disabled = false;
-                    const msgs = errData.errors ? Object.values(errData.errors).flat() : [];
-                    const msg  = msgs.length ? msgs[0] : T.chars_prohibidos;
-                    let alertEl = document.getElementById('perfilAlertError');
-                    if (!alertEl) {
-                        alertEl = document.createElement('div');
-                        alertEl.id = 'perfilAlertError';
-                        alertEl.className = 'alert alert-error';
-                        alertEl.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> <span id="perfilAlertErrorMsg"></span>';
-                        document.getElementById('perfilForm').before(alertEl);
-                    }
-                    document.getElementById('perfilAlertErrorMsg').textContent = msg;
-                    alertEl.style.display = 'flex';
-                    setTimeout(() => { alertEl.style.display = 'none'; }, 5000);
-                });
-            }
+    // ─── Sincroniza foto en tarjeta del explorador ────────────────────────────
+function _sincronizarFotoEnExplorador(fotoUrl) {
+    const userId = '{{ Auth::id() }}';
+    const card   = document.querySelector(`.exp-card[data-user-id="${userId}"]`);
+    if (!card) return;
 
-            if (!res.ok) throw new Error('Server error ' + res.status);
-            return res.json();
-        })
-        .then(data => {
-            if (!data) return;
-            btn.classList.remove('loading');
-            btn.disabled = false;
+    const av = card.querySelector('.exp-av');
+    if (!av) return;
 
-            if (data.foto_url) {
-                const initials = document.getElementById('photoInitials');
-                const wrap     = document.querySelector('.photo-wrap');
-                let img        = document.getElementById('photoPreview');
-                if (!img) {
-                    img = document.createElement('img');
-                    img.id        = 'photoPreview';
-                    img.className = 'photo-avatar';
-                    img.alt       = '';
-                    wrap.insertBefore(img, wrap.firstChild);
-                }
-                img.src              = data.foto_url + '?t=' + Date.now();
-                img.dataset.original = data.foto_url;
-                img.style.display    = 'block';
-                if (initials) initials.style.display = 'none';
-
-                document.getElementById('prevAv').innerHTML =
-                    `<img src="${data.foto_url}?t=${Date.now()}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
-
-                const sidebarAv = document.getElementById('sidebarAv');
-                if (sidebarAv) sidebarAv.innerHTML =
-                    `<img src="${data.foto_url}?t=${Date.now()}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
-
-                //  NUEVO: actualiza navbar con foto
-                if (typeof actualizarNavbar === 'function') {
-                    actualizarNavbar(
-                        document.getElementById('fNombre').value,
-                        document.getElementById('fApellido').value,
-                        data.foto_url + '?t=' + Date.now()
-                    );
-                }
-            } else {
-                //  NUEVO: actualiza navbar sin foto (solo nombre)
-                if (typeof actualizarNavbar === 'function') {
-                    actualizarNavbar(
-                        document.getElementById('fNombre').value,
-                        document.getElementById('fApellido').value,
-                        null
-                    );
-                }
-            }
-
-            original.nombre    = document.getElementById('fNombre').value;
-            original.apellido  = document.getElementById('fApellido').value;
-            original.profesion = document.getElementById('fProfesion').value;
-            original.biografia = document.getElementById('fBiografia').value;
-            syncCancelBtn();
-
-            document.getElementById('inputFoto').value = '';
-
-            let alertEl = document.getElementById('perfilAlertSuccess');
-            if (!alertEl) {
-                alertEl = document.createElement('div');
-                alertEl.id = 'perfilAlertSuccess';
-                alertEl.className = 'alert alert-success';
-                alertEl.innerHTML = '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> <span id="perfilAlertSuccessMsg"></span>';
-                document.getElementById('perfilForm').before(alertEl);
-            }
-            document.getElementById('perfilAlertSuccessMsg').textContent = T.success_actualizado;
-            alertEl.style.display = 'flex';
-            setTimeout(() => { alertEl.style.display = 'none'; }, 4000);
-        })
-        .catch(() => {
-            btn.classList.remove('loading');
-            btn.disabled = false;
-            document.getElementById('alertRetry').style.display = 'flex';
-        });
+    if (av.tagName === 'IMG') {
+        // Ya es una imagen, solo cambia el src
+        av.src = fotoUrl;
+    } else {
+        // Es un div con iniciales, reemplazar por img
+        const img = document.createElement('img');
+        img.src       = fotoUrl;
+        img.alt       = '';
+        img.className = 'exp-av exp-av-foto';
+        img.style     = 'object-fit:cover;border-radius:13px;';
+        av.replaceWith(img);
     }
+}
+
+function _sincronizarFotoEnPortafolios(fotoUrl) {
+    const userId = '{{ Auth::id() }}';
+    const cards  = document.querySelectorAll(`.porta-card[data-user-id="${userId}"]`);
+    if (!cards.length) return;
+
+    cards.forEach(card => {
+        const cover = card.querySelector('.porta-card-cover');
+        if (!cover) return;
+
+        const bg     = cover.querySelector('.porta-cover-bg');
+        const avatar = cover.querySelector('.porta-cover-avatar');
+
+        if (bg && avatar) {
+            // Ya tenía foto — solo actualiza el src
+            bg.src     = fotoUrl;
+            avatar.src = fotoUrl;
+        } else {
+            // Tenía iniciales — reemplaza todo el contenido del cover con foto
+            const badge = cover.querySelector('.porta-badge');
+            cover.innerHTML = `
+                <img src="${fotoUrl}" class="porta-cover-bg" alt="">
+                <div class="porta-cover-overlay"></div>
+                <img src="${fotoUrl}" class="porta-cover-avatar" alt="">
+                <div class="porta-cover-name"><span></span></div>
+            `;
+            // Restaura el badge
+            if (badge) cover.appendChild(badge);
+        }
+    });
+}
+
+function sendRequest(formData, btn) {
+    fetch('{{ route("perfil.update") }}', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: formData,
+    })
+    .then(res => {
+        if (res.status === 422) {
+            return res.json().then(errData => {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+                const msgs = errData.errors ? Object.values(errData.errors).flat() : [];
+                const msg  = msgs.length ? msgs[0] : T.chars_prohibidos;
+                let alertEl = document.getElementById('perfilAlertError');
+                if (!alertEl) {
+                    alertEl = document.createElement('div');
+                    alertEl.id = 'perfilAlertError';
+                    alertEl.className = 'alert alert-error';
+                    alertEl.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> <span id="perfilAlertErrorMsg"></span>';
+                    document.getElementById('perfilForm').before(alertEl);
+                }
+                document.getElementById('perfilAlertErrorMsg').textContent = msg;
+                alertEl.style.display = 'flex';
+                setTimeout(() => { alertEl.style.display = 'none'; }, 5000);
+            });
+        }
+ 
+        if (!res.ok) throw new Error('Server error ' + res.status);
+        return res.json();
+    })
+    .then(data => {
+        if (!data) return;
+        btn.classList.remove('loading');
+        btn.disabled = false;
+ 
+        const nombre   = document.getElementById('fNombre').value;
+        const apellido = document.getElementById('fApellido').value;
+ 
+        if (data.foto_url) {
+            const fotoConCache = data.foto_url + '?t=' + Date.now();
+ 
+            // ── Foto en el formulario ──
+            const initials = document.getElementById('photoInitials');
+            const wrap     = document.querySelector('.photo-wrap');
+            let img        = document.getElementById('photoPreview');
+            if (!img) {
+                img = document.createElement('img');
+                img.id        = 'photoPreview';
+                img.className = 'photo-avatar';
+                img.alt       = '';
+                wrap.insertBefore(img, wrap.firstChild);
+            }
+            img.src              = fotoConCache;
+            img.dataset.original = data.foto_url;
+            img.style.display    = 'block';
+            if (initials) initials.style.display = 'none';
+ 
+            // ── Vista previa ──
+            document.getElementById('prevAv').innerHTML =
+                `<img src="${fotoConCache}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+ 
+            // ── Sidebar ──
+            const sidebarAv = document.getElementById('sidebarAv');
+            if (sidebarAv) sidebarAv.innerHTML =
+                `<img src="${fotoConCache}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+ 
+            // ── Navbar ──
+            if (typeof actualizarNavbar === 'function') {
+                actualizarNavbar(nombre, apellido, fotoConCache);
+            }
+ 
+            // ── Explorador (foto + nombre en tiempo real) ──
+            if (typeof _sincronizarFotoEnExplorador === 'function') {
+                _sincronizarFotoEnExplorador(fotoConCache);
+            }
+
+            if (typeof _sincronizarFotoEnPortafolios === 'function') {
+                _sincronizarFotoEnPortafolios(fotoConCache);
+            }
+ 
+        } else {
+            // Sin foto nueva: solo actualiza nombre en navbar y explorador
+            if (typeof actualizarNavbar === 'function') {
+                actualizarNavbar(nombre, apellido, null);
+            }
+
+        }
+ 
+        original.nombre    = nombre;
+        original.apellido  = apellido;
+        original.profesion = document.getElementById('fProfesion').value;
+        original.biografia = document.getElementById('fBiografia').value;
+        syncCancelBtn();
+ 
+        document.getElementById('inputFoto').value = '';
+ 
+        let alertEl = document.getElementById('perfilAlertSuccess');
+        if (!alertEl) {
+            alertEl = document.createElement('div');
+            alertEl.id = 'perfilAlertSuccess';
+            alertEl.className = 'alert alert-success';
+            alertEl.innerHTML = '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> <span id="perfilAlertSuccessMsg"></span>';
+            document.getElementById('perfilForm').before(alertEl);
+        }
+        document.getElementById('perfilAlertSuccessMsg').textContent = T.success_actualizado;
+        alertEl.style.display = 'flex';
+        setTimeout(() => { alertEl.style.display = 'none'; }, 4000);
+    })
+    .catch(() => {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        document.getElementById('alertRetry').style.display = 'flex';
+    });
+}
 
     function retrySubmit() {
         if (!pendingFormData) return;

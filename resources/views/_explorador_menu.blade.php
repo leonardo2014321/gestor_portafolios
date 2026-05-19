@@ -9,7 +9,7 @@
 @php
     $totalPerfiles   = count($usuarios);
     $conPortafolio   = collect($usuarios)->where('tiene_portafolio', true)->count();
-    $areas           = collect($usuarios)->pluck('categoria')->unique()->filter()->count();
+    $areas           = \App\Models\Categoria::where('activa', true)->count();
 @endphp
 <div class="exp-hero">
     <div class="exp-hero-bg"></div>
@@ -58,9 +58,23 @@
 </div>
 
 {{-- ══ Filtros: Fila 1 = Área, Fila 2 = Mostrar ══ --}}
+@php
+    use App\Models\Categoria;
+    $expCategorias = Categoria::where('activa', true)->orderBy('orden')->get();
+
+    $expCatIcons = [
+        'tecnologia' => ['svg' => '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',      'color' => 'exp-filter-icon--indigo'],
+        'diseno'     => ['svg' => '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>',        'color' => 'exp-filter-icon--pink'],
+        'negocios'   => ['svg' => '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>', 'color' => 'exp-filter-icon--blue'],
+        'salud'      => ['svg' => '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',  'color' => 'exp-filter-icon--green'],
+        'educacion'  => ['svg' => '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',    'color' => 'exp-filter-icon--amber'],
+        'arte'       => ['svg' => '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',  'color' => 'exp-filter-icon--purple'],
+    ];
+    $expDefaultIcon = '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>';
+@endphp
 <div class="exp-filters-wrap">
 
-    {{-- Fila 1: Área / categoría --}}
+    {{-- Fila 1: Área / categoría (dinámica desde BD) --}}
     <div class="exp-filters-row">
         <span class="exp-filters-label">Área</span>
         <div class="exp-filters exp-filters--category" role="group" aria-label="Filtrar por área">
@@ -75,50 +89,19 @@
                 Todos
             </button>
 
-            <button class="exp-filter-btn" data-cat-filter="tecnologia">
-                <span class="exp-filter-icon exp-filter-icon--indigo">
+            @foreach($expCategorias as $expCat)
+            @php
+                $expIcon  = $expCatIcons[$expCat->slug] ?? ['svg' => $expDefaultIcon, 'color' => ''];
+            @endphp
+            <button class="exp-filter-btn" data-cat-filter="{{ $expCat->slug }}">
+                <span class="exp-filter-icon {{ $expIcon['color'] }}">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                        {!! $expIcon['svg'] !!}
                     </svg>
                 </span>
-                Tecnología
+                {{ $expCat->nombre }}
             </button>
-
-            <button class="exp-filter-btn" data-cat-filter="creativos">
-                <span class="exp-filter-icon exp-filter-icon--pink">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
-                    </svg>
-                </span>
-                Creativos
-            </button>
-
-            <button class="exp-filter-btn" data-cat-filter="negocios">
-                <span class="exp-filter-icon exp-filter-icon--blue">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-                    </svg>
-                </span>
-                Negocios
-            </button>
-
-            <button class="exp-filter-btn" data-cat-filter="salud">
-                <span class="exp-filter-icon exp-filter-icon--green">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                    </svg>
-                </span>
-                Salud
-            </button>
-
-            <button class="exp-filter-btn" data-cat-filter="educacion">
-                <span class="exp-filter-icon exp-filter-icon--amber">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                    </svg>
-                </span>
-                Educación
-            </button>
+            @endforeach
 
         </div>
     </div>
@@ -204,18 +187,20 @@
         @php
             $avatarColors = [
                 'tecnologia' => 'av-indigo',
-                'creativos'  => 'av-pink',
+                'diseno'     => 'av-pink',
                 'negocios'   => 'av-blue',
                 'salud'      => 'av-green',
                 'educacion'  => 'av-amber',
+                'arte'       => 'av-purple',
                 'otros'      => 'av-teal',
             ];
             $accentColors = [
                 'tecnologia' => '#6366f1',
-                'creativos'  => '#ec4899',
+                'diseno'     => '#ec4899',
                 'negocios'   => '#3b82f6',
                 'salud'      => '#22c55e',
                 'educacion'  => '#f59e0b',
+                'arte'       => '#7c3aed',
                 'otros'      => '#14b8a6',
             ];
             $avClass = $avatarColors[$u['categoria']] ?? 'av-teal';
@@ -252,6 +237,7 @@
 
         <div class="exp-card"
              {!! $filterAttrs !!}
+             data-user-id="{{ $u['id'] }}"
              data-habilidades="{{ $u['total_habilidades'] }}"
              data-certificaciones="{{ $u['certificaciones'] }}"
              data-nombre="{{ strtolower($u['nombre']) }}"
@@ -265,7 +251,7 @@
                 @if($u['foto_url'])
                     <img src="{{ $u['foto_url'] }}" class="exp-av exp-av-foto" alt="{{ $u['nombre'] }}">
                 @else
-                    <div class="exp-av {{ $avClass }}">{{ $u['inicial'] }}</div>
+                    <div class="exp-av {{ $avClass }}" data-iniciales="{{ $u['inicial'] }}">{{ $u['inicial'] }}</div>
                 @endif
 
                 <div class="exp-card-info">
@@ -523,6 +509,7 @@
 .exp-filter-icon--blue   { background: #eff6ff; color: #2563eb; }
 .exp-filter-icon--green  { background: #f0fdf4; color: #16a34a; }
 .exp-filter-icon--amber  { background: #fffbeb; color: #d97706; }
+.exp-filter-icon--purple { background: #f5f3ff; color: #7c3aed; }
 
 /* ══ Barra resultados ══ */
 .exp-results-bar {
@@ -595,6 +582,7 @@
 .av-pink   { background: linear-gradient(135deg,#db2777,#ec4899); }
 .av-indigo { background: linear-gradient(135deg,#4f46e5,#6366f1); }
 .av-amber  { background: linear-gradient(135deg,#d97706,#f59e0b); }
+.av-purple { background: linear-gradient(135deg,#6d28d9,#7c3aed); }
 
 /* Top */
 .exp-card-top { display: flex; align-items: center; gap: 11px; }
@@ -709,6 +697,100 @@
 .exp-empty svg { opacity: .35; }
 .exp-empty p { font-family: 'DM Sans', sans-serif; font-size: 13px; margin: 0; }
 .exp-empty strong { font-size: 15px; color: #475569; display: block; margin-bottom: 4px; }
+
+/* ══ RESPONSIVE ══ */
+
+/* ── Tablet (≤ 768px) ── */
+@media (max-width: 768px) {
+
+    /* Hero: stats debajo del buscador */
+    .exp-hero { padding: 1.1rem 1.2rem; }
+    .exp-hero-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .exp-hero-title { font-size: 16px; }
+    .exp-hero-sub   { font-size: 11.5px; margin-bottom: 10px; }
+    .exp-hero-stats { width: 100%; justify-content: flex-start; }
+    .exp-stat-pill  { flex: 1; min-width: 0; padding: 7px 10px; }
+    .exp-stat-num   { font-size: 17px; }
+    .exp-search-wrap { max-width: 100%; }
+
+    /* Filtros: label encima, botones scroll horizontal */
+    .exp-filters-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        padding: 10px 12px;
+    }
+    .exp-filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 2px;
+    }
+    .exp-filters::-webkit-scrollbar { display: none; }
+    .exp-filter-btn { flex-shrink: 0; padding: 6px 12px; font-size: 12px; }
+
+    /* Barra resultados */
+    .exp-results-bar { flex-wrap: wrap; gap: 8px; }
+
+    /* Grid: 2 columnas en tablet */
+    .exp-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+    /* Tarjeta: footer en dos líneas si hace falta */
+    .exp-card-footer { flex-wrap: wrap; gap: 6px; }
+    .exp-btn-perfil { margin-left: auto; }
+}
+
+/* ── Móvil (≤ 480px) ── */
+@media (max-width: 480px) {
+
+    /* Hero */
+    .exp-hero { padding: 1rem; border-radius: 12px; margin-bottom: .75rem; }
+    .exp-hero-title { font-size: 15px; }
+    .exp-hero-sub   { font-size: 11px; }
+    .exp-hero-stats { gap: 6px; }
+    .exp-stat-num   { font-size: 15px; }
+    .exp-stat-lbl   { font-size: 9.5px; }
+    .exp-search-wrap { padding: 7px 11px; border-radius: 11px; }
+    .exp-search-input { font-size: 13px; }
+    .exp-search-badge { display: none; } /* evita overflow en pantallas pequeñas */
+
+    /* Filtros */
+    .exp-filters-wrap { border-radius: 11px; margin-bottom: .75rem; }
+    .exp-filters-row  { padding: 8px 10px; }
+    .exp-filters-label { font-size: 10px; }
+    .exp-filter-btn { padding: 5px 10px; font-size: 11.5px; }
+    .exp-filter-icon { width: 19px; height: 19px; border-radius: 6px; }
+
+    /* Grid: 1 columna en móvil */
+    .exp-grid { grid-template-columns: 1fr; gap: 8px; }
+
+    /* Tarjeta */
+    .exp-card { border-radius: 14px; padding: 1rem 1rem 0.85rem 1.2rem; gap: 8px; }
+    .exp-av   { width: 40px; height: 40px; border-radius: 11px; font-size: 16px; }
+    .exp-card-nombre  { font-size: 13.5px; }
+    .exp-card-profesion { font-size: 11px; }
+    .exp-card-exp-actual { font-size: 11px; padding: 4px 9px; }
+
+    /* Footer: badges + redes en una línea, botón debajo */
+    .exp-card-footer {
+        flex-wrap: wrap;
+        row-gap: 6px;
+    }
+    .exp-card-badges { flex-shrink: 0; }
+    .exp-card-redes  { flex-shrink: 0; }
+    .exp-btn-perfil  {
+        width: 100%;
+        margin-left: 0;
+        justify-content: center;
+        padding: 8px 14px;
+    }
+
+    /* Sort menu */
+    .exp-sort-menu { right: 0; min-width: 160px; }
+
+    /* Empty state */
+    .exp-empty { padding: 2.5rem 1rem; }
+}
 </style>
 
 <script>
