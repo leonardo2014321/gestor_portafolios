@@ -624,6 +624,124 @@
               margin: 0 auto !important;
               flex-shrink: 0 !important;
           }
+
+          /* ── Plantilla 7 - Portafolio Hexágonos Responsivo ── */
+          #cv-template-7 {
+              width: 100% !important;
+              min-height: auto !important;
+              height: auto !important;
+              flex-direction: column !important;
+              overflow: visible !important;
+          }
+          #cv-template-7 .cv7-bg {
+              position: static !important;
+              display: flex !important;
+              justify-content: center !important;
+              align-items: center !important;
+              width: 100% !important;
+              height: auto !important;
+              z-index: 1 !important;
+              background: transparent !important;
+          }
+          #cv-template-7 .cv7-content {
+              width: 100% !important;
+              padding: 30px 20px !important;
+          }
+          #cv-template-7 .cv7-hex-big,
+          #cv-template-7 .cv7-hex-small1,
+          #cv-template-7 .cv7-hex-small2 {
+              display: none !important;
+          }
+          #cv-template-7 .cv7-hex-photo-wrap {
+              position: static !important;
+              margin: 30px auto 10px !important;
+              width: 260px !important;
+              height: 260px !important;
+          }
+          #cv-template-7 .cv7-photo {
+              width: 240px !important;
+              height: 240px !important;
+          }
+          #cv-template-7 .cv7-footer {
+              position: static !important;
+              width: 100% !important;
+              padding: 15px 20px !important;
+          }
+
+          /* ── Plantilla 8 - Portafolio Timeline Azul Responsivo ── */
+          #cv-template-8 {
+              width: 100% !important;
+              min-height: auto !important;
+              height: auto !important;
+              flex-direction: column !important;
+          }
+          #cv-template-8 .cv8-left {
+              width: 100% !important;
+              padding: 40px 20px !important;
+              clip-path: none !important;
+          }
+          #cv-template-8 .cv8-right {
+              width: 100% !important;
+              padding: 30px 20px !important;
+          }
+          #cv-template-8 .cv8-header {
+              justify-content: center !important;
+              margin-bottom: 20px !important;
+          }
+          #cv-template-8 .cv8-timeline-container {
+              flex-direction: column !important;
+              gap: 25px !important;
+          }
+
+          /* ── Plantilla 9 - Portafolio Elegante Responsivo ── */
+          #cv-template-9 {
+              width: 100% !important;
+              min-height: auto !important;
+              height: auto !important;
+          }
+          #cv-template-9 .cv9-top {
+              height: auto !important;
+              padding: 30px 20px !important;
+              flex-direction: column-reverse !important;
+              justify-content: center !important;
+              align-items: center !important;
+          }
+          #cv-template-9 .cv9-top-text {
+              text-align: center !important;
+              font-size: 20px !important;
+          }
+          #cv-template-9 .cv9-photo-wrapper {
+              position: static !important;
+              margin: 0 auto 20px !important;
+              width: 200px !important;
+              height: 200px !important;
+          }
+          #cv-template-9 .cv9-bottom {
+              height: auto !important;
+              flex-direction: column !important;
+          }
+          #cv-template-9 .cv9-bottom-left {
+              width: 100% !important;
+              padding: 30px 20px !important;
+          }
+          #cv-template-9 .cv9-bottom-right {
+              width: 100% !important;
+              padding: 30px 20px !important;
+          }
+
+          /* ── Plantilla 10 - Portafolio Columnas Minimalista Responsivo ── */
+          #cv-template-10 {
+              width: 100% !important;
+              min-height: auto !important;
+              height: auto !important;
+              flex-direction: column !important;
+          }
+          #cv-template-10 .cv10-col-left,
+          #cv-template-10 .cv10-col-mid,
+          #cv-template-10 .cv10-col-right {
+              width: 100% !important;
+              padding: 30px 20px !important;
+          }
         }
         @media(max-width:768px){
           .template-selector {
