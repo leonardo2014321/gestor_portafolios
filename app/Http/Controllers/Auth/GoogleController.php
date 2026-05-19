@@ -18,16 +18,11 @@ class GoogleController extends Controller
     public function callback()
     {
         try {
-            $client = app()->environment('production') 
-                ? new Client() 
-                : new Client(['verify' => base_path('cacert.pem')]);
-
             $googleUser = Socialite::driver('google')
-                ->setHttpClient($client)
+                ->setHttpClient(new Client(['verify' => base_path('cacert.pem')]))
                 ->stateless()
                 ->user();
         } catch (\Exception $e) {
-            \Log::error('Google Auth Error: ' . $e->getMessage());
             return redirect('/')->withErrors(['google' => 'No se pudo autenticar con Google. Intenta de nuevo.']);
         }
 
