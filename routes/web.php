@@ -68,6 +68,20 @@ Route::middleware('auth')->group(function () {
     
     // Panel Principal
     Route::get('/menu', function () {
+        $usuario = auth()->user();
+
+        // Redes con visible = true
+        $redes = $usuario->redesPerfil()
+            ->where('visible', true)
+            ->whereNotNull('url')
+            ->where('url', '!=', '')
+            ->get();
+
+        $habilidades     = $usuario->habilidades()->orderBy('tipo')->orderBy('nombre')->get();
+        $experiencias    = $usuario->experiencias()->orderByDesc('fecha_inicio')->get();
+        $formaciones     = $usuario->formaciones()->orderByDesc('fecha_inicio')->get();
+        $certificaciones = $usuario->certificaciones()->orderByDesc('fecha_obtencion')->get();
+
         $busquedas        = \App\Models\Busqueda::where('titulo', '!=', 'Administrador')->get();
         $portafolios      = \App\Models\Portafolio::where('usuario_id', auth()->id())
                                ->orderByDesc('updated_at')
@@ -75,7 +89,18 @@ Route::middleware('auth')->group(function () {
         $totalPortafolios = $portafolios->count();
         $totalDocumentos  = \App\Models\PortafolioProyecto::whereIn('portafolio_id', $portafolios->pluck('id'))->count();
         $totalAprobados   = $portafolios->where('estado', 'publicado')->count();
-        return view('menu', compact('busquedas', 'portafolios', 'totalPortafolios', 'totalDocumentos', 'totalAprobados'));
+        return view('menu', compact(
+            'busquedas', 
+            'portafolios', 
+            'totalPortafolios', 
+            'totalDocumentos', 
+            'totalAprobados',
+            'redes',
+            'habilidades',
+            'experiencias',
+            'formaciones',
+            'certificaciones'
+        ));
     })->name('menu');
 
     // Panel de Administrador (solo accesible para cuentas admin)

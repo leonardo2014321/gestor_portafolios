@@ -20,6 +20,20 @@ class ExploradorController extends Controller
 
     public function menu()
     {
+        $usuario = auth()->user();
+
+        // Redes con visible = true
+        $redes = $usuario->redesPerfil()
+            ->where('visible', true)
+            ->whereNotNull('url')
+            ->where('url', '!=', '')
+            ->get();
+
+        $habilidades     = $usuario->habilidades()->orderBy('tipo')->orderBy('nombre')->get();
+        $experiencias    = $usuario->experiencias()->orderByDesc('fecha_inicio')->get();
+        $formaciones     = $usuario->formaciones()->orderByDesc('fecha_inicio')->get();
+        $certificaciones = $usuario->certificaciones()->orderByDesc('fecha_obtencion')->get();
+
         $portafolios      = \App\Models\Portafolio::where('usuario_id', auth()->id())
                                ->orderByDesc('updated_at')->get();
         $totalPortafolios = $portafolios->count();
@@ -27,7 +41,18 @@ class ExploradorController extends Controller
         $totalAprobados   = $portafolios->where('estado', 'publicado')->count();
         $usuarios         = $this->getUsuariosMapeados();
 
-        return view('menu', compact('portafolios', 'totalPortafolios', 'totalDocumentos', 'totalAprobados', 'usuarios'));
+        return view('menu', compact(
+            'portafolios', 
+            'totalPortafolios', 
+            'totalDocumentos', 
+            'totalAprobados', 
+            'usuarios',
+            'redes',
+            'habilidades',
+            'experiencias',
+            'formaciones',
+            'certificaciones'
+        ));
     }
 
     public function admin()
