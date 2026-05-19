@@ -68,6 +68,20 @@ Route::middleware('auth')->group(function () {
     
     // Panel Principal
     Route::get('/menu', function () {
+        $usuario = auth()->user();
+
+        // Redes con visible = true
+        $redes = $usuario->redesPerfil()
+            ->where('visible', true)
+            ->whereNotNull('url')
+            ->where('url', '!=', '')
+            ->get();
+
+        $habilidades     = $usuario->habilidades()->orderBy('tipo')->orderBy('nombre')->get();
+        $experiencias    = $usuario->experiencias()->orderByDesc('fecha_inicio')->get();
+        $formaciones     = $usuario->formaciones()->orderByDesc('fecha_inicio')->get();
+        $certificaciones = $usuario->certificaciones()->orderByDesc('fecha_obtencion')->get();
+
         $busquedas        = \App\Models\Busqueda::where('titulo', '!=', 'Administrador')->get();
         $portafolios      = \App\Models\Portafolio::where('usuario_id', auth()->id())
                                ->orderByDesc('updated_at')
@@ -75,7 +89,18 @@ Route::middleware('auth')->group(function () {
         $totalPortafolios = $portafolios->count();
         $totalDocumentos  = \App\Models\PortafolioProyecto::whereIn('portafolio_id', $portafolios->pluck('id'))->count();
         $totalAprobados   = $portafolios->where('estado', 'publicado')->count();
-        return view('menu', compact('busquedas', 'portafolios', 'totalPortafolios', 'totalDocumentos', 'totalAprobados'));
+        return view('menu', compact(
+            'busquedas', 
+            'portafolios', 
+            'totalPortafolios', 
+            'totalDocumentos', 
+            'totalAprobados',
+            'redes',
+            'habilidades',
+            'experiencias',
+            'formaciones',
+            'certificaciones'
+        ));
     })->name('menu');
 
     // Panel de Administrador (solo accesible para cuentas admin)
@@ -195,6 +220,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/mis-notificaciones/{id}/leida', [App\Http\Controllers\NotificacionController::class, 'marcarLeida'])
         ->name('notificaciones.leida');
 
+    // Usuario: contactar al administrador
+    Route::post('/contactar-admin', [App\Http\Controllers\NotificacionController::class, 'storeDesdeUsuario'])
+        ->name('notificaciones.contactar');
+
     // Admin: enviar notificación
     Route::post('/admin/notificaciones', [App\Http\Controllers\NotificacionController::class, 'store'])
         ->name('notificaciones.store');
@@ -213,6 +242,9 @@ Route::middleware('auth')->group(function () {
     
     // Admin: Limpiar actividades recientes
     Route::delete('/admin/actividad/limpiar', [AdminController::class, 'limpiarActividad'])->name('admin.actividad.limpiar')->middleware('es_admin');
+    
+    // Admin: Obtener actividades recientes (Real-time)
+    Route::get('/admin/actividad-reciente', [AdminController::class, 'getActividadReciente'])->name('admin.actividad.reciente')->middleware('es_admin');
 });
 // lenguaje 
 Route::get('/lang/{lang}', [LanguageController::class, 'switch'])

@@ -17,26 +17,27 @@
     <div class="body-row">
 
         {{-- ══ SIDEBAR ══ --}}
-        <aside>
+        <aside id="main-sidebar">
             <div class="sb-top">
                 <div class="sb-label">{{ __('app.menu.menu_principal') }}</div>
+                
+                <button class="sb-close-btn" onclick="toggleSidebar()">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
 
-                <button id="btn-menu" class="sb-item active" onclick="showView('menu')">
+                <button id="btn-menu" class="sb-item active" onclick="showView('menu'); if(window.innerWidth <= 992) toggleSidebar();">
                     <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
                     <span>{{ __('app.menu.mis_portafolios') }}</span>
                 </button>
 
-                <a href="{{ route('academico') }}" class="sb-item {{ request()->routeIs('academico') ? 'active' : '' }}">
-                    <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                    <span>{{ __('app.menu.academico') }}</span>
-                </a>
 
-                <button id="btn-reportes" class="sb-item" onclick="showView('reportes')">
+
+                <button id="btn-reportes" class="sb-item" onclick="showView('reportes'); if(window.innerWidth <= 992) toggleSidebar();">
                     <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                     <span>{{ __('app.menu.reportes') }}</span>
                 </button>
 
-                <button id="btn-perfil" class="sb-item" onclick="showView('perfil')">
+                <button id="btn-perfil" class="sb-item" onclick="showView('perfil'); if(window.innerWidth <= 992) toggleSidebar();">
                     <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     <span>{{ __('app.menu.mi_perfil') }}</span>
                 </button>
@@ -91,8 +92,10 @@
                  Calendario → _calendario_menu (HTML + JS + modal)
                  Notificaciones dinámicas → _notificaciones_menu (solo JS)
             ══ --}}
-            <div class="rpanel">
-
+            <div id="right-panel" class="rpanel">
+                <button class="rp-close-btn" onclick="toggleRpanel()">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
                 @include('_calendario_menu')
 
                 {{-- Notificaciones estáticas del sistema --}}
@@ -118,7 +121,7 @@
                         {{ __('app.menu.enlaces') }}
                     </div>
                     <a href="#" class="enlace"><div class="en-ico yellow"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><div class="en-lbl">{{ __('app.menu.repositorio') }}</div></a>
-                    <a href="#" class="enlace"><div class="en-ico gray"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 1 1 5.82 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="en-lbl">{{ __('app.menu.ayuda') }}</div></a>
+                    @include('_contactar_admin')
                     <a href="#" class="enlace"><div class="en-ico blue"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div><div class="en-lbl">{{ __('app.menu.portal_umss') }}</div></a>
                     <a href="#" class="enlace"><div class="en-ico blue"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="en-lbl">{{ __('app.menu.aula_virtual') }}</div></a>
                 </div>
@@ -154,16 +157,39 @@
     /* ── Navegación entre vistas ── */
     function showView(name) {
         if (name === 'reportes') {
+            const targetView = document.getElementById('view-reportes');
+            if (targetView && targetView.classList.contains('active')) {
+                return;
+            }
+
             const activeTpl = document.querySelector('.cv-template-view.active-tpl');
             const activeId = activeTpl ? activeTpl.id : 'cv-template-1';
+            
+            const pfSel = document.getElementById('pf-reporte-select');
+            const activePfId = pfSel ? pfSel.value : null;
+
             fetch('{{ route("reportes") }}')
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById('view-reportes').innerHTML = html;
-                    if (typeof selectTemplate === 'function') {
-                        selectTemplate(activeId);
-                        const select = document.getElementById('cv-template-select');
-                        if (select) select.value = activeId;
+                    if (typeof switchRepTab === 'function') {
+                        const isPf = ['cv-template-7', 'cv-template-8', 'cv-template-9', 'cv-template-10'].includes(activeId);
+                        switchRepTab(isPf ? 'portafolio' : 'cv', activeId);
+
+                        const newPfSel = document.getElementById('pf-reporte-select');
+                        if (newPfSel && activePfId) {
+                            newPfSel.value = activePfId;
+                            if (typeof aplicarPortafolioReporte === 'function') {
+                                aplicarPortafolioReporte(activePfId);
+                            }
+                        } else if (newPfSel && newPfSel.options.length > 0) {
+                            if (typeof aplicarPortafolioReporte === 'function') {
+                                aplicarPortafolioReporte(newPfSel.value);
+                            }
+                        }
+                    }
+                    if (typeof initializeCustomSelects === 'function') {
+                        initializeCustomSelects();
                     }
                 });
         }
@@ -231,31 +257,47 @@
     }
 
     /* ── Pestañas Reportes ── */
-    function switchRepTab(tab) {
+    function switchRepTab(tab, targetTemplateId) {
         document.querySelectorAll('.rep-tab').forEach(b => b.classList.remove('active'));
         if (tab === 'cv') {
             document.querySelector('.rep-tab[onclick*="cv"]').classList.add('active');
             document.getElementById('selector-cv').style.display = 'flex';
             document.getElementById('selector-portafolio').style.display = 'none';
+            const colorPanel = document.getElementById('portafolio-color-panel');
+            if (colorPanel) colorPanel.style.display = 'none';
             const select = document.querySelector('#selector-cv select');
-            if(select) selectTemplate(select.value);
+            if (select) {
+                const tplId = targetTemplateId || select.value;
+                select.value = tplId;
+                selectTemplate(tplId);
+            }
         } else {
             document.querySelector('.rep-tab[onclick*="portafolio"]').classList.add('active');
             document.getElementById('selector-cv').style.display = 'none';
             document.getElementById('selector-portafolio').style.display = 'flex';
             const select = document.querySelector('#selector-portafolio select');
-            if(select) selectTemplate(select.value);
+            if (select) {
+                const tplId = targetTemplateId || select.value;
+                select.value = tplId;
+                selectTemplate(tplId);
+                if (typeof updatePortafolioColorPicker === 'function') {
+                    updatePortafolioColorPicker(tplId);
+                }
+            }
+        }
+        if (typeof initializeCustomSelects === 'function') {
+            initializeCustomSelects();
         }
     }
 
 
-    /* ── Menú de usuario (navbar) ── */
     function toggleNavMenu() {
         const menu = document.getElementById('navUserMenu');
         menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
     }
     function cerrarNavMenu() {
-        document.getElementById('navUserMenu').style.display = 'none';
+        const menu = document.getElementById('navUserMenu');
+        if(menu) menu.style.display = 'none';
     }
     document.addEventListener('click', function(e) {
         const menu = document.getElementById('navUserMenu');
@@ -264,6 +306,14 @@
             cerrarNavMenu();
         }
     });
+
+    /* ── Toggles Responsive ── */
+    function toggleSidebar() {
+        document.getElementById('main-sidebar').classList.toggle('show');
+    }
+    function toggleRpanel() {
+        document.getElementById('right-panel').classList.toggle('show');
+    }
 </script>
 
 {{-- ══ TRADUCCIONES PARA JS ══ --}}

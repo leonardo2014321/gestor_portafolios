@@ -58,7 +58,9 @@ class LoginController extends Controller
             'last_seen_at' => now(),
         ]);
 
-        ActividadService::log($usuario->id, 'login', ['email' => $usuario->email]);
+        if ($usuario->es_admin) {
+            ActividadService::log($usuario->id, 'login', ['email' => $usuario->email]);
+        }
 
         if ($usuario->es_admin) {
             return redirect('/admin');
@@ -99,7 +101,10 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         if ($usuarioId) {
-            ActividadService::log($usuarioId, 'logout');
+            $usuario = \App\Models\Usuario::find($usuarioId);
+            if ($usuario && $usuario->es_admin) {
+                ActividadService::log($usuarioId, 'logout');
+            }
         }
 
         return redirect('/home');

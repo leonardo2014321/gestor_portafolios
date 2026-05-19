@@ -39,6 +39,9 @@ class AdminController extends Controller
         $todos_usuarios = Usuario::orderBy('created_at', 'desc')->get();
         $todos_portafolios = Portafolio::with('usuario')->orderBy('created_at', 'desc')->get();
 
+        // Limpieza automática: Eliminar actividades con más de 24 horas
+        Actividad::where('created_at', '<', now()->subHours(24))->delete();
+
         // Actividad Reciente (Últimas 10 acciones)
         $actividades_recientes = Actividad::with('usuario')
             ->orderBy('created_at', 'desc')
@@ -129,7 +132,27 @@ class AdminController extends Controller
     }
 
     /**
-     * Limpia todos los registros de la tabla de actividades recientes.
+     * Obtiene el listado de actividades recientes en tiempo real.
+     */
+    public function getActividadReciente()
+    {
+        // Limpieza automática en cada petición AJAX
+        Actividad::where('created_at', '<', now()->subHours(24))->delete();
+
+        $actividades_recientes = Actividad::with('usuario')
+            ->where('accion', 'login')
+            ->whereHas('usuario', function($query) {
+                $query->where('es_admin', true);
+            })
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        return view('_admin_actividad_lista', compact('actividades_recientes'))->render();
+    }
+
+    /**
+     * Limpia los registros de inicio de sesión de la tabla de actividades recientes.
      */
     public function limpiarActividad(Request $request)
     {
@@ -138,8 +161,8 @@ class AdminController extends Controller
             abort(403, 'No autorizado.');
         }
 
-        Actividad::truncate();
+        Actividad::where('accion', 'login')->delete();
 
-        return redirect()->back()->with('success', 'Historial de actividades limpiado correctamente.');
+        return redirect()->back()->with('success', 'Historial de inicios de sesión limpiado correctamente.');
     }
 }

@@ -4,22 +4,22 @@
      Espera: $usuarios (Collection mapeada desde ExploradorController)
      Filtros: todos | con_certificacion | con_portafolio | con_experiencia | categoria
      ============================================================ --}}
-
+ 
 {{-- ══ Hero ══ --}}
 @php
     $totalPerfiles   = count($usuarios);
     $conPortafolio   = collect($usuarios)->where('tiene_portafolio', true)->count();
-    $areas           = collect($usuarios)->pluck('categoria')->unique()->filter()->count();
+    $areas           = \App\Models\Categoria::where('activa', true)->count();
 @endphp
 <div class="exp-hero">
     <div class="exp-hero-bg"></div>
     <div class="exp-hero-inner">
-
+ 
         {{-- Izquierda: título + buscador --}}
         <div class="exp-hero-left">
             <div class="exp-hero-title">{{ __('app.explorador.hero_titulo') }}</div>
             <div class="exp-hero-sub">{{ __('app.explorador.hero_subtitulo') }}</div>
-
+ 
             <div class="exp-search-wrap">
                 <svg class="exp-search-icon" width="14" height="14" viewBox="0 0 24 24"
                      fill="none" stroke="currentColor" stroke-width="2.2"
@@ -28,43 +28,57 @@
                 </svg>
                 <input id="expSearch" type="text"
                        class="exp-search-input"
-                       placeholder="Buscar por nombre, habilidad, cargo..."
+                       placeholder="{{ __('app.explorador.buscador_placeholder') }}"
                        oninput="expApply()" />
                 @if($totalPerfiles > 0)
-                    <span class="exp-search-badge">{{ $totalPerfiles }} talentos</span>
+                    <span class="exp-search-badge">{{ $totalPerfiles }} {{ __('app.explorador.badge_talentos') }}</span>
                 @endif
             </div>
         </div>
-
+ 
         {{-- Derecha: stats --}}
         @if($totalPerfiles > 0)
         <div class="exp-hero-stats">
             <div class="exp-stat-pill">
                 <div class="exp-stat-num">{{ $totalPerfiles }}</div>
-                <div class="exp-stat-lbl">Perfiles</div>
+                <div class="exp-stat-lbl">{{ __('app.explorador.stat_perfiles') }}</div>
             </div>
             <div class="exp-stat-pill">
                 <div class="exp-stat-num">{{ $conPortafolio }}</div>
-                <div class="exp-stat-lbl">Con portafolio</div>
+                <div class="exp-stat-lbl">{{ __('app.explorador.stat_con_portafolio') }}</div>
             </div>
             <div class="exp-stat-pill">
                 <div class="exp-stat-num">{{ $areas }}</div>
-                <div class="exp-stat-lbl">Áreas</div>
+                <div class="exp-stat-lbl">{{ __('app.explorador.stat_areas') }}</div>
             </div>
         </div>
         @endif
-
+ 
     </div>
 </div>
-
+ 
 {{-- ══ Filtros: Fila 1 = Área, Fila 2 = Mostrar ══ --}}
+@php
+    use App\Models\Categoria;
+    $expCategorias = Categoria::where('activa', true)->orderBy('orden')->get();
+ 
+    $expCatIcons = [
+        'tecnologia' => ['svg' => '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',      'color' => 'exp-filter-icon--indigo'],
+        'diseno'     => ['svg' => '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>',        'color' => 'exp-filter-icon--pink'],
+        'negocios'   => ['svg' => '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>', 'color' => 'exp-filter-icon--blue'],
+        'salud'      => ['svg' => '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',  'color' => 'exp-filter-icon--green'],
+        'educacion'  => ['svg' => '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',    'color' => 'exp-filter-icon--amber'],
+        'arte'       => ['svg' => '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',  'color' => 'exp-filter-icon--purple'],
+    ];
+    $expDefaultIcon = '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>';
+@endphp
 <div class="exp-filters-wrap">
-
-    {{-- Fila 1: Área / categoría --}}
+ 
+    {{-- Fila 1: Área / categoría (dinámica desde BD) --}}
     <div class="exp-filters-row">
-        <span class="exp-filters-label">Área</span>
-        <div class="exp-filters exp-filters--category" role="group" aria-label="Filtrar por área">
-
+        <span class="exp-filters-label">{{ __('app.explorador.filtro_area') }}</span>
+        <div class="exp-filters exp-filters--category" role="group" aria-label="{{ __('app.explorador.aria_filtrar_area') }}">
+ 
             <button class="exp-filter-btn exp-filter-cat-active" data-cat-filter="todas">
                 <span class="exp-filter-icon">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -72,155 +86,126 @@
                         <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
                     </svg>
                 </span>
-                Todos
+                {{ __('app.explorador.filtro_todos') }}
             </button>
-
-            <button class="exp-filter-btn" data-cat-filter="tecnologia">
-                <span class="exp-filter-icon exp-filter-icon--indigo">
+ 
+            @foreach($expCategorias as $expCat)
+            @php
+                $expIcon  = $expCatIcons[$expCat->slug] ?? ['svg' => $expDefaultIcon, 'color' => ''];
+            @endphp
+            <button class="exp-filter-btn" data-cat-filter="{{ $expCat->slug }}">
+                <span class="exp-filter-icon {{ $expIcon['color'] }}">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                        {!! $expIcon['svg'] !!}
                     </svg>
                 </span>
-                Tecnología
+               {{ $expCat->nombre_traducido }}
             </button>
-
-            <button class="exp-filter-btn" data-cat-filter="creativos">
-                <span class="exp-filter-icon exp-filter-icon--pink">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
-                    </svg>
-                </span>
-                Creativos
-            </button>
-
-            <button class="exp-filter-btn" data-cat-filter="negocios">
-                <span class="exp-filter-icon exp-filter-icon--blue">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-                    </svg>
-                </span>
-                Negocios
-            </button>
-
-            <button class="exp-filter-btn" data-cat-filter="salud">
-                <span class="exp-filter-icon exp-filter-icon--green">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                    </svg>
-                </span>
-                Salud
-            </button>
-
-            <button class="exp-filter-btn" data-cat-filter="educacion">
-                <span class="exp-filter-icon exp-filter-icon--amber">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                    </svg>
-                </span>
-                Educación
-            </button>
-
+            @endforeach
+ 
         </div>
     </div>
-
+ 
     <div class="exp-filters-divider"></div>
-
+ 
     {{-- Fila 2: Mostrar / capacidad --}}
     <div class="exp-filters-row">
-        <span class="exp-filters-label">Mostrar</span>
-        <div class="exp-filters exp-filters--capacity" role="group" aria-label="Filtrar por capacidad">
-
+        <span class="exp-filters-label">{{ __('app.explorador.filtro_mostrar') }}</span>
+        <div class="exp-filters exp-filters--capacity" role="group" aria-label="{{ __('app.explorador.aria_filtrar_capacidad') }}">
+ 
             <button class="exp-filter-btn exp-filter-active" data-cap="todos">
                 <span class="exp-filter-icon">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"/>
                     </svg>
                 </span>
-                Todos
+                {{ __('app.explorador.filtro_todos') }}
             </button>
-
+ 
             <button class="exp-filter-btn" data-cap="con_certificacion">
                 <span class="exp-filter-icon exp-filter-icon--amber">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
                     </svg>
                 </span>
-                Con certificaciones
+                {{ __('app.explorador.filtro_con_certificaciones') }}
             </button>
-
+ 
             <button class="exp-filter-btn" data-cap="con_portafolio">
                 <span class="exp-filter-icon exp-filter-icon--blue">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
                     </svg>
                 </span>
-                Con portafolio
+                {{ __('app.explorador.filtro_con_portafolio') }}
             </button>
-
+ 
             <button class="exp-filter-btn" data-cap="con_experiencia">
                 <span class="exp-filter-icon exp-filter-icon--green">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
                     </svg>
                 </span>
-                Con experiencia
+                {{ __('app.explorador.filtro_con_experiencia') }}
             </button>
-
+ 
         </div>
     </div>
-
+ 
 </div>{{-- /exp-filters-wrap --}}
-
+ 
 {{-- ══ Barra de resultados ══ --}}
 <div class="exp-results-bar">
     <span class="exp-count">
         <span id="expCountNum">{{ count($usuarios) }}</span>
-        {{ count($usuarios) === 1 ? 'perfil encontrado' : 'perfiles encontrados' }}
+        {{ count($usuarios) === 1 ? __('app.explorador.perfil_encontrado') : __('app.explorador.perfiles_encontrados') }}
     </span>
-
+ 
     <div id="sortContainer" style="position:relative;display:inline-block;margin-left:auto;">
         <button class="exp-sort-btn"
                 onclick="document.getElementById('sortMenu').style.display = document.getElementById('sortMenu').style.display==='block'?'none':'block'">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="9" y1="18" x2="15" y2="18"/>
             </svg>
-            <span id="sortLabel">Relevancia</span>
+            <span id="sortLabel">{{ __('app.explorador.sort_relevancia') }}</span>
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div id="sortMenu" class="exp-sort-menu" style="display:none;">
-            <div class="exp-sort-item" onclick="expSetSort('relevancia','Relevancia')">Relevancia</div>
+            <div class="exp-sort-item" onclick="expSetSort('relevancia','{{ __('app.explorador.sort_relevancia') }}')">{{ __('app.explorador.sort_relevancia') }}</div>
             <div class="exp-sort-item" onclick="expSetSort('az','A → Z')">A → Z</div>
             <div class="exp-sort-item" onclick="expSetSort('za','Z → A')">Z → A</div>
-            <div class="exp-sort-item" onclick="expSetSort('certificaciones','Más certificaciones')">Más certificaciones</div>
-            <div class="exp-sort-item" onclick="expSetSort('habilidades','Más habilidades')">Más habilidades</div>
+            <div class="exp-sort-item" onclick="expSetSort('certificaciones','{{ __('app.explorador.sort_mas_certificaciones') }}')">{{ __('app.explorador.sort_mas_certificaciones') }}</div>
+            <div class="exp-sort-item" onclick="expSetSort('habilidades','{{ __('app.explorador.sort_mas_habilidades') }}')">{{ __('app.explorador.sort_mas_habilidades') }}</div>
         </div>
     </div>
 </div>
-
+ 
 {{-- ══ Grid de tarjetas ══ --}}
 <div class="exp-grid" id="expGrid">
-
+ 
     @forelse($usuarios as $u)
         @php
             $avatarColors = [
                 'tecnologia' => 'av-indigo',
-                'creativos'  => 'av-pink',
+                'diseno'     => 'av-pink',
                 'negocios'   => 'av-blue',
                 'salud'      => 'av-green',
                 'educacion'  => 'av-amber',
+                'arte'       => 'av-purple',
                 'otros'      => 'av-teal',
             ];
             $accentColors = [
                 'tecnologia' => '#6366f1',
-                'creativos'  => '#ec4899',
+                'diseno'     => '#ec4899',
                 'negocios'   => '#3b82f6',
                 'salud'      => '#22c55e',
                 'educacion'  => '#f59e0b',
+                'arte'       => '#7c3aed',
                 'otros'      => '#14b8a6',
             ];
             $avClass = $avatarColors[$u['categoria']] ?? 'av-teal';
             $accent  = $accentColors[$u['categoria']] ?? '#14b8a6';
-
+ 
             $redIcons = [
                 'github'    => '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>',
                 'linkedin'  => '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>',
@@ -228,17 +213,16 @@
                 'instagram' => '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>',
                 'web'       => '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
             ];
-
+ 
             // Atributos de filtro para JS
-            // data-cat usado por JS para filtro de área
             $filterAttrs = implode(' ', array_filter([
                 'data-cat="' . $u['categoria'] . '"',
                 $u['certificaciones'] > 0 ? 'data-cert="1"' : '',
                 $u['tiene_portafolio']   ? 'data-porta="1"' : '',
                 $u['experiencia']        ? 'data-exp="1"' : '',
             ]));
-
-            // Texto buscable (incluye habilidades para que el filtro funcione)
+ 
+            // Texto buscable
             $searchText = strtolower(implode(' ', array_filter([
                 $u['nombre'],
                 $u['apellido'] ?? '',
@@ -249,25 +233,26 @@
                 implode(' ', $u['tags']),
             ])));
         @endphp
-
+ 
         <div class="exp-card"
              {!! $filterAttrs !!}
+             data-user-id="{{ $u['id'] }}"
              data-habilidades="{{ $u['total_habilidades'] }}"
              data-certificaciones="{{ $u['certificaciones'] }}"
              data-nombre="{{ strtolower($u['nombre']) }}"
              data-search="{{ $searchText }}">
-
+ 
             {{-- Acento lateral --}}
             <div class="exp-card-accent" style="background:{{ $accent }};"></div>
-
+ 
             {{-- Top: avatar + nombre/profesión --}}
             <div class="exp-card-top">
                 @if($u['foto_url'])
                     <img src="{{ $u['foto_url'] }}" class="exp-av exp-av-foto" alt="{{ $u['nombre'] }}">
                 @else
-                    <div class="exp-av {{ $avClass }}">{{ $u['inicial'] }}</div>
+                    <div class="exp-av {{ $avClass }}" data-iniciales="{{ $u['inicial'] }}">{{ $u['inicial'] }}</div>
                 @endif
-
+ 
                 <div class="exp-card-info">
                     <div class="exp-card-nombre">{{ $u['nombre'] }}</div>
                     @if($u['profesion'])
@@ -278,7 +263,7 @@
                     @endif
                 </div>
             </div>
-
+ 
             {{-- Experiencia actual destacada --}}
             @if($u['experiencia'])
                 <div class="exp-card-exp-actual">
@@ -288,7 +273,7 @@
                     <span>{{ $u['experiencia'] }}</span>
                 </div>
             @endif
-
+ 
             {{-- Tags de habilidades --}}
             @if(count($u['tags']) > 0)
                 <div class="exp-card-tags">
@@ -300,7 +285,7 @@
                     @endif
                 </div>
             @endif
-
+ 
             {{-- Formación --}}
             @if($u['formacion'])
                 <div class="exp-meta-row">
@@ -310,32 +295,32 @@
                     <span>{{ $u['formacion'] }}</span>
                 </div>
             @endif
-
+ 
             {{-- Footer: certificaciones + portafolio + redes + ver perfil --}}
             <div class="exp-card-footer">
-
+ 
                 {{-- Badges de capacidades --}}
                 <div class="exp-card-badges">
                     @if($u['certificaciones'] > 0)
-                        <span class="exp-badge-cert" title="{{ $u['certificaciones'] }} certificación(es)">
+                        <span class="exp-badge-cert" title="{{ $u['certificaciones'] }} {{ __('app.explorador.certificaciones_title') }}">
                             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
                             </svg>
-                            {{ $u['certificaciones'] }} cert.
+                            {{ $u['certificaciones'] }} {{ __('app.explorador.cert_abrev') }}
                         </span>
                     @endif
-
+ 
                     @if($u['tiene_portafolio'])
                         <a href="{{ route('portafolio.publico', $u['portafolio_id']) }}"
                            target="_blank" rel="noopener" class="exp-badge-porta">
                             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
                             </svg>
-                            Portafolio
+                            {{ __('app.explorador.badge_portafolio') }}
                         </a>
                     @endif
                 </div>
-
+ 
                 {{-- Redes sociales --}}
                 <div class="exp-card-redes">
                     @foreach(array_slice($u['redes'], 0, 3) as $red)
@@ -346,27 +331,27 @@
                         </a>
                     @endforeach
                 </div>
-
-                {{-- Ver perfil — abre en nueva pestaña igual que portafolios --}}
+ 
+                {{-- Ver perfil --}}
                 <a href="{{ route('perfil.publico', $u['id']) }}"
                    target="_blank" rel="noopener"
                    class="exp-btn-perfil">
-                    Ver perfil
+                    {{ __('app.explorador.ver_perfil') }}
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
                     </svg>
                 </a>
-
+ 
             </div>
-
+ 
             {{-- Gráfica decorativa --}}
             <svg class="exp-trend-bg" width="80" height="40" viewBox="0 0 80 40" fill="none"
                  stroke="{{ $accent }}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="2,32 18,20 30,26 48,10 68,18"/>
             </svg>
-
+ 
         </div>
-
+ 
     @empty
         <div class="exp-empty">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -374,19 +359,25 @@
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
             </svg>
-            <p><strong>No hay perfiles disponibles</strong>Todavía no hay usuarios con perfiles publicados.</p>
+            <p>
+                <strong>{{ __('app.explorador.empty_titulo') }}</strong>
+                {{ __('app.explorador.empty_descripcion') }}
+            </p>
         </div>
     @endforelse
-
+ 
     {{-- Empty state de filtros (oculto por defecto, JS lo muestra) --}}
     <div class="exp-empty exp-empty-filter" id="expEmptyFilter" style="display:none;">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
-        <p><strong>Sin resultados</strong>Prueba con otro filtro o término de búsqueda.</p>
+        <p>
+            <strong>{{ __('app.explorador.empty_filtro_titulo') }}</strong>
+            {{ __('app.explorador.empty_filtro_descripcion') }}
+        </p>
     </div>
-
+ 
 </div>
 
 <style>
@@ -523,6 +514,7 @@
 .exp-filter-icon--blue   { background: #eff6ff; color: #2563eb; }
 .exp-filter-icon--green  { background: #f0fdf4; color: #16a34a; }
 .exp-filter-icon--amber  { background: #fffbeb; color: #d97706; }
+.exp-filter-icon--purple { background: #f5f3ff; color: #7c3aed; }
 
 /* ══ Barra resultados ══ */
 .exp-results-bar {
@@ -595,6 +587,7 @@
 .av-pink   { background: linear-gradient(135deg,#db2777,#ec4899); }
 .av-indigo { background: linear-gradient(135deg,#4f46e5,#6366f1); }
 .av-amber  { background: linear-gradient(135deg,#d97706,#f59e0b); }
+.av-purple { background: linear-gradient(135deg,#6d28d9,#7c3aed); }
 
 /* Top */
 .exp-card-top { display: flex; align-items: center; gap: 11px; }
@@ -709,6 +702,100 @@
 .exp-empty svg { opacity: .35; }
 .exp-empty p { font-family: 'DM Sans', sans-serif; font-size: 13px; margin: 0; }
 .exp-empty strong { font-size: 15px; color: #475569; display: block; margin-bottom: 4px; }
+
+/* ══ RESPONSIVE ══ */
+
+/* ── Tablet (≤ 768px) ── */
+@media (max-width: 768px) {
+
+    /* Hero: stats debajo del buscador */
+    .exp-hero { padding: 1.1rem 1.2rem; }
+    .exp-hero-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .exp-hero-title { font-size: 16px; }
+    .exp-hero-sub   { font-size: 11.5px; margin-bottom: 10px; }
+    .exp-hero-stats { width: 100%; justify-content: flex-start; }
+    .exp-stat-pill  { flex: 1; min-width: 0; padding: 7px 10px; }
+    .exp-stat-num   { font-size: 17px; }
+    .exp-search-wrap { max-width: 100%; }
+
+    /* Filtros: label encima, botones scroll horizontal */
+    .exp-filters-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        padding: 10px 12px;
+    }
+    .exp-filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 2px;
+    }
+    .exp-filters::-webkit-scrollbar { display: none; }
+    .exp-filter-btn { flex-shrink: 0; padding: 6px 12px; font-size: 12px; }
+
+    /* Barra resultados */
+    .exp-results-bar { flex-wrap: wrap; gap: 8px; }
+
+    /* Grid: 2 columnas en tablet */
+    .exp-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+    /* Tarjeta: footer en dos líneas si hace falta */
+    .exp-card-footer { flex-wrap: wrap; gap: 6px; }
+    .exp-btn-perfil { margin-left: auto; }
+}
+
+/* ── Móvil (≤ 480px) ── */
+@media (max-width: 480px) {
+
+    /* Hero */
+    .exp-hero { padding: 1rem; border-radius: 12px; margin-bottom: .75rem; }
+    .exp-hero-title { font-size: 15px; }
+    .exp-hero-sub   { font-size: 11px; }
+    .exp-hero-stats { gap: 6px; }
+    .exp-stat-num   { font-size: 15px; }
+    .exp-stat-lbl   { font-size: 9.5px; }
+    .exp-search-wrap { padding: 7px 11px; border-radius: 11px; }
+    .exp-search-input { font-size: 13px; }
+    .exp-search-badge { display: none; } /* evita overflow en pantallas pequeñas */
+
+    /* Filtros */
+    .exp-filters-wrap { border-radius: 11px; margin-bottom: .75rem; }
+    .exp-filters-row  { padding: 8px 10px; }
+    .exp-filters-label { font-size: 10px; }
+    .exp-filter-btn { padding: 5px 10px; font-size: 11.5px; }
+    .exp-filter-icon { width: 19px; height: 19px; border-radius: 6px; }
+
+    /* Grid: 1 columna en móvil */
+    .exp-grid { grid-template-columns: 1fr; gap: 8px; }
+
+    /* Tarjeta */
+    .exp-card { border-radius: 14px; padding: 1rem 1rem 0.85rem 1.2rem; gap: 8px; }
+    .exp-av   { width: 40px; height: 40px; border-radius: 11px; font-size: 16px; }
+    .exp-card-nombre  { font-size: 13.5px; }
+    .exp-card-profesion { font-size: 11px; }
+    .exp-card-exp-actual { font-size: 11px; padding: 4px 9px; }
+
+    /* Footer: badges + redes en una línea, botón debajo */
+    .exp-card-footer {
+        flex-wrap: wrap;
+        row-gap: 6px;
+    }
+    .exp-card-badges { flex-shrink: 0; }
+    .exp-card-redes  { flex-shrink: 0; }
+    .exp-btn-perfil  {
+        width: 100%;
+        margin-left: 0;
+        justify-content: center;
+        padding: 8px 14px;
+    }
+
+    /* Sort menu */
+    .exp-sort-menu { right: 0; min-width: 160px; }
+
+    /* Empty state */
+    .exp-empty { padding: 2.5rem 1rem; }
+}
 </style>
 
 <script>
