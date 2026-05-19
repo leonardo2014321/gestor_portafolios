@@ -608,4 +608,324 @@
         }
         
         /* Regla inyectada dinámicamente si es necesario */
+        
+        /* ============================================================
+           REPORTES Y HOJAS DE VIDA RESPONSIVE
+           ============================================================ */
+        #view-reportes select {
+            box-sizing: border-box !important;
+            max-width: 100% !important;
+        }
+
+        /* ── Custom Select UI (Premium Dropdowns) ── */
+        .custom-select-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            user-select: none;
+            display: inline-block;
+        }
+        @media (max-width: 768px) {
+            .custom-select-wrapper {
+                max-width: 100% !important;
+            }
+        }
+        .custom-select-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+            background: #fff;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+        .custom-select-trigger:hover {
+            border-color: #3b82f6;
+        }
+        .custom-select-wrapper.open .custom-select-trigger {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+        .custom-select-arrow {
+            transition: transform 0.2s ease;
+            color: #64748b;
+            flex-shrink: 0;
+        }
+        .custom-select-wrapper.open .custom-select-arrow {
+            transform: rotate(180deg);
+            color: #3b82f6;
+        }
+        .custom-select-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 4px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            max-height: 250px;
+            overflow-y: auto;
+            display: none;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: opacity 0.15s ease, transform 0.15s ease;
+        }
+        .custom-select-wrapper.open .custom-select-options {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .custom-option {
+            padding: 10px 14px;
+            font-size: 13.5px;
+            color: #334155;
+            cursor: pointer;
+            transition: background 0.15s ease;
+            text-align: left;
+        }
+        .custom-option:hover {
+            background: #f1f5f9;
+        }
+        .custom-option.selected {
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        /* Smaller size for sub-panels */
+        .custom-select-sm {
+            max-width: 100% !important;
+            flex: 1;
+        }
+        .custom-select-sm .custom-select-trigger {
+            padding: 6px 12px;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+        .custom-select-sm .custom-option {
+            padding: 8px 12px;
+            font-size: 13px;
+        }
+        @media(max-width:992px){
+          html, body {
+              max-width: 100vw !important;
+              overflow-x: hidden !important;
+          }
+          .app {
+              max-width: 100vw !important;
+              overflow-x: hidden !important;
+          }
+          .body-row {
+              max-width: 100vw !important;
+              overflow-x: hidden !important;
+          }
+          .content-wrapper {
+              min-width: 0 !important;
+              width: 100% !important;
+              max-width: 100vw !important;
+              overflow-x: hidden !important;
+          }
+          main {
+              min-width: 0 !important;
+              width: 100% !important;
+              max-width: 100vw !important;
+              overflow-x: hidden !important;
+          }
+          .main-inner {
+              max-width: 100% !important;
+              width: 100% !important;
+              overflow-x: hidden !important;
+              box-sizing: border-box !important;
+          }
+          #view-reportes {
+              max-width: 100% !important;
+              width: 100% !important;
+              overflow-x: hidden !important;
+              box-sizing: border-box !important;
+          }
+          .cv-wrapper {
+              justify-content: flex-start !important;
+              overflow-x: auto !important;
+              padding: 15px !important;
+              -webkit-overflow-scrolling: touch;
+              width: 100% !important;
+          }
+          .cv-container {
+              margin: 0 auto !important;
+              flex-shrink: 0 !important;
+          }
+
+          /* ── Plantilla 7 - Portafolio Hexágonos Responsivo ── */
+          #cv-template-7 {
+              width: 100% !important;
+              min-height: auto !important;
+              height: auto !important;
+              flex-direction: column !important;
+              overflow: visible !important;
+          }
+          #cv-template-7 .cv7-bg {
+              position: static !important;
+              display: flex !important;
+              justify-content: center !important;
+              align-items: center !important;
+              width: 100% !important;
+              height: auto !important;
+              z-index: 1 !important;
+              background: transparent !important;
+          }
+          #cv-template-7 .cv7-content {
+              width: 100% !important;
+              padding: 30px 20px !important;
+          }
+          #cv-template-7 .cv7-hex-big,
+          #cv-template-7 .cv7-hex-small1,
+          #cv-template-7 .cv7-hex-small2 {
+              display: none !important;
+          }
+          #cv-template-7 .cv7-hex-photo-wrap {
+              position: static !important;
+              margin: 30px auto 10px !important;
+              width: 260px !important;
+              height: 260px !important;
+          }
+          #cv-template-7 .cv7-photo {
+              width: 240px !important;
+              height: 240px !important;
+          }
+          #cv-template-7 .cv7-footer {
+              position: static !important;
+              width: 100% !important;
+              padding: 15px 20px !important;
+          }
+
+          /* ── Plantilla 8 - Portafolio Timeline Azul Responsivo ── */
+          #cv-template-8 {
+              width: 100% !important;
+              min-height: auto !important;
+              height: auto !important;
+              flex-direction: column !important;
+          }
+          #cv-template-8 .cv8-left {
+              width: 100% !important;
+              padding: 40px 20px !important;
+              clip-path: none !important;
+          }
+          #cv-template-8 .cv8-right {
+              width: 100% !important;
+              padding: 30px 20px !important;
+          }
+          #cv-template-8 .cv8-header {
+              justify-content: center !important;
+              margin-bottom: 20px !important;
+          }
+          #cv-template-8 .cv8-timeline-container {
+              flex-direction: column !important;
+              gap: 25px !important;
+          }
+
+          /* ── Plantilla 9 - Portafolio Elegante Responsivo ── */
+          #cv-template-9 {
+              width: 100% !important;
+              min-height: auto !important;
+              height: auto !important;
+          }
+          #cv-template-9 .cv9-top {
+              height: auto !important;
+              padding: 30px 20px !important;
+              flex-direction: column-reverse !important;
+              justify-content: center !important;
+              align-items: center !important;
+          }
+          #cv-template-9 .cv9-top-text {
+              text-align: center !important;
+              font-size: 20px !important;
+          }
+          #cv-template-9 .cv9-photo-wrapper {
+              position: static !important;
+              margin: 0 auto 20px !important;
+              width: 200px !important;
+              height: 200px !important;
+          }
+          #cv-template-9 .cv9-bottom {
+              height: auto !important;
+              flex-direction: column !important;
+          }
+          #cv-template-9 .cv9-bottom-left {
+              width: 100% !important;
+              padding: 30px 20px !important;
+          }
+          #cv-template-9 .cv9-bottom-right {
+              width: 100% !important;
+              padding: 30px 20px !important;
+          }
+
+          /* ── Plantilla 10 - Portafolio Columnas Minimalista Responsivo ── */
+          #cv-template-10 {
+              width: 100% !important;
+              min-height: auto !important;
+              height: auto !important;
+              flex-direction: column !important;
+          }
+          #cv-template-10 .cv10-col-left,
+          #cv-template-10 .cv10-col-mid,
+          #cv-template-10 .cv10-col-right {
+              width: 100% !important;
+              padding: 30px 20px !important;
+          }
+        }
+        @media(max-width:768px){
+          .template-selector {
+              flex-direction: column !important;
+              align-items: stretch !important;
+              gap: 8px !important;
+              padding: 12px 15px !important;
+          }
+          .template-selector label {
+              margin-bottom: 2px !important;
+              font-size: 13px !important;
+          }
+          .template-selector select {
+              max-width: 100% !important;
+              width: 100% !important;
+              box-sizing: border-box !important;
+          }
+          #portafolio-color-panel {
+              padding: 12px 15px !important;
+              gap: 10px !important;
+          }
+          #portafolio-color-panel > div {
+              flex-wrap: wrap !important;
+              gap: 8px !important;
+          }
+          .pf-select-row {
+              flex-direction: column !important;
+              align-items: stretch !important;
+              gap: 6px !important;
+          }
+          .pf-select-row select {
+              width: 100% !important;
+              max-width: 100% !important;
+              box-sizing: border-box !important;
+          }
+        }
+        @media(max-width:480px){
+          .reportes-tabs {
+              gap: 5px !important;
+          }
+          .rep-tab {
+              flex: 1;
+              text-align: center;
+              padding: 10px 5px !important;
+              font-size: 13px !important;
+          }
+        }
     </style>

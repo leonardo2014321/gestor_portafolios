@@ -188,6 +188,9 @@
                             }
                         }
                     }
+                    if (typeof initializeCustomSelects === 'function') {
+                        initializeCustomSelects();
+                    }
                 });
         }
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -281,6 +284,9 @@
                     updatePortafolioColorPicker(tplId);
                 }
             }
+        }
+        if (typeof initializeCustomSelects === 'function') {
+            initializeCustomSelects();
         }
     }
 

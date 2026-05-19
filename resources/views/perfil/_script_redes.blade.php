@@ -11,11 +11,16 @@ const REDES = ['linkedin','github','twitter','facebook','instagram','tiktok'];
 // Flag para evitar recargar innecesariamente
 let redesCargadas = false;
 
+const localCSRF = () => {
+    if (typeof CSRF === 'function') return CSRF();
+    return document.querySelector('meta[name="csrf-token"]')?.content || '';
+};
+
 // ─── Carga inicial de redes ──────────────────
 function cargarRedes() {
     if (redesCargadas) return;
     fetch('/perfil/redes', {
-        headers: { 'X-CSRF-TOKEN': CSRF(), 'Accept': 'application/json' }
+        headers: { 'X-CSRF-TOKEN': localCSRF(), 'Accept': 'application/json' }
     })
     .then(r => { if (!r.ok) throw new Error(); return r.json(); })
     .then(data => {
@@ -30,7 +35,11 @@ function cargarRedes() {
             if (visEl) visEl.checked = !!red.visible;
         });
     })
-    .catch(() => mostrarAlertaTray && mostrarAlertaTray());
+    .catch(() => {
+        if (typeof mostrarAlertaTray === 'function') {
+            mostrarAlertaTray();
+        }
+    });
 }
 
 function guardarRedes() {
@@ -52,7 +61,7 @@ function guardarRedes() {
     fetch('/perfil/redes', {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': CSRF(),
+            'X-CSRF-TOKEN': localCSRF(),
             'Content-Type': 'application/json',
             'Accept':       'application/json',
         },

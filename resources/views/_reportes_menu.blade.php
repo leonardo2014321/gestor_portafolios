@@ -107,7 +107,7 @@
 
     {{-- Selector de portafolio real --}}
     @if($r_portafolios->count() > 0)
-    <div style="display:flex;align-items:center;gap:10px;width:100%;padding-bottom:10px;
+    <div class="pf-select-row" style="display:flex;align-items:center;gap:10px;width:100%;padding-bottom:10px;
                 border-bottom:1px dashed #bcd0e5;margin-bottom:4px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
         <label style="font-size:13px;font-weight:600;color:#334155;">Portafolio a mostrar:</label>
@@ -263,13 +263,100 @@ function updatePortafolioColorPicker(tplId) {
         panel.style.display = 'none';
     }
 }
+function initializeCustomSelects() {
+    const selects = document.querySelectorAll('#cv-template-select, #portafolio-select, #pf-reporte-select');
+    selects.forEach(select => {
+        // If already has a custom wrapper next to it
+        if (select.nextElementSibling && select.nextElementSibling.classList.contains('custom-select-wrapper')) {
+            const wrapper = select.nextElementSibling;
+            const triggerText = wrapper.querySelector('.custom-select-val');
+            const selectedOpt = select.options[select.selectedIndex];
+            if (triggerText && selectedOpt) {
+                triggerText.textContent = selectedOpt.textContent.trim();
+            }
+            wrapper.querySelectorAll('.custom-option').forEach(opt => {
+                opt.classList.toggle('selected', opt.dataset.value === select.value);
+            });
+            return;
+        }
+
+        // Hide the original select
+        select.style.display = 'none';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'custom-select-wrapper';
+        if (select.id === 'pf-reporte-select') {
+            wrapper.classList.add('custom-select-sm');
+        }
+
+        const trigger = document.createElement('div');
+        trigger.className = 'custom-select-trigger';
+        
+        const selectedOpt = select.options[select.selectedIndex];
+        const valSpan = document.createElement('span');
+        valSpan.className = 'custom-select-val';
+        valSpan.textContent = selectedOpt ? selectedOpt.textContent.trim() : '';
+        
+        trigger.innerHTML = `
+            <span class="custom-select-val">${valSpan.textContent}</span>
+            <svg class="custom-select-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        `;
+        
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'custom-select-options';
+        
+        Array.from(select.options).forEach(opt => {
+            const customOpt = document.createElement('div');
+            customOpt.className = 'custom-option';
+            if (opt.value === select.value) {
+                customOpt.classList.add('selected');
+            }
+            customOpt.dataset.value = opt.value;
+            customOpt.textContent = opt.textContent.trim();
+            
+            customOpt.addEventListener('click', (e) => {
+                e.stopPropagation();
+                select.value = opt.value;
+                select.dispatchEvent(new Event('change'));
+                
+                trigger.querySelector('.custom-select-val').textContent = opt.textContent.trim();
+                optionsContainer.querySelectorAll('.custom-option').forEach(o => o.classList.remove('selected'));
+                customOpt.classList.add('selected');
+                wrapper.classList.remove('open');
+            });
+            
+            optionsContainer.appendChild(customOpt);
+        });
+        
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.querySelectorAll('.custom-select-wrapper').forEach(w => {
+                if (w !== wrapper) w.classList.remove('open');
+            });
+            wrapper.classList.toggle('open');
+        });
+        
+        wrapper.appendChild(trigger);
+        wrapper.appendChild(optionsContainer);
+        select.parentNode.insertBefore(wrapper, select.nextSibling);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Aplicar datos del portafolio por defecto al cargar
     const pfSel = document.getElementById('pf-reporte-select');
     if (pfSel && pfSel.options.length > 0) {
         aplicarPortafolioReporte(pfSel.value);
     }
+    initializeCustomSelects();
 });
+
+// Click outside to close dropdowns
+document.addEventListener('click', function() {
+    document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
+});
+
+// Initialize immediately if script is loaded dynamically
+initializeCustomSelects();
 </script>
 
 <div class="cv-wrapper">
