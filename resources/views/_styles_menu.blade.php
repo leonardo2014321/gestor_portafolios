@@ -588,23 +588,38 @@
         ══════════════════════════════════════ */
         @media print {
             *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+            html,body{margin:0 !important;padding:0 !important;height:100% !important;overflow:hidden !important;}
             body *{visibility:hidden;}
             #view-reportes,#view-reportes *{visibility:visible;}
-            #view-reportes{position:absolute;left:0;top:0;width:100%;min-height:100vh;}
-            .topbar,aside,.rpanel,.content-bar,footer,.template-selector,.reportes-tabs{display:none !important;}
+            #view-reportes{position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;}
+            .topbar,aside,.rpanel,.content-bar,footer,.template-selector,.reportes-tabs,#portafolio-color-panel{display:none !important;}
             .cv-template-view{display:none !important;}
             .cv-template-view.active-tpl{display:flex !important;}
-            main{background:#fff;padding:0;overflow:visible;width:100%;min-height:100vh;display:block;}
-            .main-inner{padding:0;display:block;}
-            .cv-wrapper{padding-bottom:0;justify-content:flex-start;min-height:100vh;}
-            .cv-container{box-shadow:none;width:100%;min-height:100vh;}
-        }
-        @media print {
-            @page { margin: 0; }
-            body { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            body.print-landscape {
-                /* landscape is handled by javascript */
+            main{background:#fff;padding:0 !important;margin:0 !important;overflow:hidden !important;width:100%;height:100%;display:block;}
+            .main-inner{padding:0 !important;margin:0 !important;width:100%;height:100%;display:block;overflow:hidden !important;}
+            .cv-wrapper{padding:0 !important;margin:0 !important;width:100%;height:100%;display:block;overflow:hidden !important;}
+            .cv-container,
+            #cv-template-2, #cv-template-3, #cv-template-4, #cv-template-5, #cv-template-6,
+            #cv-template-7, #cv-template-8, #cv-template-9, #cv-template-10 {
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                min-width: 100vw !important;
+                min-height: 100vh !important;
+                max-width: 100vw !important;
+                max-height: 100vh !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+                page-break-after: avoid !important;
+                page-break-before: avoid !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                zoom: 1 !important;
+                transform: none !important;
             }
+            @page{margin:0;size:auto;}
         }
         
         /* Regla inyectada dinámicamente si es necesario */
