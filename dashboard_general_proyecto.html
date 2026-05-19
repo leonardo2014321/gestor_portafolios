@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte General del Proyecto - Gestor de Portafolios</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-light: #60A5FA;
+            --secondary: #475569;
+            --success: #059669;
+            --warning: #D97706;
+            --danger: #DC2626;
+            --dark: #0F172A;
+            --light: #F8FAFC;
+            --white: #FFFFFF;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .dashboard {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        .header p {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-top: 5px;
+        }
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .metric-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid var(--primary);
+        }
+        .metric-card.success { border-color: var(--success); }
+        .metric-card.warning { border-color: var(--warning); }
+        
+        .metric-card h3 {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            text-transform: uppercase;
+        }
+        .metric-card .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 10px 0;
+            color: var(--dark);
+        }
+        .metric-card .sub-value {
+            font-size: 0.85rem;
+            color: var(--secondary);
+        }
+        .main-content {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 25px;
+        }
+        @media (max-width: 992px) {
+            .main-content { grid-template-columns: 1fr; }
+        }
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+        .card h2 {
+            color: var(--primary);
+            margin-top: 0;
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 10px;
+        }
+        .justification-box {
+            background-color: #EFF6FF;
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+        .justification-box h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+        }
+        .sprint-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sprint-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+        }
+        .sprint-item h4 {
+            margin: 0 0 10px 0;
+            color: var(--dark);
+            display: flex;
+            justify-content: space-between;
+        }
+        .sprint-item .dates {
+            font-weight: normal;
+            font-size: 0.85rem;
+            color: var(--secondary);
+        }
+        .hu-list {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            padding-left: 20px;
+            margin: 0;
+        }
+        .hu-list li { margin-bottom: 4px; }
+        .hu-invalidated {
+            text-decoration: line-through;
+            color: #9CA3AF;
+        }
+        .badge {
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: #FEE2E2;
+            color: #991B1B;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+        .date-badge {
+            font-size: 0.75rem;
+            color: #64748B;
+            background: #F1F5F9;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 8px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <div class="header">
+        <h1>Reporte General del Proyecto</h1>
+        <p>Sistema Gestor de Portafolios - Resumen de Liberación (Release Burndown)</p>
+    </div>
+
+    <div class="metrics-container">
+        <div class="metric-card">
+            <h3>Sprints Ejecutados</h3>
+            <div class="value">3</div>
+            <div class="sub-value">Duración: 9 Semanas (Mar-May)</div>
+        </div>
+        <div class="metric-card warning">
+            <h3>HUs Planificadas (Alcance Base)</h3>
+            <div class="value">16</div>
+            <div class="sub-value">Historias de Usuario Definidas</div>
+        </div>
+        <div class="metric-card success">
+            <h3>Entregables Finales Completados</h3>
+            <div class="value">15</div>
+            <div class="sub-value">Tasa de Entrega: 93.7% (1 Invalidada)</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Burndown Chart General (Release Burndown)</h2>
+        <canvas id="releaseBurndown"></canvas>
+    </div>
+
+    <div class="main-content">
+        <div class="card">
+            <h2>Perspectivas y Justificación del Proyecto</h2>
+            
+            <div class="justification-box">
+                <h4>Perspectiva Académica y Metodológica (Para el Docente)</h4>
+                <p>El proyecto siguió fielmente el marco ágil a través de 3 iteraciones (Sprints) de tres semanas cada una. El gráfico demuestra una excelente constancia en la velocidad de desarrollo del equipo.</p>
+                <ul>
+                    <li><strong>Gestión de Alcance:</strong> Se evidencia madurez ágil al invalidar la <em>HU-14 (Sección Académica)</em> durante el Sprint 3, tras identificar redundancias funcionales. Esto permitió reasignar esfuerzos hacia la calidad técnica y pruebas automatizadas (Playwright) sin afectar el valor del producto final.</li>
+                    <li><strong>Integración Continua:</strong> Se observa una evolución arquitectónica desde cimientos (autenticación) en Sprint 1, módulos complejos en Sprint 2, hasta la delegación de roles y configuraciones avanzadas en Sprint 3, manteniendo siempre software funcional.</li>
+                </ul>
+            </div>
+
+            <div class="justification-box">
+                <h4>Perspectiva de Producto y Negocio (Para el Cliente)</h4>
+                <p>El Sistema Gestor de Portafolios fue construido priorizando el valor entregado al usuario en cada fase:</p>
+                <ul>
+                    <li><strong>Sprint 1 (Base Segura):</strong> Aseguró que el sistema tuviera una entrada robusta, gestionando la privacidad, roles iniciales y flujos seguros de recuperación de contraseña.</li>
+                    <li><strong>Sprint 2 (Núcleo Operativo):</strong> Se entregó el motor del negocio: la capacidad de armar biografías, un dashboard completo de gestión, calendarios interactivos y herramientas de búsqueda de activos.</li>
+                    <li><strong>Sprint 3 (Expansión y Control):</strong> Se perfeccionó la experiencia del usuario final y del administrador global. Se dotó a la plataforma de soporte Multi-idioma para proyección internacional, robustos reportes, portafolios interactivos y un panel de alertas y notificaciones en tiempo real.</li>
+                </ul>
+                <p><strong>Resultado:</strong> Una plataforma moderna, escalable y lista para producción, cumpliendo con las necesidades comerciales planteadas al inicio del ciclo.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Desglose de Iteraciones</h2>
+            <ul class="sprint-list">
+                <li class="sprint-item">
+                    <h4>Sprint 1 <span class="dates">18/03/2026 - 07/04/2026</span></h4>
+                    <ul class="hu-list">
+                        <li>✅ HU-01: Gestión de perfil profesional <span class="date-badge">Cierre Real: 14 Abr</span></li>
+                        <li>✅ HU-02: Registrar Usuario <span class="date-badge">Cierre Real: 06 Abr</span></li>
+                        <li>✅ HU-03: Autentificar Usuario <span class="date-badge">Cierre Real: 05 Abr</span></li>
+                        <li>✅ HU-04: Recuperar Contraseña <span class="date-badge">Cierre Real: 09 Abr</span></li>
+                    </ul>
+                </li>
+                <li class="sprint-item">
+                    <h4>Sprint 2 <span class="dates">07/04/2026 - 28/04/2026</span></h4>
+                    <ul class="hu-list">
+                        <li>✅ HU-05: Gestión de perfil profesional <span class="date-badge">Cierre Real: 24 Abr</span></li>
+                        <li>✅ HU-06: Biografía profesional <span class="date-badge">Cierre Real: 27 Abr</span></li>
+                        <li>✅ HU-07: Redes y Privacidad <span class="date-badge">Cierre Real: 26 Abr</span></li>
+                        <li>✅ HU-08: Buscador de Activos <span class="date-badge">Cierre Real: 26 Abr</span></li>
+                        <li>✅ HU-09: Dashboard Principal de Gestión <span class="date-badge">Cierre Real: 24 Abr</span></li>
+                        <li>✅ HU-10: Calendario Interactivo <span class="date-badge">Cierre Real: 26 Abr</span></li>
+                    </ul>
+                </li>
+                <li class="sprint-item">
+                    <h4>Sprint 3 <span class="dates">28/04/2026 - 19/05/2026</span></h4>
+                    <ul class="hu-list">
+                        <li>✅ HU-11: Vista de Administrador <span class="date-badge">Cierre Real: 17 May</span></li>
+                        <li>✅ HU-12: Generación de Reportes <span class="date-badge">Cierre Real: 11 May</span></li>
+                        <li>✅ HU-13: Creación de Portafolios <span class="date-badge">Cierre Real: 14 May</span></li>
+                        <li class="hu-invalidated">❌ HU-14: Sección Académica <span class="badge">Invalidada ~06 May</span></li>
+                        <li>✅ HU-15: Alertas de Notificación <span class="date-badge">Cierre Real: 17 May</span></li>
+                        <li>✅ HU-16: Soporte Multi-idioma <span class="date-badge">Cierre Real: 13 May</span></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    const ctx = document.getElementById('releaseBurndown').getContext('2d');
+    
+    // Crear gradiente para la curva
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.4)'); // Primary blue
+    gradient.addColorStop(1, 'rgba(37, 99, 235, 0.05)');
+
+    // Puntos en el tiempo: Inicio absoluto, Fin Sprint 1, Fin Sprint 2, Fin Sprint 3
+    const labels = ['Inicio Proyecto (18 Mar)', 'Fin Sprint 1 (07 Abr)', 'Fin Sprint 2 (28 Abr)', 'Fin Sprint 3 (19 May)'];
+    
+    // Progreso Ideal (Línea recta perfecta)
+    // 16 -> 10.66 -> 5.33 -> 0
+    const idealData = [16, 10.66, 5.33, 0];
+
+    // Progreso Real
+    // Inicio: 16 HUs planificadas
+    // Fin Sprint 1: Quedan 12 (4 hechas)
+    // Fin Sprint 2: Quedan 6 (6 hechas)
+    // Fin Sprint 3: Quedan 0 (5 hechas, 1 invalidada)
+    const realData = [16, 12, 6, 0];
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Trayectoria Ideal (Release)',
+                    data: idealData,
+                    borderColor: '#94A3B8',
+                    borderWidth: 2,
+                    borderDash: [8, 4],
+                    tension: 0,
+                    fill: false,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#94A3B8'
+                },
+                {
+                    label: 'HUs Pendientes del Proyecto (Real)',
+                    data: realData,
+                    borderColor: '#2563EB', 
+                    backgroundColor: gradient,
+                    borderWidth: 4,
+                    pointBackgroundColor: '#FFFFFF',
+                    pointBorderColor: '#2563EB',
+                    pointBorderWidth: 3,
+                    pointRadius: 7,
+                    pointHoverRadius: 9,
+                    tension: 0.1, // Ligeramente curvo para estética
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            aspectRatio: 3, 
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20,
+                        font: { family: "'Inter', sans-serif", size: 14 }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    titleFont: { family: "'Inter', sans-serif", size: 14 },
+                    bodyFont: { family: "'Inter', sans-serif", size: 14 },
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + ' HUs';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 17,
+                    title: {
+                        display: true,
+                        text: 'Total de HUs Pendientes',
+                        font: { weight: 'bold', family: "'Inter', sans-serif" }
+                    },
+                    grid: {
+                        color: '#F1F5F9'
+                    }
+                },
+                x: {
+                    title: {
+                        display: false
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

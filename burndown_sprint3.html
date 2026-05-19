@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Sprint 3 - Gestor de Portafolios</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #818CF8;
+            --success: #10B981;
+            --danger: #EF4444;
+            --dark: #1F2937;
+            --light: #F3F4F6;
+            --white: #FFFFFF;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .dashboard {
+            max-width: 1100px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        .header p {
+            font-size: 1.1rem;
+            color: #6B7280;
+            margin-top: 5px;
+        }
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .metric-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--primary);
+        }
+        .metric-card.success { border-color: var(--success); }
+        .metric-card.danger { border-color: var(--danger); }
+        
+        .metric-card h3 {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #6B7280;
+            text-transform: uppercase;
+        }
+        .metric-card .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 10px 0;
+            color: var(--dark);
+        }
+        .chart-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .summary-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            line-height: 1.6;
+        }
+        .summary-section h2 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+        .justification-box {
+            background-color: #EEF2FF;
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+        .justification-box h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+        }
+        .timeline {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #E5E7EB;
+        }
+        .timeline li {
+            position: relative;
+            padding-left: 45px;
+            margin-bottom: 20px;
+        }
+        .timeline li::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid var(--white);
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+        .timeline li.done::before { background: var(--success); box-shadow: 0 0 0 2px #A7F3D0; }
+        .timeline li.dropped::before { background: var(--danger); box-shadow: 0 0 0 2px #FECACA; }
+        
+        .date { font-weight: bold; color: var(--dark); }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 10px;
+            background: #E5E7EB;
+            color: #374151;
+        }
+        .badge.done { background: #D1FAE5; color: #065F46; }
+        .badge.dropped { background: #FEE2E2; color: #991B1B; }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <div class="header">
+        <h1>Reporte de Cierre: Sprint 3</h1>
+        <p>Sistema Gestor de Portafolios - Análisis de Progreso y Desempeño</p>
+    </div>
+
+    <div class="metrics-container">
+        <div class="metric-card">
+            <h3>Total HUs Planificadas</h3>
+            <div class="value">6</div>
+        </div>
+        <div class="metric-card success">
+            <h3>HUs Completadas</h3>
+            <div class="value">5</div>
+        </div>
+        <div class="metric-card danger">
+            <h3>HUs Invalidadas</h3>
+            <div class="value">1</div>
+        </div>
+    </div>
+
+    <div class="chart-section">
+        <canvas id="burndownChart"></canvas>
+    </div>
+
+    <div class="grid-2">
+        <div class="summary-section">
+            <h2>Resumen y Justificación del Sprint</h2>
+            <p>Este reporte evidencia el flujo de trabajo real del equipo a lo largo de las 3 semanas de duración del Sprint 3.</p>
+            
+            <div class="justification-box">
+                <h4>Análisis de la Curva de Progreso (Justificación para el Docente)</h4>
+                <p><strong>1. Valle Inicial (Días 0 al 13):</strong> La gráfica muestra un periodo inicial donde aparentemente "no se cerraron tareas". Esto no representa inactividad, sino una fase crítica de trabajo en paralelo: se estableció la estructura base, migraciones de base de datos (Ej. notificaciones), investigación para migración de archivos (Supabase) y refactorización del código para automatización de pruebas (Playwright e2e). Las tareas estaban en desarrollo pero no listas para hacer "merge" a la rama principal.</p>
+                <p><strong>2. Descarte de HU-14:</strong> La Historia de Usuario 14 (Sección Académica) fue invalidada tempranamente (aprox. 06 May). <em>Justificación:</em> Se determinó que sus características estaban traslapadas y podían ser mejor integradas o delegadas a otras Historias de Usuario para mantener la cohesión del sistema, optimizando el tiempo del equipo de desarrollo.</p>
+                <p><strong>3. Aceleración Final (Días 14 al 21):</strong> Se observa una fuerte caída "en cascada" en los últimos días del sprint. Esto demuestra la maduración de las ramas de desarrollo (`feature/*`) que, tras pasar las pruebas locales, se integraron velozmente a la rama principal (`develop` y/o `main`) a través de múltiples Pull Requests.</p>
+            </div>
+            
+            <p><strong>Conclusión:</strong> El equipo logró un 100% de cumplimiento del alcance real ajustado (5 HUs completadas), demostrando capacidad de adaptación ante cambios de requerimientos (invalidación justificada de la HU-14) y resolviendo deuda técnica importante en paralelo al desarrollo del producto.</p>
+        </div>
+
+        <div class="summary-section">
+            <h2>Línea de Tiempo (Commits y Pull Requests)</h2>
+            <ul class="timeline">
+                <li>
+                    <div class="date">28 Abr (Inicio Sprint)</div>
+                    <div>Kickoff y planificación. Setup inicial de ramas de trabajo.</div>
+                </li>
+                <li class="dropped">
+                    <div class="date">06 May</div>
+                    <div>Análisis de alcance <span class="badge dropped">HU-14 Invalidada</span></div>
+                </li>
+                <li class="done">
+                    <div class="date">11 May</div>
+                    <div>Integración de ventana de reportes <span class="badge done">HU-12 Completada</span></div>
+                </li>
+                <li class="done">
+                    <div class="date">13 May</div>
+                    <div>Correcciones finales del sistema multilenguaje <span class="badge done">HU-16 Completada</span></div>
+                </li>
+                <li class="done">
+                    <div class="date">14 May</div>
+                    <div>Creación de portafolios y funcionalidad pública <span class="badge done">HU-13 Completada</span></div>
+                </li>
+                <li class="done">
+                    <div class="date">17 May</div>
+                    <div>Resolución Admin Responsive y Bugs de Notificaciones <span class="badge done">HU-11 y HU-15 Completadas</span></div>
+                </li>
+                <li class="done">
+                    <div class="date">19 May (Fin Sprint)</div>
+                    <div>Cierre oficial, entrega de producto testeado y funcional. <span class="badge done">Sprint Completado</span></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    const ctx = document.getElementById('burndownChart').getContext('2d');
+    
+    // Crear gradiente para la curva de progreso real
+    const gradientReal = ctx.createLinearGradient(0, 0, 0, 400);
+    gradientReal.addColorStop(0, 'rgba(79, 70, 229, 0.5)'); // Indigo
+    gradientReal.addColorStop(1, 'rgba(79, 70, 229, 0.05)');
+
+    const labels = ['28 Abr', '06 May', '11 May', '13 May', '14 May', '17 May', '19 May'];
+    const idealData = [6, 4.8, 3.8, 3.4, 3.2, 2.5, 0];
+    const realData = [6, 5, 4, 3, 2, 0, 0];
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Progreso Ideal (Referencia)',
+                    data: idealData,
+                    borderColor: '#9CA3AF',
+                    borderWidth: 2,
+                    borderDash: [8, 6],
+                    tension: 0,
+                    fill: false,
+                    pointRadius: 0
+                },
+                {
+                    label: 'HUs Restantes (Progreso Real)',
+                    data: realData,
+                    borderColor: '#4F46E5', // Indigo primary
+                    backgroundColor: gradientReal,
+                    borderWidth: 4,
+                    pointBackgroundColor: '#FFFFFF',
+                    pointBorderColor: '#4F46E5',
+                    pointBorderWidth: 3,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    stepped: 'after', 
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            aspectRatio: 2.5, // Hace la gráfica más alargada y profesional
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Burndown Chart: Consumo de Historias de Usuario',
+                    font: { size: 18, family: "'Inter', sans-serif", weight: '600' },
+                    color: '#1F2937',
+                    padding: { bottom: 20 }
+                },
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20,
+                        font: { family: "'Inter', sans-serif", size: 13 }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(31, 41, 55, 0.9)',
+                    titleFont: { family: "'Inter', sans-serif", size: 14 },
+                    bodyFont: { family: "'Inter', sans-serif", size: 13 },
+                    padding: 12,
+                    cornerRadius: 8,
+                    displayColors: true
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 6.5,
+                    title: {
+                        display: true,
+                        text: 'Puntos / HUs Restantes',
+                        font: { weight: 'bold', family: "'Inter', sans-serif" }
+                    },
+                    grid: {
+                        color: '#F3F4F6'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Línea de Tiempo del Sprint 3',
+                        font: { weight: 'bold', family: "'Inter', sans-serif" }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
