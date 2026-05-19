@@ -157,16 +157,36 @@
     /* ── Navegación entre vistas ── */
     function showView(name) {
         if (name === 'reportes') {
+            const targetView = document.getElementById('view-reportes');
+            if (targetView && targetView.classList.contains('active')) {
+                return;
+            }
+
             const activeTpl = document.querySelector('.cv-template-view.active-tpl');
             const activeId = activeTpl ? activeTpl.id : 'cv-template-1';
+            
+            const pfSel = document.getElementById('pf-reporte-select');
+            const activePfId = pfSel ? pfSel.value : null;
+
             fetch('{{ route("reportes") }}')
                 .then(res => res.text())
                 .then(html => {
                     document.getElementById('view-reportes').innerHTML = html;
-                    if (typeof selectTemplate === 'function') {
-                        selectTemplate(activeId);
-                        const select = document.getElementById('cv-template-select');
-                        if (select) select.value = activeId;
+                    if (typeof switchRepTab === 'function') {
+                        const isPf = ['cv-template-7', 'cv-template-8', 'cv-template-9', 'cv-template-10'].includes(activeId);
+                        switchRepTab(isPf ? 'portafolio' : 'cv', activeId);
+
+                        const newPfSel = document.getElementById('pf-reporte-select');
+                        if (newPfSel && activePfId) {
+                            newPfSel.value = activePfId;
+                            if (typeof aplicarPortafolioReporte === 'function') {
+                                aplicarPortafolioReporte(activePfId);
+                            }
+                        } else if (newPfSel && newPfSel.options.length > 0) {
+                            if (typeof aplicarPortafolioReporte === 'function') {
+                                aplicarPortafolioReporte(newPfSel.value);
+                            }
+                        }
                     }
                 });
         }
@@ -234,20 +254,33 @@
     }
 
     /* ── Pestañas Reportes ── */
-    function switchRepTab(tab) {
+    function switchRepTab(tab, targetTemplateId) {
         document.querySelectorAll('.rep-tab').forEach(b => b.classList.remove('active'));
         if (tab === 'cv') {
             document.querySelector('.rep-tab[onclick*="cv"]').classList.add('active');
             document.getElementById('selector-cv').style.display = 'flex';
             document.getElementById('selector-portafolio').style.display = 'none';
+            const colorPanel = document.getElementById('portafolio-color-panel');
+            if (colorPanel) colorPanel.style.display = 'none';
             const select = document.querySelector('#selector-cv select');
-            if(select) selectTemplate(select.value);
+            if (select) {
+                const tplId = targetTemplateId || select.value;
+                select.value = tplId;
+                selectTemplate(tplId);
+            }
         } else {
             document.querySelector('.rep-tab[onclick*="portafolio"]').classList.add('active');
             document.getElementById('selector-cv').style.display = 'none';
             document.getElementById('selector-portafolio').style.display = 'flex';
             const select = document.querySelector('#selector-portafolio select');
-            if(select) selectTemplate(select.value);
+            if (select) {
+                const tplId = targetTemplateId || select.value;
+                select.value = tplId;
+                selectTemplate(tplId);
+                if (typeof updatePortafolioColorPicker === 'function') {
+                    updatePortafolioColorPicker(tplId);
+                }
+            }
         }
     }
 

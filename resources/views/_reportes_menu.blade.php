@@ -9,7 +9,18 @@
     $r_habF = $r_user ? $r_user->habilidades()->where('tipo', 'fuerte')->get()                : collect();
     $r_habB = $r_user ? $r_user->habilidades()->where('tipo', 'blanda')->get()                : collect();
     $r_cert = $r_user ? $r_user->certificaciones()->orderBy('fecha_obtencion', 'desc')->get() : collect();
-    $r_proyectos = $r_user ? \App\Models\PortafolioProyecto::where('usuario_id', $r_user->id)->take(3)->get() : collect();
+
+    // Portafolios reales del usuario con sus proyectos
+    $r_portafolios = $r_user
+        ? \App\Models\Portafolio::where('usuario_id', $r_user->id)
+              ->with('proyectos')
+              ->orderBy('created_at', 'desc')
+              ->get()
+        : collect();
+    // Portafolio seleccionado por defecto (el primero publicado, o el primero si no hay publicado)
+    $r_pf_activo = $r_portafolios->firstWhere('estado', 'publicado') ?? $r_portafolios->first();
+    // Proyectos del portafolio activo
+    $r_proyectos = $r_pf_activo ? $r_pf_activo->proyectos : collect();
 
     $supabaseBase = rtrim(config('services.supabase.url'), '/')
                   . '/storage/v1/object/public/'
@@ -48,8 +59,8 @@
 
 {{-- ── Pestañas de Reportes ── --}}
 <div class="reportes-tabs" style="display:flex; gap:15px; margin-bottom:20px; border-bottom:1px solid #cbd5e1;">
-    <button class="rep-tab active" onclick="switchRepTab('cv')">{{ __('Hoja de vida') ?? 'Hoja de Vida (Vertical)' }}</button>
-    <button class="rep-tab" onclick="switchRepTab('portafolio')">Portafolio</button>
+    <button type="button" class="rep-tab active" onclick="switchRepTab('cv')">{{ __('Hoja de vida') ?? 'Hoja de Vida (Vertical)' }}</button>
+    <button type="button" class="rep-tab" onclick="switchRepTab('portafolio')">Portafolio</button>
 </div>
 
 {{-- ── Selector de plantilla CV ── --}}
@@ -59,27 +70,25 @@
     <label style="font-size:14px;font-weight:600;color:#475569;margin:0;">
         Seleccionar diseño de Hoja de Vida:
     </label>
-    <select onchange="selectTemplate(this.value)"
+    <select id="cv-template-select" onchange="selectTemplate(this.value)"
             style="padding:10px 14px;border-radius:8px;border:1px solid #cbd5e1;font-size:14px;
                    font-weight:500;color:#1e293b;outline:none;cursor:pointer;flex:1;
                    max-width:320px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.05);">
         <option value="cv-template-1">{{ __('app.reportes.plantilla_moderna') }}</option>
-        <option value="cv-template-2">{{ __('app.reportes.plantilla_clasica') }}</option>
-        <option value="cv-template-3">{{ __('app.reportes.plantilla_minimalista') }}</option>
+        <option value="cv-template-3">{{ __('app.reportes.plantilla_clasica') }}</option>
         <option value="cv-template-4">{{ __('app.reportes.plantilla_elegante') }}</option>
         <option value="cv-template-5">{{ __('app.reportes.plantilla_creativa') }}</option>
-        <option value="cv-template-6">{{ __('app.reportes.plantilla_malva') }}</option>
     </select>
 </div>
 
 {{-- ── Selector de plantilla Portafolio ── --}}
 <div id="selector-portafolio" class="template-selector"
-     style="display:none;align-items:center;gap:12px;margin-bottom:25px;
-            background:#f8fafc;padding:15px 20px;border-radius:12px;border:1px solid #e2e8f0;">
+     style="display:none;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:0;
+            background:#f8fafc;padding:15px 20px;border-radius:12px 12px 0 0;border:1px solid #e2e8f0;border-bottom:none;">
     <label style="font-size:14px;font-weight:600;color:#475569;margin:0;">
         Seleccionar diseño de Portafolio:
     </label>
-    <select onchange="selectTemplate(this.value)"
+    <select id="portafolio-select" onchange="selectTemplate(this.value); updatePortafolioColorPicker(this.value);"
             style="padding:10px 14px;border-radius:8px;border:1px solid #cbd5e1;font-size:14px;
                    font-weight:500;color:#1e293b;outline:none;cursor:pointer;flex:1;
                    max-width:320px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.05);">
@@ -89,6 +98,179 @@
         <option value="cv-template-10">Portafolio Columnas Rosa</option>
     </select>
 </div>
+
+{{-- ── Selectores de color por plantilla ── --}}
+<div id="portafolio-color-panel"
+     style="display:none;align-items:center;gap:14px;flex-wrap:wrap;
+            background:#f0f7ff;padding:12px 20px;border-radius:0 0 12px 12px;
+            border:1px solid #e2e8f0;border-top:1px dashed #bcd0e5;margin-bottom:25px;">
+
+    {{-- Selector de portafolio real --}}
+    @if($r_portafolios->count() > 0)
+    <div style="display:flex;align-items:center;gap:10px;width:100%;padding-bottom:10px;
+                border-bottom:1px dashed #bcd0e5;margin-bottom:4px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
+        <label style="font-size:13px;font-weight:600;color:#334155;">Portafolio a mostrar:</label>
+        <select id="pf-reporte-select"
+                onchange="aplicarPortafolioReporte(this.value)"
+                style="padding:6px 12px;border-radius:7px;border:1px solid #cbd5e1;font-size:13px;
+                       font-weight:500;color:#1e293b;outline:none;cursor:pointer;
+                       background:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.05);">
+            @foreach($r_portafolios as $pf)
+                <option value="{{ $pf->id }}"
+                        data-nombre="{{ e($pf->nombre) }}"
+                        data-descripcion="{{ e($pf->descripcion ?? '') }}"
+                        data-banner="{{ $pf->banner_url ?? '' }}"
+                        data-logo="{{ $pf->logo_url ?? '' }}"
+                        data-proyectos="{{ $pf->proyectos->map(function($p) { return ['nombre' => $p->nombre, 'descripcion' => $p->descripcion, 'banner' => $p->banner_url, 'repositorio_url' => $p->repositorio_url, 'deploy_url' => $p->deploy_url]; })->toJson() }}">
+                    {{ $pf->nombre }}
+                    @if($pf->estado === 'publicado')
+                        &#10003;
+                    @else
+                        (borrador)
+                    @endif
+                </option>
+            @endforeach
+        </select>
+    </div>
+    @else
+    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#64748b;width:100%;padding-bottom:10px;border-bottom:1px dashed #bcd0e5;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Sin portafolios creados aún. <a onclick="abrirModalCrearPf()" style="color:#2563eb;cursor:pointer;font-weight:600;">Crear portafolio</a>
+    </div>
+    @endif
+
+    {{-- Color picker para Hexágonos (fondo) --}}
+    <div id="color-ctrl-7" style="display:none;align-items:center;gap:10px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+        <label style="font-size:13px;font-weight:600;color:#334155;">Color de fondo:</label>
+        <input type="color" id="color-bg-7" value="#fcd34d" title="Color del fondo"
+               oninput="document.getElementById('cv-template-7').style.backgroundColor=this.value"
+               style="width:38px;height:30px;border:1.5px solid #cbd5e1;border-radius:6px;padding:2px;cursor:pointer;background:#fff;">
+        <button onclick="document.getElementById('cv-template-7').style.backgroundColor='#fcd34d'; document.getElementById('color-bg-7').value='#fcd34d';"
+                style="font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;color:#475569;cursor:pointer;">Restablecer</button>
+    </div>
+
+    {{-- Color picker para Timeline Azul (área blanca derecha) --}}
+    <div id="color-ctrl-8" style="display:none;align-items:center;gap:10px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <label style="font-size:13px;font-weight:600;color:#334155;">Color de área derecha:</label>
+        <input type="color" id="color-bg-8" value="#ffffff" title="Color del área blanca"
+               oninput="document.querySelector('#cv-template-8 .cv8-right').style.backgroundColor=this.value"
+               style="width:38px;height:30px;border:1.5px solid #cbd5e1;border-radius:6px;padding:2px;cursor:pointer;background:#fff;">
+        <button onclick="document.querySelector('#cv-template-8 .cv8-right').style.backgroundColor='#ffffff'; document.getElementById('color-bg-8').value='#ffffff';"
+                style="font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;color:#475569;cursor:pointer;">Restablecer</button>
+    </div>
+
+    {{-- Color picker para Elegante (sección inferior) --}}
+    <div id="color-ctrl-9" style="display:none;align-items:center;gap:10px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M3 7h18"/></svg>
+        <label style="font-size:13px;font-weight:600;color:#334155;">Color de sección inferior:</label>
+        <input type="color" id="color-bg-9" value="#1e3a8a" title="Color de la parte inferior"
+               oninput="document.querySelector('#cv-template-9 .cv9-bottom').style.backgroundColor=this.value"
+               style="width:38px;height:30px;border:1.5px solid #cbd5e1;border-radius:6px;padding:2px;cursor:pointer;background:#fff;">
+        <button onclick="document.querySelector('#cv-template-9 .cv9-bottom').style.backgroundColor='#1e3a8a'; document.getElementById('color-bg-9').value='#1e3a8a';"
+                style="font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;color:#475569;cursor:pointer;">Restablecer</button>
+    </div>
+
+    {{-- Color picker para Columnas Rosa (columna del medio) --}}
+    <div id="color-ctrl-10" style="display:none;align-items:center;gap:10px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="18" rx="1"/></svg>
+        <label style="font-size:13px;font-weight:600;color:#334155;">Color de columna central:</label>
+        <input type="color" id="color-bg-10" value="#e0a59e" title="Color de la columna del medio"
+               oninput="document.querySelector('#cv-template-10 .cv10-col-mid').style.backgroundColor=this.value"
+               style="width:38px;height:30px;border:1.5px solid #cbd5e1;border-radius:6px;padding:2px;cursor:pointer;background:#fff;">
+        <button onclick="document.querySelector('#cv-template-10 .cv10-col-mid').style.backgroundColor='#e0a59e'; document.getElementById('color-bg-10').value='#e0a59e';"
+                style="font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;color:#475569;cursor:pointer;">Restablecer</button>
+    </div>
+</div>
+
+<script>
+function aplicarPortafolioReporte(pfId) {
+    const sel = document.getElementById('pf-reporte-select');
+    if (!sel) return;
+    const opt = sel.querySelector('option[value="' + pfId + '"]');
+    if (!opt) return;
+
+    const nombre = opt.dataset.nombre || '';
+    const desc   = opt.dataset.descripcion || '';
+    const logo   = opt.dataset.logo || '{{ $fotoCV ?? $fotoFallback }}';
+    const proyectos = JSON.parse(opt.dataset.proyectos || '[]');
+
+    // Template 7 (Hexágonos)
+    if(document.getElementById('t7-name')) document.getElementById('t7-name').textContent = nombre;
+    if(document.getElementById('t7-desc')) document.getElementById('t7-desc').textContent = desc;
+    if(document.getElementById('t7-logo')) document.getElementById('t7-logo').src = logo;
+    if(document.getElementById('t7-footer')) document.getElementById('t7-footer').textContent = nombre + ' — Portafolio';
+    const t7proj = document.getElementById('t7-projects');
+    if (t7proj) {
+        t7proj.innerHTML = proyectos.length ? proyectos.map(p => 
+            `<div class="cv7-project"><h3 class="cv7-proj-title">${p.nombre}</h3><p class="cv7-proj-desc">${p.descripcion || ''}</p></div>`
+        ).join('') : `<div class="cv7-project"><h3 class="cv7-proj-title">Sin proyectos</h3><p class="cv7-proj-desc">Añade proyectos a tu portafolio.</p></div>`;
+    }
+
+    // Template 8 (Timeline Azul)
+    if(document.getElementById('t8-name')) document.getElementById('t8-name').textContent = nombre;
+    if(document.getElementById('t8-desc')) document.getElementById('t8-desc').textContent = desc;
+    if(document.getElementById('t8-logo')) document.getElementById('t8-logo').src = logo;
+    if(document.getElementById('t8-header-name')) document.getElementById('t8-header-name').textContent = nombre;
+    const t8proj = document.getElementById('t8-projects');
+    if (t8proj) {
+        t8proj.innerHTML = proyectos.length ? proyectos.map(p => 
+            `<div class="cv8-time-item">
+                <div class="cv8-time-date">${p.deploy_url || p.repositorio_url ? 'Público' : 'Destacado'}</div>
+                <div class="cv8-time-title">${p.nombre}</div>
+                <div class="cv8-time-desc">${p.descripcion || ''}</div>
+            </div>`
+        ).join('') : `<div class="cv8-time-item"><div class="cv8-time-title">Sin proyectos</div><div class="cv8-time-desc">Añade proyectos a tu portafolio.</div></div>`;
+    }
+
+    // Template 9 (Elegante)
+    if(document.getElementById('t9-name')) document.getElementById('t9-name').textContent = nombre;
+    if(document.getElementById('t9-desc')) document.getElementById('t9-desc').textContent = desc;
+    if(document.getElementById('t9-logo')) document.getElementById('t9-logo').src = logo;
+    const t9proj = document.getElementById('t9-projects');
+    if (t9proj) {
+        t9proj.innerHTML = proyectos.length ? proyectos.map(p => 
+            `<div class="cv9-project"><h3 class="cv9-proj-title">${p.nombre}</h3><p class="cv9-proj-desc">${p.descripcion || ''}</p></div>`
+        ).join('') : `<div class="cv9-project"><h3 class="cv9-proj-title">Sin proyectos</h3><p class="cv9-proj-desc">Añade proyectos a tu portafolio.</p></div>`;
+    }
+
+    // Template 10 (Columnas Rosa)
+    if(document.getElementById('t10-name')) document.getElementById('t10-name').textContent = nombre;
+    if(document.getElementById('t10-desc')) document.getElementById('t10-desc').textContent = desc;
+    if(document.getElementById('t10-logo')) document.getElementById('t10-logo').src = logo;
+    const t10proj = document.getElementById('t10-projects');
+    if (t10proj) {
+        t10proj.innerHTML = proyectos.length ? proyectos.map(p => 
+            `<div class="cv10-item"><h3 class="cv10-item-title">${p.nombre}</h3><p class="cv10-item-desc">${p.descripcion || ''}</p></div>`
+        ).join('') : `<div class="cv10-item"><h3 class="cv10-item-title">Sin proyectos</h3><p class="cv10-item-desc">Añade proyectos a tu portafolio.</p></div>`;
+    }
+}
+
+function updatePortafolioColorPicker(tplId) {
+    const panel = document.getElementById('portafolio-color-panel');
+    [7,8,9,10].forEach(n => {
+        const ctrl = document.getElementById('color-ctrl-' + n);
+        if (ctrl) ctrl.style.display = 'none';
+    });
+    const num = tplId ? tplId.replace('cv-template-', '') : null;
+    const ctrl = num ? document.getElementById('color-ctrl-' + num) : null;
+    if (ctrl) {
+        panel.style.display = 'flex';
+        ctrl.style.display = 'flex';
+    } else {
+        panel.style.display = 'none';
+    }
+}
+document.addEventListener('DOMContentLoaded', function() {
+    // Aplicar datos del portafolio por defecto al cargar
+    const pfSel = document.getElementById('pf-reporte-select');
+    if (pfSel && pfSel.options.length > 0) {
+        aplicarPortafolioReporte(pfSel.value);
+    }
+});
+</script>
 
 <div class="cv-wrapper">
 
@@ -220,96 +402,7 @@
         </div>
     </div>{{-- /cv-template-1 --}}
 
-    {{-- ── TEMPLATE 2 · Clásico (Formal) ── --}}
-    <div class="cv-container cv-template-view" id="cv-template-2">
-        <div class="cv2-header">
-            <div class="cv2-name">
-                {{ $r_user?->nombre ?? 'Eva' }} {{ $r_user?->apellido ?? 'Sánchez Linares' }}
-            </div>
-            <div class="cv2-contact">
-                <span>Avda. de Andalucía, 41</span>
-                <span>|</span>
-                <span>692 454 731</span>
-                <span>|</span>
-                <span>{{ $r_user?->email ?? 'evasanchezlinares@gmail.com' }}</span>
-            </div>
-        </div>
 
-        <div class="cv2-section">
-            <div class="cv2-title">{{ __('app.reportes.resumen_profesional') }}</div>
-            <div style="font-size:13px;line-height:1.5;color:#334155;">
-                {{ $r_user?->biografia ?? __('app.reportes.empty_biografia') }}
-            </div>
-        </div>
-
-        <div class="cv2-section">
-            <div class="cv2-title">{{ __('app.reportes.exp_laboral') }}</div>
-            @forelse($r_exp as $exp)
-                <div class="cv2-item">
-                    <div class="cv2-item-header">
-                        <div class="cv2-item-title">{{ $exp->cargo }} - {{ $exp->empresa }}</div>
-                        <div class="cv2-item-date">
-                            {{ $exp->fecha_inicio?->format('M Y') }}
-                            - {{ $exp->actual ? __('app.reportes.actualidad') : $exp->fecha_fin?->format('M Y') }}
-                        </div>
-                    </div>
-                    @if($exp->descripcion)
-                        <div style="font-size:13px;color:#334155;line-height:1.5;white-space:pre-line;padding-left:10px;">
-                            {{ $exp->descripcion }}
-                        </div>
-                    @endif
-                </div>
-            @empty
-                <div class="cv2-item">
-                    <div class="cv2-item-header">
-                        <div class="cv2-item-title">{{ __('app.reportes.empty_exp_titulo') }}</div>
-                        <div class="cv2-item-date">{{ __('app.reportes.empty_exp_fecha') }}</div>
-                    </div>
-                </div>
-            @endforelse
-        </div>
-
-        <div class="cv2-section">
-            <div class="cv2-title">{{ __('app.reportes.educacion') }}</div>
-            @forelse($r_form as $form)
-                <div class="cv2-item">
-                    <div class="cv2-item-header">
-                        <div class="cv2-item-title">{{ $form->titulo }} - {{ $form->institucion }}</div>
-                        <div class="cv2-item-date">{{ $form->fecha_inicio?->format('Y') }}</div>
-                    </div>
-                </div>
-            @empty
-                <div class="cv2-item">
-                    <div class="cv2-item-header">
-                        <div class="cv2-item-title">{{ __('app.reportes.empty_formacion') }}</div>
-                        <div class="cv2-item-date">2015</div>
-                    </div>
-                </div>
-            @endforelse
-        </div>
-
-        <div class="cv2-section">
-            <div class="cv2-title">{{ __('app.reportes.habilidades_conocimientos') }}</div>
-            <div style="display:flex;gap:40px;font-size:13px;color:#334155;line-height:1.5;">
-                <div>
-                    <strong>{{ __('app.reportes.competencias') }}</strong><br>
-                    @forelse($r_habB as $hab)
-                        {{ $hab->nombre }}<br>
-                    @empty
-                        {{ __('app.reportes.empty_trabajo_equipo') }}<br>{{ __('app.reportes.empty_iniciativa') }}
-                    @endforelse
-                </div>
-                <div>
-                    <strong>{{ __('app.reportes.informatica') }}</strong><br>
-                    @forelse($r_habF as $hab)
-                        {{ $hab->nombre }}{{ $hab->nivel ? ' ('.$hab->nivel.')' : '' }}<br>
-                    @empty
-                        JavaScript, CSS, HTML, SQL<br>MySQL, MariaDB
-                    @endforelse
-                </div>
-            </div>
-        </div>
-    </div>{{-- /cv-template-2 --}}
 
     {{-- ── TEMPLATE 3 · Minimalista ── --}}
     <div class="cv-container cv-template-view" id="cv-template-3">
@@ -583,114 +676,24 @@
         </div>
     </div>{{-- /cv-template-5 --}}
 
-    {{-- ── TEMPLATE 6 · Moderno (Malva) ── --}}
-    <div class="cv-container cv-template-view" id="cv-template-6">
-        <div class="cv6-banner">
-            <div class="cv6-name">
-                {{ $r_user?->nombre ?? 'Emilia' }} {{ $r_user?->apellido ?? 'Ramírez' }}
-            </div>
-            <div class="cv6-role">{{ $r_user?->profesion ?? __('app.reportes.empty_profesion_upper') }}</div>
-            <div class="cv6-banner-text">
-                {{ $r_user?->biografia ?? __('app.reportes.empty_biografia') }}
-            </div>
-        </div>
 
-        <img src="{{ $fotoCV ?? $fotoFallback }}" alt="Foto" class="cv6-photo">
-
-        <div class="cv6-left">
-            <div class="cv6-title">{{ __('app.reportes.educacion') }}</div>
-            @forelse($r_form as $form)
-                <div class="cv6-item">
-                    <ul class="cv6-list">
-                        <li>
-                            {{ $form->institucion }}<br>
-                            <span style="color:#64748b;">{{ $form->fecha_inicio?->format('Y') }}</span><br>
-                            {{ $form->titulo }}
-                        </li>
-                    </ul>
-                </div>
-            @empty
-                <div class="cv6-item">
-                    <ul class="cv6-list">
-                        <li>{{ __('app.reportes.empty_universidad') }}<br>
-                            <span style="color:#64748b;">2019-2023</span><br>
-                            {{ __('app.reportes.empty_formacion') }}
-                        </li>
-                    </ul>
-                </div>
-            @endforelse
-
-            <div class="cv6-title">{{ __('app.reportes.idiomas') }}</div>
-            <ul class="cv6-list">
-                <li>{{ __('app.reportes.idioma_ingles_avanzado') }}<br>
-                    <span style="color:#64748b;">{{ __('app.reportes.nivel_oral_bilingue') }}</span>
-                </li>
-            </ul>
-
-            <div class="cv6-title" style="margin-top:40px;">{{ __('app.reportes.contacto') }}</div>
-            <div class="cv6-contact-item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                    <polyline points="22,6 12,13 2,6"/>
-                </svg>
-                {{ $r_user?->email ?? 'hola@sitio.com' }}
-            </div>
-            <div class="cv6-contact-item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                </svg>
-                {{ __('app.reportes.celular') }}: 1234-5678
-            </div>
-        </div>
-
-        <div class="cv6-right">
-            <div class="cv6-title" style="margin-top:0;">{{ __('app.reportes.exp_laboral') }}</div>
-            @forelse($r_exp as $exp)
-                <div class="cv6-item">
-                    <div class="cv6-item-title">{{ $exp->cargo }}</div>
-                    <div class="cv6-item-meta">
-                        {{ __('app.reportes.en') }} {{ $exp->empresa }},
-                        {{ $exp->fecha_inicio?->format('M Y') }}
-                        - {{ $exp->actual ? __('app.reportes.presente') : $exp->fecha_fin?->format('M Y') }}
-                    </div>
-                    @if($exp->descripcion)
-                        <ul class="cv6-list" style="margin-top:8px;"><li>{{ $exp->descripcion }}</li></ul>
-                    @endif
-                </div>
-            @empty
-                <div class="cv6-item">
-                    <div class="cv6-item-title">{{ __('app.reportes.empty_exp_titulo') }}</div>
-                    <div class="cv6-item-meta">{{ __('app.reportes.empty_exp_meta') }}</div>
-                </div>
-            @endforelse
-
-            <div class="cv6-title">{{ __('app.reportes.habilidades_conocimientos') }}</div>
-            <ul class="cv6-list">
-                @forelse(array_merge($r_habF->all(), $r_habB->all()) as $hab)
-                    <li>{{ $hab->nombre }}</li>
-                @empty
-                    <li>{{ __('app.reportes.empty_hab_ofice') }}</li>
-                @endforelse
-            </ul>
-        </div>
-    </div>{{-- /cv-template-6 --}}
 
     {{-- ── TEMPLATE 7 · Portafolio Hexágonos (Amarillo/Naranja) ── --}}
     <div class="cv-container cv-template-view landscape-layout" id="cv-template-7">
         <div class="cv7-bg">
             <div class="cv7-hex-big"></div>
             <div class="cv7-hex-photo-wrap">
-                <img src="{{ $fotoCV ?? $fotoFallback }}" alt="Foto" class="cv7-photo">
+                <img src="{{ $r_pf_activo?->logo_url ?? $fotoCV ?? $fotoFallback }}" alt="Foto" class="cv7-photo" id="t7-logo">
             </div>
             <div class="cv7-hex-small1"></div>
             <div class="cv7-hex-small2"></div>
         </div>
         <div class="cv7-content">
             <div class="cv7-header">
-                <h1 class="cv7-name">Soy {{ $r_user?->nombre }} {{ $r_user?->apellido }}</h1>
-                <h2 class="cv7-role">{{ $r_user?->profesion ?? 'Profesional' }}</h2>
+                <h1 class="cv7-name" id="t7-name">{{ $r_pf_activo?->nombre ?? 'Mi Portafolio' }}</h1>
+                <h2 class="cv7-role" id="t7-desc">{{ $r_pf_activo?->descripcion ?? 'Descripción de mi portafolio' }}</h2>
             </div>
-            <div class="cv7-projects">
+            <div class="cv7-projects" id="t7-projects">
                 @forelse($r_proyectos as $proy)
                     <div class="cv7-project">
                         <h3 class="cv7-proj-title">{{ $proy->nombre }}</h3>
@@ -698,17 +701,13 @@
                     </div>
                 @empty
                     <div class="cv7-project">
-                        <h3 class="cv7-proj-title">Perfil Profesional</h3>
-                        <p class="cv7-proj-desc">{{ Str::limit($r_user?->biografia ?? 'Desarrollador enfocado en crear soluciones de alta calidad.', 150) }}</p>
-                    </div>
-                    <div class="cv7-project">
-                        <h3 class="cv7-proj-title">Contacto</h3>
-                        <p class="cv7-proj-desc">{{ $r_user?->email }}<br>{{ $r_user?->telefono }}</p>
+                        <h3 class="cv7-proj-title">Sin proyectos</h3>
+                        <p class="cv7-proj-desc">Añade proyectos a tu portafolio.</p>
                     </div>
                 @endforelse
             </div>
-            <div class="cv7-footer">
-                Portafolio personal de {{ strtolower($r_user?->profesion ?? 'profesional') }}
+            <div class="cv7-footer" id="t7-footer">
+                {{ $r_pf_activo?->nombre ?? 'Portafolio' }} — Portafolio
             </div>
         </div>
     </div>
@@ -717,40 +716,32 @@
     <div class="cv-container cv-template-view landscape-layout" id="cv-template-8">
         <div class="cv8-left">
             <div class="cv8-photo-container">
-                <img src="{{ $fotoCV ?? $fotoFallback }}" alt="Foto" class="cv8-photo">
+                <img src="{{ $r_pf_activo?->logo_url ?? $fotoCV ?? $fotoFallback }}" alt="Foto" class="cv8-photo" id="t8-logo">
             </div>
-            <h1 class="cv8-name">{{ $r_user?->nombre }}<br>{{ $r_user?->apellido }}</h1>
-            <p class="cv8-bio">Hola, soy {{ $r_user?->profesion ?? 'Profesional' }}</p>
+            <h1 class="cv8-name" id="t8-name">{{ $r_pf_activo?->nombre ?? 'Portafolio' }}</h1>
+            <p class="cv8-bio" id="t8-desc">{{ $r_pf_activo?->descripcion ?? 'Descripción de mi portafolio' }}</p>
             <div class="cv8-ribbon-tail"></div>
         </div>
         <div class="cv8-right">
             <div class="cv8-header">
-                <h2>Portafolio personal de {{ strtolower($r_user?->profesion ?? 'profesional') }}</h2>
+                <h2 id="t8-header-name">{{ $r_pf_activo?->nombre ?? 'Portafolio' }}</h2>
             </div>
-            <div class="cv8-main-title">RESUMEN</div>
+            <div class="cv8-main-title">PROYECTOS DESTACADOS</div>
             <div class="cv8-timeline-container">
-                <div class="cv8-col">
-                    <h3 class="cv8-col-title"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg> EDUCACIÓN</h3>
-                    <div class="cv8-timeline">
-                        @foreach($r_form->take(2) as $form)
+                <div class="cv8-col" style="width: 100%">
+                    <div class="cv8-timeline" id="t8-projects">
+                        @forelse($r_proyectos as $proy)
                         <div class="cv8-time-item">
-                            <div class="cv8-time-date">{{ $form->fecha_inicio?->format('M Y') }} - {{ $form->actual ? 'Presente' : $form->fecha_fin?->format('M Y') }}</div>
-                            <div class="cv8-time-title">{{ $form->institucion }}</div>
-                            <div class="cv8-time-desc">{{ $form->titulo }}</div>
+                            <div class="cv8-time-date">{{ $proy->deploy_url || $proy->repositorio_url ? 'Público' : 'Destacado' }}</div>
+                            <div class="cv8-time-title">{{ $proy->nombre }}</div>
+                            <div class="cv8-time-desc">{{ $proy->descripcion }}</div>
                         </div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="cv8-col">
-                    <h3 class="cv8-col-title"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> EXPERIENCIA</h3>
-                    <div class="cv8-timeline">
-                        @foreach($r_exp->take(2) as $exp)
+                        @empty
                         <div class="cv8-time-item">
-                            <div class="cv8-time-date">{{ $exp->fecha_inicio?->format('M Y') }} - {{ $exp->actual ? 'Presente' : $exp->fecha_fin?->format('M Y') }}</div>
-                            <div class="cv8-time-title">{{ $exp->empresa }}</div>
-                            <div class="cv8-time-desc">{{ $exp->cargo }}</div>
+                            <div class="cv8-time-title">Sin proyectos</div>
+                            <div class="cv8-time-desc">Añade proyectos a tu portafolio.</div>
                         </div>
-                        @endforeach
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -761,37 +752,36 @@
     <div class="cv-container cv-template-view landscape-layout" id="cv-template-9">
         <div class="cv9-top">
             <div class="cv9-top-text">
-                Portafolio personal de<br>
-                {{ $r_user?->profesion ?? 'Profesional' }}
+                Portafolio de proyectos<br>
+                <span id="t9-name" style="font-weight:700;">{{ $r_pf_activo?->nombre ?? 'Mi Portafolio' }}</span>
             </div>
             <div class="cv9-photo-wrapper">
-                <img src="{{ $fotoCV ?? $fotoFallback }}" alt="Foto" class="cv9-photo">
+                <img src="{{ $r_pf_activo?->logo_url ?? $fotoCV ?? $fotoFallback }}" alt="Foto" class="cv9-photo" id="t9-logo">
             </div>
         </div>
         <div class="cv9-bottom">
             <div class="cv9-bottom-left">
                 <div class="cv9-contact">
-                    <div class="cv9-contact-row"><span class="cv9-label">Nacimiento :</span> <span class="cv9-val">{{ $r_user?->fecha_nacimiento ?? 'N/A' }}</span></div>
-                    <div class="cv9-contact-row"><span class="cv9-label">Dirección :</span> <span class="cv9-val">{{ $r_user?->direccion ?? 'N/A' }}</span></div>
-                    <div class="cv9-contact-row"><span class="cv9-label">Teléfono :</span> <span class="cv9-val">{{ $r_user?->telefono ?? 'N/A' }}</span></div>
-                    <div class="cv9-contact-row"><span class="cv9-label">Correo :</span> <span class="cv9-val">{{ $r_user?->email ?? 'N/A' }}</span></div>
+                    <div class="cv9-contact-row"><span class="cv9-label">Descripción:</span></div>
+                    <div class="cv9-contact-row" style="margin-top:10px;"><span class="cv9-val" id="t9-desc" style="white-space:normal;line-height:1.4;">{{ $r_pf_activo?->descripcion ?? 'Descripción de mi portafolio' }}</span></div>
+                    <div class="cv9-contact-row" style="margin-top:20px;"><span class="cv9-label">Autor:</span></div>
+                    <div class="cv9-contact-row"><span class="cv9-val">{{ $r_user?->nombre }} {{ $r_user?->apellido }}</span></div>
                 </div>
             </div>
             <div class="cv9-bottom-right">
                 <div class="cv9-name-box">
-                    <h1 class="cv9-name">{{ $r_user?->nombre }} {{ $r_user?->apellido }}</h1>
-                    <h2 class="cv9-role">{{ $r_user?->profesion ?? 'Profesional' }}</h2>
+                    <h1 class="cv9-name">Proyectos</h1>
                 </div>
-                <div class="cv9-projects">
-                    @forelse($r_proyectos->take(2) as $proy)
+                <div class="cv9-projects" id="t9-projects">
+                    @forelse($r_proyectos as $proy)
                         <div class="cv9-project">
                             <h3 class="cv9-proj-title">{{ $proy->nombre }}</h3>
                             <p class="cv9-proj-desc">{{ $proy->descripcion }}</p>
                         </div>
                     @empty
                         <div class="cv9-project">
-                            <h3 class="cv9-proj-title">Acerca de mi</h3>
-                            <p class="cv9-proj-desc">{{ Str::limit($r_user?->biografia ?? 'Profesional dedicado a entregar resultados.', 150) }}</p>
+                            <h3 class="cv9-proj-title">Sin proyectos</h3>
+                            <p class="cv9-proj-desc">Añade proyectos a tu portafolio.</p>
                         </div>
                     @endforelse
                 </div>
@@ -803,68 +793,34 @@
     <div class="cv-container cv-template-view landscape-layout" id="cv-template-10">
         <div class="cv10-col-left">
             <div class="cv10-photo-wrap">
-                <img src="{{ $fotoCV ?? $fotoFallback }}" alt="Foto" class="cv10-photo">
+                <img src="{{ $r_pf_activo?->logo_url ?? $fotoCV ?? $fotoFallback }}" alt="Foto" class="cv10-photo" id="t10-logo">
             </div>
-            <h1 class="cv10-name">{{ $r_user?->nombre }} {{ $r_user?->apellido }}</h1>
-            <div class="cv10-contact">
-                <div class="cv10-contact-item">
-                    <div class="cv10-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
-                    <span>{{ $r_user?->email }}</span>
-                </div>
-                <div class="cv10-contact-item">
-                    <div class="cv10-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
-                    <span>{{ $r_user?->telefono }}</span>
-                </div>
+            <h1 class="cv10-name" id="t10-name">{{ $r_pf_activo?->nombre ?? 'Mi Portafolio' }}</h1>
+            <p style="font-size:12px; color:var(--muted); text-align:center; padding: 0 15px;" id="t10-desc">{{ $r_pf_activo?->descripcion ?? 'Descripción de mi portafolio' }}</p>
+        </div>
+        <div class="cv10-col-mid" style="width:45%">
+            <h2 class="cv10-title">Proyectos <br><small>Destacados</small></h2>
+            <div class="cv10-timeline" id="t10-projects">
+                @forelse($r_proyectos as $proy)
+                    <div class="cv10-item">
+                        <h3 class="cv10-item-title">{{ $proy->nombre }}</h3>
+                        <p class="cv10-item-desc">{{ $proy->descripcion }}</p>
+                    </div>
+                @empty
+                    <div class="cv10-item">
+                        <h3 class="cv10-item-title">Sin proyectos</h3>
+                        <p class="cv10-item-desc">Añade proyectos a tu portafolio.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
-        <div class="cv10-col-mid">
-            <h2 class="cv10-title">Experiencia <br><small>laboral</small></h2>
-            <div class="cv10-timeline">
-                @foreach($r_exp->take(3) as $exp)
-                    <div class="cv10-item">
-                        <h3 class="cv10-item-title">{{ $exp->cargo }}</h3>
-                        <p class="cv10-item-sub">{{ $exp->empresa }}</p>
-                        <p class="cv10-item-date">{{ $exp->fecha_inicio?->format('Y') }} - {{ $exp->actual ? 'Presente' : $exp->fecha_fin?->format('Y') }}</p>
-                        <p class="cv10-item-desc">{{ Str::limit($exp->descripcion, 60) }}</p>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-        <div class="cv10-col-right">
-            <h2 class="cv10-title">Educación</h2>
-            <div class="cv10-timeline cv10-timeline-alt">
-                @foreach($r_form->take(3) as $form)
-                    <div class="cv10-item">
-                        <h3 class="cv10-item-title">{{ $form->titulo }}</h3>
-                        <p class="cv10-item-sub">{{ $form->institucion }}</p>
-                        <p class="cv10-item-date">{{ $form->fecha_fin?->format('Y') ?? 'Presente' }}</p>
-                    </div>
-                @endforeach
-            </div>
-            
-            @if($r_cert->count() > 0 || count($r_habF) > 0)
+        <div class="cv10-col-right" style="width:30%">
+            <h2 class="cv10-title">Autor</h2>
             <div class="cv10-box">
-                <h3 class="cv10-box-title">Otros</h3>
-                <ul class="cv10-list">
-                    @foreach($r_cert->take(2) as $cert)
-                        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> {{ $cert->nombre }}</li>
-                    @endforeach
-                    @foreach($r_habF->take(2) as $hab)
-                        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> {{ $hab->nombre }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
-            <div class="cv10-box">
-                <h3 class="cv10-box-title">Idiomas</h3>
-                <ul class="cv10-list">
-                    @forelse($r_user?->idiomas ?? [] as $idioma)
-                        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> {{ $idioma }}</li>
-                    @empty
-                        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Español Nativo</li>
-                        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Inglés Intermedio</li>
-                    @endforelse
+                <h3 class="cv10-box-title">{{ $r_user?->nombre }}</h3>
+                <ul class="cv10-list" style="word-break: break-word;">
+                    <li>{{ $r_user?->profesion }}</li>
+                    <li>{{ $r_user?->email }}</li>
                 </ul>
             </div>
         </div>
