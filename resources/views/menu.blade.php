@@ -17,26 +17,27 @@
     <div class="body-row">
 
         {{-- ══ SIDEBAR ══ --}}
-        <aside>
+        <aside id="main-sidebar">
             <div class="sb-top">
                 <div class="sb-label">{{ __('app.menu.menu_principal') }}</div>
+                
+                <button class="sb-close-btn" onclick="toggleSidebar()">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
 
-                <button id="btn-menu" class="sb-item active" onclick="showView('menu')">
+                <button id="btn-menu" class="sb-item active" onclick="showView('menu'); if(window.innerWidth <= 992) toggleSidebar();">
                     <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9"/><rect x="13" y="2" width="9" height="9"/><rect x="2" y="13" width="9" height="9"/><rect x="13" y="13" width="9" height="9"/></svg>
                     <span>{{ __('app.menu.mis_portafolios') }}</span>
                 </button>
 
-                <a href="{{ route('academico') }}" class="sb-item {{ request()->routeIs('academico') ? 'active' : '' }}">
-                    <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                    <span>{{ __('app.menu.academico') }}</span>
-                </a>
 
-                <button id="btn-reportes" class="sb-item" onclick="showView('reportes')">
+
+                <button id="btn-reportes" class="sb-item" onclick="showView('reportes'); if(window.innerWidth <= 992) toggleSidebar();">
                     <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                     <span>{{ __('app.menu.reportes') }}</span>
                 </button>
 
-                <button id="btn-perfil" class="sb-item" onclick="showView('perfil')">
+                <button id="btn-perfil" class="sb-item" onclick="showView('perfil'); if(window.innerWidth <= 992) toggleSidebar();">
                     <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     <span>{{ __('app.menu.mi_perfil') }}</span>
                 </button>
@@ -91,8 +92,10 @@
                  Calendario → _calendario_menu (HTML + JS + modal)
                  Notificaciones dinámicas → _notificaciones_menu (solo JS)
             ══ --}}
-            <div class="rpanel">
-
+            <div id="right-panel" class="rpanel">
+                <button class="rp-close-btn" onclick="toggleRpanel()">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
                 @include('_calendario_menu')
 
                 {{-- Notificaciones estáticas del sistema --}}
@@ -249,13 +252,13 @@
     }
 
 
-    /* ── Menú de usuario (navbar) ── */
     function toggleNavMenu() {
         const menu = document.getElementById('navUserMenu');
         menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
     }
     function cerrarNavMenu() {
-        document.getElementById('navUserMenu').style.display = 'none';
+        const menu = document.getElementById('navUserMenu');
+        if(menu) menu.style.display = 'none';
     }
     document.addEventListener('click', function(e) {
         const menu = document.getElementById('navUserMenu');
@@ -264,6 +267,14 @@
             cerrarNavMenu();
         }
     });
+
+    /* ── Toggles Responsive ── */
+    function toggleSidebar() {
+        document.getElementById('main-sidebar').classList.toggle('show');
+    }
+    function toggleRpanel() {
+        document.getElementById('right-panel').classList.toggle('show');
+    }
 </script>
 
 {{-- ══ TRADUCCIONES PARA JS ══ --}}

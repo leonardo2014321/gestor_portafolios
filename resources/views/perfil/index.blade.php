@@ -158,11 +158,6 @@
         footer p{font-size:12px;color:#5a7fa0;display:flex;align-items:center;gap:6px;margin:0}
         footer b{color:#7a9cc0}
         @media(max-width:992px){
-            aside{width:78px}
-            .sb-item span,.sb-uname,.sb-uid,.btn-logout span{display:none}
-            .sb-item{justify-content:center;padding:13px 10px}
-            .sb-user{justify-content:center}
-            .btn-logout{justify-content:center}
             .profile-grid{grid-template-columns:1fr}
             .form-row{grid-template-columns:1fr}
         }
