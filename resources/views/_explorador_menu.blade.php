@@ -99,7 +99,7 @@
                         {!! $expIcon['svg'] !!}
                     </svg>
                 </span>
-                {{ $expCat->nombre }}
+               {{ $expCat->nombre_traducido }}
             </button>
             @endforeach
  
