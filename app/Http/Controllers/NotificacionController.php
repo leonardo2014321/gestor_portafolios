@@ -71,38 +71,35 @@ class NotificacionController extends Controller
     {
         $user = Auth::user();
 
-        $notificaciones = Notificacion::with('creadoPor')
-            ->where(function ($q) use ($user) {
-                $q->where('tipo_envio', 'individual')
-                  ->where('destinatario_id', $user->id);
-            })
-            ->orWhere('tipo_envio', 'todos')
-            ->orWhere(function ($q) use ($user) {
-                $q->where('tipo_envio', 'rol')
-                  ->where(function ($q2) use ($user) {
-                      if ($user->es_admin) $q2->whereNotNull('id');
-                      else $q2->whereNull('id');
-                  });
-            })
-            ->orderByDesc('created_at')
-            ->get()
-            ->map(function ($n) {
-                $esContacto = str_starts_with($n->titulo, '[Usuario] ');
-                return [
-                    'id'          => $n->id,
-                    'titulo'      => $esContacto
-                                        ? substr($n->titulo, strlen('[Usuario] '))
-                                        : $n->titulo,
-                    'mensaje'     => $n->mensaje,
-                    'tipo_envio'  => $n->tipo_envio,
-                    'leida'       => $n->leida,
-                    'created_at'  => $n->created_at,
-                    'remitente'   => $esContacto && $n->creadoPor
-                                        ? $n->creadoPor->nombre . ' ' . $n->creadoPor->apellido
-                                        : null,
-                    'es_contacto' => $esContacto,
-                ];
-            });
+        if ($user->es_admin) {
+            // El admin SOLO ve los mensajes de contacto que
+            // los usuarios le enviaron directamente a él.
+            // No ve las notificaciones que él mismo mandó.
+            $notificaciones = Notificacion::with('creadoPor')
+                ->where('tipo_envio', 'individual')
+                ->where('destinatario_id', $user->id)
+                ->where('creado_por', '!=', $user->id) // excluir las suyas propias
+                ->orderByDesc('created_at')
+                ->get()
+                ->map(fn($n) => $this->mapNotif($n));
+        } else {
+            // El usuario normal ve todo lo que le corresponde
+            $notificaciones = Notificacion::with('creadoPor')
+                ->where(function ($q) use ($user) {
+                    $q->where('tipo_envio', 'individual')
+                      ->where('destinatario_id', $user->id);
+                })
+                ->orWhere('tipo_envio', 'todos')
+                ->orWhere(function ($q) use ($user) {
+                    $q->where('tipo_envio', 'rol')
+                      ->where(function ($q2) use ($user) {
+                          $q2->whereNull('id'); // usuarios normales no tienen rol admin
+                      });
+                })
+                ->orderByDesc('created_at')
+                ->get()
+                ->map(fn($n) => $this->mapNotif($n));
+        }
 
         $noLeidas = $notificaciones->where('leida', false)->count();
 
@@ -110,6 +107,26 @@ class NotificacionController extends Controller
             'notificaciones' => $notificaciones,
             'no_leidas'      => $noLeidas,
         ]);
+    }
+
+    // ── Helper: formatear notificación para la campanita ─────
+    private function mapNotif(Notificacion $n): array
+    {
+        $esContacto = str_starts_with($n->titulo, '[Usuario] ');
+        return [
+            'id'          => $n->id,
+            'titulo'      => $esContacto
+                                ? substr($n->titulo, strlen('[Usuario] '))
+                                : $n->titulo,
+            'mensaje'     => $n->mensaje,
+            'tipo_envio'  => $n->tipo_envio,
+            'leida'       => $n->leida,
+            'created_at'  => $n->created_at,
+            'remitente'   => $esContacto && $n->creadoPor
+                                ? $n->creadoPor->nombre . ' ' . $n->creadoPor->apellido
+                                : null,
+            'es_contacto' => $esContacto,
+        ];
     }
 
     // ── Marcar notificación como leída ───────────────────────
