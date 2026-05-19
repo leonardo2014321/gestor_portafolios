@@ -524,6 +524,13 @@ return [
         'seccion_archivos'           => 'Attachments',
         'seccion_info_pf'            => 'Portfolio information',
         'seccion_banner'             => 'Banner',
+        'seccion_categoria'          => 'Category',
+        'categoria_placeholder'      => 'No category',
+        'cat_tecnologia'             => 'Technology',
+        'cat_creativos'              => 'Creative',
+        'cat_negocios'               => 'Business',
+        'cat_salud'                  => 'Health',
+        'cat_educacion'              => 'Education',
         'seccion_logo'               => 'Logo',
         'opcional'                   => 'Optional',
 

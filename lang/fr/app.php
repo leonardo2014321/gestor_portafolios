@@ -525,6 +525,13 @@ return [
         'seccion_archivos'           => 'Pièces jointes',
         'seccion_info_pf'            => 'Informations du portfolio',
         'seccion_banner'             => 'Bannière',
+        'seccion_categoria'          => 'Catégorie',
+        'categoria_placeholder'      => 'Sans catégorie',
+        'cat_tecnologia'             => 'Technologie',
+        'cat_creativos'              => 'Créatifs',
+        'cat_negocios'               => 'Affaires',
+        'cat_salud'                  => 'Santé',
+        'cat_educacion'              => 'Éducation',
         'seccion_logo'               => 'Logo',
         'opcional'                   => 'Facultatif',
 

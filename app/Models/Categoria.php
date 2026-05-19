@@ -6,18 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Categoria extends Model
 {
-    public $timestamps = false;
     protected $table = 'categorias';
-    
-    // Agregar nombre_en y nombre_fr al fillable
-    protected $fillable = ['slug', 'nombre', 'nombre_en', 'nombre_fr', 'activa', 'orden'];
+    public $timestamps = false;
+
+    protected $fillable = ['slug', 'nombre', 'nombre_en', 'nombre_fr', 'icono', 'activa', 'orden'];
 
     public function portafolios()
     {
-        return $this->hasMany(Portafolio::class);
+        return $this->hasMany(Portafolio::class, 'categoria_id');
     }
 
-    // Agregar el accessor
     public function getNombreTraducidoAttribute(): string
     {
         $locale = app()->getLocale();
