@@ -458,211 +458,211 @@
 {{-- ══ VISTA: INICIO ══ --}}
 <div id="view-inicio" class="spa-view active">
 
-    {{-- ─── HERO ─── --}}
-    <section class="home-hero-section">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center px-6 md:px-10">
-            <div>
+{{-- ─── HERO ─── --}}
+<section class="home-hero-section">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center px-6 md:px-10">
+        <div>
 
-                <h2 class="text-4xl md:text-[3.4rem] font-bold text-[#0f172a] leading-[1.1] mb-5"
-                    style="font-family:'Plus Jakarta Sans',sans-serif;">
-                    Tu Portafolio,<br>
-                    Tu Futuro.<br>
-                    <span class="hero-title-glow">Sin Límites.</span>
-                </h2>
+            <h2 class="text-4xl md:text-[3.4rem] font-bold text-[#0f172a] leading-[1.1] mb-5"
+                style="font-family:'Plus Jakarta Sans',sans-serif;">
+                {{ __('app.home.hero_titulo_1') }}<br>
+                {{ __('app.home.hero_titulo_2') }}<br>
+                <span class="hero-title-glow">{{ __('app.home.hero_titulo_3') }}</span>
+            </h2>
 
-                <p class="text-gray-500 text-base leading-relaxed mb-7"
-                   style="font-family:'DM Sans',sans-serif; max-width:430px;">
-                    Crea tu perfil, publica portafolios y sé descubierto por reclutadores y colaboradores. Todo en un solo lugar.
-                </p>
+            <p class="text-gray-500 text-base leading-relaxed mb-7"
+               style="font-family:'DM Sans',sans-serif; max-width:430px;">
+                {{ __('app.home.hero_subtitulo') }}
+            </p>
 
-                <div class="flex flex-col sm:flex-row gap-3">
-                    @auth
-                        @if(auth()->user()->es_admin)
-                            <a href="{{ route('admin') }}" class="hero-cta-primary">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
-                                Panel de control
-                            </a>
-                        @else
-                            <a href="{{ route('menu') }}" class="hero-cta-primary">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                                Mi perfil
-                            </a>
-                        @endif
+            <div class="flex flex-col sm:flex-row gap-3">
+                @auth
+                    @if(auth()->user()->es_admin)
+                        <a href="{{ route('admin') }}" class="hero-cta-primary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+                            {{ __('app.home.btn_panel_control') }}
+                        </a>
                     @else
-                        <button id="openLoginModalHero" class="hero-cta-primary">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-                            Empezar gratis
-                        </button>
-                    @endauth
-
-                    <a href="#" onclick="spaNav('portafolios'); return false;" class="hero-cta-secondary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                        Ver portafolios
-                    </a>
-                </div>
-
-                <div class="hero-tags">
-                    <span style="font-family:'DM Sans',sans-serif;font-size:11px;color:#94a3b8;font-weight:600;">Explorar →</span>
-                    <button class="hero-tag" onclick="spaNav('caracteristicas')">
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                        Características
+                        <a href="{{ route('menu') }}" class="hero-cta-primary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            {{ __('app.home.btn_mi_perfil') }}
+                        </a>
+                    @endif
+                @else
+                    <button id="openLoginModalHero" class="hero-cta-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                        {{ __('app.home.btn_empezar_gratis') }}
                     </button>
-                    <button class="hero-tag" onclick="spaNav('portafolios')"
-                            style="background:#f0f9ff;border-color:#bae6fd;color:#0284c7;">
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                        Portafolios
-                    </button>
-                    <button class="hero-tag" onclick="spaNav('explorador')"
-                            style="background:#fdf2f8;border-color:#fbcfe8;color:#db2777;">
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                        Explorador
-                    </button>
-                </div>
-            </div>
+                @endauth
 
-            <div class="flex justify-center md:justify-end mt-8 md:mt-0">
-                <img src="{{ asset('images/imagen-hero.jpeg') }}"
-                     class="hero-img w-full max-w-sm md:max-w-[520px]"
-                     alt="SansiFolios hero">
-            </div>
-        </div>
-    </section>
-
-    {{-- ─── BENTO: características reales de la plataforma ─── --}}
-    <section class="bento-section">
-        <div class="bento-orb-center"></div>
-        <div class="bento-inner">
-
-            <div class="bento-header">
-                <div class="bento-eyebrow">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                    Todo lo que necesitas
-                </div>
-                <h3 class="bento-title">Tu portafolio profesional,<br>completo desde el primer día</h3>
-                <p class="bento-sub">Perfil · Portafolios · Explorador · Multiidioma — diseñado en SansiFolios</p>
-            </div>
-
-            <div class="bento-grid">
-
-                {{-- ── Slot 1 (4col): Perfil profesional ── --}}
-                <div class="bc bc-slot-1 bc-rose">
-                    <div class="bc-ico i-rose">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    </div>
-                    <div class="bc-lbl">Tu perfil</div>
-                    <div class="bc-ttl">Perfil profesional completo</div>
-                    <div class="bc-dsc">Nombre, profesión, biografía y foto en una URL única que puedes compartir en cualquier red social. Visible públicamente al instante.</div>
-                    <div class="bc-subcards">
-                        <div class="bc-sub">
-                            <div class="bc-sub-t">Experiencia laboral</div>
-                            <div class="bc-sub-d">Empresa, cargo y fechas. Marca si es tu trabajo actual — aparece destacada.</div>
-                        </div>
-                        <div class="bc-sub">
-                            <div class="bc-sub-t accent-rose">Formación académica</div>
-                            <div class="bc-sub-d">Institución, título y nivel. Compatible con estudios en curso.</div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- ── Slot 2 (2col): Habilidades ── --}}
-                <div class="bc bc-slot-2 bc-violet">
-                    <div class="bc-ico i-violet">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
-                    </div>
-                    <div class="bc-lbl">Capacidades</div>
-                    <div class="bc-ttl">Habilidades y certificaciones</div>
-                    <div class="bc-dsc">Nivel fuerte o en desarrollo. Un badge especial destaca tus certificaciones en el explorador de talento.</div>
-                    <div class="bc-tags">
-                        <span class="bc-tag">Nivel</span>
-                        <span class="bc-tag">Badge</span>
-                        <span class="bc-tag">Explorador</span>
-                    </div>
-                </div>
-
-                {{-- ── Slot 3 (2col): Portafolios ── --}}
-                <div class="bc bc-slot-3 bc-sky">
-                    <div class="bc-ico i-sky">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                    </div>
-                    <div class="bc-lbl">Proyectos</div>
-                    <div class="bc-ttl">Portafolios de proyectos</div>
-                    <div class="bc-dsc">Nombre, banner, logo y archivos adjuntos. URL de repositorio y deploy por proyecto. Exportable a PDF.</div>
-                    <div class="bc-tags">
-                        <span class="bc-tag">Borrador</span>
-                        <span class="bc-tag">Publicado</span>
-                        <span class="bc-tag">PDF</span>
-                    </div>
-                </div>
-
-                {{-- ── Slot 4 (2col): Redes ── --}}
-                <div class="bc bc-slot-4 bc-teal">
-                    <div class="bc-ico i-teal">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                    </div>
-                    <div class="bc-lbl">Visibilidad</div>
-                    <div class="bc-ttl">Redes y enlace público</div>
-                    <div class="bc-dsc">Vincula GitHub, LinkedIn, Twitter e Instagram. Los íconos aparecen en tu tarjeta del explorador.</div>
-                </div>
-
-                {{-- ── Slot 5 (2col): Multiidioma ── --}}
-                <div class="bc bc-slot-5 bc-amber">
-                    <div class="bc-ico i-amber">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                    </div>
-                    <div class="bc-lbl">Idioma</div>
-                    <div class="bc-ttl">Español · English · Français</div>
-                    <div class="bc-dsc">Cambia el idioma desde cualquier pantalla. Toda la interfaz se adapta al instante.</div>
-                </div>
-
-                {{-- ── Slot 6 (2col): Cuenta segura ── --}}
-                <div class="bc bc-slot-6 bc-emerald">
-                    <div class="bc-ico i-emerald">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    </div>
-                    <div class="bc-lbl">Acceso</div>
-                    <div class="bc-ttl">Cuenta segura</div>
-                    <div class="bc-dsc">Registro con email verificado o Google OAuth. Recuperación de contraseña con token seguro enviado al correo.</div>
-                    <div class="bc-tags">
-                        <span class="bc-tag">Google OAuth</span>
-                        <span class="bc-tag">Verificación</span>
-                    </div>
-                </div>
-
-                {{-- ── Slot 7 (4col): Explorador de talento ── --}}
-                <div class="bc bc-slot-7 bc-indigo">
-                    <div class="bc-row">
-                        <div>
-                            <div class="bc-ico i-indigo" style="margin-bottom:.8rem;">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                            </div>
-                            <div class="bc-lbl">Descubrimiento</div>
-                            <div class="bc-ttl">Explorador de talento</div>
-                            <div class="bc-dsc">Filtra por área (tecnología, creativos, salud, negocios, educación) y capacidad. Búsqueda en tiempo real por nombre, profesión o habilidades — sin recargar la página.</div>
-                        </div>
-                        <div class="bc-stats">
-                            <div class="bc-stat">
-                                <div class="bc-stat-n">5+</div>
-                                <div class="bc-stat-l">Áreas</div>
-                            </div>
-                            <div class="bc-stat">
-                                <div class="bc-stat-n">⚡</div>
-                                <div class="bc-stat-l">Tiempo real</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="bento-cta">
-                <a href="#" onclick="spaNav('caracteristicas'); return false;" class="bento-cta-btn">
-                    Ver todas las características
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <a href="#" onclick="spaNav('portafolios'); return false;" class="hero-cta-secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    {{ __('app.home.btn_ver_portafolios') }}
                 </a>
             </div>
 
+            <div class="hero-tags">
+                <span style="font-family:'DM Sans',sans-serif;font-size:11px;color:#94a3b8;font-weight:600;">{{ __('app.home.explorar_label') }}</span>
+                <button class="hero-tag" onclick="spaNav('caracteristicas')">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    {{ __('app.home.tag_caracteristicas') }}
+                </button>
+                <button class="hero-tag" onclick="spaNav('portafolios')"
+                        style="background:#f0f9ff;border-color:#bae6fd;color:#0284c7;">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    {{ __('app.home.tag_portafolios') }}
+                </button>
+                <button class="hero-tag" onclick="spaNav('explorador')"
+                        style="background:#fdf2f8;border-color:#fbcfe8;color:#db2777;">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    {{ __('app.home.tag_explorador') }}
+                </button>
+            </div>
         </div>
-    </section>
+
+        <div class="flex justify-center md:justify-end mt-8 md:mt-0">
+            <img src="{{ asset('images/imagen-hero.jpeg') }}"
+                 class="hero-img w-full max-w-sm md:max-w-[520px]"
+                 alt="SansiFolios hero">
+        </div>
+    </div>
+</section>
+
+{{-- ─── BENTO ─── --}}
+<section class="bento-section">
+    <div class="bento-orb-center"></div>
+    <div class="bento-inner">
+
+        <div class="bento-header">
+            <div class="bento-eyebrow">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                {{ __('app.home.bento_eyebrow') }}
+            </div>
+            <h3 class="bento-title">{!! __('app.home.bento_titulo') !!}</h3>
+            <p class="bento-sub">{{ __('app.home.bento_sub') }}</p>
+        </div>
+
+        <div class="bento-grid">
+
+            {{-- Slot 1: Perfil profesional --}}
+            <div class="bc bc-slot-1 bc-rose">
+                <div class="bc-ico i-rose">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div class="bc-lbl">{{ __('app.home.bento_lbl_perfil') }}</div>
+                <div class="bc-ttl">{{ __('app.home.bento_ttl_perfil') }}</div>
+                <div class="bc-dsc">{{ __('app.home.bento_dsc_perfil') }}</div>
+                <div class="bc-subcards">
+                    <div class="bc-sub">
+                        <div class="bc-sub-t">{{ __('app.home.bento_sub_experiencia_t') }}</div>
+                        <div class="bc-sub-d">{{ __('app.home.bento_sub_experiencia_d') }}</div>
+                    </div>
+                    <div class="bc-sub">
+                        <div class="bc-sub-t accent-rose">{{ __('app.home.bento_sub_formacion_t') }}</div>
+                        <div class="bc-sub-d">{{ __('app.home.bento_sub_formacion_d') }}</div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Slot 2: Habilidades --}}
+            <div class="bc bc-slot-2 bc-violet">
+                <div class="bc-ico i-violet">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+                </div>
+                <div class="bc-lbl">{{ __('app.home.bento_lbl_capacidades') }}</div>
+                <div class="bc-ttl">{{ __('app.home.bento_ttl_capacidades') }}</div>
+                <div class="bc-dsc">{{ __('app.home.bento_dsc_capacidades') }}</div>
+                <div class="bc-tags">
+                    <span class="bc-tag">{{ __('app.home.bento_tag_nivel') }}</span>
+                    <span class="bc-tag">{{ __('app.home.bento_tag_badge') }}</span>
+                    <span class="bc-tag">{{ __('app.home.bento_tag_explorador') }}</span>
+                </div>
+            </div>
+
+            {{-- Slot 3: Portafolios --}}
+            <div class="bc bc-slot-3 bc-sky">
+                <div class="bc-ico i-sky">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <div class="bc-lbl">{{ __('app.home.bento_lbl_proyectos') }}</div>
+                <div class="bc-ttl">{{ __('app.home.bento_ttl_proyectos') }}</div>
+                <div class="bc-dsc">{{ __('app.home.bento_dsc_proyectos') }}</div>
+                <div class="bc-tags">
+                    <span class="bc-tag">{{ __('app.home.bento_tag_borrador') }}</span>
+                    <span class="bc-tag">{{ __('app.home.bento_tag_publicado') }}</span>
+                    <span class="bc-tag">{{ __('app.home.bento_tag_pdf') }}</span>
+                </div>
+            </div>
+
+            {{-- Slot 4: Redes --}}
+            <div class="bc bc-slot-4 bc-teal">
+                <div class="bc-ico i-teal">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                </div>
+                <div class="bc-lbl">{{ __('app.home.bento_lbl_visibilidad') }}</div>
+                <div class="bc-ttl">{{ __('app.home.bento_ttl_redes') }}</div>
+                <div class="bc-dsc">{{ __('app.home.bento_dsc_redes') }}</div>
+            </div>
+
+            {{-- Slot 5: Multiidioma --}}
+            <div class="bc bc-slot-5 bc-amber">
+                <div class="bc-ico i-amber">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </div>
+                <div class="bc-lbl">{{ __('app.home.bento_lbl_idioma') }}</div>
+                <div class="bc-ttl">{{ __('app.home.bento_ttl_idioma') }}</div>
+                <div class="bc-dsc">{{ __('app.home.bento_dsc_idioma') }}</div>
+            </div>
+
+            {{-- Slot 6: Cuenta segura --}}
+            <div class="bc bc-slot-6 bc-emerald">
+                <div class="bc-ico i-emerald">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </div>
+                <div class="bc-lbl">{{ __('app.home.bento_lbl_acceso') }}</div>
+                <div class="bc-ttl">{{ __('app.home.bento_ttl_cuenta') }}</div>
+                <div class="bc-dsc">{{ __('app.home.bento_dsc_cuenta') }}</div>
+                <div class="bc-tags">
+                    <span class="bc-tag">{{ __('app.home.bento_tag_google') }}</span>
+                    <span class="bc-tag">{{ __('app.home.bento_tag_verificacion') }}</span>
+                </div>
+            </div>
+
+            {{-- Slot 7: Explorador de talento --}}
+            <div class="bc bc-slot-7 bc-indigo">
+                <div class="bc-row">
+                    <div>
+                        <div class="bc-ico i-indigo" style="margin-bottom:.8rem;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        </div>
+                        <div class="bc-lbl">{{ __('app.home.bento_lbl_descubrimiento') }}</div>
+                        <div class="bc-ttl">{{ __('app.home.bento_ttl_explorador') }}</div>
+                        <div class="bc-dsc">{{ __('app.home.bento_dsc_explorador') }}</div>
+                    </div>
+                    <div class="bc-stats">
+                        <div class="bc-stat">
+                            <div class="bc-stat-n">5+</div>
+                            <div class="bc-stat-l">{{ __('app.home.bento_stat_areas') }}</div>
+                        </div>
+                        <div class="bc-stat">
+                            <div class="bc-stat-n">⚡</div>
+                            <div class="bc-stat-l">{{ __('app.home.bento_stat_tiempo_real') }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bento-cta">
+            <a href="#" onclick="spaNav('caracteristicas'); return false;" class="bento-cta-btn">
+                {{ __('app.home.bento_cta') }}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+        </div>
+
+    </div>
+</section>
 
 </div>{{-- fin #view-inicio --}}
 
@@ -692,7 +692,10 @@
     @include('Auth.registro')
     @include('Auth.recuperar')
 @endguest
-
+{{-- ══ Traducciones para JS ══ --}}
+<script>
+    window.msgCuentaVerificada = "{{ __('app.home.msg_cuenta_verificada') }}";
+</script>
 @guest
 <script>
     const modal       = document.getElementById('loginModal');
@@ -785,7 +788,7 @@
             }
             const msg = document.getElementById('loginMensaje');
             if (msg) {
-                msg.innerHTML = '✔ Cuenta verificada. Ya puedes iniciar sesión.';
+                msg.innerHTML = window.msgCuentaVerificada;
                 msg.className = 'mt-3 text-sm text-green-600';
             }
         }
@@ -812,7 +815,7 @@
             }
             const msg = document.getElementById('loginMensaje');
             if (msg) {
-                msg.innerHTML = '✔ Cuenta verificada. Ya puedes iniciar sesión.';
+                msg.innerHTML = window.msgCuentaVerificada;
                 msg.className = 'mt-3 text-sm text-green-600';
             }
         }

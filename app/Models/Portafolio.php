@@ -8,7 +8,7 @@ class Portafolio extends Model
 {
     protected $table = 'portafolios';
 
-    protected $fillable = ['nombre', 'descripcion', 'repositorio_url', 'estado', 'categoria_id', 'usuario_id', 'banner_ruta', 'logo_ruta'];
+    protected $fillable = ['nombre', 'descripcion', 'repositorio_url', 'estado', 'usuario_id', 'banner_ruta', 'logo_ruta', 'categoria_id'];
 
     protected $appends = ['banner_url', 'logo_url'];
 

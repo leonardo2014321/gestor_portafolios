@@ -17,32 +17,71 @@ return [
         'solo_tus_notif'  => 'Solo ves notificaciones dirigidas a ti',
         'panel_admin'     => 'Panel de control',
     ],
-    'home' => [
-        'hero_linea1'       => 'Tu Portafolio,',
-        'hero_linea2'       => 'Tu Futuro.',
-        'hero_linea3'       => 'Sin Límites.',
-        'hero_desc'         => 'Gestiona tus proyectos, habilidades y experiencia en una sola plataforma profesional.',
-        'ir_dashboard'      => 'Ir al Dashboard →',
-        'empezar'           => 'Empezar Ahora →',
-        'ver_portafolios'   => 'Ver portafolios →',
-        'seccion_titulo'    => 'Todo tu perfil profesional en un solo lugar',
-        'seccion_desc'      => 'Crea, gestiona y comparte tu portafolio digital con proyectos, habilidades y experiencia profesional de forma sencilla.',
-        'card1_titulo'      => 'Creación de Portafolio',
-        'card1_desc'        => 'Construye tu portafolio profesional de forma sencilla y organiza tu información en un solo lugar.',
-        'card1_sub1'        => 'Comparte tu portafolio',
-        'card1_sub1_label'  => 'COMPARTE TU PERFIL',
-        'card1_sub2'        => 'Exportación PDF',
-        'card1_sub2_label'  => 'COMPARTE TU PORTAFOLIO',
-        'card2_titulo'      => 'Gestión de Proyectos',
-        'card2_desc'        => 'Agrega y administra tus proyectos con descripciones, tecnologías y evidencias.',
-        'card2_cta'         => 'ACCEDER A TU CUENTA →',
-        'card3_titulo'      => 'Perfil Profesional',
-        'card3_desc'        => 'Muestra tu información personal, experiencia y habilidades.',
-        'card4_titulo'      => 'Acceso Seguro',
-        'card4_desc'        => 'Sistema de autenticación con registro, inicio de sesión y recuperación de contraseña.',
-        'ir_mi_perfil'      => 'Ir a mi perfil',
-        'ir_panel_control'  => 'Ir a panel de control',
-    ],
+   'home' => [
+    // Hero
+    'hero_titulo_1'           => 'Tu Portafolio,',
+    'hero_titulo_2'           => 'Tu Futuro.',
+    'hero_titulo_3'           => 'Sin Límites.',
+    'hero_subtitulo'          => 'Crea tu perfil, publica portafolios y sé descubierto por reclutadores y colaboradores. Todo en un solo lugar.',
+    'btn_panel_control'       => 'Panel de control',
+    'btn_mi_perfil'           => 'Mi perfil',
+    'btn_empezar_gratis'      => 'Empezar gratis',
+    'btn_ver_portafolios'     => 'Ver portafolios',
+    'explorar_label'          => 'Explorar →',
+    'tag_caracteristicas'     => 'Características',
+    'tag_portafolios'         => 'Portafolios',
+    'tag_explorador'          => 'Explorador',
+    // Bento: cabecera
+    'bento_eyebrow'           => 'Todo lo que necesitas',
+    'bento_titulo'            => 'Tu portafolio profesional,<br>completo desde el primer día',
+    'bento_sub'               => 'Perfil · Portafolios · Explorador · Multiidioma — diseñado en SansiFolios',
+    // Bento: Slot 1 — Perfil
+    'bento_lbl_perfil'        => 'Tu perfil',
+    'bento_ttl_perfil'        => 'Perfil profesional completo',
+    'bento_dsc_perfil'        => 'Nombre, profesión, biografía y foto en una URL única que puedes compartir en cualquier red social. Visible públicamente al instante.',
+    'bento_sub_experiencia_t' => 'Experiencia laboral',
+    'bento_sub_experiencia_d' => 'Empresa, cargo y fechas. Marca si es tu trabajo actual — aparece destacada.',
+    'bento_sub_formacion_t'   => 'Formación académica',
+    'bento_sub_formacion_d'   => 'Institución, título y nivel. Compatible con estudios en curso.',
+    // Bento: Slot 2 — Capacidades
+    'bento_lbl_capacidades'   => 'Capacidades',
+    'bento_ttl_capacidades'   => 'Habilidades y certificaciones',
+    'bento_dsc_capacidades'   => 'Nivel fuerte o en desarrollo. Un badge especial destaca tus certificaciones en el explorador de talento.',
+    'bento_tag_nivel'         => 'Nivel',
+    'bento_tag_badge'         => 'Badge',
+    'bento_tag_explorador'    => 'Explorador',
+    // Bento: Slot 3 — Portafolios
+    'bento_lbl_proyectos'     => 'Proyectos',
+    'bento_ttl_proyectos'     => 'Portafolios de proyectos',
+    'bento_dsc_proyectos'     => 'Nombre, banner, logo y archivos adjuntos. URL de repositorio y deploy por proyecto. Exportable a PDF.',
+    'bento_tag_borrador'      => 'Borrador',
+    'bento_tag_publicado'     => 'Publicado',
+    'bento_tag_pdf'           => 'PDF',
+    // Bento: Slot 4 — Redes
+    'bento_lbl_visibilidad'   => 'Visibilidad',
+    'bento_ttl_redes'         => 'Redes y enlace público',
+    'bento_dsc_redes'         => 'Vincula GitHub, LinkedIn, Twitter e Instagram. Los íconos aparecen en tu tarjeta del explorador.',
+    // Bento: Slot 5 — Idioma
+    'bento_lbl_idioma'        => 'Idioma',
+    'bento_ttl_idioma'        => 'Español · English · Français',
+    'bento_dsc_idioma'        => 'Cambia el idioma desde cualquier pantalla. Toda la interfaz se adapta al instante.',
+    // Bento: Slot 6 — Cuenta
+    'bento_lbl_acceso'        => 'Acceso',
+    'bento_ttl_cuenta'        => 'Cuenta segura',
+    'bento_dsc_cuenta'        => 'Registro con email verificado o Google OAuth. Recuperación de contraseña con token seguro enviado al correo.',
+    'bento_tag_google'        => 'Google OAuth',
+    'bento_tag_verificacion'  => 'Verificación',
+    // Bento: Slot 7 — Explorador
+    'bento_lbl_descubrimiento'=> 'Descubrimiento',
+    'bento_ttl_explorador'    => 'Explorador de talento',
+    'bento_dsc_explorador'    => 'Filtra por área (tecnología, creativos, salud, negocios, educación) y capacidad. Búsqueda en tiempo real por nombre, profesión o habilidades — sin recargar la página.',
+    'bento_stat_areas'        => 'Áreas',
+    'bento_stat_tiempo_real'  => 'Tiempo real',
+    // Bento: CTA
+    'bento_cta'               => 'Ver todas las características',
+    // Mensajes JS
+    'msg_cuenta_verificada'   => '✔ Cuenta verificada. Ya puedes iniciar sesión.',
+],
     'menu' => [
         'titulo'            => 'Sistema de Portafolios',
         'subtitulo'         => 'Gestión institucional de activos digitales – UMSS',
@@ -113,6 +152,8 @@ return [
         'vista_previa'            => 'Vista Previa',
         'ocultar_preview'         => 'Ocultar Preview',
         'preview_label'           => 'Así verán tu perfil terceros',
+        'categoria'        => 'Categoria',
+        'sin_categoria'    => '— Sin Categoria —',
  
         // Alertas generales
         'success_actualizado'     => 'Perfil actualizado correctamente.',
@@ -439,72 +480,54 @@ return [
         'interes_arte'              => 'Arte',
         'interes_deportes'          => 'Deportes',
     ],
-    'explorador' => [
+'explorador' => [
+    // Hero
+    'hero_titulo'               => 'Explora el Talento',
+    'hero_subtitulo'            => 'Descubre profesionales, filtra por área y conecta con el mejor talento.',
+    'buscador_placeholder'      => 'Buscar por nombre, habilidad, cargo...',
+    'badge_talentos'            => 'talentos',
  
-        // Hero
-        'hero_titulo'           => 'Sistema de Portafolios',
-        'hero_subtitulo'        => 'Descubre y conecta con el talento de nuestra comunidad',
+    // Stats
+    'stat_perfiles'             => 'Perfiles',
+    'stat_con_portafolio'       => 'Con portafolio',
+    'stat_areas'                => 'Áreas',
  
-        // Buscador
-        'buscar_placeholder'    => 'Buscar... (Ctrl + K)',
-        'btn_buscar'            => 'Buscar',
+    // Filtros
+    'filtro_area'               => 'Área',
+    'filtro_mostrar'            => 'Mostrar',
+    'filtro_todos'              => 'Todos',
+    'filtro_con_certificaciones'=> 'Con certificaciones',
+    'filtro_con_portafolio'     => 'Con portafolio',
+    'filtro_con_experiencia'    => 'Con experiencia',
+    'aria_filtrar_area'         => 'Filtrar por área',
+    'aria_filtrar_capacidad'    => 'Filtrar por capacidad',
  
-        // Filtros
-        'filtro_todos'          => 'Todos',
-        'filtro_proyectos'      => 'Proyectos',
-        'filtro_perfiles'       => 'Perfiles',
-        'filtro_documentos'     => 'Documentos',
-        'filtro_habilidades'    => 'Habilidades',
+    // Barra de resultados
+    'perfil_encontrado'         => 'perfil encontrado',
+    'perfiles_encontrados'      => 'perfiles encontrados',
  
-        // Barra de resultados
-        'resultados'            => 'Resultados',
-        'resultado'             => 'Resultado',
-        'encontrados'           => 'Encontrados',
-        'encontrado'            => 'Encontrado',
-        'difusion_activa'       => 'DIFUSIÓN: BASE DE DATOS ACTIVA',
+    // Ordenar
+    'sort_relevancia'           => 'Relevancia',
+    'sort_mas_certificaciones'  => 'Más certificaciones',
+    'sort_mas_habilidades'      => 'Más habilidades',
  
-        // Ordenar
-        'ordenar_relevancia'    => 'Ordenar por relevancia',
-        'ordenar_az'            => 'Ordenar: A - Z',
-        'ordenar_za'            => 'Ordenar: Z - A',
-        'orden_relevancia'      => 'Relevancia',
-        'orden_az'              => 'A - Z',
-        'orden_za'              => 'Z - A',
+    // Tarjeta
+    'certificaciones_title'     => 'certificación(es)',
+    'cert_abrev'                => 'cert.',
+    'badge_portafolio'          => 'Portafolio',
+    'ver_perfil'                => 'Ver perfil',
  
-        // Sin resultados
-        'sin_resultados_titulo' => 'No se encontraron resultados',
-        'sin_resultados_desc'   => 'Intenta con otros términos o filtros.',
- 
-        // Historial
-        'busquedas_recientes'   => 'Búsquedas recientes',
-        'limpiar'               => 'Limpiar',
- 
-        // Tooltips de tarjeta
-        'tooltip_guardar'       => 'Guardar',
-        'tooltip_descargar'     => 'Descargar',
- 
-        // Tipos de tarjeta
-        'tipo_proyecto'         => 'PROYECTO',
-        'tipo_habilidad'        => 'HABILIDAD',
-        'tipo_documento'        => 'DOCUMENTO',
-        'tipo_sin_tipo'         => 'S/T',
- 
-        // Fallbacks JS
-        'sin_titulo'            => 'Sin título',
-        'sin_descripcion'       => 'Sin descripción',
- 
-        // Tarjetas de ejemplo (fallback)
-        'empty_proyecto1_titulo' => 'Programa de Optimización Fiscal 2024',
-        'empty_proyecto1_desc'   => 'Iniciativa estratégica para la mejora de flujos de caja institucionales.',
-        'empty_proyecto2_titulo' => 'Programa de Desarrollo Ambiental 2020',
-        'empty_proyecto2_desc'   => 'Iniciativa estratégica para la mejora del desarrollo ambiental.',
-        'empty_habilidad_titulo' => 'Programación en PHP / Symfony',
-        'empty_habilidad_desc'   => 'Capacidad funcional en el desarrollo de frameworks para diseño y sistemas.',
-        'empty_documento_titulo' => 'Protocolos de Seguridad Interna V2',
-        'empty_documento_desc'   => 'Documentación técnica sobre buenas prácticas en encriptación.',
-    ],
+    // Estados vacíos
+    'empty_titulo'              => 'No hay perfiles disponibles',
+    'empty_descripcion'         => 'Todavía no hay usuarios con perfiles publicados.',
+    'empty_filtro_titulo'       => 'Sin resultados',
+    'empty_filtro_descripcion'  => 'Prueba con otro filtro o término de búsqueda.',
+],
     'modales_pf' => [
 
+        'categoria'        => 'Categoria',
+        'sin_categoria'    => '— Sin Categoria —',
+ 
         // ── Títulos y subtítulos de modales ─────────────────────────────
         'modal1_titulo'              => 'Añadir proyecto',
         'modal1_subtitulo'           => 'Selecciona un portafolio y completa los datos del proyecto.',
@@ -632,6 +655,9 @@ return [
         'modal_desactivar_titulo'        => '¿Desactivar cuenta?',
         'modal_desactivar_texto'         => 'El usuario no podrá acceder al sistema hasta que su cuenta sea reactivada por un administrador.',
         'btn_desactivar_ahora'           => 'Desactivar ahora',
+        'modal_activar_titulo'           => '¿Activar cuenta?',
+        'modal_activar_texto'            => 'El usuario recuperará el acceso al sistema de forma inmediata.',
+        'btn_activar_ahora'              => 'Activar ahora',
     
     
         // Sidebar
@@ -1014,4 +1040,98 @@ return [
         'accion_ver_detalles'  => 'Ver Detalles',
         'en_desarrollo'        => 'Funcionalidad en desarrollo',
     ],
+    'portafolios' => [
+    'hero_sub'            => 'Explora portafolios publicados por la comunidad',
+    'buscar_placeholder'  => 'Buscar por nombre, profesión...',
+    'stat_portafolios'    => 'Portafolios',
+    'stat_autores'        => 'Autores',
+    'stat_areas'          => 'Áreas',
+    'filtro_todos'        => 'Todos',
+    'filtro_aria'         => 'Filtrar por categoría',
+    'empty_portafolios'   => 'Aún no hay portafolios publicados.',
+],
+
+'caracteristicas' => [
+    // Hero badges
+    'badge_perfil'               => 'Perfil público',
+    'badge_portafolios'          => 'Portafolios',
+    'badge_explorador'           => 'Explorador',
+    'badge_multiidioma'          => 'Multiidioma',
+    // Sección: Tu perfil
+    'seccion_perfil'             => 'Tu perfil profesional',
+    'perfil_titulo'              => 'Perfil público',
+    'perfil_desc'                => 'Nombre, profesión, biografía y foto visibles en una URL única que puedes compartir en cualquier red.',
+    'experiencia_titulo'         => 'Experiencia laboral',
+    'experiencia_desc'           => 'Empresa, cargo y fechas. Marca si es tu trabajo actual — aparece destacada en el explorador.',
+    'formacion_titulo'           => 'Formación académica',
+    'formacion_desc'             => 'Institución, título, nivel y fechas. Compatible con estudios en curso.',
+    'habilidades_titulo'         => 'Habilidades con nivel',
+    'habilidades_desc'           => 'Fuerte o en desarrollo. Se muestran como etiquetas en tu tarjeta del explorador de talento.',
+    'tag_fuerte'                 => 'Fuerte',
+    'tag_en_desarrollo'          => 'En desarrollo',
+    'certificaciones_titulo'     => 'Certificaciones',
+    'certificaciones_desc'       => 'Nombre, organización y fecha. Un badge especial las destaca en tu perfil y en el explorador.',
+    'redes_titulo'               => 'Redes sociales',
+    'redes_desc'                 => 'Vincula GitHub, LinkedIn, Twitter, Instagram o tu web. Los íconos aparecen en tu tarjeta del explorador.',
+    // Sección: Portafolios
+    'seccion_portafolios'        => 'Portafolios de proyectos',
+    'diseno_titulo'              => 'Diseño del portafolio',
+    'diseno_desc'                => 'Nombre, descripción, banner y logo propios. Cada proyecto puede tener URL de repositorio, deploy y archivos adjuntos.',
+    'tag_banner'                 => 'Banner',
+    'tag_logo'                   => 'Logo',
+    'tag_archivos'               => 'Archivos',
+    'gestion_titulo'             => 'Gestión de portafolios',
+    'gestion_desc'               => 'Crea y gestiona múltiples portafolios. Estado borrador o publicado — solo los publicados aparecen en el explorador.',
+    'tag_borrador'               => 'Borrador',
+    'tag_publicado'              => 'Publicado',
+    'exportacion_desc_completa'  => 'Exporta tu perfil completo en PDF. Los archivos adjuntos por proyecto son descargables desde el portafolio público.',
+    'tag_pdf'                    => 'PDF',
+    'tag_adjuntos'               => 'Adjuntos',
+    // Sección: Explorador
+    'seccion_explorador'         => 'Explorador de talento',
+    'filtros_titulo'             => 'Filtros combinables',
+    'filtros_desc'               => 'Por área (tecnología, creativos, negocios, salud) y capacidad a la vez.',
+    'busqueda_titulo'            => 'Búsqueda en tiempo real',
+    'busqueda_desc'              => 'Por nombre, profesión, habilidades o formación. Sin recargar la página.',
+    'ordenamiento_titulo'        => 'Ordenamiento',
+    'ordenamiento_desc'          => 'A→Z, Z→A, más certificaciones o más habilidades. Se combina con filtros activos.',
+    'acceso_titulo'              => 'Acceso directo',
+    'acceso_desc'                => 'Desde cada tarjeta podés ver el perfil completo o ir al portafolio publicado en un clic.',
+    // Sección: Cuenta
+    'seccion_cuenta'             => 'Cuenta y acceso',
+    'registro_titulo'            => 'Registro con email',
+    'registro_desc'              => 'Nombre, apellido, email y contraseña. Incluye verificación de correo.',
+    'google_titulo'              => 'Inicio con Google',
+    'google_desc'                => 'Accede con un clic usando tu cuenta de Google. Sin contraseña adicional.',
+    'recuperacion_titulo'        => 'Recuperación de contraseña',
+    'recuperacion_desc'          => 'Token seguro enviado al correo para restablecer el acceso.',
+    'idiomas_titulo'             => 'Español · English · Français',
+    'idiomas_desc'               => 'Cambia el idioma desde cualquier pantalla. La interfaz se adapta al instante.',
+],
+'perfil_publico' => [
+    // Stats hero
+    'stat_experiencia'       => 'experiencia|experiencias',
+    'stat_habilidades'       => 'habilidades',
+    'stat_portafolio'        => 'portafolio|portafolios',
+    // Botón
+    'btn_contactar'          => 'Contactar',
+    // Secciones
+    'seccion_sobre_mi'       => 'Sobre mí',
+    'seccion_habilidades'    => 'Habilidades',
+    'seccion_certificaciones'=> 'Certificaciones',
+    'seccion_experiencia'    => 'Experiencia',
+    'seccion_formacion'      => 'Formación',
+    'seccion_portafolios'    => 'Portafolios',
+    // Leyendas
+    'leyenda_dominadas'      => 'Dominadas',
+    'leyenda_en_aprendizaje' => 'En aprendizaje',
+    // Experiencia
+    'actualidad'             => 'Actualidad',
+    // Vacíos
+    'empty_habilidades'      => 'Sin habilidades registradas aún.',
+    'empty_certificaciones'  => 'Sin certificaciones registradas.',
+    'empty_experiencia'      => 'Sin experiencia registrada.',
+    'empty_formacion'        => 'Sin formación registrada.',
+],
+
 ];

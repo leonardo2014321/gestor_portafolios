@@ -397,6 +397,15 @@
                     </div>
                     <div class="mp-err" id="epErrDesc">{{ __('app.modales_pf.err_descripcion') }}</div>
                 </div>
+                <div class="mp-field">
+                    <label class="mp-label">{{ __('modales_pf.categoria') }}</label>
+                    <select class="mp-input" id="epCategoria">
+                        <option value="">{{ __('modales_pf.sin_categoria') }}</option>
+                        @foreach(\App\Models\Categoria::where('activa', true)->orderBy('orden')->get() as $cat)
+                            <option value="{{ $cat->id }}">{{ $cat->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
 
             {{-- Categoría --}}
@@ -514,6 +523,15 @@
                         <span id="pfDescCount">0</span>/500
                     </div>
                     <div class="mp-err" id="pfErrDesc">{{ __('app.modales_pf.err_descripcion') }}</div>
+                </div>
+                <div class="mp-field">
+                    <label class="mp-label">Categoría</label>
+                    <select class="mp-input" id="pfCategoria">
+                        <option value="">— Sin categoría —</option>
+                        @foreach(\App\Models\Categoria::where('activa', true)->orderBy('orden')->get() as $cat)
+                            <option value="{{ $cat->id }}">{{ $cat->nombre }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 
@@ -735,7 +753,8 @@
         document.getElementById('epNombre').value   = p.nombre;
         document.getElementById('epDesc').value     = p.descripcion || '';
         document.getElementById('epDescCount').textContent = (p.descripcion || '').length;
-        document.getElementById('epCategoria').value = p.categoria_id || '';
+        const epCatSel = document.getElementById('epCategoria');
+        if (epCatSel) epCatSel.value = p.categoria_id ?? '';
         epBannerFile = null;
         epLogoFile   = null;
         if (p.banner_url) {
@@ -819,6 +838,8 @@
         form.append('estado',      estado);
         form.append('categoria_id', document.getElementById('epCategoria').value || '');
         form.append('_token',      token);
+        const epCat = document.getElementById('epCategoria').value;
+        if (epCat) form.append('categoria_id', epCat);
         if (epBannerFile) form.append('banner', epBannerFile);
         if (epLogoFile)   form.append('logo',   epLogoFile);
         const btnB = document.getElementById('epBtnBorrador');
@@ -947,6 +968,8 @@
             const el = document.getElementById(id); if (el) el.style.display = 'none';
         });
         document.getElementById('pfDescCount').textContent = '0';
+        const pfCatSel = document.getElementById('pfCategoria');
+        if (pfCatSel) pfCatSel.value = '';
         pfQuitarImg('banner');
         pfQuitarImg('logo');
         pfBannerFile = null;
@@ -1022,6 +1045,8 @@
         form.append('estado',      estado);
         form.append('categoria_id', document.getElementById('pfCategoria').value || '');
         form.append('_token',      document.querySelector('meta[name="csrf-token"]').content);
+        const pfCat = document.getElementById('pfCategoria').value;
+        if (pfCat) form.append('categoria_id', pfCat);
         if (pfBannerFile) form.append('banner', pfBannerFile);
         if (pfLogoFile)   form.append('logo',   pfLogoFile);
         const btnB = document.getElementById('pfBtnBorrador');

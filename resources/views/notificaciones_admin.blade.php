@@ -179,20 +179,48 @@
             return;
         }
 
-        box.innerHTML = lista.map(n => `
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--gray2)">
-                <div>
-                    <div style="font-size:13px;font-weight:600;color:var(--text)">${n.titulo}</div>
-                    <div style="font-size:12px;color:var(--muted);margin-top:2px;white-space:pre-wrap">${n.mensaje}</div>
-                    <div style="display:flex;gap:8px;margin-top:6px">
-                        <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:${n.tipo_envio==='todos'?'#dbeafe':n.tipo_envio==='rol'?'#ede9fe':'#d1fae5'};color:${n.tipo_envio==='todos'?'#1e40af':n.tipo_envio==='rol'?'#5b21b6':'#065f46'}">
+        box.innerHTML = lista.map(n => {
+            // Detectar si es un mensaje de contacto enviado por un usuario
+            const esContacto = n.titulo && n.titulo.startsWith('[Usuario]');
+            const tituloMostrar = esContacto ? n.titulo.replace('[Usuario] ', '') : n.titulo;
+
+            // Badge de remitente (quién envió)
+            const remitenteHtml = n.remitente ? `
+                <span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;
+                             font-weight:700;padding:2px 8px;border-radius:999px;
+                             background:${esContacto ? '#fef3c7' : '#f1f5f9'};
+                             color:${esContacto ? '#92400e' : '#475569'}">
+                    ${esContacto ? '✉ ' : ''}${n.remitente}${n.remitente_email ? ' · ' + n.remitente_email : ''}
+                </span>` : '';
+
+            return `
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;
+                        padding:14px 0;border-bottom:1px solid var(--gray2)">
+                <div style="flex:1;min-width:0">
+                    <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+                        ${esContacto ? `<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:#fef3c7;color:#92400e">✉ Contacto de usuario</span>` : ''}
+                        <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;
+                            background:${n.tipo_envio==='todos'?'#dbeafe':n.tipo_envio==='rol'?'#ede9fe':'#d1fae5'};
+                            color:${n.tipo_envio==='todos'?'#1e40af':n.tipo_envio==='rol'?'#5b21b6':'#065f46'}">
                             ${n.tipo_envio==='todos'?'{{ __('app.admin.notif_tag_todos') }}':n.tipo_envio==='rol'?'{{ __('app.admin.notif_tag_admins') }}':'{{ __('app.admin.notif_tag_individual') }}'}
                         </span>
-                        <span style="font-size:11px;color:var(--muted)">${new Date(n.created_at).toLocaleDateString('{{ app()->getLocale() }}-BO',{day:'2-digit',month:'short',year:'numeric'})}</span>
+                    </div>
+                    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px">${tituloMostrar}</div>
+                    <div style="font-size:12px;color:var(--muted);margin-top:2px;white-space:pre-wrap;line-height:1.5">${n.mensaje}</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center">
+                        ${remitenteHtml}
+                        <span style="font-size:11px;color:var(--muted)">
+                            ${new Date(n.created_at).toLocaleDateString('{{ app()->getLocale() }}-BO',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+                        </span>
                     </div>
                 </div>
-                <button onclick="notifEliminar(${n.id},this)" style="background:none;border:none;cursor:pointer;color:#ef4444;font-size:11px;font-weight:600;white-space:nowrap;margin-left:12px">{{ __('app.admin.eliminar') }}</button>
-            </div>`).join('');
+                <button onclick="notifEliminar(${n.id},this)"
+                        style="background:none;border:none;cursor:pointer;color:#ef4444;
+                               font-size:11px;font-weight:600;white-space:nowrap;margin-left:12px;flex-shrink:0">
+                    {{ __('app.admin.eliminar') }}
+                </button>
+            </div>`;
+        }).join('');
     }
 
     // ── Eliminar notificación ────────────────────────────────

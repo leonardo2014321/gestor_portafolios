@@ -14,10 +14,10 @@
             <div class="caract-hero-sub">{{ __('app.menu.caract_subtitulo') }}</div>
         </div>
         <div class="caract-hero-badges">
-            <span class="caract-hbadge caract-hbadge--blue">Perfil público</span>
-            <span class="caract-hbadge caract-hbadge--indigo">Portafolios</span>
-            <span class="caract-hbadge caract-hbadge--pink">Explorador</span>
-            <span class="caract-hbadge caract-hbadge--green">Multiidioma</span>
+            <span class="caract-hbadge caract-hbadge--blue">{{ __('app.caracteristicas.badge_perfil') }}</span>
+            <span class="caract-hbadge caract-hbadge--indigo">{{ __('app.caracteristicas.badge_portafolios') }}</span>
+            <span class="caract-hbadge caract-hbadge--pink">{{ __('app.caracteristicas.badge_explorador') }}</span>
+            <span class="caract-hbadge caract-hbadge--green">{{ __('app.caracteristicas.badge_multiidioma') }}</span>
         </div>
     </div>
 </div>
@@ -25,7 +25,7 @@
 {{-- ══ Sección: Tu perfil ══ --}}
 <div class="caract-section-label">
     <span class="caract-section-dot" style="background:#2563eb;"></span>
-    Tu perfil profesional
+    {{ __('app.caracteristicas.seccion_perfil') }}
 </div>
 <div class="caract-grid caract-grid--4">
 
@@ -33,41 +33,44 @@
         <div class="cc-ico cc-ico--blue">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
-        <div class="cc-title">Perfil público</div>
-        <div class="cc-desc">Nombre, profesión, biografía y foto visibles en una URL única que puedes compartir en cualquier red.</div>
+        <div class="cc-title">{{ __('app.caracteristicas.perfil_titulo') }}</div>
+        <div class="cc-desc">{{ __('app.caracteristicas.perfil_desc') }}</div>
     </div>
 
     <div class="cc cc--purple">
         <div class="cc-ico cc-ico--purple">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
         </div>
-        <div class="cc-title">Experiencia laboral</div>
-        <div class="cc-desc">Empresa, cargo y fechas. Marca si es tu trabajo actual — aparece destacada en el explorador.</div>
+        <div class="cc-title">{{ __('app.caracteristicas.experiencia_titulo') }}</div>
+        <div class="cc-desc">{{ __('app.caracteristicas.experiencia_desc') }}</div>
     </div>
 
     <div class="cc cc--amber">
         <div class="cc-ico cc-ico--amber">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
         </div>
-        <div class="cc-title">Formación académica</div>
-        <div class="cc-desc">Institución, título, nivel y fechas. Compatible con estudios en curso.</div>
+        <div class="cc-title">{{ __('app.caracteristicas.formacion_titulo') }}</div>
+        <div class="cc-desc">{{ __('app.caracteristicas.formacion_desc') }}</div>
     </div>
 
     <div class="cc cc--green">
         <div class="cc-ico cc-ico--green">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         </div>
-        <div class="cc-title">Habilidades con nivel</div>
-        <div class="cc-desc">Fuerte o en desarrollo. Se muestran como etiquetas en tu tarjeta del explorador de talento.</div>
-        <div class="cc-tags"><span class="cc-tag">Fuerte</span><span class="cc-tag">En desarrollo</span></div>
+        <div class="cc-title">{{ __('app.caracteristicas.habilidades_titulo') }}</div>
+        <div class="cc-desc">{{ __('app.caracteristicas.habilidades_desc') }}</div>
+        <div class="cc-tags">
+            <span class="cc-tag">{{ __('app.caracteristicas.tag_fuerte') }}</span>
+            <span class="cc-tag">{{ __('app.caracteristicas.tag_en_desarrollo') }}</span>
+        </div>
     </div>
 
     <div class="cc cc--gold">
         <div class="cc-ico cc-ico--gold">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
         </div>
-        <div class="cc-title">Certificaciones</div>
-        <div class="cc-desc">Nombre, organización y fecha. Un badge especial las destaca en tu perfil y en el explorador.</div>
+        <div class="cc-title">{{ __('app.caracteristicas.certificaciones_titulo') }}</div>
+        <div class="cc-desc">{{ __('app.caracteristicas.certificaciones_desc') }}</div>
         <div class="cc-tags"><span class="cc-tag">Badge</span></div>
     </div>
 
@@ -75,8 +78,8 @@
         <div class="cc-ico cc-ico--pink">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         </div>
-        <div class="cc-title">Redes sociales</div>
-        <div class="cc-desc">Vincula GitHub, LinkedIn, Twitter, Instagram o tu web. Los íconos aparecen en tu tarjeta del explorador.</div>
+        <div class="cc-title">{{ __('app.caracteristicas.redes_titulo') }}</div>
+        <div class="cc-desc">{{ __('app.caracteristicas.redes_desc') }}</div>
     </div>
 
     <div class="cc cc--teal">
@@ -92,7 +95,7 @@
 {{-- ══ Sección: Portafolios ══ --}}
 <div class="caract-section-label" style="margin-top:2.5rem;">
     <span class="caract-section-dot" style="background:#6366f1;"></span>
-    Portafolios de proyectos
+    {{ __('app.caracteristicas.seccion_portafolios') }}
 </div>
 <div class="caract-grid caract-grid--3">
 
@@ -100,18 +103,25 @@
         <div class="cc-ico cc-ico--indigo">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
         </div>
-        <div class="cc-title">Diseño del portafolio</div>
-        <div class="cc-desc">Nombre, descripción, banner y logo propios. Cada proyecto puede tener URL de repositorio, deploy y archivos adjuntos.</div>
-        <div class="cc-tags"><span class="cc-tag">Banner</span><span class="cc-tag">Logo</span><span class="cc-tag">Archivos</span></div>
+        <div class="cc-title">{{ __('app.caracteristicas.diseno_titulo') }}</div>
+        <div class="cc-desc">{{ __('app.caracteristicas.diseno_desc') }}</div>
+        <div class="cc-tags">
+            <span class="cc-tag">{{ __('app.caracteristicas.tag_banner') }}</span>
+            <span class="cc-tag">{{ __('app.caracteristicas.tag_logo') }}</span>
+            <span class="cc-tag">{{ __('app.caracteristicas.tag_archivos') }}</span>
+        </div>
     </div>
 
     <div class="cc cc--blue cc--featured">
         <div class="cc-ico cc-ico--blue">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
         </div>
-        <div class="cc-title">Gestión de portafolios</div>
-        <div class="cc-desc">Crea y gestiona múltiples portafolios. Estado borrador o publicado — solo los publicados aparecen en el explorador.</div>
-        <div class="cc-tags"><span class="cc-tag">Borrador</span><span class="cc-tag">Publicado</span></div>
+        <div class="cc-title">{{ __('app.caracteristicas.gestion_titulo') }}</div>
+        <div class="cc-desc">{{ __('app.caracteristicas.gestion_desc') }}</div>
+        <div class="cc-tags">
+            <span class="cc-tag">{{ __('app.caracteristicas.tag_borrador') }}</span>
+            <span class="cc-tag">{{ __('app.caracteristicas.tag_publicado') }}</span>
+        </div>
     </div>
 
     <div class="cc cc--orange cc--featured">
@@ -119,8 +129,11 @@
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         </div>
         <div class="cc-title">{{ __('app.menu.exportacion') }}</div>
-        <div class="cc-desc">{{ __('app.menu.exportacion_desc') }} Los archivos adjuntos por proyecto son descargables desde el portafolio público.</div>
-        <div class="cc-tags"><span class="cc-tag">PDF</span><span class="cc-tag">Adjuntos</span></div>
+        <div class="cc-desc">{{ __('app.caracteristicas.exportacion_desc_completa') }}</div>
+        <div class="cc-tags">
+            <span class="cc-tag">{{ __('app.caracteristicas.tag_pdf') }}</span>
+            <span class="cc-tag">{{ __('app.caracteristicas.tag_adjuntos') }}</span>
+        </div>
     </div>
 
 </div>
@@ -131,7 +144,7 @@
     <div>
         <div class="caract-section-label">
             <span class="caract-section-dot" style="background:#ec4899;"></span>
-            Explorador de talento
+            {{ __('app.caracteristicas.seccion_explorador') }}
         </div>
         <div class="caract-grid caract-grid--2">
 
@@ -139,32 +152,32 @@
                 <div class="cc-ico cc-ico--pink">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="17" y2="18"/></svg>
                 </div>
-                <div class="cc-title">Filtros combinables</div>
-                <div class="cc-desc">Por área (tecnología, creativos, negocios, salud) y capacidad a la vez.</div>
+                <div class="cc-title">{{ __('app.caracteristicas.filtros_titulo') }}</div>
+                <div class="cc-desc">{{ __('app.caracteristicas.filtros_desc') }}</div>
             </div>
 
             <div class="cc cc--pink">
                 <div class="cc-ico cc-ico--pink">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 </div>
-                <div class="cc-title">Búsqueda en tiempo real</div>
-                <div class="cc-desc">Por nombre, profesión, habilidades o formación. Sin recargar la página.</div>
+                <div class="cc-title">{{ __('app.caracteristicas.busqueda_titulo') }}</div>
+                <div class="cc-desc">{{ __('app.caracteristicas.busqueda_desc') }}</div>
             </div>
 
             <div class="cc cc--pink">
                 <div class="cc-ico cc-ico--pink">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                 </div>
-                <div class="cc-title">Ordenamiento</div>
-                <div class="cc-desc">A→Z, Z→A, más certificaciones o más habilidades. Se combina con filtros activos.</div>
+                <div class="cc-title">{{ __('app.caracteristicas.ordenamiento_titulo') }}</div>
+                <div class="cc-desc">{{ __('app.caracteristicas.ordenamiento_desc') }}</div>
             </div>
 
             <div class="cc cc--pink">
                 <div class="cc-ico cc-ico--pink">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </div>
-                <div class="cc-title">Acceso directo</div>
-                <div class="cc-desc">Desde cada tarjeta podés ver el perfil completo o ir al portafolio publicado en un clic.</div>
+                <div class="cc-title">{{ __('app.caracteristicas.acceso_titulo') }}</div>
+                <div class="cc-desc">{{ __('app.caracteristicas.acceso_desc') }}</div>
             </div>
 
         </div>
@@ -173,7 +186,7 @@
     <div>
         <div class="caract-section-label">
             <span class="caract-section-dot" style="background:#10b981;"></span>
-            Cuenta y acceso
+            {{ __('app.caracteristicas.seccion_cuenta') }}
         </div>
         <div class="caract-grid caract-grid--2">
 
@@ -181,32 +194,32 @@
                 <div class="cc-ico cc-ico--green">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
                 </div>
-                <div class="cc-title">Registro con email</div>
-                <div class="cc-desc">Nombre, apellido, email y contraseña. Incluye verificación de correo.</div>
+                <div class="cc-title">{{ __('app.caracteristicas.registro_titulo') }}</div>
+                <div class="cc-desc">{{ __('app.caracteristicas.registro_desc') }}</div>
             </div>
 
             <div class="cc cc--green">
                 <div class="cc-ico cc-ico--green">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
                 </div>
-                <div class="cc-title">Inicio con Google</div>
-                <div class="cc-desc">Accede con un clic usando tu cuenta de Google. Sin contraseña adicional.</div>
+                <div class="cc-title">{{ __('app.caracteristicas.google_titulo') }}</div>
+                <div class="cc-desc">{{ __('app.caracteristicas.google_desc') }}</div>
             </div>
 
             <div class="cc cc--green">
                 <div class="cc-ico cc-ico--green">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 </div>
-                <div class="cc-title">Recuperación de contraseña</div>
-                <div class="cc-desc">Token seguro enviado al correo para restablecer el acceso.</div>
+                <div class="cc-title">{{ __('app.caracteristicas.recuperacion_titulo') }}</div>
+                <div class="cc-desc">{{ __('app.caracteristicas.recuperacion_desc') }}</div>
             </div>
 
             <div class="cc cc--green">
                 <div class="cc-ico cc-ico--green">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                 </div>
-                <div class="cc-title">Español · English · Français</div>
-                <div class="cc-desc">Cambia el idioma desde cualquier pantalla. La interfaz se adapta al instante.</div>
+                <div class="cc-title">{{ __('app.caracteristicas.idiomas_titulo') }}</div>
+                <div class="cc-desc">{{ __('app.caracteristicas.idiomas_desc') }}</div>
             </div>
 
         </div>
