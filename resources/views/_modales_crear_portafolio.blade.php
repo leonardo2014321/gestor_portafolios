@@ -397,15 +397,6 @@
                     </div>
                     <div class="mp-err" id="epErrDesc">{{ __('app.modales_pf.err_descripcion') }}</div>
                 </div>
-                <div class="mp-field">
-                    <label class="mp-label">{{ __('modales_pf.categoria') }}</label>
-                    <select class="mp-input" id="epCategoria">
-                        <option value="">{{ __('modales_pf.sin_categoria') }}</option>
-                        @foreach(\App\Models\Categoria::where('activa', true)->orderBy('orden')->get() as $cat)
-                            <option value="{{ $cat->id }}">{{ $cat->nombre }}</option>
-                        @endforeach
-                    </select>
-                </div>
             </div>
 
             {{-- Categoría --}}
@@ -523,15 +514,6 @@
                         <span id="pfDescCount">0</span>/500
                     </div>
                     <div class="mp-err" id="pfErrDesc">{{ __('app.modales_pf.err_descripcion') }}</div>
-                </div>
-                <div class="mp-field">
-                    <label class="mp-label">Categoría</label>
-                    <select class="mp-input" id="pfCategoria">
-                        <option value="">— Sin categoría —</option>
-                        @foreach(\App\Models\Categoria::where('activa', true)->orderBy('orden')->get() as $cat)
-                            <option value="{{ $cat->id }}">{{ $cat->nombre }}</option>
-                        @endforeach
-                    </select>
                 </div>
             </div>
 
