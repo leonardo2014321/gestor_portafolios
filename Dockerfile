@@ -32,6 +32,8 @@ RUN chmod -R 775 storage bootstrap/cache
 
 EXPOSE 8000
 
+RUN rm -f .env 
+
 # Limpiamos variables de entorno y ejecutamos
 CMD php artisan storage:link && \
     php artisan migrate --force && \

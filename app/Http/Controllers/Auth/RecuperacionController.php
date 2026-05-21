@@ -52,7 +52,7 @@ class RecuperacionController extends Controller
 
             Log::info(" Enlace generado", ['enlace' => $enlace]);
 
-            Mail::send('emails.recuperar', [
+            Mail::send('Emails.recuperar', [
                 'usuario' => $usuario,
                 'enlace' => $enlace
             ], function ($message) use ($usuario) {
