@@ -4,6 +4,7 @@ namespace App\Services\Auth;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Mail\VerificarEmailMail;
@@ -30,9 +31,16 @@ class RegistroService
         $link = url("/verificar-email?token=$token");
 
         try {
+            Log::info('Intentando enviar correo de verificación a ' . $data['email']);
             Mail::to($data['email'])->send(new VerificarEmailMail($link));
+            Log::info('Correo de verificación enviado exitosamente a ' . $data['email']);
             return true;
         } catch (\Exception $e) {
+            Log::error('Error al enviar correo de verificación: ' . $e->getMessage(), [
+                'email'   => $data['email'],
+                'linea'   => $e->getLine(),
+                'archivo' => $e->getFile(),
+            ]);
             return false;
         }
     }

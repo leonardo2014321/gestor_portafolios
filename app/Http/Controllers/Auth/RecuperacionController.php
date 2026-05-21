@@ -52,6 +52,8 @@ class RecuperacionController extends Controller
 
             Log::info(" Enlace generado", ['enlace' => $enlace]);
 
+            Log::info('Intentando enviar correo de recuperación a ' . $usuario->email);
+
             Mail::send('emails.recuperar', [
                 'usuario' => $usuario,
                 'enlace' => $enlace
@@ -60,6 +62,7 @@ class RecuperacionController extends Controller
                         ->subject('Recuperar contraseña');
             });
 
+            Log::info('Correo de recuperación enviado exitosamente a ' . $usuario->email);
             Log::info(" Mail::send ejecutado");
             
             ActividadService::log($usuario->id, 'SOLICITAR_RECUPERACION', [
