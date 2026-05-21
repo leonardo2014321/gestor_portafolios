@@ -52,32 +52,13 @@ class RecuperacionController extends Controller
 
             Log::info(" Enlace generado", ['enlace' => $enlace]);
 
-            /*Mail::send('Emails.recuperar', [
+            Mail::send('Emails.recuperar', [
                 'usuario' => $usuario,
                 'enlace' => $enlace
             ], function ($message) use ($usuario) {
                 $message->to($usuario->email)
                         ->subject('Recuperar contraseña');
-            });*/
-
-            $html = view('Emails.recuperar', [
-                'usuario' => $usuario,
-                'enlace' => $enlace
-            ])->render();
-
-            $response = \Illuminate\Support\Facades\Http::withHeaders([
-                'Authorization' => 'Bearer ' . env('RESEND_API_KEY'),
-                'Content-Type' => 'application/json',
-            ])->post('https://api.resend.com/emails', [
-                'from' => 'onboarding@resend.dev',
-                'to' => $usuario->email,
-                'subject' => 'Recuperar contraseña',
-                'html' => $html,
-            ]);
-
-            if (!$response->successful()) {
-                throw new \Exception('Resend error: ' . $response->body());
-            }
+            });
 
             Log::info(" Mail::send ejecutado");
             
