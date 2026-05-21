@@ -20,6 +20,6 @@ class VerificarEmailMail extends Mailable
     public function build()
     {
         return $this->subject('Verifica tu cuenta')
-                    ->view('emails.verificar');
+                    ->view('Emails.verificar');
     }
 }
