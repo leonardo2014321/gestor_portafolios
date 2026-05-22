@@ -24,7 +24,7 @@
         ->where('estado', 'publicado')
         ->whereHas('usuario', fn($q) => $q->where('activo', true))
         ->latest()
-        ->paginate(12);
+        ->get();
 
     $badgeColor = function(string $profesion): string {
         $map = [
@@ -151,11 +151,10 @@
 {{-- Contador de resultados --}}
 <div class="porta-results-bar">
     <span class="porta-results-count">
-        {{ $portafoliosGrid->total() }} {{ __('app.menu.portafolios') }}
+        {{ $portafoliosGrid->count() }} {{ __('app.menu.portafolios') }}
     </span>
     <span class="porta-results-divider"></span>
     <span class="porta-results-page">
-        {{ __('app.menu.pagina') }} {{ $portafoliosGrid->currentPage() }} {{ __('app.menu.de') }} {{ $portafoliosGrid->lastPage() }}
     </span>
 </div>
 
@@ -259,12 +258,6 @@
 
 </div>
 
-{{-- Paginación --}}
-@if($portafoliosGrid->hasPages())
-    <div class="porta-pagination">
-        {{ $portafoliosGrid->links() }}
-    </div>
-@endif
 
 <style>
 /* ── Hero ── */
@@ -689,13 +682,6 @@
     margin: 0 auto 12px;
     display: block;
     opacity: .4;
-}
-
-/* Paginación */
-.porta-pagination {
-    margin-top: 2rem;
-    display: flex;
-    justify-content: center;
 }
 
 /* ── JS filter highlight ── */
