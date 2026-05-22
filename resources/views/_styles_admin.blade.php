@@ -42,30 +42,6 @@
     .sidebar-overlay { position: fixed; top: var(--hh); left: 0; width: 100%; height: calc(100vh - var(--hh)); background: rgba(0,0,0,0.4); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
     .sidebar-overlay.show { opacity: 1; visibility: visible; }
 
-    /* Botones iconos móviles/tablets */
-    .mobile-toggle-container {
-        display: none;
-        width: 100%;
-        margin-bottom: 0.5rem;
-        justify-content: space-between;
-    }
-    .mobile-toggle-btn {
-        background: #fff;
-        color: var(--text);
-        border: 1px solid var(--gray2);
-        border-radius: 12px;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    .mobile-toggle-btn:hover { background: var(--gray); border-color: var(--admin-purple); }
-    .mobile-toggle-btn svg { width: 22px; height: 22px; stroke: var(--admin-purple); fill: none; stroke-width: 2.5; }
-
     /* ══════════════════════════════════════
        MAIN ADMIN (grid con panel derecho)
     ══════════════════════════════════════ */
@@ -227,9 +203,10 @@
        RESPONSIVE ADMIN
     ══════════════════════════════════════ */
     @media(max-width: 1200px) {
-        .mobile-toggle-container { display: flex; }
         main { grid-template-columns: minmax(0, 1fr); overflow-y: auto; }
         .main-inner { overflow-y: visible; padding: 1.5rem; height: max-content; }
+        /* Mostrar botones toggle del topbar en modo drawer */
+        .mobile-toggle-btn { display: flex !important; }
         
         /* Left Sidebar as Drawer */
         aside {
@@ -241,7 +218,8 @@
             z-index: 1000;
             transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 4px 0 15px rgba(0,0,0,0.15);
-            background: #fff;
+            background: #0f172a;
+            transform: none !important;
         }
         /* Restaurar textos que _styles_menu.blade.php oculta en < 992px */
         aside .sb-item span, aside .sb-uname, aside .sb-uid, aside .btn-logout span {
@@ -254,7 +232,7 @@
         aside .sb-user-block, aside .btn-logout {
             justify-content: flex-start !important;
         }
-        aside.open { left: 0; }
+        aside.open { left: 0 !important; transform: none !important; }
         
         /* Right Panel as Drawer */
         .rpanel { 
@@ -268,11 +246,30 @@
             box-shadow: -4px 0 15px rgba(0,0,0,0.15);
             border-left: none;
             background: #fff;
+            transform: none !important;
         }
-        .rpanel.open { right: 0; }
+        .rpanel.open { right: 0 !important; transform: none !important; }
         
         .dashboard-stats, .portafolios-stats { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
         .dash-grid { grid-template-columns: minmax(0, 1fr) !important; }
+    }
+    /* Neutralizar el transform de _styles_menu en móvil (< 992px).
+       El admin usa left/right para animar los drawers, no transform. */
+    @media(max-width: 992px) {
+        aside {
+            transform: none !important;
+            left: -280px !important;
+            top: var(--hh) !important;
+        }
+        aside.open { left: 0 !important; transform: none !important; }
+        aside.show { transform: none !important; left: 0 !important; }
+        .rpanel {
+            transform: none !important;
+            right: -340px !important;
+            top: var(--hh) !important;
+        }
+        .rpanel.open { right: 0 !important; transform: none !important; }
+        .rpanel.show { transform: none !important; right: 0 !important; }
     }
     @media(max-width: 768px) {
         .table-wrap { overflow-x: auto; }

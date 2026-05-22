@@ -22,7 +22,7 @@ class RegistroController extends Controller
     // Mostrar formulario
     public function show()
     {
-        return view('auth.registro');
+        return view('Auth.registro');
     }
 
     // Procesar registro
@@ -102,7 +102,7 @@ class RegistroController extends Controller
         $data = Cache::get('registro_temp_'.$token);
 
         if (!$data) {
-            return view('auth.verificacion_error');
+            return view('Auth.verificacion_error');
         }
 
         if (!Usuario::where('email', $data['email'])->exists()) {
@@ -118,6 +118,6 @@ class RegistroController extends Controller
         Cache::forget('registro_temp_'.$token);
 
         // Retorna vista que cierra la pestaña
-        return view('auth.verificacion_ok');
+        return view('Auth.verificacion_ok');
     }
 }
