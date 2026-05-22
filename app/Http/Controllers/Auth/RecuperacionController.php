@@ -52,13 +52,32 @@ class RecuperacionController extends Controller
 
             Log::info(" Enlace generado", ['enlace' => $enlace]);
 
-            Mail::send('Emails.recuperar', [
+         /*   Mail::send('Emails.recuperar', [
                 'usuario' => $usuario,
                 'enlace' => $enlace
             ], function ($message) use ($usuario) {
                 $message->to($usuario->email)
                         ->subject('Recuperar contraseña');
-            });
+            });*/
+
+            $html = view('Emails.recuperar', [
+                'usuario' => $usuario,
+                'enlace' => $enlace
+            ])->render();
+
+            $response = \Illuminate\Support\Facades\Http::withHeaders([
+                'api-key' => env('BREVO_API_KEY'),
+                'Content-Type' => 'application/json',
+            ])->post('https://api.brevo.com/v3/smtp/email', [
+                'sender' => ['name' => 'Tu App', 'email' => env('MAIL_FROM_ADDRESS')],
+                'to' => [['email' => $usuario->email]],
+                'subject' => 'Recuperar contraseña',
+                'htmlContent' => $html,
+            ]);
+
+            if (!$response->successful()) {
+                throw new \Exception('Brevo error: ' . $response->body());
+            }
 
             Log::info(" Mail::send ejecutado");
             
