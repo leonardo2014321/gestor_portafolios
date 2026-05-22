@@ -531,18 +531,70 @@
         @media(max-width:992px){
           .mobile-toggle-btn { display: flex; }
           .sb-close-btn, .rp-close-btn { display: flex; }
-          .tb-nav{display:none}
+
+          /* Topbar: 3 filas en móvil — logo / controles / nav */
+          .topbar {
+              flex-wrap: wrap;
+              height: auto;
+              padding: 8px 12px 0;
+              gap: 0;
+              align-items: center;
+          }
+
+          /* Fila 1: Logo alineado a la izquierda */
+          .tb-left {
+              width: 100%;
+              justify-content: flex-start;
+              padding: 4px 0 6px;
+              border-bottom: 1px solid rgba(255,255,255,0.07);
+          }
+
+          /* Fila 2: hamburguesa a la izquierda, el resto (idioma/campana/perfil/calendario) a la derecha */
+          .tb-right {
+              width: 100%;
+              justify-content: flex-start;
+              order: 2;
+              padding: 4px 0 6px;
+              gap: 8px;
+              border-bottom: 1px solid rgba(255,255,255,0.07);
+          }
+          /* Hamburguesa: empuja todo lo demás hacia la derecha */
+          .mobile-toggle-left { margin-right: auto !important; }
+          /* Calendario: sin margen extra, se queda al final */
+          .mobile-toggle-right { margin-left: 0 !important; }
+          /* Oculta texto secundario del avatar para ahorrar espacio */
+          #nav-user-wrap button > div > div { display: none; }
+
+          /* Fila 3: Nav links centrados */
+          .tb-nav {
+              display: flex !important;
+              width: 100%;
+              order: 3;
+              justify-content: center;
+              overflow-x: auto;
+              -webkit-overflow-scrolling: touch;
+              gap: 4px;
+              padding: 6px 0 8px;
+              scrollbar-width: none;
+          }
+          .tb-nav::-webkit-scrollbar { display: none; }
+          .tb-nav-link {
+              white-space: nowrap;
+              flex-shrink: 0;
+              padding: 5px 10px !important;
+              font-size: 13px !important;
+          }
 
           aside {
               position: fixed; top: 0; left: 0; height: 100%;
               transform: translateX(-100%);
-              width: 260px; /* Ancho fijo para móvil */
+              width: 260px;
           }
           aside.show { transform: translateX(0); box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
-          
+
           .sb-item span, .sb-uname, .sb-uid, .btn-logout span { display: block; }
           .sb-item { justify-content: flex-start; padding: 10px 20px; }
-          
+
           .rpanel {
               position: fixed; top: 0; right: 0; height: 100%;
               transform: translateX(100%);
@@ -556,10 +608,6 @@
           .porta-grid{grid-template-columns:repeat(2,1fr)}
         }
         @media(max-width:768px){
-          .topbar{padding:0 16px;height:auto;padding-top:10px;padding-bottom:10px;flex-wrap:wrap;gap:10px;}
-          .tb-nav{display:none}
-          .tb-left{width:100%;justify-content:space-between;}
-          .tb-right{width:100%;justify-content:flex-end;}
           .sysname{font-size:18px}
           .main-inner{padding:1.2rem 1rem}
           .porta-grid{grid-template-columns:1fr}
@@ -572,10 +620,11 @@
         }
         @media(max-width:480px){
           .tb-search{display:none}
-          .sysname{display:none}
-          .tb-left{gap:0;justify-content:center;}
-          .tb-right{justify-content:center;}
-          .tb-right > div > div:nth-child(2){display:none;}
+          .sysname{font-size:15px}
+          .tb-nav { gap: 0; }
+          .tb-nav-link { font-size: 12px !important; padding: 5px 8px !important; }
+          /* Oculta el texto secundario "mi cuenta" del botón de usuario */
+          #nav-user-wrap button > div > div:nth-child(2){display:none;}
           .pcard-dark,.pcard-teal,.pcard-light{padding:1rem}
           .exp-card-actions{flex-direction:column;align-items:flex-start;gap:10px}
           .stat{flex-direction:row;align-items:center;padding:1rem;}
