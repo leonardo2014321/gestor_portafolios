@@ -125,16 +125,6 @@
         <main>
             <div class="main-inner">
 
-                <!-- Botones responsive (solo íconos) -->
-                <div class="mobile-toggle-container">
-                    <button class="mobile-toggle-btn" onclick="toggleSidebar()" title="{{ __('app.admin.menu_principal') }}">
-                        <svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                    </button>
-                    
-                    <button class="mobile-toggle-btn" onclick="toggleRightPanel()" title="{{ __('app.admin.actividad_reciente') }}">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                    </button>
-                </div>
 
                 <!-- ═══ VISTA: DASHBOARD ═══ -->
                 <div id="view-dashboard" class="admin-view" style="display:block">
@@ -563,6 +553,9 @@
             overlay.classList.remove('show');
         }
     }
+
+    /* Alias para el botón del topbar que llama toggleRpanel() */
+    function toggleRpanel() { toggleRightPanel(); }
 
     function closeAllPanels() {
         const sidebar = document.querySelector('aside');
