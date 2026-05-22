@@ -5,33 +5,11 @@ import { test, expect } from '@playwright/test';
 // Tipo Ejecución: AUTOMATED | Sprint: 3
 // ═══════════════════════════════════════════════════════════════════
 
-const BASE = 'http://localhost:8000';
+import { BASE, loginUsuario, loginAdmin, logoutCleanup } from '../helpers.js';
 
-// ─── HELPER: Login como admin ───
-async function loginAdmin(page) {
-    await page.goto(BASE);
-    await page.waitForLoadState('networkidle');
-    await page.getByRole('button', { name: 'Iniciar sesión' }).click();
-    await expect(page.locator('#loginModal')).toBeVisible({ timeout: 10000 });
-    await page.fill('input[name="email"]', 'admin@gmail.com');
-    await page.fill('input[name="password"]', 'infinitycode1');
-    await page.click('button:has-text("Entrar al sistema")');
-    await expect(page).toHaveURL(/.*\/admin/, { timeout: 45000 });
-    await page.waitForLoadState('networkidle');
-}
 
-// ─── HELPER: Login como usuario normal ───
-async function loginUsuario(page) {
-    await page.goto(BASE);
-    await page.waitForLoadState('networkidle');
-    await page.getByRole('button', { name: 'Iniciar sesión' }).click();
-    await expect(page.locator('#loginModal')).toBeVisible({ timeout: 10000 });
-    await page.fill('input[name="email"]', 'serpientinon@gmail.com');
-    await page.fill('input[name="password"]', '12tres45');
-    await page.click('button:has-text("Entrar al sistema")');
-    await expect(page).toHaveURL(/.*\/menu/, { timeout: 45000 });
-    await page.waitForLoadState('networkidle');
-}
+
+
 
 test.describe('HU-11: Vista de Administrador (Admin Dashboard)', () => {
 

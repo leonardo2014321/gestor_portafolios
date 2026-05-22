@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const BASE = 'http://localhost:8000';
+import { BASE, loginUsuario, loginAdmin, logoutCleanup } from '../helpers.js';
 
 test.describe('HU-01: Gestión de perfil profesional (Landing Page)', () => {
 

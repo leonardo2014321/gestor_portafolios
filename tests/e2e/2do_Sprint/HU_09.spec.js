@@ -1,19 +1,13 @@
 import { test, expect } from '@playwright/test';
 
-const BASE = 'http://localhost:8000';
+import { BASE, loginUsuario, loginAdmin, logoutCleanup } from '../helpers.js';
 
 test.describe('HU-09: Dashboard Principal de Gestión', () => {
 
     // ─── HELPER: Login y navegar al dashboard (/menu) ───
     async function loginYMenu(page) {
-        await page.goto(BASE);
-        await page.locator('#openLoginModal').click();
-        await expect(page.locator('#loginModal')).toBeVisible();
-        await page.fill('input[name="email"]', 'serpientinon@gmail.com');
-        await page.fill('input[name="password"]', '12tres45');
-        await page.click('button:has-text("Entrar al sistema")');
-        await expect(page).toHaveURL(/.*\/menu/, { timeout: 10000 });
-    }
+    await loginUsuario(page);
+}
 
     // ═══════════════════════════════════════════════════════════
     // TC-79: Verificar conteo dinámico de tarjetas

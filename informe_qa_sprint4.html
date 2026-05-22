@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe QA - Preparativos Sprint 4</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f4f6f9; }
+        .container { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #8e44ad; border-bottom: 2px solid #9b59b6; padding-bottom: 10px; }
+        h2 { color: #2c3e50; margin-top: 30px; }
+        .success { color: #27ae60; font-weight: bold; }
+        .warning { color: #e67e22; font-weight: bold; }
+        .card { background: #fafafa; border: 1px solid #ddd; padding: 15px; border-radius: 5px; margin-bottom: 15px; }
+        .card h3 { margin-top: 0; color: #2980b9; }
+        ul { padding-left: 20px; }
+        code { background: #eee; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+        .action-item { border-left: 4px solid #f1c40f; background: #fffcf0; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Informe de Calidad (QA) y Preparativos para Sprint 4</h1>
+        <p><strong>Destinatario:</strong> Equipo de Aseguramiento de Calidad (QA)</p>
+        <p><strong>Fecha de Análisis:</strong> 22 de Mayo de 2026</p>
+        
+        <h2>1. Evaluación de los Test Cases (TCs) Actuales (Sprints 1 al 3)</h2>
+        <div class="card">
+            <h3>✅ Puntos Fuertes (Lógica y Selectores)</h3>
+            <ul>
+                <li><strong>Apuntadores correctos:</strong> Los selectores DOM en los scripts de Playwright apuntan a los IDs y clases reales de la aplicación (ej. <code>#fNombre</code>, <code>#btnSave</code>, <code>.alert-success</code>).</li>
+                <li><strong>Lógica de aserciones:</strong> Se emplean correctamente aserciones sólidas como <code>toBeVisible()</code>, <code>toContainText()</code> y comprobaciones de estados de red.</li>
+                <li><strong>Cobertura de escenarios:</strong> Se están testeando tanto flujos felices (Login exitoso, creación de perfiles) como caminos de error (validaciones XSS, límites de caracteres, y campos vacíos).</li>
+            </ul>
+        </div>
+
+        <div class="card" style="border-left: 4px solid #27ae60;">
+            <h3>✅ Refactorización Completada (Deuda Técnica Resuelta)</h3>
+            <p>Se ha ejecutado una refactorización completa en todos los archivos de los Sprints 1, 2 y 3.</p>
+            <ul>
+                <li>Ahora todos los archivos importan las funciones desde <code>tests/e2e/helpers.js</code>.</li>
+                <li>Se eliminaron las definiciones duplicadas de funciones de login.</li>
+                <li>El código es ahora escalable y está listo para recibir inyección dinámica de la variable <code>BASE_URL</code> para producción.</li>
+            </ul>
+        </div>
+
+        <h2>2. Estrategia y Pruebas para el Sprint 4 (Puesta en Marcha)</h2>
+        <p>El Sprint 4 se enfocará en el despliegue al servidor de producción <code>http://tis.cs.umss.edu.bo/</code>. Las pruebas ya fueron generadas en la carpeta <code>tests/e2e/4to_Sprint/</code>.</p>
+        
+        <div class="action-item" style="border-left: 4px solid #3498db;">
+            <strong>Suite de Pruebas Generada:</strong>
+            <ul>
+                <li><strong>SMOKE_PROD.spec.js:</strong> Verifica la disponibilidad del puerto HTTP (200 OK) y la correcta carga estática de los Assets generados por Vite y servidos por Apache.</li>
+                <li><strong>SANITY_PROD.spec.js:</strong> Prueba ligera que se asegura de que la conexión a PostgreSQL a través de Supabase sigue siendo válida ejecutando lectura del panel del usuario.</li>
+                <li><strong>COMPATIBILIDAD_PROD.spec.js:</strong> Valida que las reglas de ruteo y variables de entorno actúan correctamente sin arrojar errores 500 del lado del servidor PHP 8.2.</li>
+                <li><strong>REGRESION_PROD.spec.js:</strong> Regresión básica de los flujos críticos de la aplicación sin polucionar la base de datos de producción con inserciones de basura masivas.</li>
+            </ul>
+        </div>
+
+        <div class="action-item">
+            <strong>Acción 3: Configuración de Ejecución</strong><br>
+            Una vez se cuente con acceso al servidor, el equipo de QA ejecutará las pruebas en este entorno con el comando:
+            <br><br>
+            <code>$env:BASE_URL="http://tis.cs.umss.edu.bo" ; npx playwright test tests/e2e/4to_Sprint</code>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Buenas Prácticas - Playwright E2E</title>
+    <style>
+        :root {
+            --primary: #45b1e8;
+            --dark: #20232a;
+            --light: #f4f6f9;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; background-color: var(--light); margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background-color: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        h1, h2, h3 { color: var(--dark); }
+        h1 { border-bottom: 3px solid var(--primary); padding-bottom: 10px; font-size: 2.5em; margin-top: 0; }
+        h2 { margin-top: 40px; border-left: 5px solid var(--primary); padding-left: 15px; background: #f8fbff; padding-top: 10px; padding-bottom: 10px; border-radius: 0 8px 8px 0; }
+        p, li { font-size: 1.1em; }
+        code { background-color: #f1f2f6; padding: 3px 6px; border-radius: 4px; font-family: 'Courier New', Courier, monospace; color: #c0392b; font-weight: bold; }
+        pre { background-color: var(--dark); color: #f8f8f2; padding: 20px; border-radius: 8px; overflow-x: auto; font-family: 'Courier New', Courier, monospace; line-height: 1.5; }
+        pre code { background-color: transparent; color: inherit; padding: 0; font-weight: normal; }
+        .alert { padding: 15px; border-radius: 8px; margin: 20px 0; }
+        .alert-info { background-color: #e3f2fd; border: 1px solid #90caf9; }
+        .alert-success { background-color: #e8f5e9; border: 1px solid #a5d6a7; }
+        .alert-warning { background-color: #fff3e0; border: 1px solid #ffcc80; }
+        .alert-danger { background-color: #ffebee; border: 1px solid #ef9a9a; }
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: bold; color: white; background: var(--primary); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎭 Guía Definitiva: Tests E2E con Playwright</h1>
+        <p>Bienvenido a la guía oficial de buenas prácticas para la creación y mantenimiento de pruebas End-to-End en el proyecto <strong>Gestor de Portafolios</strong>. Seguir esta guía garantiza que nuestras pruebas sean robustas, rápidas y fáciles de mantener.</p>
+
+        <div class="alert alert-info">
+            <strong>💡 Principio de Oro (DRY):</strong> <em>Don't Repeat Yourself</em> (No te repitas). Si vas a escribir el mismo flujo más de dos veces (ej. Iniciar sesión, Navegar a un menú), muévelo a <code>helpers.js</code>.
+        </div>
+
+        <h2>1. Estructura y Ejecución de Pruebas</h2>
+        <p>Los tests están divididos en carpetas según el Sprint. Cuando escribas un test nuevo, asegúrate de colocarlo en el Sprint que corresponde a la funcionalidad.</p>
+        
+        <h3>¿Cómo ejecutar los tests?</h3>
+        <ul>
+            <li><strong>Todo el proyecto:</strong> <code>npx playwright test</code></li>
+            <li><strong>Modo visual (Interfaz):</strong> <code>npx playwright test --ui</code></li>
+            <li><strong>Test específico:</strong> <code>npx playwright test tests/e2e/4to_Sprint/SMOKE_PROD.spec.js</code></li>
+            <li><strong>Ejecutar contra producción:</strong> <code>$env:BASE_URL="http://tis.cs.umss.edu.bo" ; npx playwright test</code></li>
+        </ul>
+
+        <h2>2. Aprovechando el Modo Interfaz Gráfica (UI Mode)</h2>
+        <p>El UI Mode (<code>npx playwright test --ui</code>) es tu mejor aliado al momento de escribir, depurar y mantener las pruebas. En lugar de correr scripts a ciegas en la consola, obtienes un entorno de desarrollo completo. Principales ventajas:</p>
+        <ul>
+            <li><strong>Viaje en el Tiempo (Time Travel):</strong> Puedes revisar cada paso del test, ver cómo lucía el DOM, dónde hizo clic el puntero y qué red se estaba ejecutando en <em>ese exacto milisegundo</em>.</li>
+            <li><strong>Selector Picker (Pick Locator):</strong> En lugar de adivinar el selector de un botón, puedes hacer clic sobre él en la vista previa del UI Mode y Playwright generará automáticamente la mejor aserción sugerida (ej. <code>getByRole('button', { name: 'Entrar' })</code>).</li>
+            <li><strong>Watch Mode (Modo Observador):</strong> Si activas el ícono del ojo (👁️) al lado de un archivo de test, Playwright volverá a ejecutar esa prueba automáticamente en tiempo real cada vez que guardes cambios en tu código, haciendo el desarrollo de la prueba mucho más ágil.</li>
+            <li><strong>Inspección de Red (Network):</strong> Cada paso captura el estado completo de la consola del navegador y de las peticiones Fetch/XHR, lo cual es vital para saber si un test falló por un problema de Frontend o porque la Base de Datos o API fallaron (ej. un Error 500).</li>
+        </ul>
+
+        <h2>3. Uso Correcto de <code>helpers.js</code></h2>
+        <p>Nunca hardcodees la URL (<code>http://localhost:8000</code>) dentro de los tests. Utiliza siempre la constante <code>BASE</code> del helper para permitir ejecuciones dinámicas.</p>
+        <pre><code>// ❌ FORMA INCORRECTA
+const BASE = 'http://localhost:8000';
+await page.goto(BASE);
+
+// ✅ FORMA CORRECTA
+import { BASE, loginUsuario } from '../helpers.js';
+await page.goto(BASE);</code></pre>
+
+        <h2>3. Localizadores (Selectores) — Buenas y Malas Prácticas</h2>
+        <p>Playwright ofrece múltiples formas de encontrar elementos. Prioriza localizar elementos por cómo los ve el usuario (Accesibilidad) en lugar de depender de la estructura interna del HTML.</p>
+
+        <div class="alert alert-success">
+            <strong>🏆 Excelente:</strong> <code>page.getByRole('button', { name: 'Guardar' })</code><br>
+            <strong>🥈 Muy Bueno:</strong> <code>page.getByPlaceholder('ejemplo@gmail.com')</code> o <code>page.getByText('Bienvenido')</code><br>
+            <strong>🥉 Aceptable (Si tiene ID):</strong> <code>page.locator('#fNombre')</code><br>
+            <strong>❌ Frágil y Propenso a fallar:</strong> <code>page.locator('div.container > form > div:nth-child(2) > input')</code>
+        </div>
+
+        <h2>4. Esperas Inteligentes vs Esperas Estáticas</h2>
+        <p><strong>NUNCA</strong> uses <code>page.waitForTimeout(5000)</code> a menos que sea estrictamente necesario (por ejemplo, esperar una animación caprichosa). Las esperas estáticas hacen que las pruebas sean extremadamente lentas.</p>
+
+        <pre><code>// ❌ MALA PRÁCTICA: Perderás 5 segundos siempre, incluso si cargó en 0.5s.
+await page.click('#btnSave');
+await page.waitForTimeout(5000); 
+
+// ✅ BUENA PRÁCTICA: Playwright esperará HASTA 5 segundos, pero si aparece en 0.1s, avanza inmediatamente.
+await page.click('#btnSave');
+await expect(page.locator('.alert-success')).toBeVisible({ timeout: 5000 });</code></pre>
+
+        <h3>Esperar peticiones de red</h3>
+        <p>Si un botón dispara una petición Ajax/Fetch (ej. Guardar Perfil), la mejor manera de esperar a que termine es con <code>networkidle</code> (espera a que no haya tráfico de red) o esperando directamente el cambio visual.</p>
+        <pre><code>await page.goto(BASE);
+await page.waitForLoadState('networkidle'); // Espera a que termine de cargar recursos pesados</code></pre>
+
+        <h2>5. Estructura ideal de un Test Case (TC)</h2>
+        <p>Un buen caso de prueba sigue el patrón <strong>AAA (Arrange, Act, Assert)</strong>: Preparar, Actuar, Comprobar.</p>
+
+        <pre><code>import { test, expect } from '@playwright/test';
+import { BASE, loginUsuario } from '../helpers.js';
+
+test.describe('Módulo de Ejemplo', () => {
+
+    test('TC-01: Nombre descriptivo de lo que hace', async ({ page }) => {
+        // 1. Arrange (Preparar entorno)
+        await loginUsuario(page);
+        await page.locator('#btn-seccion').click();
+        
+        // 2. Act (Acción del usuario)
+        await page.fill('#fInput', 'Dato de Prueba');
+        await page.click('#btn-guardar');
+
+        // 3. Assert (Validación)
+        await expect(page.locator('#mensajeExito')).toBeVisible();
+        await expect(page.locator('#mensajeExito')).toContainText('Guardado con éxito');
+    });
+
+});</code></pre>
+
+        <h2>6. Limpieza (Teardown) y Aislamiento</h2>
+        <p>Las pruebas deben ser completamente independientes. Si una prueba falla, no debe romper la siguiente.</p>
+        <ul>
+            <li>No compartas el mismo estado de página entre tests (por defecto Playwright te da un <code>page</code> limpio en cada <code>test()</code>).</li>
+            <li>Si requieres hacer limpieza al terminar, usa <code>test.afterEach()</code>. Puedes importar <code>logoutCleanup</code> desde <code>helpers.js</code> para cerrar sesión de manera segura.</li>
+        </ul>
+
+        <div class="alert alert-warning">
+            <strong>Resumen de comandos útiles de aserción:</strong>
+            <ul>
+                <li><code>expect(element).toBeVisible()</code> — Está renderizado.</li>
+                <li><code>expect(element).toBeHidden()</code> — No existe o está en display: none.</li>
+                <li><code>expect(element).toHaveText('Texto exacto')</code></li>
+                <li><code>expect(element).toContainText('Subtexto')</code></li>
+                <li><code>expect(element).toHaveClass(/error/)</code> — Utiliza Regex para validar clases de CSS.</li>
+                <li><code>expect(page).toHaveURL(/.*\/ruta/)</code> — Valida redirecciones.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

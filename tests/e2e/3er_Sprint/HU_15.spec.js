@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
 // Tipo Ejecución: AUTOMATED | Sprint: 3
 // ═══════════════════════════════════════════════════════════════════
 
-const BASE = 'http://localhost:8000';
+import { BASE, loginUsuario, loginAdmin, logoutCleanup } from '../helpers.js';
 
 async function loginAdmin(page) {
     await page.goto(BASE);

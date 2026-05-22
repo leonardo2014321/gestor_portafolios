@@ -1,21 +1,13 @@
 import { test, expect } from '@playwright/test';
 import path from 'path';
 
-const BASE = 'http://localhost:8000';
+import { BASE, loginUsuario, loginAdmin, logoutCleanup } from '../helpers.js';
 
 test.describe('HU-05: Gestión de perfil profesional', () => {
 
     // ─── HELPER: Login + navegar a /perfil ───
     async function loginYPerfil(page) {
-        await page.goto(BASE);
-        // Abrir modal de login
-        await page.locator('#openLoginModal').click();
-        await expect(page.locator('#loginModal')).toBeVisible();
-        // Credenciales de prueba
-        await page.fill('input[name="email"]', 'serpientinon@gmail.com');
-        await page.fill('input[name="password"]', '12tres45');
-        await page.click('button:has-text("Entrar al sistema")');
-        await expect(page).toHaveURL(/.*\/menu/, { timeout: 100000 });
+        await loginUsuario(page);
         // Buscamos el botón "Mi Perfil" que aparece en el menú lateral
         const btnMiPerfil = page.getByRole('link', { name: /mi perfil/i });
         await page.locator('text=Mi Perfil').click();
