@@ -6,6 +6,7 @@ use App\Models\Notificacion;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class NotificacionController extends Controller
 {
@@ -72,33 +73,35 @@ class NotificacionController extends Controller
         $user = Auth::user();
 
         if ($user->es_admin) {
-            // El admin SOLO ve los mensajes de contacto que
-            // los usuarios le enviaron directamente a él.
-            // No ve las notificaciones que él mismo mandó.
+            // Admin ve mensajes de contacto que le enviaron
             $notificaciones = Notificacion::with('creadoPor')
                 ->where('tipo_envio', 'individual')
                 ->where('destinatario_id', $user->id)
-                ->where('creado_por', '!=', $user->id) // excluir las suyas propias
+                ->where('creado_por', '!=', $user->id)
                 ->orderByDesc('created_at')
                 ->get()
-                ->map(fn($n) => $this->mapNotif($n));
+                ->map(fn($n) => $this->mapNotif($n, $user->id));
         } else {
-            // El usuario normal ve todo lo que le corresponde
+            // Usuario normal: ve las suyas, excluyendo las que eliminó
+            $eliminadas = DB::table('notificacion_usuario_estado')
+                ->where('usuario_id', $user->id)
+                ->where('eliminada', true)
+                ->pluck('notificacion_id')
+                ->toArray();
+
             $notificaciones = Notificacion::with('creadoPor')
                 ->where(function ($q) use ($user) {
-                    $q->where('tipo_envio', 'individual')
-                      ->where('destinatario_id', $user->id);
+                    $q->where(function ($q1) use ($user) {
+                        $q1->where('tipo_envio', 'individual')
+                           ->where('destinatario_id', $user->id);
+                    })
+                    ->orWhere('tipo_envio', 'todos');
                 })
-                ->orWhere('tipo_envio', 'todos')
-                ->orWhere(function ($q) use ($user) {
-                    $q->where('tipo_envio', 'rol')
-                      ->where(function ($q2) use ($user) {
-                          $q2->whereNull('id'); // usuarios normales no tienen rol admin
-                      });
-                })
+                ->when(!empty($eliminadas), fn($q) => $q->whereNotIn('id', $eliminadas))
                 ->orderByDesc('created_at')
+                ->limit(50)
                 ->get()
-                ->map(fn($n) => $this->mapNotif($n));
+                ->map(fn($n) => $this->mapNotif($n, $user->id));
         }
 
         $noLeidas = $notificaciones->where('leida', false)->count();
@@ -109,10 +112,20 @@ class NotificacionController extends Controller
         ]);
     }
 
-    // ── Helper: formatear notificación para la campanita ─────
-    private function mapNotif(Notificacion $n): array
+    // ── Helper: formatear notificación ───────────────────────
+    private function mapNotif(Notificacion $n, int $userId): array
     {
         $esContacto = str_starts_with($n->titulo, '[Usuario] ');
+
+        // Leer estado personalizado del usuario desde la tabla pivot
+        $estado = DB::table('notificacion_usuario_estado')
+            ->where('notificacion_id', $n->id)
+            ->where('usuario_id', $userId)
+            ->first();
+
+        // Si hay estado personalizado de leída, usarlo; si no, usar el campo global
+        $leida = $estado ? (bool) $estado->leida : (bool) $n->leida;
+
         return [
             'id'          => $n->id,
             'titulo'      => $esContacto
@@ -120,7 +133,7 @@ class NotificacionController extends Controller
                                 : $n->titulo,
             'mensaje'     => $n->mensaje,
             'tipo_envio'  => $n->tipo_envio,
-            'leida'       => $n->leida,
+            'leida'       => $leida,
             'created_at'  => $n->created_at,
             'remitente'   => $esContacto && $n->creadoPor
                                 ? $n->creadoPor->nombre . ' ' . $n->creadoPor->apellido
@@ -135,14 +148,59 @@ class NotificacionController extends Controller
         $user  = Auth::user();
         $notif = Notificacion::findOrFail($id);
 
-        if (
-            $notif->tipo_envio === 'individual' &&
-            $notif->destinatario_id !== $user->id
-        ) {
-            abort(403);
+        $tieneAcceso = $notif->tipo_envio === 'todos'
+            || ($notif->tipo_envio === 'individual' && $notif->destinatario_id == $user->id);
+
+        if (!$tieneAcceso) abort(403);
+
+        // Siempre usar la pivot — admin y usuario por igual
+        DB::table('notificacion_usuario_estado')->upsert(
+            [
+                'notificacion_id' => $notif->id,
+                'usuario_id'      => $user->id,
+                'leida'           => true,
+                'eliminada'       => false,
+                'created_at'      => now(),
+                'updated_at'      => now(),
+            ],
+            ['notificacion_id', 'usuario_id'],
+            ['leida', 'updated_at']
+        );
+
+        return response()->json(['ok' => true]);
+    }
+
+    // ── Usuario: eliminar (borrado lógico) ───────────────────
+    public function destroy($id)
+    {
+        $user  = Auth::user();
+        $notif = Notificacion::findOrFail($id);
+
+        if ($user->es_admin) {
+            // Admin: borrado físico real
+            $notif->delete();
+        } else {
+            // Usuario: verificar que le corresponde
+            $tieneAcceso = $notif->tipo_envio === 'todos'
+                || ($notif->tipo_envio === 'individual' && $notif->destinatario_id == $user->id);
+
+            if (!$tieneAcceso) abort(403);
+
+            // Borrado lógico — solo desaparece para este usuario
+            DB::table('notificacion_usuario_estado')->upsert(
+                [
+                    'notificacion_id' => $notif->id,
+                    'usuario_id'      => $user->id,
+                    'eliminada'       => true,
+                    'leida'           => true,
+                    'created_at'      => now(),
+                    'updated_at'      => now(),
+                ],
+                ['notificacion_id', 'usuario_id'],
+                ['eliminada', 'leida', 'updated_at']
+            );
         }
 
-        $notif->update(['leida' => true]);
         return response()->json(['ok' => true]);
     }
 
@@ -176,14 +234,5 @@ class NotificacionController extends Controller
             });
 
         return response()->json($notificaciones);
-    }
-
-    // ── Admin: eliminar notificación ─────────────────────────
-    public function destroy($id)
-    {
-        if (!Auth::user()->es_admin) abort(403);
-
-        Notificacion::findOrFail($id)->delete();
-        return response()->json(['ok' => true]);
     }
 }
