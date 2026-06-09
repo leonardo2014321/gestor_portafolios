@@ -220,6 +220,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/mis-notificaciones/{id}/leida', [App\Http\Controllers\NotificacionController::class, 'marcarLeida'])
         ->name('notificaciones.leida');
 
+    Route::delete('/mis-notificaciones/{id}', [App\Http\Controllers\NotificacionController::class, 'destroy'])
+        ->name('notificaciones.usuario.destroy');
+
     // Usuario: contactar al administrador
     Route::post('/contactar-admin', [App\Http\Controllers\NotificacionController::class, 'storeDesdeUsuario'])
         ->name('notificaciones.contactar');

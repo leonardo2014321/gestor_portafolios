@@ -29,6 +29,11 @@
             }
 
             notifRenderLista();
+
+            // ── Sincronizar right-panel sin hacer otra petición ──
+            if (typeof window.rpRender === 'function') {
+                window.rpRender(notifDatos);
+            }
         } catch(e) {
             console.error('Error cargando notificaciones', e);
         }
@@ -175,10 +180,16 @@ document.addEventListener('click', function(event) {
         if (notif && !notif.leida) {
             notif.leida = true;
 
+            // Sincronizar badge navbar
             const badge = document.getElementById('notif-badge');
             let count = Math.max(0, (parseInt(badge.textContent) || 0) - 1);
             badge.textContent = count > 9 ? '9+' : count;
             if (count === 0) badge.style.display = 'none';
+
+            // Sincronizar right-panel con el mismo array ya mutado
+            if (typeof window.rpRender === 'function') {
+                window.rpRender(notifDatos);
+            }
         }
 
         if (!silencioso) notifRenderLista();
