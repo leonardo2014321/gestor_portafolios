@@ -186,65 +186,155 @@
 </div>
 
 <script>
+// ── Configuración de proyectos máximos por página por template ──
+const PF_LIMITS = {
+    t7:  { first: 0, extra: 1 },  // T7: portada limpia, 1 proyecto por página extra
+    t8:  { first: 4, extra: 2 },  // T8 Timeline
+    t9:  { first: 3, extra: 2 },  // T9 Elegante
+    t10: { first: 3, extra: 4 },  // T10 Columnas
+};
+
+// ── Genera el HTML de un proyecto para páginas extra ──
+function pfExtraProyectoHtml(p, isSingle) {
+    const imgHtml = p.banner
+        ? `<div class="pf-xproject-img-wrap"><img src="${p.banner}" alt="${p.nombre}"></div>`
+        : `<div class="pf-xproject-no-img">📦</div>`;
+    const links = [];
+    if (p.deploy_url)      links.push(`<a href="${p.deploy_url}" class="pf-xproject-link" target="_blank">🌐 Demo</a>`);
+    if (p.repositorio_url) links.push(`<a href="${p.repositorio_url}" class="pf-xproject-link" target="_blank">📁 Repositorio</a>`);
+    const cardClass = isSingle ? 'pf-xproject pf-xproject-full' : 'pf-xproject';
+    return `<div class="${cardClass}">
+        ${imgHtml}
+        <div class="pf-xproject-info">
+            <div class="pf-xproject-title">${p.nombre}</div>
+            <div class="pf-xproject-desc">${p.descripcion || 'Sin descripción'}</div>
+            ${links.length ? `<div class="pf-xproject-links">${links.join('')}</div>` : ''}
+        </div>
+    </div>`;
+}
+
+// ── Genera páginas extra para un template ──
+function pfGenerarPaginasExtra(wrapId, tClass, nombre, proyectosExtra, proyectosPorPagina) {
+    const wrap = document.getElementById(wrapId);
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    if (!proyectosExtra.length) {
+        wrap.classList.remove('active-extras');
+        return;
+    }
+    wrap.classList.add('active-extras');
+    // Dividir en grupos
+    const isSingle = proyectosPorPagina === 1;
+    let pagina = 2;
+    for (let i = 0; i < proyectosExtra.length; i += proyectosPorPagina) {
+        const chunk = proyectosExtra.slice(i, i + proyectosPorPagina);
+        const proyHtml = chunk.map(p => pfExtraProyectoHtml(p, isSingle)).join('');
+        const page = document.createElement('div');
+        page.className = `pf-extra-page ${tClass}`;
+        page.innerHTML = `
+            <div class="pf-xhdr">
+                <span class="pf-xhdr-name">${nombre}</span>
+                <span class="pf-xhdr-page">Página ${pagina}</span>
+            </div>
+            <div class="pf-xbody ${isSingle ? 'pf-xbody-single' : ''}">${proyHtml}</div>`;
+        wrap.appendChild(page);
+        pagina++;
+    }
+}
+
+// ── Oculta TODOS los wrappers de páginas extra ──
+function pfOcultarTodasExtras() {
+    document.querySelectorAll('.pf-extra-pages-wrap').forEach(w => {
+        w.classList.remove('active-extras');
+    });
+}
+
 function aplicarPortafolioReporte(pfId) {
     const sel = document.getElementById('pf-reporte-select');
     if (!sel) return;
     const opt = sel.querySelector('option[value="' + pfId + '"]');
     if (!opt) return;
 
-    const nombre = opt.dataset.nombre || '';
-    const desc   = opt.dataset.descripcion || '';
-    const logo   = opt.dataset.logo || '{{ $fotoCV ?? $fotoFallback }}';
+    const nombre    = opt.dataset.nombre || '';
+    const desc      = opt.dataset.descripcion || '';
+    const logo      = opt.dataset.logo || '{{ $fotoCV ?? $fotoFallback }}';
     const proyectos = JSON.parse(opt.dataset.proyectos || '[]');
 
-    // Template 7 (Hexágonos)
-    if(document.getElementById('t7-name')) document.getElementById('t7-name').textContent = nombre;
-    if(document.getElementById('t7-desc')) document.getElementById('t7-desc').textContent = desc;
-    if(document.getElementById('t7-logo')) document.getElementById('t7-logo').src = logo;
-    if(document.getElementById('t7-footer')) document.getElementById('t7-footer').textContent = nombre + ' — Portafolio';
-    const t7proj = document.getElementById('t7-projects');
-    if (t7proj) {
-        t7proj.innerHTML = proyectos.length ? proyectos.map(p => 
-            `<div class="cv7-project"><h3 class="cv7-proj-title">${p.nombre}</h3><p class="cv7-proj-desc">${p.descripcion || ''}</p></div>`
-        ).join('') : `<div class="cv7-project"><h3 class="cv7-proj-title">Sin proyectos</h3><p class="cv7-proj-desc">Añade proyectos a tu portafolio.</p></div>`;
-    }
+    pfOcultarTodasExtras();
 
-    // Template 8 (Timeline Azul)
-    if(document.getElementById('t8-name')) document.getElementById('t8-name').textContent = nombre;
-    if(document.getElementById('t8-desc')) document.getElementById('t8-desc').textContent = desc;
-    if(document.getElementById('t8-logo')) document.getElementById('t8-logo').src = logo;
-    if(document.getElementById('t8-header-name')) document.getElementById('t8-header-name').textContent = nombre;
+    // ── Template 7 (Hexágonos) — portada limpia + todas las proyectos en extra pages ──
+    const lim7 = PF_LIMITS.t7;
+    const p7first = proyectos.slice(0, lim7.first);   // [] porque first=0
+    const p7extra = proyectos.slice(lim7.first);       // todos los proyectos
+    if (document.getElementById('t7-name'))   document.getElementById('t7-name').textContent   = nombre;
+    if (document.getElementById('t7-desc'))   document.getElementById('t7-desc').textContent   = desc;
+    if (document.getElementById('t7-logo'))   document.getElementById('t7-logo').src            = logo;
+    if (document.getElementById('t7-author')) document.getElementById('t7-author').textContent  =
+        (document.getElementById('t7-author').dataset.autor || document.getElementById('t7-author').textContent);
+    if (document.getElementById('t7-footer')) document.getElementById('t7-footer').textContent  = nombre + ' — Portafolio';
+    // La primera página NO muestra proyectos (first:0)
+    pfGenerarPaginasExtra('t7-extra-pages', 'pf-extra-t7', nombre, p7extra, lim7.extra);
+
+    // ── Template 8 (Timeline Azul) ──
+    const lim8 = PF_LIMITS.t8;
+    const p8first = proyectos.slice(0, lim8.first);
+    const p8extra = proyectos.slice(lim8.first);
+    if (document.getElementById('t8-name'))        document.getElementById('t8-name').textContent        = nombre;
+    if (document.getElementById('t8-desc'))        document.getElementById('t8-desc').textContent        = desc;
+    if (document.getElementById('t8-logo'))        document.getElementById('t8-logo').src                 = logo;
+    if (document.getElementById('t8-header-name')) document.getElementById('t8-header-name').textContent  = nombre;
     const t8proj = document.getElementById('t8-projects');
     if (t8proj) {
-        t8proj.innerHTML = proyectos.length ? proyectos.map(p => 
-            `<div class="cv8-time-item">
-                <div class="cv8-time-date">${p.deploy_url || p.repositorio_url ? 'Público' : 'Destacado'}</div>
-                <div class="cv8-time-title">${p.nombre}</div>
-                <div class="cv8-time-desc">${p.descripcion || ''}</div>
-            </div>`
-        ).join('') : `<div class="cv8-time-item"><div class="cv8-time-title">Sin proyectos</div><div class="cv8-time-desc">Añade proyectos a tu portafolio.</div></div>`;
+        t8proj.innerHTML = p8first.length
+            ? p8first.map(p => `<div class="cv8-time-item"><div class="cv8-time-date">${p.deploy_url || p.repositorio_url ? 'Público' : 'Destacado'}</div><div class="cv8-time-title">${p.nombre}</div>${p.banner ? `<img src="${p.banner}" style="width:100%; height:140px; object-fit:cover; border-radius:6px; margin:8px 0;" alt="${p.nombre}">` : ''}<div class="cv8-time-desc">${p.descripcion || ''}</div></div>`).join('')
+            : `<div class="cv8-time-item"><div class="cv8-time-title">Sin proyectos</div><div class="cv8-time-desc">Añade proyectos a tu portafolio.</div></div>`;
     }
+    pfGenerarPaginasExtra('t8-extra-pages', 'pf-extra-t8', nombre, p8extra, lim8.extra);
 
-    // Template 9 (Elegante)
-    if(document.getElementById('t9-name')) document.getElementById('t9-name').textContent = nombre;
-    if(document.getElementById('t9-desc')) document.getElementById('t9-desc').textContent = desc;
-    if(document.getElementById('t9-logo')) document.getElementById('t9-logo').src = logo;
+    // ── Template 9 (Elegante) ──
+    const lim9 = PF_LIMITS.t9;
+    const p9first = proyectos.slice(0, lim9.first);
+    const p9extra = proyectos.slice(lim9.first);
+    if (document.getElementById('t9-name')) document.getElementById('t9-name').textContent = nombre;
+    if (document.getElementById('t9-desc')) document.getElementById('t9-desc').textContent = desc;
+    if (document.getElementById('t9-logo')) document.getElementById('t9-logo').src          = logo;
     const t9proj = document.getElementById('t9-projects');
     if (t9proj) {
-        t9proj.innerHTML = proyectos.length ? proyectos.map(p => 
-            `<div class="cv9-project"><h3 class="cv9-proj-title">${p.nombre}</h3><p class="cv9-proj-desc">${p.descripcion || ''}</p></div>`
-        ).join('') : `<div class="cv9-project"><h3 class="cv9-proj-title">Sin proyectos</h3><p class="cv9-proj-desc">Añade proyectos a tu portafolio.</p></div>`;
+        t9proj.innerHTML = p9first.length
+            ? p9first.map(p => `<div class="cv9-project" style="padding:0; overflow:hidden; display:flex; flex-direction:row; min-height:120px; background:rgba(255,255,255,0.05); border-radius:8px;">${p.banner ? `<img src="${p.banner}" style="width:130px; object-fit:cover; flex-shrink:0; align-self:stretch;" alt="${p.nombre}">` : `<div style="width:130px; background:rgba(255,255,255,0.02); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.2); flex-shrink:0; align-self:stretch;">📦</div>`}<div style="padding:15px; flex:1; display:flex; flex-direction:column; justify-content:center;"><h3 class="cv9-proj-title" style="margin-bottom:6px; font-size:15px; font-weight:bold; color:#fff;">${p.nombre}</h3><p class="cv9-proj-desc" style="margin:0; font-size:12px; line-height:1.4; color:rgba(255,255,255,0.8);">${p.descripcion || ''}</p></div></div>`).join('')
+            : `<div class="cv9-project"><h3 class="cv9-proj-title">Sin proyectos</h3><p class="cv9-proj-desc">Añade proyectos a tu portafolio.</p></div>`;
     }
+    pfGenerarPaginasExtra('t9-extra-pages', 'pf-extra-t9', nombre, p9extra, lim9.extra);
 
-    // Template 10 (Columnas Rosa)
-    if(document.getElementById('t10-name')) document.getElementById('t10-name').textContent = nombre;
-    if(document.getElementById('t10-desc')) document.getElementById('t10-desc').textContent = desc;
-    if(document.getElementById('t10-logo')) document.getElementById('t10-logo').src = logo;
+    // ── Template 10 (Columnas Rosa) ──
+    const lim10 = PF_LIMITS.t10;
+    const p10first = proyectos.slice(0, lim10.first);
+    const p10extra = proyectos.slice(lim10.first);
+    if (document.getElementById('t10-name')) document.getElementById('t10-name').textContent = nombre;
+    if (document.getElementById('t10-desc')) document.getElementById('t10-desc').textContent = desc;
+    if (document.getElementById('t10-logo')) document.getElementById('t10-logo').src          = logo;
     const t10proj = document.getElementById('t10-projects');
     if (t10proj) {
-        t10proj.innerHTML = proyectos.length ? proyectos.map(p => 
-            `<div class="cv10-item"><h3 class="cv10-item-title">${p.nombre}</h3><p class="cv10-item-desc">${p.descripcion || ''}</p></div>`
-        ).join('') : `<div class="cv10-item"><h3 class="cv10-item-title">Sin proyectos</h3><p class="cv10-item-desc">Añade proyectos a tu portafolio.</p></div>`;
+        t10proj.innerHTML = p10first.length
+            ? p10first.map(p => `<div class="cv10-item" style="display:flex; flex-direction:row; background:#fff; border:1px solid #e2e8f0; border-radius:8px; overflow:hidden; margin-bottom:12px; min-height:100px; padding:0;">${p.banner ? `<img src="${p.banner}" style="width:120px; object-fit:cover; flex-shrink:0; align-self:stretch;" alt="${p.nombre}">` : `<div style="width:120px; background:#fce7f3; display:flex; align-items:center; justify-content:center; color:#fda4af; font-size:24px; flex-shrink:0; align-self:stretch;">📦</div>`}<div style="padding:15px; flex:1; display:flex; flex-direction:column; justify-content:center;"><h3 class="cv10-item-title" style="margin-bottom:6px; font-size:15px; font-weight:bold;">${p.nombre}</h3><p class="cv10-item-desc" style="margin:0; font-size:12px; line-height:1.4;">${p.descripcion || ''}</p></div></div>`).join('')
+            : `<div class="cv10-item"><h3 class="cv10-item-title">Sin proyectos</h3><p class="cv10-item-desc">Añade proyectos a tu portafolio.</p></div>`;
+    }
+    pfGenerarPaginasExtra('t10-extra-pages', 'pf-extra-t10', nombre, p10extra, lim10.extra);
+
+    // ── Activar los wrappers extra del template ACTIVO actual ──
+    pfActivarExtrasDelTemplateActivo();
+}
+
+// ── Activa sólo el wrapper de páginas extra que corresponde al template activo ──
+function pfActivarExtrasDelTemplateActivo() {
+    pfOcultarTodasExtras();
+    const activeTpl = document.querySelector('.cv-template-view.active-tpl');
+    if (!activeTpl) return;
+    const tId = activeTpl.id; // ej: 'cv-template-7'
+    const wrapId = tId.replace('cv-template-', 't') + '-extra-pages'; // → 't7-extra-pages'
+    const wrap = document.getElementById(wrapId);
+    if (wrap && wrap.children.length > 0) {
+        wrap.classList.add('active-extras');
     }
 }
 
@@ -355,8 +445,14 @@ document.addEventListener('click', function() {
     document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
 });
 
-// Initialize immediately if script is loaded dynamically
+// Initialize immediately if script is loaded dynamically (via fetch/innerHTML)
 initializeCustomSelects();
+(function() {
+    const pfSel = document.getElementById('pf-reporte-select');
+    if (pfSel && pfSel.options.length > 0) {
+        aplicarPortafolioReporte(pfSel.value);
+    }
+})();
 </script>
 
 <div class="cv-wrapper">
@@ -780,26 +876,21 @@ initializeCustomSelects();
                 <h1 class="cv7-name" id="t7-name">{{ $r_pf_activo?->nombre ?? 'Mi Portafolio' }}</h1>
                 <h2 class="cv7-role" id="t7-desc">{{ $r_pf_activo?->descripcion ?? 'Descripción de mi portafolio' }}</h2>
             </div>
-            <div class="cv7-projects" id="t7-projects">
-                @forelse($r_proyectos as $proy)
-                    <div class="cv7-project">
-                        <h3 class="cv7-proj-title">{{ $proy->nombre }}</h3>
-                        <p class="cv7-proj-desc">{{ $proy->descripcion }}</p>
-                    </div>
-                @empty
-                    <div class="cv7-project">
-                        <h3 class="cv7-proj-title">Sin proyectos</h3>
-                        <p class="cv7-proj-desc">Añade proyectos a tu portafolio.</p>
-                    </div>
-                @endforelse
-            </div>
-            <div class="cv7-footer" id="t7-footer">
-                {{ $r_pf_activo?->nombre ?? 'Portafolio' }} — Portafolio
-            </div>
         </div>
-    </div>
+        <div class="cv7-footer" id="t7-footer">
+            {{ $r_pf_activo?->nombre ?? 'Portafolio' }} — Portafolio
+        </div>
+        {{-- Nombre del autor – esquina inferior derecha --}}
+        <div class="cv7-author" id="t7-author">
+            <span class="cv7-author-label">Autor</span>
+            <span class="cv7-author-name" id="t7-author-name">{{ $r_user?->nombre }} {{ $r_user?->apellido }}</span>
+        </div>
+    </div>{{-- /cv-template-7 --}}
+    {{-- ── Páginas extra T7 ── --}}
+    <div class="pf-extra-pages-wrap" id="t7-extra-pages"></div>
 
     {{-- ── TEMPLATE 8 · Portafolio Timeline Azul ── --}}
+
     <div class="cv-container cv-template-view landscape-layout" id="cv-template-8">
         <div class="cv8-left">
             <div class="cv8-photo-container">
@@ -833,7 +924,9 @@ initializeCustomSelects();
                 </div>
             </div>
         </div>
-    </div>
+    </div>{{-- /cv-template-8 --}}
+    {{-- ── Páginas extra T8 ── --}}
+    <div class="pf-extra-pages-wrap" id="t8-extra-pages"></div>
 
     {{-- ── TEMPLATE 9 · Portafolio Elegante (Círculos Azul/Gris) ── --}}
     <div class="cv-container cv-template-view landscape-layout" id="cv-template-9">
@@ -874,7 +967,9 @@ initializeCustomSelects();
                 </div>
             </div>
         </div>
-    </div>
+    </div>{{-- /cv-template-9 --}}
+    {{-- ── Páginas extra T9 ── --}}
+    <div class="pf-extra-pages-wrap" id="t9-extra-pages"></div>
 
     {{-- ── TEMPLATE 10 · Portafolio Columnas Minimalista ── --}}
     <div class="cv-container cv-template-view landscape-layout" id="cv-template-10">
@@ -911,6 +1006,8 @@ initializeCustomSelects();
                 </ul>
             </div>
         </div>
-    </div>
+    </div>{{-- /cv-template-10 --}}
+    {{-- ── Páginas extra T10 ── --}}
+    <div class="pf-extra-pages-wrap" id="t10-extra-pages"></div>
 
 </div>{{-- /cv-wrapper --}}

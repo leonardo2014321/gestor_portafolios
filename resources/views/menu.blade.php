@@ -648,6 +648,10 @@
                 styleEl.innerHTML = '@media print { @page { size: portrait; margin: 0; } }';
             }
         }
+        // Actualizar páginas extra visibles según el template activo
+        if (typeof pfActivarExtrasDelTemplateActivo === 'function') {
+            pfActivarExtrasDelTemplateActivo();
+        }
     }
 
     /* ── Pestañas Reportes ── */
