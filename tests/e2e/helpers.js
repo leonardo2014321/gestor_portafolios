@@ -14,7 +14,7 @@
 import { expect } from '@playwright/test';
 
 // ─── URL Base configurable ───
-export const BASE = process.env.BASE_URL || 'http://localhost:8000';
+export const BASE = process.env.BASE_URL || 'https://gestorportafolios-production.up.railway.app/';
 
 // ─── Credenciales de prueba ───
 const USER_EMAIL = 'serpientinon@gmail.com';

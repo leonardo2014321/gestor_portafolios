@@ -13,7 +13,7 @@ test.describe('Sprint 4: Sanity Tests - Puesta en Marcha (Producción)', () => {
         await logoutCleanup(page);
     });
 
-    test('TC-PROD-04: Conexión a Base de Datos (PgSQL/MariaDB)', async ({ page }) => {
+    test('TC-172: Conexión a Base de Datos (PgSQL/MariaDB)', async ({ page }) => {
         // Intento de login verifica que el servidor se comunica con la BD
         await loginUsuario(page);
         
@@ -25,7 +25,7 @@ test.describe('Sprint 4: Sanity Tests - Puesta en Marcha (Producción)', () => {
         await expect(navName).not.toBeEmpty();
     });
 
-    test('TC-PROD-05: Verificación de Explorador de Portafolios (Lectura DB)', async ({ page }) => {
+    test('TC-173: Verificación de Explorador de Portafolios (Lectura DB)', async ({ page }) => {
         await page.goto(`${BASE}/explorador`);
 
         // 1. Debe cargar al menos las categorías (tabla categorias)

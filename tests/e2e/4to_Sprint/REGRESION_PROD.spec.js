@@ -13,7 +13,7 @@ test.describe('Sprint 4: Regresión Básica (Producción)', () => {
         await logoutCleanup(page);
     });
 
-    test('TC-PROD-09: Regresión - Flujo Básico de Usuario', async ({ page }) => {
+    test('TC-177: Regresión - Flujo Básico de Usuario', async ({ page }) => {
         // 1. Login de usuario
         await loginUsuario(page);
         await expect(page).toHaveURL(/.*\/menu/);
@@ -35,7 +35,7 @@ test.describe('Sprint 4: Regresión Básica (Producción)', () => {
         await expect(page).toHaveURL(/.*\/(home|login)?$/, { timeout: 15000 });
     });
 
-    test('TC-PROD-10: Regresión - Flujo Básico de Administrador', async ({ page }) => {
+    test('TC-178: Regresión - Flujo Básico de Administrador', async ({ page }) => {
         // 1. Login de admin
         await loginAdmin(page);
         await expect(page).toHaveURL(/.*\/admin/);

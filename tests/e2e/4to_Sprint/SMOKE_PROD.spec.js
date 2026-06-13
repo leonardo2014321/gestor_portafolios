@@ -9,7 +9,7 @@ import { BASE } from '../helpers.js';
 
 test.describe('Sprint 4: Smoke Tests - Puesta en Marcha (Producción)', () => {
 
-    test('TC-PROD-01: Verificación de Disponibilidad Web (Landing Page)', async ({ page }) => {
+    test('TC-169: Verificación de Disponibilidad Web (Landing Page)', async ({ page }) => {
         // Navegar a la URL de producción
         const response = await page.goto(BASE, { timeout: 60000 });
         
@@ -21,7 +21,7 @@ test.describe('Sprint 4: Smoke Tests - Puesta en Marcha (Producción)', () => {
         await expect(heroTitle).toBeVisible({ timeout: 15000 });
     });
 
-    test('TC-PROD-02: Carga de Assets Estáticos (CSS/JS)', async ({ page }) => {
+    test('TC-170: Carga de Assets Estáticos (CSS/JS)', async ({ page }) => {
         const failedAssets = [];
 
         // Monitorear todas las respuestas de red para capturar CSS o JS rotos (404, 500)
@@ -42,7 +42,7 @@ test.describe('Sprint 4: Smoke Tests - Puesta en Marcha (Producción)', () => {
         await expect(navbar).toBeVisible();
     });
 
-    test('TC-PROD-03: Verificación de Modales de Autenticación', async ({ page }) => {
+    test('TC-171: Verificación de Modales de Autenticación', async ({ page }) => {
         await page.goto(BASE);
 
         // 1. Abrir Modal Login

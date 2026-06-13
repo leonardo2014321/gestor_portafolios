@@ -9,7 +9,7 @@ import { BASE } from '../helpers.js';
 
 test.describe('Sprint 4: Compatibilidad y Entorno (Producción)', () => {
 
-    test('TC-PROD-06: Verificación de Reglas de Enrutamiento (Apache/Laravel)', async ({ page }) => {
+    test('TC-174: Verificación de Reglas de Enrutamiento (Apache/Laravel)', async ({ page }) => {
         // 1. Tratar de acceder a una ruta inexistente debe ser capturada por Laravel (404 personalizado o default de Laravel), no por Apache
         const response = await page.goto(`${BASE}/ruta-que-no-existe-12345`);
         
@@ -21,7 +21,7 @@ test.describe('Sprint 4: Compatibilidad y Entorno (Producción)', () => {
         expect(bodyText.toLowerCase()).not.toContain('apache');
     });
 
-    test('TC-PROD-07: Configuración de Entorno (Storage y Public)', async ({ page }) => {
+    test('TC-175: Configuración de Entorno (Storage y Public)', async ({ page }) => {
         // 1. Verificar acceso a carpeta build generada por Vite (Node.js compatibility)
         const response = await page.goto(`${BASE}/build/manifest.json`);
         
@@ -30,7 +30,7 @@ test.describe('Sprint 4: Compatibilidad y Entorno (Producción)', () => {
         expect([200, 403, 404]).toContain(status);
     });
 
-    test('TC-PROD-08: Verificación de Sesiones Seguras', async ({ page }) => {
+    test('TC-176: Verificación de Sesiones Seguras', async ({ page }) => {
         const response = await page.goto(BASE);
         
         // 1. Verificar cookies de Laravel (XSRF-TOKEN y laravel_session)
