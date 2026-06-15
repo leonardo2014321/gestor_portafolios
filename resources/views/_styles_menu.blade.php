@@ -247,6 +247,43 @@
         .rp-ttl{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:9px;display:flex;align-items:center;gap:6px}
         .rp-ttl svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
         .notif{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid #f8fafc}
+        /* ══════════════════════════════════════
+           COLORES VARIANTES (Páginas Extra)
+        ══════════════════════════════════════ */
+        /* T7 – Hexágonos (Mismo formato que la portada original) */
+        .pf-extra-t7 { background: #fcd34d !important; position: relative; padding: 0 !important; overflow: hidden; }
+        
+        /* The footer */
+        .pf-extra-t7 .pf-xhdr { position: absolute; bottom: 0; left: 0; width: 100%; height: 52px; background: rgba(255,255,255,0.9) !important; display: flex; align-items: center; justify-content: space-between; padding: 0 50px; z-index: 10; border-bottom: none !important; color: #1e293b; }
+        .pf-extra-t7 .pf-xhdr-name { font-size: 16px; font-weight: 700; color: #1e293b; text-transform: none; }
+        .pf-extra-t7 .pf-xhdr-page { background: transparent; padding: 0; border: none; font-size: 14px; font-weight: 700; color: #1e293b; opacity: 1; }
+        
+        .pf-extra-t7 .pf-xbody { position: relative; z-index: 1; padding: 0 !important; height: 100%; }
+        
+        .pf-extra-t7 .pf-xproject-full { display: flex; flex-direction: row; width: 100%; height: 100%; background: transparent !important; box-shadow: none !important; border-radius: 0 !important; padding: 0; position: relative; justify-content: flex-start; }
+        
+        /* The background shapes for the extra pages */
+        .pf-extra-t7 .pf-xproject-img-wrap, .pf-extra-t7 .pf-xproject-no-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; background: transparent; overflow: visible; display: block; border-radius: 0; }
+        
+        .pf-extra-t7 .pf-xproject-img-wrap::before, .pf-extra-t7 .pf-xproject-no-img::before { content: ''; position: absolute; top: 50%; left: -2%; width: 450px; height: 450px; background: #f59e0b; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); z-index: 0; transform: translateY(-50%); }
+        
+        .pf-extra-t7 .pf-xproject-img-wrap::after, .pf-extra-t7 .pf-xproject-no-img::after { content: ''; position: absolute; top: 50%; left: calc(5% + 20px); width: 380px; height: 380px; background: #fff; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); z-index: 1; transform: translateY(-50%); }
+        
+        .pf-extra-t7 .pf-xproject-img-wrap img { position: absolute; top: 50%; left: calc(5% + 30px); width: 360px; height: 360px; object-fit: cover; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); z-index: 2; border: none; transform: translateY(-50%); border-radius: 0; }
+        
+        .pf-extra-t7 .pf-xproject-no-img span { position: absolute; top: 50%; left: calc(5% + 30px); width: 360px; height: 360px; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 60px; transform: translateY(-50%); }
+        
+        /* The small hexagons */
+        .pf-extra-t7 .pf-xproject-full::before { content: ''; position: absolute; top: 70%; left: 35%; width: 150px; height: 150px; border: 8px solid #333; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); z-index: 0; }
+        .pf-extra-t7 .pf-xproject-full::after { content: ''; position: absolute; top: 40%; right: -5%; width: 200px; height: 200px; border: 2px solid #333; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); z-index: 0; }
+
+        /* The right text box (info) - Desplegado hacia la derecha */
+        .pf-extra-t7 .pf-xproject-full .pf-xproject-info { position: relative; z-index: 1; padding: 40px; margin: auto 0 auto auto; flex: none !important; width: 48% !important; background: rgba(255,255,255,0.9) !important; border: none !important; border-right: 12px solid #f59e0b !important; border-radius: 24px 0 0 24px !important; box-shadow: -10px 10px 30px rgba(0,0,0,0.08) !important; display: flex; flex-direction: column; justify-content: center; align-self: center; max-height: calc(100% - 60px); overflow: hidden; }
+        
+        .pf-extra-t7 .pf-xproject-title { font-size: clamp(30px, 3.5vw, 45px); color: #1e293b; font-weight: 800; margin-bottom: 12px; line-height: 1.15; text-align: left; }
+        .pf-extra-t7 .pf-xproject-desc { font-size: clamp(13px, 1.5vw, 16px); color: #334155; line-height: 1.6; text-align: left; display: -webkit-box; -webkit-line-clamp: 12; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 15px; }
+        .pf-extra-t7 .pf-xproject-links { margin-top: auto; justify-content: flex-start; display: flex; gap: 10px; }
+        .pf-extra-t7 .pf-xproject-link { background: #f59e0b; color: #fff; font-size: 13px; font-weight: 700; padding: 8px 16px; border-radius: 8px; text-decoration: none; border: none; }
         .notif:last-child{border:none}
         .ni-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
         .ni-icon.green{background:#dcfce7}.ni-icon.blue{background:#dbeafe}
@@ -266,7 +303,7 @@
            CV / REPORTES
            El JS vive en _reportes_menu.blade.php
         ══════════════════════════════════════ */
-        .cv-wrapper{display:flex;justify-content:center;padding-bottom:40px;}
+        .cv-wrapper{display:flex;flex-direction:column;align-items:center;padding-bottom:40px;}
         .cv-container{width:210mm;min-height:297mm;background:#fff;box-shadow:0 10px 40px rgba(0,0,0,0.15);display:flex;overflow:hidden;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1e293b;}
         .cv-left{width:35%;background-color:#3b82f6;color:#fff;padding:30px 25px;display:flex;flex-direction:column;position:relative;}
         .cv-right{width:65%;background-color:#fff;padding:40px 35px;}
@@ -390,15 +427,18 @@
         #cv-template-7 .cv7-photo{width:330px;height:330px;object-fit:cover;clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);}
         #cv-template-7 .cv7-hex-small1{position:absolute;top:70%;right:35%;width:150px;height:150px;border:8px solid #333;clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);}
         #cv-template-7 .cv7-hex-small2{position:absolute;top:40%;left:-5%;width:200px;height:200px;border:2px solid #333;clip-path:polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);}
-        #cv-template-7 .cv7-content{position:relative;z-index:1;padding:50px;width:60%;display:flex;flex-direction:column;justify-content:center;height:100%;}
-        #cv-template-7 .cv7-header{margin-bottom:40px;background:rgba(255,255,255,0.7);padding:20px 30px;border-radius:10px;border-left:8px solid #f59e0b;}
-        #cv-template-7 .cv7-name{font-size:42px;color:#1e293b;margin-bottom:5px;font-weight:800;letter-spacing:1px;}
-        #cv-template-7 .cv7-role{font-size:22px;color:#334155;font-weight:600;}
-        #cv-template-7 .cv7-projects{display:flex;flex-direction:column;gap:20px;padding-left:20px;}
-        #cv-template-7 .cv7-project{border-left:4px solid #333;padding-left:15px;}
-        #cv-template-7 .cv7-proj-title{font-size:16px;font-weight:700;color:#1e293b;margin-bottom:5px;}
-        #cv-template-7 .cv7-proj-desc{font-size:14px;color:#475569;line-height:1.5;}
-        #cv-template-7 .cv7-footer{position:absolute;bottom:0;left:0;width:100%;background:rgba(255,255,255,0.85);padding:15px 50px;font-size:18px;font-weight:700;color:#1e293b;text-align:center;}
+        
+        /* Autor en esquina inferior derecha */
+        #cv-template-7 .cv7-author{position:absolute;bottom:65px;right:36px;z-index:3;background:rgba(255,255,255,0.85);padding:10px 20px;border-radius:12px;text-align:right;}
+        #cv-template-7 .cv7-author-label{display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#64748b;margin-bottom:3px;}
+        #cv-template-7 .cv7-author-name{display:block;font-size:14px;font-weight:800;color:#1e293b;}
+
+        #cv-template-7 .cv7-content{position:relative;z-index:1;padding:40px 40px 40px 0;width:60%;display:flex;flex-direction:column;justify-content:center;height:calc(100% - 52px);}
+        #cv-template-7 .cv7-header{background:rgba(255,255,255,0.9);padding:40px 50px 40px 40px;border-radius:0 24px 24px 0;border-left:12px solid #f59e0b;backdrop-filter:blur(4px);box-shadow:0 10px 30px rgba(0,0,0,0.08);min-height:85%;max-height:100%;overflow:hidden;display:flex;flex-direction:column;justify-content:center;}
+        #cv-template-7 .cv7-name{font-size:clamp(30px,3.5vw,45px);color:#1e293b;margin-bottom:12px;font-weight:800;letter-spacing:0.5px;line-height:1.15;word-break:break-word;}
+        #cv-template-7 .cv7-role{font-size:clamp(13px,1.5vw,16px);color:#334155;font-weight:500;line-height:1.6;display:-webkit-box;-webkit-line-clamp:12;-webkit-box-orient:vertical;overflow:hidden;}
+        
+        #cv-template-7 .cv7-footer{position:absolute;bottom:0;left:0;width:100%;height:52px;background:rgba(255,255,255,0.9);display:flex;align-items:center;padding:0 50px;font-size:16px;font-weight:700;color:#1e293b;text-align:left;z-index:10;}
 
         /* Plantilla 8 - Portafolio Timeline Azul */
         #cv-template-8{width:297mm;min-height:210mm;display:flex;font-family:'Helvetica',sans-serif;background:#fff;}
@@ -423,13 +463,13 @@
 
         /* Plantilla 9 - Portafolio Elegante (Círculos) */
         #cv-template-9{width:297mm;min-height:210mm;display:flex;flex-direction:column;font-family:'Helvetica',sans-serif;background:#fff;}
-        #cv-template-9 .cv9-top{height:35%;background:#333;position:relative;display:flex;align-items:center;justify-content:flex-end;padding-right:60px;}
+        #cv-template-9 .cv9-top{min-height:280px;flex:0 0 280px;background:#333;position:relative;display:flex;align-items:center;justify-content:flex-end;padding-right:60px;}
         #cv-template-9 .cv9-top::before{content:'';position:absolute;left:0;top:0;width:300px;height:100%;background:repeating-linear-gradient(90deg, #ccc, #ccc 2px, transparent 2px, transparent 10px);opacity:0.3;}
         #cv-template-9 .cv9-top-text{font-size:26px;color:#fff;text-align:right;line-height:1.2;font-weight:300;}
         #cv-template-9 .cv9-photo-wrapper{position:absolute;left:150px;top:50px;width:240px;height:240px;border-radius:50%;background:#2563eb;padding:10px;z-index:10;}
         #cv-template-9 .cv9-photo{width:100%;height:100%;border-radius:50%;object-fit:cover;border:6px solid #fff;}
-        #cv-template-9 .cv9-bottom{height:65%;display:flex;background:#1e3a8a;color:#fff;}
-        #cv-template-9 .cv9-bottom-left{width:40%;padding:120px 40px 40px;position:relative;overflow:hidden;}
+        #cv-template-9 .cv9-bottom{flex:1;display:flex;background:#1e3a8a;color:#fff;}
+        #cv-template-9 .cv9-bottom-left{width:40%;padding:100px 40px 40px;position:relative;overflow:hidden;}
         #cv-template-9 .cv9-contact{display:flex;flex-direction:column;gap:15px;position:relative;z-index:2;}
         #cv-template-9 .cv9-contact-row{display:flex;font-size:13px;}
         #cv-template-9 .cv9-label{width:100px;font-weight:700;}
@@ -471,6 +511,225 @@
         #cv-template-10 .cv10-list li{font-size:12px;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
         
         #cv-template-6 .cv6-contact-item{font-size:13px;color:#475569;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+
+        /* ══════════════════════════════════════
+           PÁGINAS EXTRA DE PORTAFOLIO
+           Se generan dinámicamente al seleccionar portafolio
+        ══════════════════════════════════════ */
+        .pf-extra-pages-wrap { display: none; }
+        .pf-extra-pages-wrap.active-extras { display: block; }
+
+        /* ── Página extra — mismas dimensiones landscape ── */
+        .pf-extra-page {
+            margin-top: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.18);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            width: 297mm;
+            height: 210mm;
+        }
+
+        /* ── Header compacto ── */
+        .pf-xhdr {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 36px;
+            flex-shrink: 0;
+        }
+        .pf-xhdr-name { font-size: 15px; font-weight: 800; letter-spacing: 0.3px; }
+        .pf-xhdr-page { font-size: 11px; opacity: 0.7; font-weight: 500; }
+
+        /* ── Grid 2 columnas (multi-proyecto) ── */
+        .pf-xbody {
+            flex: 1;
+            padding: 18px 28px 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            overflow: hidden;
+        }
+
+        /* ── Layout 1 proyecto por página (horizontal) ── */
+        .pf-xbody-single {
+            display: flex;
+            flex-direction: row;
+            padding: 0;
+            gap: 0;
+            overflow: hidden;
+        }
+        .pf-xproject-full {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+            overflow: hidden;
+        }
+        .pf-xproject-full .pf-xproject-img-wrap {
+            width: 48%;
+            height: 100%;
+            flex-shrink: 0;
+        }
+        .pf-xproject-full .pf-xproject-no-img {
+            width: 48%;
+            height: 100%;
+            flex-shrink: 0;
+            font-size: 60px;
+        }
+        .pf-xproject-full .pf-xproject-info {
+            flex: 1;
+            padding: 36px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-top: none;
+        }
+        .pf-xproject-full .pf-xproject-title {
+            font-size: clamp(20px, 2.8vw, 28px);
+            font-weight: 800;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+        .pf-xproject-full .pf-xproject-desc {
+            font-size: clamp(12px, 1.4vw, 13px);
+            line-height: 1.65;
+            -webkit-line-clamp: 10;
+            flex: 1;
+        }
+        .pf-xproject-full .pf-xproject-links {
+            margin-top: 20px;
+        }
+        .pf-xproject-full .pf-xproject-link {
+            font-size: 12px;
+            padding: 7px 16px;
+        }
+
+        /* Tarjeta de proyecto (grid multi) */
+        .pf-xproject {
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            overflow: hidden;
+            min-height: 0;
+            height: 100%;
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .pf-xproject-img-wrap {
+            width: 100%;
+            height: 45%;
+            min-height: 140px;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .pf-xproject-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .pf-xproject-no-img {
+            width: 100%;
+            height: 45%;
+            min-height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            flex-shrink: 0;
+            background: rgba(0,0,0,0.03);
+        }
+        .pf-xproject-info {
+            flex: 1;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        .pf-xproject-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        .pf-xproject-desc {
+            font-size: 12px;
+            line-height: 1.5;
+            flex: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+        }
+        .pf-xproject-links {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+        .pf-xproject-link {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* ── Variantes de color por template ── */
+
+        /* T7 – Hexágonos (amarillo) */
+        .pf-extra-t7 { background: #fcd34d; }
+        .pf-extra-t7 .pf-xhdr { background: rgba(255,255,255,0.88); border-bottom: 3px solid #f59e0b; color: #1e293b; }
+        .pf-extra-t7 .pf-xproject { background: rgba(255,255,255,0.82); }
+        .pf-extra-t7 .pf-xproject-no-img { background: rgba(255,255,255,0.5); }
+        .pf-extra-t7 .pf-xproject-info { background: rgba(255,255,255,0.82); border-top: 3px solid #f59e0b; }
+        .pf-extra-t7 .pf-xproject-title { color: #1e293b; }
+        .pf-extra-t7 .pf-xproject-desc { color: #475569; }
+        .pf-extra-t7 .pf-xproject-link { background: #1e293b; color: #fcd34d; }
+        /* T7 full-page overrides */
+        .pf-extra-t7 .pf-xproject-full .pf-xproject-info { border-top: none; border-left: 6px solid #f59e0b; }
+
+        /* T8 – Timeline Azul */
+        .pf-extra-t8 { background: #f0f9ff; }
+        .pf-extra-t8 .pf-xhdr { background: linear-gradient(135deg, #0284c7, #38bdf8); color: #fff; }
+        .pf-extra-t8 .pf-xproject { background: #fff; box-shadow: 0 2px 8px rgba(2,132,199,0.12); }
+        .pf-extra-t8 .pf-xproject-no-img { background: #e0f2fe; color: #0284c7; }
+        .pf-extra-t8 .pf-xproject-info { border-top: 3px solid #0284c7; }
+        .pf-extra-t8 .pf-xproject-title { color: #0c4a6e; }
+        .pf-extra-t8 .pf-xproject-desc { color: #475569; }
+        .pf-extra-t8 .pf-xproject-link { background: #0284c7; color: #fff; }
+        .pf-extra-t8 .pf-xproject-full .pf-xproject-info { border-top: none; border-left: 6px solid #0284c7; }
+
+        /* T9 – Elegante */
+        .pf-extra-t9 { background: #1e3a8a; }
+        .pf-extra-t9 .pf-xhdr { background: rgba(255,255,255,0.08); border-bottom: 2px solid rgba(255,255,255,0.2); color: #fff; }
+        .pf-extra-t9 .pf-xproject { background: rgba(255,255,255,0.07); }
+        .pf-extra-t9 .pf-xproject-no-img { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.4); }
+        .pf-extra-t9 .pf-xproject-info { border-top: 2px solid rgba(255,255,255,0.25); }
+        .pf-extra-t9 .pf-xproject-title { color: #fff; }
+        .pf-extra-t9 .pf-xproject-desc { color: rgba(255,255,255,0.8); }
+        .pf-extra-t9 .pf-xproject-link { background: rgba(255,255,255,0.18); color: #fff; }
+        .pf-extra-t9 .pf-xproject-full .pf-xproject-info { border-top: none; border-left: 4px solid rgba(255,255,255,0.3); }
+
+        /* T10 – Columnas */
+        .pf-extra-t10 { background: #f3f4f6; }
+        .pf-extra-t10 .pf-xhdr { background: #27272a; color: #fda4af; }
+        .pf-extra-t10 .pf-xproject { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .pf-extra-t10 .pf-xproject-no-img { background: #fce7f3; color: #e0a59e; }
+        .pf-extra-t10 .pf-xproject-info { border-top: 3px solid #e0a59e; }
+        .pf-extra-t10 .pf-xproject-title { color: #27272a; font-family: 'Georgia', serif; }
+        .pf-extra-t10 .pf-xproject-desc { color: #475569; }
+        .pf-extra-t10 .pf-xproject-link { background: #e0a59e; color: #27272a; }
+        .pf-extra-t10 .pf-xproject-full .pf-xproject-info { border-top: none; border-left: 5px solid #e0a59e; }
 
         /* ══════════════════════════════════════
            FOOTER
@@ -525,10 +784,10 @@
         /* ══════════════════════════════════════
            RESPONSIVE
         ══════════════════════════════════════ */
-        @media(max-width:1200px){
+        @media screen and (max-width:1200px){
           .porta-grid{grid-template-columns:repeat(3,1fr)}
         }
-        @media(max-width:992px){
+        @media screen and (max-width:992px){
           .mobile-toggle-btn { display: flex; }
           .sb-close-btn, .rp-close-btn { display: flex; }
 
@@ -607,7 +866,7 @@
           .caract-grid{grid-template-columns:1fr}
           .porta-grid{grid-template-columns:repeat(2,1fr)}
         }
-        @media(max-width:768px){
+        @media screen and (max-width:768px){
           .sysname{font-size:18px}
           .main-inner{padding:1.2rem 1rem}
           .porta-grid{grid-template-columns:1fr}
@@ -618,7 +877,7 @@
           .stats{grid-template-columns:1fr}
           .exp-history-dropdown{width:100%;}
         }
-        @media(max-width:480px){
+        @media screen and (max-width:480px){
           .tb-search{display:none}
           .sysname{font-size:15px}
           .tb-nav { gap: 0; }
@@ -637,22 +896,26 @@
         ══════════════════════════════════════ */
         @media print {
             *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
-            html,body{margin:0 !important;padding:0 !important;height:100% !important;overflow:hidden !important;}
+            html,body{margin:0 !important;padding:0 !important;overflow:visible !important;}
             body *{visibility:hidden;}
             #view-reportes,#view-reportes *{visibility:visible;}
-            #view-reportes{position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden;}
+            #view-reportes{position:absolute;left:0;top:0;width:100%;overflow:visible;}
             .topbar,aside,.rpanel,.content-bar,footer,.template-selector,.reportes-tabs,#portafolio-color-panel{display:none !important;}
+            /* Ocultar todos los templates, mostrar solo el activo */
             .cv-template-view{display:none !important;}
             .cv-template-view.active-tpl{display:flex !important;}
-            main{background:#fff;padding:0 !important;margin:0 !important;overflow:hidden !important;width:100%;height:100%;display:block;}
-            .main-inner{padding:0 !important;margin:0 !important;width:100%;height:100%;display:block;overflow:hidden !important;}
-            .cv-wrapper{padding:0 !important;margin:0 !important;width:100%;height:100%;display:block;overflow:hidden !important;}
+            /* Ocultar todos los wrappers de páginas extra, mostrar solo los activos */
+            .pf-extra-pages-wrap{display:none !important;}
+            .pf-extra-pages-wrap.active-extras{display:block !important;}
+            main{background:#fff;padding:0 !important;margin:0 !important;overflow:visible !important;width:100%;display:block;}
+            .main-inner{padding:0 !important;margin:0 !important;width:100%;display:block;overflow:visible !important;}
+            .cv-wrapper{padding:0 !important;margin:0 !important;width:100%;display:block;overflow:visible !important;}
+            /* Primera página: ocupa toda la hoja */
             .cv-container,
             #cv-template-2, #cv-template-3, #cv-template-4, #cv-template-5, #cv-template-6,
             #cv-template-7, #cv-template-8, #cv-template-9, #cv-template-10 {
                 box-shadow: none !important;
                 margin: 0 !important;
-                padding: 0 !important;
                 width: 100vw !important;
                 height: 100vh !important;
                 min-width: 100vw !important;
@@ -668,7 +931,25 @@
                 zoom: 1 !important;
                 transform: none !important;
             }
-            @page{margin:0;size:auto;}
+            /* Páginas extra: cada una en su propia hoja, adaptada al tamaño */
+            .pf-extra-page {
+                box-shadow: none !important;
+                margin: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                min-width: 100vw !important;
+                min-height: 100vh !important;
+                max-width: 100vw !important;
+                max-height: 100vh !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+                page-break-before: always !important;
+                break-before: page !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            @page { margin: 0; }
         }
         
         /* Regla inyectada dinámicamente si es necesario */
@@ -779,7 +1060,7 @@
             padding: 8px 12px;
             font-size: 13px;
         }
-        @media(max-width:992px){
+        @media screen and (max-width:992px){
           html, body {
               max-width: 100vw !important;
               overflow-x: hidden !important;
@@ -946,7 +1227,7 @@
               padding: 30px 20px !important;
           }
         }
-        @media(max-width:768px){
+        @media screen and (max-width:768px){
           .template-selector {
               flex-direction: column !important;
               align-items: stretch !important;
@@ -981,7 +1262,7 @@
               box-sizing: border-box !important;
           }
         }
-        @media(max-width:480px){
+        @media screen and (max-width:480px){
           .reportes-tabs {
               gap: 5px !important;
           }

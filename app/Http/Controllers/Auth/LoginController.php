@@ -38,11 +38,9 @@ class LoginController extends Controller
         }
 
         if (! $usuario->activo) {
-            session(['reactivar_uid' => $usuario->id]);
-            return back()->with([
-                'cuenta_desactivada'   => true,
-                'motivo_desactivacion' => $usuario->motivo_desactivacion,
-            ]);
+            $usuario->activo = true;
+            $usuario->motivo_desactivacion = null;
+            $usuario->save();
         }
 
         Auth::login($usuario, $request->boolean('remember'));
