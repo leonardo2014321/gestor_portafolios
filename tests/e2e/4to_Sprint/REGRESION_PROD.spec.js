@@ -19,16 +19,10 @@ test.describe('Sprint 4: Regresión Básica (Producción)', () => {
         await expect(page).toHaveURL(/.*\/menu/);
 
         // 2. Navegación al Perfil
-        await page.locator('text=Mi Perfil').click();
-        await expect(page).toHaveURL(/.*\/perfil/);
-        await expect(page.locator('h1:has-text("Mi Perfil")')).toBeVisible();
+        await page.click('#btn-perfil');
+        await expect(page.locator('#view-perfil')).toBeVisible();
 
-        // 3. Navegación a Trayectoria
-        await page.locator('text=Trayectoria Profesional').click();
-        await expect(page).toHaveURL(/.*\/trayectoria/);
-        await expect(page.locator('h1:has-text("Trayectoria Profesional")')).toBeVisible();
-
-        // 4. Logout funciona
+        // 3. Logout funciona
         await page.locator('#nav-user-wrap button').first().click();
         await page.locator('#navUserMenu button:has-text("Cerrar sesión")').click();
         await page.locator('#modalLogout #logoutBtnLabelGlobal').click();

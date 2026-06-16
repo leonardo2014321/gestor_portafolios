@@ -48,15 +48,15 @@ test.describe('Sprint 4: Smoke Tests - Puesta en Marcha (Producción)', () => {
         // 1. Abrir Modal Login
         await page.locator('#openLoginModal').click();
         await expect(page.locator('#loginModal')).toBeVisible();
-        await expect(page.locator('form[action*="/login"]')).toBeVisible();
+        await expect(page.locator('#loginModal form')).toBeVisible();
 
         // Cerrar modal
-        await page.locator('#loginModal .btn-close-modal').click();
+        await page.locator('#loginModal button[onclick="toggleModal()"]').click();
         
         // 2. Abrir Modal Registro
         await page.locator('#openRegisterModal').click();
         await expect(page.locator('#registerModal')).toBeVisible();
-        await expect(page.locator('form[action*="/registro"]')).toBeVisible();
+        await expect(page.locator('#btnSubmit')).toBeVisible();
     });
 
 });

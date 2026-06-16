@@ -26,14 +26,19 @@ test.describe('Sprint 4: Sanity Tests - Puesta en Marcha (Producción)', () => {
     });
 
     test('TC-173: Verificación de Explorador de Portafolios (Lectura DB)', async ({ page }) => {
-        await page.goto(`${BASE}/explorador`);
+        await loginUsuario(page);
+        await expect(page).toHaveURL(/.*\/menu/);
+
+        // Ir al explorador via SPA
+        await page.locator('.tb-nav-link[data-nav="explorador"]').click();
+        await expect(page.locator('#view-explorador')).toBeVisible();
 
         // 1. Debe cargar al menos las categorías (tabla categorias)
-        const categorias = page.locator('.categoria-btn');
+        const categorias = page.locator('.exp-filter-btn');
         await expect(categorias.first()).toBeVisible();
 
         // 2. Debe cargar al menos un usuario público si existen datos
-        const tarjetas = page.locator('.perfil-card');
+        const tarjetas = page.locator('.exp-card');
         const numTarjetas = await tarjetas.count();
         expect(numTarjetas).toBeGreaterThanOrEqual(0); // Puede ser 0 si la BD es nueva
     });
